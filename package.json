@@ -1,17 +1,20 @@
 {
   "name": "recharge_subscription_manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Node.js web server that powers a fully-customized subscription management portal for ReCharge/Shopify customers.",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -r dotenv/config dist/server.js\"",
     "prestart": "tsc",
     "start": "node dist/server.js"
   },
   "author": "Ethan Jon",
   "license": "UNLICENSED",
   "dependencies": {
-    "koa": "^2.5.0"
+    "koa": "^2.5.0",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "node-fetch": "^2.1.2"
   },
   "devDependencies": {
     "@types/koa": "^2.0.45",
