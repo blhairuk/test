@@ -1,0 +1,23 @@
+{
+  "name": "recharge_subscription_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+    "prestart": "tsc",
+    "start": "node dist/server.js"
+  },
+  "author": "Ethan Jon",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "koa": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.45",
+    "concurrently": "^3.5.1",
+    "dotenv": "^5.0.1",
+    "nodemon": "^1.17.3",
+    "typescript": "^2.8.3"
+  }
+}
