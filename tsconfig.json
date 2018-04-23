@@ -4,7 +4,7 @@
     "baseUrl": "./src/server",
     "jsx": "react",
     "module": "commonjs",
-    "outDir": "./dist/server",
+    "outDir": "./dist",
     "target": "es6"
   },
   "include": [

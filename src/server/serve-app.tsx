@@ -10,7 +10,7 @@ export default ({
   const app = renderToString(<Component />)
 
   ctx.body = `
-<div>
+<div class="page-width">
   <div id="app">${app}</div>
   <script src="${scriptSrc}" async=""></script>
 </div>`

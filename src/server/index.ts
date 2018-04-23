@@ -13,11 +13,16 @@ import home from './routes'
 import install from './routes/install'
 import confirmInstall from './routes/install/confirm'
 
+import AccountManager from '../client/account-manager/app'
 import BundleEditor from '../client/bundle-editor/app'
 
 const router = new Router()
 router
   .get('/', home())
+  .get('/account-manager', serveApp({
+    assetName: 'account-manager',
+    Component: AccountManager
+  }))
   .get('/bundle-editor', serveApp({
     assetName: 'bundle-editor',
     Component: BundleEditor
@@ -26,7 +31,7 @@ router
   .get('/install/confirm', confirmInstall())
 
 const serveStatic = () => ctx => (
-  send(ctx, ctx.path, {root: join(__dirname, '../../dist/client')})
+  send(ctx, ctx.path, {root: join(__dirname, '../../dist/public')})
 )
 
 const app = new Koa()
