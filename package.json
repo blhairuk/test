@@ -4,6 +4,8 @@
   "description": "A Node.js web server that powers a fully-customized subscription management portal for ReCharge/Shopify customers.",
   "main": "index.js",
   "scripts": {
+    "migrate:latest": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest",
+    "migrate:rollback": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:rollback",
     "dev": "concurrently \"tsc --watch\" \"nodemon -r dotenv/config dist/server.js\"",
     "prestart": "tsc",
     "start": "node dist/server.js"
@@ -11,13 +13,16 @@
   "author": "Ethan Jon",
   "license": "UNLICENSED",
   "dependencies": {
+    "knex": "^0.14.6",
     "koa": "^2.5.0",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
+    "mysql2": "^1.5.3",
     "node-fetch": "^2.1.2"
   },
   "devDependencies": {
     "@types/koa": "^2.0.45",
+    "@types/node": "^9.6.6",
     "concurrently": "^3.5.1",
     "dotenv": "^5.0.1",
     "nodemon": "^1.17.3",

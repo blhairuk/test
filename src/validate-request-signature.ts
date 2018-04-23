@@ -11,7 +11,7 @@ export default () => async (ctx, next) => {
     .join(hmac ? '&' : '')
 
   const digest = crypto
-    .createHmac('SHA256', API_SECRET_KEY)
+    .createHmac('SHA256', API_SECRET_KEY || '')
     .update(message)
     .digest('hex')
 
