@@ -1,6 +1,6 @@
 import * as Knex from 'knex'
 
-import * as knexfile from '../knexfile'
+import * as knexfile from '../../knexfile'
 
 const knex = Knex(knexfile)
 

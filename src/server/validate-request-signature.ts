@@ -1,8 +1,15 @@
 import * as crypto from 'crypto'
 
 export default () => async (ctx, next) => {
-  const {hmac, signature} = ctx.query
-  const {API_SECRET_KEY} = process.env
+  const {
+    hmac, 
+    signature
+  } = ctx.query
+
+  const {
+    API_SECRET_KEY,
+    NODE_ENV
+  } = process.env
 
   const message = Object.keys(ctx.query)
     .filter(k => k !== 'signature' && k !== 'hmac')
@@ -15,7 +22,7 @@ export default () => async (ctx, next) => {
     .update(message)
     .digest('hex')
 
-  if (digest !== signature && digest !== hmac) {
+  if (NODE_ENV === 'production' && digest !== signature && digest !== hmac) {
     return ctx.throw(400)
   }
 

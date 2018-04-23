@@ -6,9 +6,9 @@
   "scripts": {
     "migrate:latest": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest",
     "migrate:rollback": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:rollback",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -r dotenv/config dist/server.js\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -r dotenv/config dist/server/index.js\"",
     "prestart": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server/index.js"
   },
   "author": "Ethan Jon",
   "license": "UNLICENSED",
