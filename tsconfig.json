@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "outDir": "./dist/server",
     "target": "es6"

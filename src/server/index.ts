@@ -6,6 +6,7 @@ import * as Router from 'koa-router'
 import * as send from 'koa-send'
 import {join} from 'path'
 
+import serveApp from './serve-app'
 import validateRequestSignature from './validate-request-signature'
 
 import home from './routes'
@@ -15,6 +16,7 @@ import confirmInstall from './routes/install/confirm'
 const router = new Router()
 router
   .get('/', home())
+  .get('/bundle-editor', serveApp('bundle-editor'))
   .get('/install', install())
   .get('/install/confirm', confirmInstall())
 
