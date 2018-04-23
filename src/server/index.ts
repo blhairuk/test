@@ -13,10 +13,15 @@ import home from './routes'
 import install from './routes/install'
 import confirmInstall from './routes/install/confirm'
 
+import BundleEditor from '../client/bundle-editor/app'
+
 const router = new Router()
 router
   .get('/', home())
-  .get('/bundle-editor', serveApp('bundle-editor'))
+  .get('/bundle-editor', serveApp({
+    assetName: 'bundle-editor',
+    Component: BundleEditor
+  }))
   .get('/install', install())
   .get('/install/confirm', confirmInstall())
 
