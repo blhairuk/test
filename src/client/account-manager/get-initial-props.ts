@@ -1,4 +1,5 @@
 import * as fetch from 'node-fetch'
+import {StaticRouter} from 'react-router'
 import * as Shopify from 'shopify-api-node'
 
 import {getToken} from '../../server/db'
@@ -23,6 +24,11 @@ export default async ctx => {
 
   return {
     customer,
+    Router: StaticRouter,
+    routerProps: {
+      location: ctx.url,
+      context: {},
+    },
     subscriptions
   }
 }
