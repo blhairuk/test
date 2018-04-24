@@ -8,21 +8,11 @@ module.exports = {
   mode: NODE_ENV || 'development',
   devtool,
   entry: {
-    'account-manager': './src/client/account-manager',
-    'bundle-editor': './src/client/bundle-editor'
+    'account-manager': './dist/client/account-manager/index.js',
+    'bundle-editor': './dist/client/bundle-editor/index.js'
   },
   output: {
     filename: '[name].js',
     path: join(__dirname, './dist/public')
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js']
-  },
-  module: {
-    rules: [{
-      exclude: /node_modules/,
-      loader: 'ts-loader',
-      test: /\.tsx?$/,
-    }]
   }
 }

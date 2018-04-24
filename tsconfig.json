@@ -1,13 +1,13 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "./src/server",
+    "baseUrl": "./src",
     "jsx": "react",
     "module": "commonjs",
     "outDir": "./dist",
     "target": "es6"
   },
   "include": [
-    "./src/server"
+    "./src"
   ]
 }
