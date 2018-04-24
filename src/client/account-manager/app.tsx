@@ -1,9 +1,18 @@
 import * as React from 'react'
 
-export default class App extends React.Component<{}> {
+interface IProps {
+  customer: {
+    first_name: string,
+  },
+  subscriptions: [Object]
+}
+
+export default class App extends React.Component<IProps> {
   render () {
     return (
-      <div>account manager</div>
+      <div>
+        <div>{this.props.customer.first_name}'s subscriptions</div>
+      </div>
     )
   }
 }

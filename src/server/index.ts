@@ -16,13 +16,14 @@ import confirmInstall from './routes/install/confirm'
 import AccountManager from '../client/account-manager/app'
 import BundleEditor from '../client/bundle-editor/app'
 import getBundleEditorInitialProps from '../client/bundle-editor/get-initial-props'
+import getAccountManagerInitialProps from '../client/account-manager/get-initial-props'
 
 const router = new Router()
 router
   .get('/', home())
-  .get('/account-manager', serveApp({
+  .get('/account-manager/:customerHash/:page', serveApp({
     assetName: 'account-manager',
-    getInitialProps: null,
+    getInitialProps: getAccountManagerInitialProps,
     Component: AccountManager
   }))
   .get('/bundle-editor', serveApp({
