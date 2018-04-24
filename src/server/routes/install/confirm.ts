@@ -2,6 +2,8 @@ import {Agent} from 'https'
 import * as fetch from 'node-fetch'
 import {URLSearchParams} from 'url'
 
+import {saveToken} from '../../db'
+
 export default () => async ctx => {
   const {
     code, 
@@ -27,7 +29,12 @@ export default () => async ctx => {
     method: 'POST'
   }
   const res = await fetch(`https://${shop}/admin/oauth/access_token`, options)
-  const {access_token: accessToken} = await res.json()
+  const {access_token: token} = await res.json()
 
-  ctx.body = accessToken
+  await saveToken({
+    shop, 
+    token
+  })
+
+  ctx.body = `Received token: ${token} for shop: ${shop}.`
 }

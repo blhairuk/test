@@ -1,9 +1,11 @@
 const {join} = require('path')
 
-const devtool = process.env.NODE_ENV === 'development' ? 'inline-source-map' : undefined
+const {NODE_ENV} = process.env
+
+const devtool = NODE_ENV === 'development' ? 'inline-source-map' : undefined
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: NODE_ENV || 'development',
   devtool,
   entry: {
     'account-manager': './src/client/account-manager',
@@ -18,8 +20,9 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.tsx?$/, 
-      loader: 'ts-loader'
+      exclude: /node_modules/,
+      loader: 'ts-loader',
+      test: /\.tsx?$/,
     }]
   }
 }

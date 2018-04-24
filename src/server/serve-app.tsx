@@ -5,9 +5,17 @@ import {renderToString} from 'react-dom/server'
 export default ({
   assetName,
   Component
-}) => ctx => {
-  const scriptSrc = join(process.env.APP_PROXY_PATH, `./static/${assetName}.js`)
-  const app = renderToString(<Component />)
+}) => async ctx => {
+  const scriptSrc = join(
+    process.env.APP_PROXY_PATH, 
+    `./static/${assetName}.js`
+  )
+
+  const props = typeof Component.getInitialProps !== 'undefined' ? 
+    await Component.getInitialProps(ctx) : 
+    {}
+
+  const app = renderToString(<Component {...props} />)
 
   ctx.body = `
 <div class="page-width">

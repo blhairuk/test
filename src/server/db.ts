@@ -16,9 +16,20 @@ export const getToken = async shop => {
 export const saveToken = async ({
   shop, 
   token
-}) => (
-  knex('shops').insert({
+}) => {
+  const exists = 
+    !!(await knex('shops')
+    .where({shop})
+    .first('shop'))
+
+  if (exists) {
+    return knex('shops')
+      .where({shop})
+      .update({token})
+  }
+
+  return knex('shops').insert({
     shop, 
     token
   })
-)
+}
