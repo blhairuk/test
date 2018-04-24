@@ -6,5 +6,5 @@ module.exports = {
     user: process.env.DB_USER,
     database: process.env.DB_NAME
   },
-  debug: true
+  debug: false
 }

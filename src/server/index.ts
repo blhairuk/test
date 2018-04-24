@@ -15,16 +15,19 @@ import confirmInstall from './routes/install/confirm'
 
 import AccountManager from '../client/account-manager/app'
 import BundleEditor from '../client/bundle-editor/app'
+import getBundleEditorInitialProps from '../client/bundle-editor/get-initial-props'
 
 const router = new Router()
 router
   .get('/', home())
   .get('/account-manager', serveApp({
     assetName: 'account-manager',
+    getInitialProps: null,
     Component: AccountManager
   }))
   .get('/bundle-editor', serveApp({
     assetName: 'bundle-editor',
+    getInitialProps: getBundleEditorInitialProps,
     Component: BundleEditor
   }))
   .get('/install', install())

@@ -22,7 +22,8 @@
     "mysql2": "^1.5.3",
     "node-fetch": "^2.1.2",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "shopify-api-node": "^2.13.0"
   },
   "devDependencies": {
     "@types/koa": "^2.0.45",

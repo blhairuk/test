@@ -4,6 +4,6 @@ import {hydrate} from 'react-dom'
 import App from './app'
 
 hydrate(
-  <App />,
+  <App {...window['AppProps']} />,
   document.getElementById('app')
 )
