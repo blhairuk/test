@@ -5,7 +5,7 @@ const {EnvironmentPlugin} = require('webpack')
 
 const {NODE_ENV} = process.env
 
-const devtool = NODE_ENV === 'development' ? 'inline-source-map' : undefined
+const devtool = NODE_ENV === 'development' ? 'eval-source-map' : 'source-map'
 
 module.exports = {
   mode: NODE_ENV || 'development',
