@@ -21,12 +21,12 @@ import getAccountManagerInitialProps from '../client/account-manager/get-initial
 const router = new Router()
 router
   .get('/', home())
-  .get('/account-manager/:customerHash/:page', serveApp({
+  .get('/account/:customerHash/:page?', serveApp({
     assetName: 'account-manager',
     getInitialProps: getAccountManagerInitialProps,
     Component: AccountManager
   }))
-  .get('/bundle-editor', serveApp({
+  .get('/bundle', serveApp({
     assetName: 'bundle-editor',
     getInitialProps: getBundleEditorInitialProps,
     Component: BundleEditor

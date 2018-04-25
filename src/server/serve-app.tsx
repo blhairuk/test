@@ -1,16 +1,14 @@
-import {join} from 'path'
 import * as React from 'react'
 import {renderToString} from 'react-dom/server'
+
+const {APP_PROXY_PATH} = process.env
 
 export default ({
   assetName,
   getInitialProps,
   Component
 }) => async ctx => {
-  const scriptSrc = join(
-    process.env.APP_PROXY_PATH, 
-    `./static/${assetName}.js`
-  )
+  const scriptSrc = `${APP_PROXY_PATH}/static/${assetName}.js`
   
   const props = getInitialProps ? await getInitialProps(ctx) : {}
   const app = renderToString(<Component {...props} />)

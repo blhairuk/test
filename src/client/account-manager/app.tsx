@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {
-  Link,
   Route,
+  Switch,
 } from 'react-router-dom'
 
 import Schedule from './routes/schedule'
@@ -13,6 +13,8 @@ interface IProps {
   routerProps: Object,
 }
 
+const path = path => `${process.env.APP_PROXY_PATH}/account/:customerHash${path}`
+
 export default class extends React.Component<IProps> {
   render () {
     const {
@@ -20,20 +22,26 @@ export default class extends React.Component<IProps> {
       routerProps
     } = this.props
 
-    const renderRoute = ({location: {pathname}}) => {
-      const props = {data: this.props.data}
-      if (pathname.match(/\/schedule/)) return <Schedule {...props} />
-      else return <Subscriptions {...props} />
-    }
-
     return (
       <Router {...routerProps}>
         <div>
           <h1>Account Manager</h1>
-          <div>
-            
-          </div>
-          <Route children={renderRoute} />
+
+          <Switch>
+            <Route
+              component={Subscriptions}
+              exact
+              path={path('/')}
+            />
+            <Route
+              component={Schedule}
+              path={path('/schedule')}
+            />
+            <Route
+              component={Subscriptions}
+              path={path('/subscriptions')}
+            />
+          </Switch>
         </div>
       </Router>
     )

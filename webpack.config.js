@@ -1,4 +1,7 @@
+require('dotenv').config()
+
 const {join} = require('path')
+const {EnvironmentPlugin} = require('webpack')
 
 const {NODE_ENV} = process.env
 
@@ -14,5 +17,11 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: join(__dirname, './dist/public')
-  }
+  },
+  plugins: [
+    new EnvironmentPlugin([
+      'APP_PROXY_PATH',
+      'NODE_ENV',
+    ])
+  ]
 }
