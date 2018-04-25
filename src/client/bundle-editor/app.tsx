@@ -10,7 +10,7 @@ interface IProps {
   }]
 }
 
-export default class App extends React.Component<IProps> {
+export default class extends React.Component<IProps> {
   render () {
     return (
       <div>

@@ -1,4 +1,4 @@
-# ReCharge Subscription Manager
+# Shopify Subscriptions App
 
 ## How to use
 

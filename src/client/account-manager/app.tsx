@@ -2,44 +2,38 @@ import * as React from 'react'
 import {
   Link,
   Route,
-  Switch,
 } from 'react-router-dom'
 
 import Schedule from './routes/schedule'
 import Subscriptions from './routes/subscriptions'
 
 interface IProps {
+  data: Object,
   Router: any,
   routerProps: Object,
 }
 
-export default class App extends React.Component<IProps> {
+export default class extends React.Component<IProps> {
   render () {
     const {
       Router, 
       routerProps
     } = this.props
 
+    const renderRoute = ({location: {pathname}}) => {
+      const props = {data: this.props.data}
+      if (pathname.match(/\/schedule/)) return <Schedule {...props} />
+      else return <Subscriptions {...props} />
+    }
+
     return (
       <Router {...routerProps}>
         <div>
           <h1>Account Manager</h1>
-
-          <Switch>
-            <Route 
-              exact
-              component={Subscriptions} 
-              path='/'
-            />
-            <Route 
-              component={Schedule} 
-              path='/schedule'
-            />
-            <Route 
-              component={Subscriptions} 
-              path='/subscriptions'
-            />
-          </Switch>
+          <div>
+            
+          </div>
+          <Route children={renderRoute} />
         </div>
       </Router>
     )

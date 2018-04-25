@@ -1,5 +1,5 @@
 {
-  "name": "recharge_subscription_manager",
+  "name": "shopify_subscriptions_app",
   "version": "1.0.0",
   "description": "A Node.js web server that powers a fully-customized subscription management portal for ReCharge/Shopify customers.",
   "main": "index.js",

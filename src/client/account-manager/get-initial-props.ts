@@ -21,14 +21,17 @@ export default async ctx => {
 
   const customer = (await rechargeApi(`/customers?hash=${customerHash}`)).customers[0]
   const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}`)).subscriptions
+  const data = {
+    customer,
+    subscriptions
+  }
 
   return {
-    customer,
+    data,
     Router: StaticRouter,
     routerProps: {
-      location: ctx.url,
+      location: ctx.request.path,
       context: {},
     },
-    subscriptions
   }
 }
