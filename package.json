@@ -6,8 +6,11 @@
   "scripts": {
     "migrate:latest": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest",
     "migrate:rollback": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:rollback",
-    "dev": "concurrently \"webpack --watch\" \"tsc --watch\" \"nodemon -r dotenv/config dist/server/index.js\"",
-    "prestart": "concurrently \"tsc\" \"webpack\"",
+    "tsc": "tsc",
+    "webpack": "webpack",
+    "nodemon": "nodemon -r dotenv/config dist/server/index.js",
+    "dev": "npm-run-all tsc webpack --parallel \"tsc -- --watch\" \"webpack -- --watch\" nodemon",
+    "prestart": "run-s tsc webpack",
     "start": "node dist/server/index.js"
   },
   "author": "Ethan Jon",
@@ -32,9 +35,9 @@
     "@types/node": "^9.6.6",
     "@types/react": "^16.3.12",
     "@types/react-dom": "^16.0.5",
-    "concurrently": "^3.5.1",
     "dotenv": "^5.0.1",
     "nodemon": "^1.17.3",
+    "npm-run-all": "^4.1.2",
     "typescript": "^2.8.3",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"
