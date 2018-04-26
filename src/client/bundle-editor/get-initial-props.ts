@@ -44,10 +44,18 @@ export default async ctx => {
     return aSortValue < bSortValue ? -1 : 1
   })
 
+  const query = Object.assign({}, ctx.query, {
+    path_prefix: undefined,
+    shop: undefined,
+    signature: undefined,
+    timestamp: undefined,
+  })
+
   return {
     collection,
     product,
     productMetafields,
-    products
+    products,
+    query,
   }
 }

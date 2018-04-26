@@ -17,9 +17,13 @@ interface Props {
     value: string,
   }],
   products: ShopifyProduct[],
+  query: {
+    bid?: string,
+  },
 }
 
 interface State {
+  editingBundleId: number,
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedVariantIds: number[],
@@ -29,12 +33,26 @@ interface State {
 const BUNDLE_ADD_ON_TAG = 'Bundle Add-On'
 const BUNDLE_PRODUCT_TAG = 'Bundle Product'
 
+const initialState = {
+  editingBundleId: null,
+  selectedAddOnIds: [],    
+  selectedFrequency: null,
+  selectedVariantIds: [],
+  selectedSize: null,
+}
+
 export default class App extends React.Component<Props, State> {
-  public state = {
-    selectedAddOnIds: [],    
-    selectedFrequency: null,
-    selectedVariantIds: [],
-    selectedSize: null,
+  public state = initialState
+
+  async componentDidMount () {
+    const {bid: bundleId} = this.props.query
+
+    if (bundleId) {
+      this.setState({
+        ...this.state,
+        ...(await this.extractStateFromCart(parseInt(bundleId)))
+      })
+    }
   }
 
   render () {
@@ -177,6 +195,16 @@ export default class App extends React.Component<Props, State> {
     })
   }
 
+  private cartFetch = async (path, params = null) => {
+    const res = await fetch(path, Object.assign({
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }, params))
+    return res.json()
+  }
+
   private addToCart = extraData => {
     const properties = {
       subscription_id: this.metafieldValue('subscription_id'),
@@ -186,18 +214,16 @@ export default class App extends React.Component<Props, State> {
     }
     delete extraData.properties
 
-    return fetch('/cart/add.js', {
+    return this.cartFetch('/cart/add.js', {
       body: JSON.stringify({
         properties,
         ...extraData
       }),
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       method: 'POST',
     })
   }
+
+  private getCart = () => this.cartFetch('/cart.js')
 
   private submit = async () => {
     const {
@@ -234,6 +260,45 @@ export default class App extends React.Component<Props, State> {
         properties: {parent_bundle_id: bundleId},
         quantity: idQuantities[id],
       })
+    }
+  }
+  
+  private extractStateFromCart = async bundleId => {
+    const cart = await this.getCart()
+
+    let selectedAddOnIds = []
+    let selectedFrequency = null
+    let selectedSize = null
+    let selectedVariantIds = []
+
+    for (const item of cart.items) {
+      const {
+        properties: {
+          bundle_id: itemBundleId,
+          parent_bundle_id: itemParentBundleId,
+          shipping_interval_frequency: frequency,
+        },
+        quantity,
+        variant_id: variantId,
+        variant_options: [size]
+      } = item
+
+      if (itemBundleId === bundleId) {
+        selectedSize = parseInt(size)
+        selectedFrequency = frequency
+      } else if (itemParentBundleId === bundleId) {
+        for (let i = 0; i < quantity; ++i) {
+          selectedVariantIds.push(variantId)
+        }
+      }
+    }
+
+    return {
+      editingBundleId: bundleId,
+      selectedAddOnIds,    
+      selectedFrequency,
+      selectedVariantIds,
+      selectedSize,
     }
   }
 }
