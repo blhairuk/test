@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 interface Props {
+  isEditingBundle: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedSize: number,
@@ -19,6 +20,7 @@ export default class Controls extends React.Component<Props, State> {
 
   render () {
     const {
+      isEditingBundle,
       selectedAddOnIds,
       selectedFrequency,
       selectedSize,
@@ -39,9 +41,18 @@ export default class Controls extends React.Component<Props, State> {
           onClick={submit} 
           type='button'
         >
-          {submitting ? 'Adding...' : 'Add to cart'}
+          {this.buttonText()}
         </button>
       </div>
     )
+  }
+
+  private buttonText = () => {
+    if (this.props.isEditingBundle) {
+      if (this.state.submitting) return 'Updating...'
+      return 'Update bundle'
+    }
+    if (this.state.submitting) return 'Adding...'
+    return 'Add to cart'
   }
 }

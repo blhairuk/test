@@ -64,6 +64,7 @@ export default class App extends React.Component<Props, State> {
     } = this.props
 
     const {
+      editingBundleId,
       selectedAddOnIds,
       selectedFrequency,
       selectedVariantIds,
@@ -102,6 +103,7 @@ export default class App extends React.Component<Props, State> {
           selectedAddOnIds={selectedAddOnIds}
         />
         <Controls
+          isEditingBundle={!!editingBundleId}
           selectedAddOnIds={selectedAddOnIds}
           selectedFrequency={selectedFrequency}
           selectedSize={selectedSize}
@@ -257,7 +259,10 @@ export default class App extends React.Component<Props, State> {
     for (let id in idQuantities) {
       await this.addToCart({
         id,
-        properties: {parent_bundle_id: bundleId},
+        properties: {
+          is_add_on: selectedAddOnIds.indexOf(id) !== -1,
+          parent_bundle_id: bundleId
+        },
         quantity: idQuantities[id],
       })
     }
@@ -275,6 +280,7 @@ export default class App extends React.Component<Props, State> {
       const {
         properties: {
           bundle_id: itemBundleId,
+          is_add_on: isAddOn,
           parent_bundle_id: itemParentBundleId,
           shipping_interval_frequency: frequency,
         },
@@ -288,7 +294,8 @@ export default class App extends React.Component<Props, State> {
         selectedFrequency = frequency
       } else if (itemParentBundleId === bundleId) {
         for (let i = 0; i < quantity; ++i) {
-          selectedVariantIds.push(variantId)
+          if (isAddOn) selectedAddOnIds.push(variantId)
+          else selectedVariantIds.push(variantId) 
         }
       }
     }
