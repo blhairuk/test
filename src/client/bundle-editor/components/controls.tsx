@@ -40,11 +40,12 @@ export default class Controls extends React.Component<Props> {
   }
 
   private buttonText = () => {
-    if (this.props.isEditingBundle) {
-      if (this.props.isSubmitting) return 'Updating...'
-      return 'Update bundle'
-    }
-    if (this.props.isSubmitting) return 'Adding...'
-    return 'Add to cart'
+    const {
+      isEditingBundle,
+      isSubmitting,
+    } = this.props
+
+    if (isEditingBundle) return isSubmitting ? 'Updating...' : 'Update bundle'
+    return isSubmitting ? 'Adding...' : 'Add to cart'
   }
 }
