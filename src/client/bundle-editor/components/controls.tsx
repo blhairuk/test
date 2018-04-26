@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-interface IProps {
+interface Props {
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedSize: number,
@@ -8,11 +8,11 @@ interface IProps {
   submit: (any) => any,
 }
 
-interface IState {
+interface State {
   submitting: boolean
 }
 
-export default class Controls extends React.Component<IProps, IState> {
+export default class Controls extends React.Component<Props, State> {
   public state = {
     submitting: false
   }

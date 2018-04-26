@@ -1,12 +1,10 @@
 import * as React from 'react'
 
-import {ICollection} from '../app'
-
-interface IProps {
-  collection: ICollection
+interface Props {
+  collection: ShopifyCollection
 }
 
-export default class Hero extends React.Component<IProps> {
+export default class Hero extends React.Component<Props> {
   render () {
     const {collection} = this.props
 

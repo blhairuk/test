@@ -1,24 +1,22 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import {IVariant} from '../app'
-
-interface IProps {
-  variants: IVariant[],
+interface Props {
+  variants: ShopifyVariant[],
   selectedSize: number,
   setSelectedSize: (number) => any,
 }
 
-interface IGridItemProps {
+interface GridItemProps {
   selected: boolean
 }
 
 const GridItem = styled.div`
-  border: ${({selected}: IGridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
+  border: ${({selected}: GridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
   cursor: pointer;
 `
 
-export default class ChooseSize extends React.Component<IProps> {
+export default class ChooseSize extends React.Component<Props> {
   render () {
     const {
       selectedSize,

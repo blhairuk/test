@@ -1,15 +1,13 @@
 import * as React from 'react'
 
-import {IProduct} from '../app'
-
-interface IProps {
+interface Props {
   addAddOnId: (number) => any,
-  products: IProduct[],
+  products: ShopifyProduct[],
   removeAddOnId: (number) => any,
   selectedAddOnIds: number[],
 }
 
-export default class ChooseAddOns extends React.Component<IProps> {
+export default class ChooseAddOns extends React.Component<Props> {
   render () {
     const {
       addAddOnId,

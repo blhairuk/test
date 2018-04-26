@@ -7,46 +7,19 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import Hero from './components/hero'
 
-interface IProps {
-  collection: ICollection,
+interface Props {
+  collection: ShopifyCollection,
   product: {
-    variants: IVariant[]
+    variants: ShopifyVariant[]
   },
   productMetafields: [{
     key: string,
     value: string,
   }],
-  products: IProduct[],
+  products: ShopifyProduct[],
 }
 
-export interface ICollection {
-  body_html: string,
-  image: {
-    src: string
-  },
-  title: string,
-}
-
-export interface IProduct {
-  id: number,
-  image: {
-    src: string,
-  },
-  images: {
-    src: string,
-  }[],
-  tags: string,
-  title: string,
-  variants: IVariant[],
-}
-
-export interface IVariant {
-  id: number,
-  price: string,
-  option1: string,
-}
-
-interface IState {
+interface State {
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedVariantIds: number[],
@@ -56,7 +29,7 @@ interface IState {
 const BUNDLE_ADD_ON_TAG = 'Bundle Add-On'
 const BUNDLE_PRODUCT_TAG = 'Bundle Product'
 
-export default class App extends React.Component<IProps, IState> {
+export default class App extends React.Component<Props, State> {
   public state = {
     selectedAddOnIds: [],    
     selectedFrequency: null,

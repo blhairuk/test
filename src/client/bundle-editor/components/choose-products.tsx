@@ -1,18 +1,13 @@
 import * as React from 'react'
 
-import {
-  IProduct,
-  IVariant
-} from '../app'
-
-interface IProps {
-  addVariantId: (IVariant) => any,
-  products: IProduct[],
-  removeVariantId: (IVariant) => any,
+interface Props {
+  addVariantId: (ShopifyVariant) => any,
+  products: ShopifyProduct[],
+  removeVariantId: (ShopifyVariant) => any,
   selectedVariantIds: number[],
 }
 
-export default class ChooseProducts extends React.Component<IProps> {
+export default class ChooseProducts extends React.Component<Props> {
   render () {
     const {
       addVariantId,

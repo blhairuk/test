@@ -1,23 +1,23 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-interface IProps {
+interface Props {
   frequencies: string[],
   selectedFrequency: number,
   setSelectedFrequency: (number) => any,
   unitType: string,
 }
 
-interface IGridItemProps {
+interface GridItemProps {
   selected: boolean,
 }
 
 const GridItem = styled.div`
-  border: ${({selected}: IGridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
+  border: ${({selected}: GridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
   cursor: pointer;
 `
 
-export default class ChooseFrequency extends React.Component<IProps> {
+export default class ChooseFrequency extends React.Component<Props> {
   render () {
     const {
       frequencies,
