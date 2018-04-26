@@ -24,6 +24,7 @@ interface Props {
 
 interface State {
   editingBundleId: number,
+  isSubmitting: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedVariantIds: number[],
@@ -35,6 +36,7 @@ const BUNDLE_PRODUCT_TAG = 'Bundle Product'
 
 const initialState = {
   editingBundleId: null,
+  isSubmitting: false,
   selectedAddOnIds: [],    
   selectedFrequency: null,
   selectedVariantIds: [],
@@ -65,6 +67,7 @@ export default class App extends React.Component<Props, State> {
 
     const {
       editingBundleId,
+      isSubmitting,
       selectedAddOnIds,
       selectedFrequency,
       selectedVariantIds,
@@ -104,6 +107,7 @@ export default class App extends React.Component<Props, State> {
         />
         <Controls
           isEditingBundle={!!editingBundleId}
+          isSubmitting={isSubmitting}
           selectedAddOnIds={selectedAddOnIds}
           selectedFrequency={selectedFrequency}
           selectedSize={selectedSize}
@@ -227,13 +231,37 @@ export default class App extends React.Component<Props, State> {
 
   private getCart = () => this.cartFetch('/cart.js')
 
+  private removeFromCart = async bundleId => {
+    const {items} = await this.getCart()
+    
+    const updates = items.map(({
+      id, 
+      properties: {
+        bundle_id: itemBundleId,
+        parent_bundle_id: itemParentBundleId,
+      }, 
+      quantity
+    }) => ((
+      itemBundleId === bundleId || 
+      itemParentBundleId === bundleId
+    ) ? 0 : quantity))
+
+    return this.cartFetch('/cart/update.js', {
+      body: JSON.stringify({updates}),
+      method: 'POST',
+    })
+  }
+
   private submit = async () => {
+    this.setState({...this.state, isSubmitting: true})
+
     const {
       product: bundle,
       products,
     } = this.props
 
     const {
+      editingBundleId,
       selectedAddOnIds,
       selectedSize,
       selectedVariantIds,
@@ -242,13 +270,17 @@ export default class App extends React.Component<Props, State> {
     const sizeVariantId = bundle.variants
       .find(v => parseInt(v.option1) === selectedSize)
       .id
-    const bundleId = (new Date()).getTime()
+    const bundleId = editingBundleId || (new Date()).getTime()
     const idQuantities = selectedVariantIds
       .concat(selectedAddOnIds)
       .reduce((obj, id) => {
         obj[id] = (obj[id] || 0) + 1
         return obj
       }, {})
+
+    if (editingBundleId) {
+      await this.removeFromCart(editingBundleId)
+    }
 
     await this.addToCart({
       id: sizeVariantId,
@@ -260,12 +292,20 @@ export default class App extends React.Component<Props, State> {
       await this.addToCart({
         id,
         properties: {
-          is_add_on: selectedAddOnIds.indexOf(id) !== -1,
+          is_add_on: selectedAddOnIds.indexOf(parseInt(id)) > -1 ? true : undefined,
           parent_bundle_id: bundleId
         },
         quantity: idQuantities[id],
       })
     }
+
+    this.setState({
+      ...this.state,
+      editingBundleId: bundleId,
+      isSubmitting: false
+    })
+
+    this.openCartDrawer()
   }
   
   private extractStateFromCart = async bundleId => {
@@ -308,4 +348,6 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     }
   }
+
+  private openCartDrawer = () => $('body').trigger('added.ajaxProduct')
 }

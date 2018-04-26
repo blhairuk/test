@@ -2,6 +2,7 @@ import * as React from 'react'
 
 interface Props {
   isEditingBundle: boolean,
+  isSubmitting: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedSize: number,
@@ -9,26 +10,17 @@ interface Props {
   submit: (any) => any,
 }
 
-interface State {
-  submitting: boolean
-}
-
-export default class Controls extends React.Component<Props, State> {
-  public state = {
-    submitting: false
-  }
-
+export default class Controls extends React.Component<Props> {
   render () {
     const {
       isEditingBundle,
+      isSubmitting,
       selectedAddOnIds,
       selectedFrequency,
       selectedSize,
       selectedVariantIds,
       submit
     } = this.props
-
-    const {submitting} = this.state
 
     if (!selectedSize || !selectedFrequency) return null
     if (selectedVariantIds.length !== selectedSize) return null
@@ -37,7 +29,7 @@ export default class Controls extends React.Component<Props, State> {
       <div>
         <button
           className='btn'
-          disabled={submitting}
+          disabled={isSubmitting}
           onClick={submit} 
           type='button'
         >
@@ -49,10 +41,10 @@ export default class Controls extends React.Component<Props, State> {
 
   private buttonText = () => {
     if (this.props.isEditingBundle) {
-      if (this.state.submitting) return 'Updating...'
+      if (this.props.isSubmitting) return 'Updating...'
       return 'Update bundle'
     }
-    if (this.state.submitting) return 'Adding...'
+    if (this.props.isSubmitting) return 'Adding...'
     return 'Add to cart'
   }
 }
