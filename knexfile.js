@@ -1,3 +1,9 @@
+try {
+  require('dotenv').config()
+} catch (e) {
+  console.log('dotenv not found, .env file ignored.')
+}
+
 module.exports = {
   client: 'mysql2',
   connection: {
