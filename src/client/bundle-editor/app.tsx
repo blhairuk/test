@@ -7,6 +7,13 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import Hero from './components/hero'
 
+import {
+  addToCart,
+  fetchCart,
+  removeBundleIdFromCart,
+  updateCartDrawerUI,
+} from '../cart'
+
 interface Props {
   collection: ShopifyCollection,
   product: {
@@ -202,7 +209,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private addToCart = extraData => {
-    return Bundle.addToCart({
+    return addToCart({
       ...extraData,
       properties: {
         subscription_id: this.metafieldValue('subscription_id'),
@@ -240,7 +247,7 @@ export default class App extends React.Component<Props, State> {
       }, {})
 
     if (editingBundleId) {
-      await Bundle.removeBundleIdFromCart(editingBundleId)
+      await removeBundleIdFromCart(editingBundleId)
     }
 
     await this.addToCart({
@@ -266,11 +273,11 @@ export default class App extends React.Component<Props, State> {
       isSubmitting: false
     })
 
-    Bundle.updateCartDrawerUI()
+    updateCartDrawerUI()
   }
   
   private extractStateFromCart = async bundleId => {
-    const cart = await Bundle.fetchCart()
+    const cart = await fetchCart()
 
     let selectedAddOnIds = []
     let selectedFrequency = null

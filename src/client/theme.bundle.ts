@@ -1,77 +1,41 @@
-declare var Bundle;
+declare global {
+  interface Window {
+    Bundle: any
+  }
+}
 
-Bundle = typeof Bundle !== 'undefined' ? Bundle : {
+import {
+  removeBundleIdFromCart,
+  updateCartDrawerUI,
+} from './cart'
+
+const BUNDLE_ID_ATTR = 'data-cb-rem-cart-bundle-id'
+
+window.Bundle = window.Bundle || {
   didInit: false,
-
-  async addToCart (data) {
-    return $.ajax({
-      contentType: 'application/json',
-      data: JSON.stringify(data),
-      dataType: 'json',
-      type: 'POST',
-      url: '/cart/add.js',
-    })
-  },
-
-  async fetchCart () {
-    return $.getJSON('/cart')
-  },
 
   initListeners () {
     if (this.didInit) return
+    this.didInit = true
 
     $('#CartDrawer, #CartPage').on(
       'click', 
-      '[data-cb-rem-cart-bundle-id]', 
+      `[${BUNDLE_ID_ATTR}]`, 
       async evt => {
-        const bundleId = parseInt($(evt.target).attr('data-cb-rem-cart-bundle-id'))
+        const bundleId = parseInt($(evt.target).attr(BUNDLE_ID_ATTR))
 
-        await this.removeBundleIdFromCart(bundleId)
+        await removeBundleIdFromCart(bundleId)
 
         if (window.location.pathname === '/cart') {
           return window.location.reload()
         }
 
-        this.updateCartDrawerUI()
+        updateCartDrawerUI()
       }
     )
-
-    this.didInit = true
   },
-
-  async removeBundleIdFromCart (bundleId) {
-    const {items} = await this.fetchCart()
-  
-    const updates = items.map(({
-      id, 
-      properties: {
-        bundle_id: itemBundleId,
-        parent_bundle_id: itemParentBundleId,
-      }, 
-      quantity
-    }) => ((
-      itemBundleId === bundleId || 
-      itemParentBundleId === bundleId
-    ) ? 0 : quantity))
-  
-    return this.updateCart(updates)
-  },
-
-  async updateCart (updates) {
-    return $.ajax({
-      contentType: 'application/json',
-      data: JSON.stringify({updates}),
-      dataType: 'json',
-      type: 'POST',
-      url: '/cart/update.js',
-    })
-  },
-
-  updateCartDrawerUI () {
-    $('body').trigger('added.ajaxProduct')
-  }
 }
 
 $(() => {
-  Bundle.initListeners()
+  window.Bundle.initListeners()
 })
