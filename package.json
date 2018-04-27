@@ -16,6 +16,11 @@
   "author": "Ethan Jon",
   "license": "UNLICENSED",
   "dependencies": {
+    "@types/jquery": "^3.3.1",
+    "@types/koa": "^2.0.45",
+    "@types/node": "^9.6.6",
+    "@types/react": "^16.3.12",
+    "@types/react-dom": "^16.0.5",
     "knex": "^0.14.6",
     "koa": "^2.5.0",
     "koa-logger": "^3.2.0",
@@ -36,11 +41,6 @@
     "webpack-cli": "^2.0.15"
   },
   "devDependencies": {
-    "@types/jquery": "^3.3.1",
-    "@types/koa": "^2.0.45",
-    "@types/node": "^9.6.6",
-    "@types/react": "^16.3.12",
-    "@types/react-dom": "^16.0.5",
     "dotenv": "^5.0.1",
     "nodemon": "^1.17.3"
   }
