@@ -2,6 +2,8 @@ import * as React from 'react'
 import {renderToString} from 'react-dom/server'
 import {ServerStyleSheet} from 'styled-components'
 
+import assetCacheKey from './asset-cache-key'
+
 const {APP_PROXY_PATH} = process.env
 
 export default ({
@@ -20,7 +22,7 @@ export default ({
 <div class="page-width">
   <div id="app">${app}</div>
   ${styleTags}
-  <script src="${scriptSrc}" async=""></script>
+  <script src="${scriptSrc}?v=${assetCacheKey}" async=""></script>
   <script type="text/javascript">var AppProps = ${JSON.stringify(props)};</script>
 </div>`
   ctx.type = 'application/liquid'
