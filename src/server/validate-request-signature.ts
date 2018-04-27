@@ -6,10 +6,7 @@ export default () => async (ctx, next) => {
     signature
   } = ctx.query
 
-  const {
-    API_SECRET_KEY,
-    NODE_ENV
-  } = process.env
+  const {API_SECRET_KEY} = process.env
 
   const message = Object.keys(ctx.query)
     .filter(k => k !== 'signature' && k !== 'hmac')
@@ -22,8 +19,8 @@ export default () => async (ctx, next) => {
     .update(message)
     .digest('hex')
 
-  if (NODE_ENV === 'production' && digest !== signature && digest !== hmac) {
-    return ctx.throw(400)
+  if (digest !== signature && digest !== hmac) {
+    return ctx.throw(400, 'invalid :signature or :hmac')
   }
 
   await next()

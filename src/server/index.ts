@@ -21,18 +21,18 @@ import getAccountManagerInitialProps from '../client/account-manager/get-initial
 const router = new Router()
 router
   .get('/', home())
-  .get('/account/:customerHash/:page?', serveApp({
+  .get('/account/:customerHash/:page?', validateRequestSignature(), serveApp({
     assetName: 'account-manager',
     getInitialProps: getAccountManagerInitialProps,
     Component: AccountManager
   }))
-  .get('/bundle', serveApp({
+  .get('/bundle', validateRequestSignature(), serveApp({
     assetName: 'bundle-editor',
     getInitialProps: getBundleEditorInitialProps,
     Component: BundleEditor
   }))
   .get('/install', install())
-  .get('/install/confirm', confirmInstall())
+  .get('/install/confirm', validateRequestSignature(), confirmInstall())
 
 const serveStatic = () => ctx => (
   send(ctx, ctx.path, {root: join(__dirname, '../../dist/public')})
@@ -42,7 +42,6 @@ const app = new Koa()
 app
   .use(logger())
   .use(mount('/static', serveStatic()))
-  .use(validateRequestSignature())
   .use(router.routes())
   .use(router.allowedMethods())
 
