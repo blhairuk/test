@@ -201,54 +201,15 @@ export default class App extends React.Component<Props, State> {
     })
   }
 
-  private cartFetch = async (path, params = null) => {
-    const res = await fetch(path, Object.assign({
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }, params))
-    return res.json()
-  }
-
   private addToCart = extraData => {
-    const properties = {
-      subscription_id: this.metafieldValue('subscription_id'),
-      shipping_interval_frequency: this.state.selectedFrequency,
-      shipping_interval_unit_type: this.metafieldValue('shipping_interval_unit_type'),
-      ...extraData.properties
-    }
-    delete extraData.properties
-
-    return this.cartFetch('/cart/add.js', {
-      body: JSON.stringify({
-        properties,
-        ...extraData
-      }),
-      method: 'POST',
-    })
-  }
-
-  private getCart = () => this.cartFetch('/cart.js')
-
-  private removeFromCart = async bundleId => {
-    const {items} = await this.getCart()
-    
-    const updates = items.map(({
-      id, 
+    return Bundle.addToCart({
+      ...extraData,
       properties: {
-        bundle_id: itemBundleId,
-        parent_bundle_id: itemParentBundleId,
-      }, 
-      quantity
-    }) => ((
-      itemBundleId === bundleId || 
-      itemParentBundleId === bundleId
-    ) ? 0 : quantity))
-
-    return this.cartFetch('/cart/update.js', {
-      body: JSON.stringify({updates}),
-      method: 'POST',
+        subscription_id: this.metafieldValue('subscription_id'),
+        shipping_interval_frequency: this.state.selectedFrequency,
+        shipping_interval_unit_type: this.metafieldValue('shipping_interval_unit_type'),
+        ...extraData.properties
+      }
     })
   }
 
@@ -279,7 +240,7 @@ export default class App extends React.Component<Props, State> {
       }, {})
 
     if (editingBundleId) {
-      await this.removeFromCart(editingBundleId)
+      await Bundle.removeBundleIdFromCart(editingBundleId)
     }
 
     await this.addToCart({
@@ -305,11 +266,11 @@ export default class App extends React.Component<Props, State> {
       isSubmitting: false
     })
 
-    this.openCartDrawer()
+    Bundle.updateCartDrawerUI()
   }
   
   private extractStateFromCart = async bundleId => {
-    const cart = await this.getCart()
+    const cart = await Bundle.fetchCart()
 
     let selectedAddOnIds = []
     let selectedFrequency = null
@@ -348,6 +309,4 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     }
   }
-
-  private openCartDrawer = () => $('body').trigger('added.ajaxProduct')
 }
