@@ -1,10 +1,11 @@
 module.exports = {
   client: 'mysql2',
   connection: {
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    user: process.env.DB_USER,
-    database: process.env.DB_NAME
+    host: process.env.RDS_HOSTNAME,
+    password: process.env.RDS_PASSWORD,
+    port: process.env.RDS_PORT,
+    user: process.env.RDS_USERNAME,
+    database: process.env.RDS_DB_NAME
   },
   debug: false
 }
