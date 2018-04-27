@@ -1,5 +1,6 @@
 import {URLSearchParams} from 'url'
 
+import installScriptTag from '../../install-script-tag'
 import fetch from '../../shopify-api-fetch'
 import {saveToken} from '../../db'
 
@@ -33,21 +34,10 @@ export default () => async ctx => {
     token
   })
 
-  try {
-    await fetch(shop, '/script_tags.json', {
-      body: JSON.stringify({
-        script_tag: {
-          event: 'onload',
-          src: `${APP_PROXY_HOST}/static/theme.bundle.js`,
-        }
-      }),
-      headers: {
-        'X-Shopify-Access-Token': token,
-        'Content-Type': 'application/json',
-      },
-      method: 'POST'
-    })
-  } catch (e) {}
+  await installScriptTag({
+    shop,
+    token
+  })
 
   ctx.body = `Received token: ${token} for shop: ${shop}.`
 }
