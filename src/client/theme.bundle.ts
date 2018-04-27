@@ -1,10 +1,8 @@
 declare var Bundle;
 
-if (typeof Bundle !== 'undefined') {
-  throw new Error('bundle defined')
-}
+Bundle = typeof Bundle !== 'undefined' ? Bundle : {
+  didInit: false,
 
-Bundle = {
   async addToCart (data) {
     return $.ajax({
       contentType: 'application/json',
@@ -20,6 +18,8 @@ Bundle = {
   },
 
   initListeners () {
+    if (this.didInit) return
+
     $('#CartDrawer, #CartPage').on(
       'click', 
       '[data-cb-rem-cart-bundle-id]', 
@@ -35,6 +35,8 @@ Bundle = {
         this.updateCartDrawerUI()
       }
     )
+
+    this.didInit = true
   },
 
   async removeBundleIdFromCart (bundleId) {
