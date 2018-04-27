@@ -16,7 +16,8 @@ module.exports = {
   devtool,
   entry: {
     'account-manager': './dist/client/account-manager/index.js',
-    'bundle-editor': './dist/client/bundle-editor/index.js'
+    'bundle-editor': './dist/client/bundle-editor/index.js',
+    'theme.bundle': './dist/client/theme.bundle.js',
   },
   output: {
     filename: '[name].js',
