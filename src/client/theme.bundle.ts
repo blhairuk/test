@@ -1,9 +1,14 @@
 declare var Bundle;
 
+if (typeof Bundle !== 'undefined') {
+  throw new Error('bundle defined')
+}
+
 Bundle = {
   async addToCart (data) {
     return $.ajax({
-      data,
+      contentType: 'application/json',
+      data: JSON.stringify(data),
       dataType: 'json',
       type: 'POST',
       url: '/cart/add.js',
@@ -52,7 +57,8 @@ Bundle = {
 
   async updateCart (updates) {
     return $.ajax({
-      data: {updates},
+      contentType: 'application/json',
+      data: JSON.stringify({updates}),
       dataType: 'json',
       type: 'POST',
       url: '/cart/update.js',
