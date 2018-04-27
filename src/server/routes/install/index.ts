@@ -6,13 +6,13 @@ export default () => async ctx => {
     return
   }
 
-  const scope = 'read_products'
+  const scope = 'read_products,write_script_tags'
 
   const {
     API_KEY, 
+    APP_PROXY_HOST,
     NONCE, 
-    REDIRECT_URI
   } = process.env
 
-  ctx.redirect(`https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${API_KEY}&scope=${scope}&redirect_uri=${REDIRECT_URI}&state=${NONCE}`)
+  ctx.redirect(`https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${API_KEY}&scope=${scope}&redirect_uri=${APP_PROXY_HOST}/install/confirm&state=${NONCE}`)
 }
