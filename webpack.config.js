@@ -1,4 +1,8 @@
-require('dotenv').config()
+try {
+  require('dotenv').config()
+} catch (e) {
+  console.log('dotenv not found, .env file ignored.')
+}
 
 const {join} = require('path')
 const {EnvironmentPlugin} = require('webpack')
