@@ -10,7 +10,7 @@
     "webpack": "webpack",
     "nodemon": "nodemon -r dotenv/config dist/server/index.js",
     "dev": "npm-run-all tsc webpack --parallel \"tsc -- --watch\" \"webpack -- --watch\" nodemon",
-    "prestart": "run-s tsc webpack",
+    "prestart": "run-s migrate:latest tsc webpack",
     "start": "node dist/server/index.js"
   },
   "author": "Ethan Jon",
