@@ -21,7 +21,7 @@ import getAccountManagerInitialProps from '../client/account-manager/get-initial
 const router = new Router()
 router
   .get('/', home())
-  .get('/account/:customerHash/:page?', validateRequestSignature(), serveApp({
+  .get('/customer/:customerHash/:page?', validateRequestSignature(), serveApp({
     assetName: 'account-manager',
     getInitialProps: getAccountManagerInitialProps,
     Component: AccountManager

@@ -1,10 +1,10 @@
 import * as React from 'react'
 
-export default class Schedule extends React.Component<{}> {
+export default class History extends React.Component<{}> {
   render () {
     return (
       <div>
-        <h1>Schedule</h1>
+        <h1>History</h1>
       </div>
     )
   }

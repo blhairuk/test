@@ -31,6 +31,7 @@ export default async ctx => {
   const location = `${APP_PROXY_PATH}${ctx.request.path}`
 
   return {
+    customerHash,
     data,
     Router: StaticRouter,
     routerProps: {
