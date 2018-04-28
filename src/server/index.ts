@@ -7,6 +7,7 @@ import * as send from 'koa-send'
 import {join} from 'path'
 
 import serveApp from './serve-app'
+import setCacheHeaders from './set-cache-headers'
 import validateRequestSignature from './validate-request-signature'
 
 import home from './routes'
@@ -41,6 +42,7 @@ const serveStatic = () => ctx => (
 const app = new Koa()
 app
   .use(logger())
+  .use(setCacheHeaders(60))
   .use(mount('/static', serveStatic()))
   .use(router.routes())
   .use(router.allowedMethods())
