@@ -1,16 +1,18 @@
 import * as crypto from 'crypto'
 
 export default () => async (ctx, next) => {
+  const {query} = ctx
+
   const {
     hmac, 
     signature
-  } = ctx.query
+  } = query
 
   const {API_SECRET_KEY} = process.env
 
-  const message = Object.keys(ctx.query)
+  const message = Object.keys(query)
     .filter(k => k !== 'signature' && k !== 'hmac')
-    .map(k => `${k}=${ctx.query[k]}`)
+    .map(k => `${k}=${query[k]}`)
     .sort()
     .join(hmac ? '&' : '')
 
