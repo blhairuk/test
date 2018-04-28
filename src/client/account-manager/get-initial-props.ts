@@ -15,20 +15,29 @@ const rechargeApi = async path => {
       'x-recharge-access-token': rechargeApiToken,
     }
   })
-  return res.json()
+  const json = await res.json()
+  const rootKey = Object.keys(json)[0]
+  return json[rootKey]
 }
 
 export default async ctx => {
-  const {customerHash} = ctx.params
+  const {
+    customerHash,
+    page
+  } = ctx.params
 
-  const customer = (await rechargeApi(`/customers?hash=${customerHash}`)).customers[0]
-  const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}`)).subscriptions
-  const data = {
-    customer,
-    subscriptions
-  }
-
+  const customer = (await rechargeApi(`/customers?hash=${customerHash}`))[0]
+  const data: any = {customer}
   const location = `${APP_PROXY_PATH}${ctx.request.path}`
+
+  switch (page) {
+    case 'history':
+      data.orders = (await rechargeApi(`/orders?customer_id=${customer.id}`))
+      break
+    case 'subscriptions':
+      data.subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}`))
+      break
+  }
 
   return {
     customerHash,

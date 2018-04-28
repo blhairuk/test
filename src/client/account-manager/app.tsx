@@ -5,18 +5,20 @@ import {
 } from 'react-router-dom'
 
 import Billing from './routes/billing'
-import History from './routes/history'
+import History, {Props as HistoryProps} from './routes/history'
 import Schedule from './routes/schedule'
-import Subscriptions from './routes/subscriptions'
+import Subscriptions, {Props as SubscriptionProps} from './routes/subscriptions'
 
-interface IProps {
-  customerHash,
-  data: {
-    customer: {
-      first_name: string,
-      last_name: string,
-    }
+interface Data extends HistoryProps, SubscriptionProps {
+  customer: {
+    first_name: string,
+    last_name: string,
   },
+}
+
+interface Props {
+  customerHash,
+  data: Data,
   Router: any,
   routerProps: Object,
 }
@@ -24,19 +26,21 @@ interface IProps {
 const path = path => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path}`
 const href = (path, customerHash) => `${process.env.APP_PROXY_PATH}/customer/${customerHash}${path}`
 
-export default class App extends React.Component<IProps> {
+export default class App extends React.Component<Props> {
   render () {
     const {
       customerHash,
-      data: {
-        customer: {
-          first_name: firstName,
-          last_name: lastName,
-        }
-      },
+      data,
       Router, 
       routerProps
     } = this.props
+
+    const {
+      customer: {
+        first_name: firstName,
+        last_name: lastName,
+      }
+    } = data
 
     return (
       <Router {...routerProps}>
@@ -54,25 +58,20 @@ export default class App extends React.Component<IProps> {
           <div className='grid__item medium-up--two-thirds'>
             <Switch>
               <Route
-                component={Subscriptions}
-                exact
-                path={path('/')}
-              />
-              <Route
-                component={Billing}
                 path={path('/billing')}
+                render={() => <Billing {...data} />}
               />
               <Route
-                component={History}
                 path={path('/history')}
+                render={() => <History {...data} />}
               />
               <Route
-                component={Schedule}
                 path={path('/schedule')}
+                render={() => <Schedule {...data} />}
               />
               <Route
-                component={Subscriptions}
                 path={path('/subscriptions')}
+                render={() => <Subscriptions {...data} />}
               />
             </Switch>
           </div>
