@@ -38,8 +38,8 @@ interface State {
   selectedSize: number,
 }
 
-const BUNDLE_ADD_ON_TAG = 'Bundle Add-On'
-const BUNDLE_PRODUCT_TAG = 'Bundle Product'
+const BUNDLE_ADD_ON_TYPE = 'Bundle Add-On'
+const BUNDLE_PRODUCT_TYPE = 'Bundle Product'
 
 const initialState = {
   editingBundleId: null,
@@ -83,8 +83,8 @@ export default class App extends React.Component<Props, State> {
 
     const shippingFrequencies = this.metafieldValue('shipping_interval_frequency').split(',')
     const shippingUnitType = this.metafieldValue('shipping_interval_unit_type')
-    const bundleProducts = products.filter(p => p.tags.includes(BUNDLE_PRODUCT_TAG))
-    const bundleAddOns = products.filter(p => p.tags.includes(BUNDLE_ADD_ON_TAG))
+    const bundleProducts = products.filter(p => p.product_type === BUNDLE_PRODUCT_TYPE)
+    const bundleAddOns = products.filter(p => p.product_type === BUNDLE_ADD_ON_TYPE)
 
     return (
       <div>

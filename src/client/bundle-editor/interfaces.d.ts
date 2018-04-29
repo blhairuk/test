@@ -14,6 +14,7 @@ declare interface ShopifyProduct {
   images: {
     src: string,
   }[],
+  product_type: string,
   tags: string,
   title: string,
   variants: ShopifyVariant[],
