@@ -30,7 +30,10 @@ export default async ctx => {
       data.orders = await rechargeApi(`/orders?customer_id=${customer.id}`)
       break
     case 'subscriptions':
-      data.subscriptions = await rechargeApi(`/subscriptions?customer_id=${customer.id}`)
+      [data.subscriptions, data.addresses] = await Promise.all([
+        rechargeApi(`/subscriptions?customer_id=${customer.id}`),
+        rechargeApi(`/customers/${customer.id}/addresses`),
+      ])
       break
   }
 

@@ -45,7 +45,7 @@ export default class App extends React.Component<Props> {
     return (
       <Router {...routerProps}>
         <div className='grid grid--uniform'>
-          <div className='grid__item medium-up--one-third'>
+          <div className='grid__item medium-up--one-quarter'>
             <h3>{firstName} {lastName}</h3>
             <ul>
               <li><a href={href('/schedule', customerHash)}>Delivery schedule</a></li>
@@ -55,7 +55,7 @@ export default class App extends React.Component<Props> {
             </ul>
           </div>
 
-          <div className='grid__item medium-up--two-thirds'>
+          <div className='grid__item medium-up--three-quarters'>
             <Switch>
               <Route
                 path={path('/billing')}

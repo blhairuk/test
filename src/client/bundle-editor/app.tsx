@@ -39,6 +39,7 @@ interface State {
 }
 
 const BUNDLE_ADD_ON_TYPE = 'Bundle Add-On'
+const BUNDLE_PARENT_TYPE = 'Bundle Parent'
 const BUNDLE_PRODUCT_TYPE = 'Bundle Product'
 
 const initialState = {
@@ -259,10 +260,7 @@ export default class App extends React.Component<Props, State> {
     for (let id in idQuantities) {
       await this.addToCart({
         id,
-        properties: {
-          is_add_on: selectedAddOnIds.indexOf(parseInt(id)) > -1 ? true : undefined,
-          parent_bundle_id: bundleId
-        },
+        properties: {bundle_id: bundleId},
         quantity: idQuantities[id],
       })
     }
@@ -288,22 +286,23 @@ export default class App extends React.Component<Props, State> {
       const {
         properties: {
           bundle_id: itemBundleId,
-          is_add_on: isAddOn,
-          parent_bundle_id: itemParentBundleId,
           shipping_interval_frequency: frequency,
         },
+        product_type: productType,
         quantity,
         variant_id: variantId,
         variant_options: [size]
       } = item
 
       if (itemBundleId === bundleId) {
-        selectedSize = parseInt(size)
-        selectedFrequency = frequency
-      } else if (itemParentBundleId === bundleId) {
-        for (let i = 0; i < quantity; ++i) {
-          if (isAddOn) selectedAddOnIds.push(variantId)
-          else selectedVariantIds.push(variantId) 
+        if (productType === BUNDLE_PARENT_TYPE) {
+          selectedSize = parseInt(size)
+          selectedFrequency = frequency
+        } else {
+          for (let i = 0; i < quantity; ++i) {
+            if (productType === BUNDLE_ADD_ON_TYPE) selectedAddOnIds.push(variantId)
+            else selectedVariantIds.push(variantId) 
+          }
         }
       }
     }

@@ -15,15 +15,9 @@ export const removeBundleIdFromCart = async bundleId => {
 
   const updates = items.map(({
     id, 
-    properties: {
-      bundle_id: itemBundleId,
-      parent_bundle_id: itemParentBundleId,
-    }, 
+    properties: {bundle_id: itemBundleId}, 
     quantity
-  }) => ((
-    itemBundleId === bundleId || 
-    itemParentBundleId === bundleId
-  ) ? 0 : quantity))
+  }) => itemBundleId === bundleId ? 0 : quantity)
 
   return updateCart(updates)
 }
