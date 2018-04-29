@@ -1,3 +1,4 @@
+import {format as formatDate} from 'date-fns'
 import * as React from 'react'
 
 export interface Props {
@@ -43,8 +44,8 @@ export default class SubscriptionRow extends React.Component<Props> {
                 <td>{product_title}</td>
                 <td>{quantity}</td>
                 <td>{price}</td>
-                <td>{`${order_interval_frequency} ${order_interval_unit}`}</td>
-                <td>{next_charge_scheduled_at || '-'}</td>
+                <td>{`${order_interval_frequency} ${order_interval_unit}s`}</td>
+                <td>{this.nextChargeDate(next_charge_scheduled_at)}</td>
                 <td>{this.controls(status)}</td>
               </tr>
             ))}
@@ -78,4 +79,6 @@ export default class SubscriptionRow extends React.Component<Props> {
     }
     return 'Edit - Cancel'
   }
+
+  private nextChargeDate = date => date ? formatDate(date, 'dddd, MMMM D') : '-'
 }

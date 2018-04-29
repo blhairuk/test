@@ -6,10 +6,10 @@ import {
 
 import Billing from './routes/billing'
 import History, {Props as HistoryProps} from './routes/history'
-import Schedule from './routes/schedule'
+import Schedule, {Props as ScheduleProps} from './routes/schedule'
 import Subscriptions, {Props as SubscriptionProps} from './routes/subscriptions'
 
-interface Data extends HistoryProps, SubscriptionProps {
+interface Data extends HistoryProps, ScheduleProps, SubscriptionProps {
   customer: {
     first_name: string,
     last_name: string,

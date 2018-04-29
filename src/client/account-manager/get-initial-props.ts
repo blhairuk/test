@@ -1,3 +1,4 @@
+import {format as formatDate} from 'date-fns'
 import {resolve} from 'url'
 import {StaticRouter} from 'react-router'
 import * as Shopify from 'shopify-api-node'
@@ -24,13 +25,24 @@ export default async ctx => {
 
   switch (page) {
     case 'billing':
-      data.stripeCustomer = await stripeApi(`/customers/${customer.stripe_customer_token}`)
+      [
+        data.stripeCustomer,
+      ] = await Promise.all([
+        stripeApi(`/customers/${customer.stripe_customer_token}`),
+      ])
       break
     case 'history':
       data.orders = await rechargeApi(`/orders?customer_id=${customer.id}`)
       break
+    case 'schedule':
+      const dateMin = formatDate(new Date(), 'YYYY-MM-DD')
+      data.charges = await rechargeApi(`/charges?customer_id=${customer.id}&date_min=${dateMin}`)
+      break
     case 'subscriptions':
-      [data.subscriptions, data.addresses] = await Promise.all([
+      [
+        data.subscriptions, 
+        data.addresses
+      ] = await Promise.all([
         rechargeApi(`/subscriptions?customer_id=${customer.id}`),
         rechargeApi(`/customers/${customer.id}/addresses`),
       ])

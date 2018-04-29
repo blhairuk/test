@@ -6,6 +6,15 @@ declare interface RechargeAddress {
   zip: string,
 }
 
+declare interface RechargeCharge {
+  id: number,
+  line_items: {
+    title: string,
+  }[],
+  scheduled_at: string,
+  status: 'QUEUED' | 'SKIPPED',
+}
+
 declare interface RechargeOrder {
   id: number,
 }
