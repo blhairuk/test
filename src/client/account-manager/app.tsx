@@ -5,11 +5,10 @@ import {
 } from 'react-router-dom'
 
 import Billing from './routes/billing'
-import History, {Props as HistoryProps} from './routes/history'
 import Schedule, {Props as ScheduleProps} from './routes/schedule'
 import Subscriptions, {Props as SubscriptionProps} from './routes/subscriptions'
 
-interface Data extends HistoryProps, ScheduleProps, SubscriptionProps {
+interface Data extends ScheduleProps, SubscriptionProps {
   customer: {
     first_name: string,
     last_name: string,
@@ -51,7 +50,6 @@ export default class App extends React.Component<Props> {
               <li><a href={href('/schedule', customerHash)}>Delivery schedule</a></li>
               <li><a href={href('/subscriptions', customerHash)}>Subscriptions</a></li>
               <li><a href={href('/billing', customerHash)}>Billing information</a></li>
-              <li><a href={href('/history', customerHash)}>Purchase history</a></li>
             </ul>
           </div>
 
@@ -60,10 +58,6 @@ export default class App extends React.Component<Props> {
               <Route
                 path={path('/billing')}
                 render={() => <Billing {...data} />}
-              />
-              <Route
-                path={path('/history')}
-                render={() => <History {...data} />}
               />
               <Route
                 path={path('/schedule')}

@@ -31,9 +31,6 @@ export default async ctx => {
         stripeApi(`/customers/${customer.stripe_customer_token}`),
       ])
       break
-    case 'history':
-      data.orders = await rechargeApi(`/orders?customer_id=${customer.id}`)
-      break
     case 'schedule':
       const dateMin = formatDate(new Date(), 'YYYY-MM-DD')
       data.charges = await rechargeApi(`/charges?customer_id=${customer.id}&date_min=${dateMin}`)
