@@ -19,6 +19,15 @@ module.exports = {
     'bundle-editor': './dist/client/bundle-editor/index.js',
     'theme.bundle': './dist/client/theme.bundle.js',
   },
+  module: {
+    rules: [{
+      loader: 'babel-loader',
+      options: {
+        presets: [['env', {targets: {browsers: ['last 4 versions']}}]]
+      },
+      test: /\.js$/, 
+    }]
+  },
   output: {
     filename: '[name].js',
     path: join(__dirname, './dist/public')

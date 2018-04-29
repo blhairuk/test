@@ -1,17 +1,14 @@
 import * as React from 'react'
 
 export interface Props {
-  address: RechargeAddress,
-  subscription: RechargeSubscription
+  addresses: RechargeAddress[],
+  subscriptions: RechargeSubscription[]
 }
 
 export default class SubscriptionRow extends React.Component<Props> {
   render () {
     const {
-      address,
-      subscription: {
-        id
-      },
+      subscriptions,
     } = this.props
 
     return (
@@ -32,6 +29,25 @@ export default class SubscriptionRow extends React.Component<Props> {
             </tr>
           </thead>
           <tbody>
+            {subscriptions.map(({
+              id,
+              price,
+              product_title,
+              next_charge_scheduled_at,
+              order_interval_frequency,
+              order_interval_unit,
+              quantity,
+              status,
+            }) => (
+              <tr key={id}>
+                <td>{product_title}</td>
+                <td>{quantity}</td>
+                <td>{price}</td>
+                <td>{`${order_interval_frequency} ${order_interval_unit}`}</td>
+                <td>{next_charge_scheduled_at || '-'}</td>
+                <td>{this.controls(status)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </li>
@@ -44,7 +60,7 @@ export default class SubscriptionRow extends React.Component<Props> {
       address2,
       city,
       zip,
-    } = this.props.address
+    } = this.props.addresses[0]
 
     return [
       address1,
@@ -54,5 +70,12 @@ export default class SubscriptionRow extends React.Component<Props> {
     ]
       .filter(p => !!p)
       .join(', ')
+  }
+
+  private controls = status => {
+    if (status === 'CANCELLED') {
+      return 'Re-activate'
+    }
+    return 'Edit - Cancel'
   }
 }

@@ -20,19 +20,34 @@ export default class Subscriptions extends React.Component<Props> {
       subscriptions,
     } = this.props
 
+    const bundleSubscriptions = this.bundleSubscriptions()
+
     return (
       <div>
         <h3>Subscription orders</h3>
         <List>
-          {subscriptions.map(s => (
+          {Object.keys(bundleSubscriptions).map(bundleId => (
             <SubscriptionRow
-              address={addresses.find(a => a.id === s.address_id)}
-              key={s.id}
-              subscription={s}
+              addresses={addresses}
+              key={bundleId}
+              subscriptions={bundleSubscriptions[bundleId]}
             />
           ))}
         </List>
       </div>
     )
   }
+
+  private bundleSubscriptions = () => (
+    this.props.subscriptions.reduce((obj, s) => {
+      const property = s.properties.find(({name}) => (
+        name === 'bundle_id' || name === 'parent_bundle_id' // TODO: remove parent_bundle_id
+      ))
+      if (property) {
+        const {value} = property
+        obj[value] = (obj[value] || []).concat(s)
+      }
+      return obj
+    }, {})
+  )
 }
