@@ -15,14 +15,16 @@ module.exports = {
   mode: NODE_ENV || 'development',
   devtool,
   entry: {
-    'account-manager': ['babel-polyfill', './dist/client/account-manager/index.js'],
-    'bundle-editor': ['babel-polyfill', './dist/client/bundle-editor/index.js'],
-    'theme.bundle': ['babel-polyfill', './dist/client/theme.bundle.js'],
+    'account-manager': './dist/client/account-manager/index.js',
+    'bundle-editor': './dist/client/bundle-editor/index.js',
+    'theme.bundle': './dist/client/theme.bundle.js',
   },
   module: {
     rules: [{
+      exclude: /node_modules/,
       loader: 'babel-loader',
       options: {
+        plugins: ['transform-runtime'],
         presets: [['env', {targets: {browsers: ['last 2 versions']}}]]
       },
       test: /\.js$/, 
