@@ -1,9 +1,12 @@
 import * as Shopify from 'shopify-api-node'
 
-import {getToken} from '../../server/db'
+import {
+  BUNDLE_ADD_ON_TYPE,
+  BUNDLE_PARENT_TYPE,
+  BUNDLE_PRODUCT_TYPE,
+} from '../../shop'
 
-const collectionId = parseInt(process.env.BUNDLE_COLLECTION_ID)
-const productId = parseInt(process.env.BUNDLE_PRODUCT_ID)
+import {getToken} from '../../server/db'
 
 export default async ctx => {
   const accessToken = await getToken(ctx.query.shop)
@@ -13,35 +16,21 @@ export default async ctx => {
     accessToken
   })
 
-  const metafieldListParams = {
-    metafield: {
-      owner_resource: 'product',
-      owner_id: productId,
-    }
-  }
-
-  let [
-    collection,
-    collects,
-    product,
-    productMetafields,
-    products
+  const [
+    bundleAddOns,
+    [bundleProduct],
+    bundleProducts
   ] = await Promise.all([
-    shopify.smartCollection.get(collectionId),
-    shopify.collect.list({collection_id: collectionId}),
-    shopify.product.get(productId),
-    shopify.metafield.list(metafieldListParams),
-    shopify.product.list({collection_id: collectionId}),
+    shopify.product.list({product_type: BUNDLE_ADD_ON_TYPE}),
+    shopify.product.list({product_type: BUNDLE_PARENT_TYPE}),
+    shopify.product.list({product_type: BUNDLE_PRODUCT_TYPE}),
   ])
 
-  products = products.sort((a, b) => {
-    const aSortValue = collects
-      .find(c => c.product_id === a.id)
-      .position 
-    const bSortValue = collects
-      .find(c => c.product_id === b.id)
-      .position
-    return aSortValue < bSortValue ? -1 : 1
+  const bundleProductMetafields = await shopify.metafield.list({
+    metafield: {
+      owner_resource: 'product',
+      owner_id: bundleProduct.id,
+    }
   })
 
   const query = Object.assign({}, ctx.query, {
@@ -52,10 +41,10 @@ export default async ctx => {
   })
 
   return {
-    collection,
-    product,
-    productMetafields,
-    products,
+    bundleAddOns,
+    bundleProduct,
+    bundleProductMetafields,
+    bundleProducts,
     query,
   }
 }

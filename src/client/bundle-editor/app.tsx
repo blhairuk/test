@@ -14,16 +14,20 @@ import {
   updateCartDrawerUI,
 } from '../cart'
 
+import {
+  BUNDLE_ADD_ON_TYPE,
+  BUNDLE_PARENT_TYPE,
+  BUNDLE_PRODUCT_TYPE,
+} from '../../shop'
+
 interface Props {
-  collection: ShopifyCollection,
-  product: {
-    variants: ShopifyVariant[]
-  },
-  productMetafields: [{
+  bundleAddOns: ShopifyProduct[],
+  bundleProductMetafields: [{
     key: string,
     value: string,
   }],
-  products: ShopifyProduct[],
+  bundleProduct: ShopifyProduct,
+  bundleProducts: ShopifyProduct[],
   query: {
     bid?: string,
   },
@@ -37,10 +41,6 @@ interface State {
   selectedVariantIds: number[],
   selectedSize: number,
 }
-
-const BUNDLE_ADD_ON_TYPE = 'Bundle Add-On'
-const BUNDLE_PARENT_TYPE = 'Bundle Parent'
-const BUNDLE_PRODUCT_TYPE = 'Bundle Product'
 
 const initialState = {
   editingBundleId: null,
@@ -67,10 +67,10 @@ export default class App extends React.Component<Props, State> {
 
   render () {
     const {
-      collection,
-      product,
-      products,
-      productMetafields,
+      bundleAddOns,
+      bundleProduct,
+      bundleProducts,
+      bundleProductMetafields,
     } = this.props
 
     const {
@@ -84,14 +84,12 @@ export default class App extends React.Component<Props, State> {
 
     const shippingFrequencies = this.metafieldValue('shipping_interval_frequency').split(',')
     const shippingUnitType = this.metafieldValue('shipping_interval_unit_type')
-    const bundleProducts = products.filter(p => p.product_type === BUNDLE_PRODUCT_TYPE)
-    const bundleAddOns = products.filter(p => p.product_type === BUNDLE_ADD_ON_TYPE)
 
     return (
       <div>
-        <Hero collection={collection} />
+        <Hero product={bundleProduct} />
         <ChooseSize 
-          variants={product.variants} 
+          variants={bundleProduct.variants} 
           selectedSize={selectedSize}
           setSelectedSize={this.setSelectedSize}
         />
@@ -126,7 +124,7 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  private metafieldValue = key => this.props.productMetafields.find(m => m.key === key).value
+  private metafieldValue = key => this.props.bundleProductMetafields.find(m => m.key === key).value
 
   private setSelectedFrequency = selectedFrequency => {
     this.setState({
@@ -225,8 +223,7 @@ export default class App extends React.Component<Props, State> {
     this.setState({...this.state, isSubmitting: true})
 
     const {
-      product: bundle,
-      products,
+      bundleProduct,
     } = this.props
 
     const {
@@ -236,7 +233,7 @@ export default class App extends React.Component<Props, State> {
       selectedVariantIds,
     } = this.state
 
-    const sizeVariantId = bundle.variants
+    const sizeVariantId = bundleProduct.variants
       .find(v => parseInt(v.option1) === selectedSize)
       .id
     const bundleId = editingBundleId || (new Date()).getTime()

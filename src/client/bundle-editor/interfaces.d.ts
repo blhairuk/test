@@ -7,6 +7,7 @@ declare interface ShopifyCollection {
 }
 
 declare interface ShopifyProduct {
+  body_html: string,
   id: number,
   image: {
     src: string,

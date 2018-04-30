@@ -1,20 +1,26 @@
 import * as React from 'react'
 
 interface Props {
-  collection: ShopifyCollection
+  product: ShopifyProduct
 }
 
 export default class Hero extends React.Component<Props> {
   render () {
-    const {collection} = this.props
+    const {
+      product: {
+        body_html,
+        image: {src},
+        title,
+      }
+    } = this.props
 
     return (
       <div>
-        <img src={collection.image.src} />
-        <h1 className='section-header__title h2'>{collection.title}</h1>
-        {collection.body_html && (
+        <img src={src} />
+        <h1 className='section-header__title h2'>{title}</h1>
+        {body_html && (
           <div className='section-header__description rte'>
-            {collection.body_html}
+            {body_html}
           </div>
         )}
       </div>
