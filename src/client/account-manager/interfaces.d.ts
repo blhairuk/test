@@ -34,3 +34,25 @@ declare interface RechargeSubscription {
   quantity: number,
   status: 'ACTIVE' | 'CANCELLED',
 }
+
+declare interface StripeCustomer {
+  default_source: string,
+  email: string,
+  id: string,
+  sources: {
+    data: {
+      address_city: string,
+      address_country: string,
+      address_line1: string,
+      address_line2: string,
+      address_state: string,
+      address_zip: string,
+      brand: string,
+      exp_month: number,
+      exp_year: number,
+      id: string,
+      last4: string,
+      name: string,
+    }[]
+  }
+}

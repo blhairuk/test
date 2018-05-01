@@ -4,11 +4,11 @@ import {
   Switch,
 } from 'react-router-dom'
 
-import Billing from './routes/billing'
+import Billing, {Props as BillingProps} from './routes/billing'
 import Schedule, {Props as ScheduleProps} from './routes/schedule'
 import Subscriptions, {Props as SubscriptionProps} from './routes/subscriptions'
 
-interface Data extends ScheduleProps, SubscriptionProps {
+interface Data extends BillingProps, ScheduleProps, SubscriptionProps {
   customer: {
     first_name: string,
     last_name: string,
