@@ -250,7 +250,10 @@ export default class App extends React.Component<Props, State> {
 
     await this.addToCart({
       id: sizeVariantId,
-      properties: {bundle_id: bundleId},
+      properties: {
+        bundle_composition: this.createBundleCompositionString(),
+        bundle_id: bundleId,
+      },
       quantity: 1,
     })
 
@@ -311,5 +314,29 @@ export default class App extends React.Component<Props, State> {
       selectedVariantIds,
       selectedSize,
     }
+  }
+
+  private createBundleCompositionString = () => {
+    const {bundleProducts} = this.props
+    const {selectedVariantIds} = this.state
+
+    const parts = []
+
+    const variantIdNums = {}
+    for (const id of selectedVariantIds) {
+      if (!variantIdNums[id]) {
+        variantIdNums[id] = 0
+      }
+      ++variantIdNums[id]
+    }
+
+    for (const id in variantIdNums) {
+      const product = bundleProducts.find(p => 
+        p.variants.find(v => v.id === parseInt(id)
+      ) ? true : false)
+      parts.push(`${variantIdNums[id]} x ${product.title}`)
+    }
+
+    return parts.join(',')
   }
 }
