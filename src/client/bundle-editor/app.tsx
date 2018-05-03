@@ -245,7 +245,7 @@ export default class App extends React.Component<Props, State> {
         id,
         properties: {
           bundle_id: bundleId,
-          bundle_is_add_on: selectedAddOnIds.includes(id) || undefined,
+          bundle_is_add_on: selectedAddOnIds.includes(parseInt(id)) || undefined,
         },
         quantity: idQuantities[id],
       })
