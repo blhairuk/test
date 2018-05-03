@@ -24,13 +24,16 @@ export default class ChooseProducts extends React.Component<Props> {
             id: productId, 
             title, 
             image: {src}, 
-            variants: [{id: variantId}]
+            variants: [{
+              id: variantId,
+              price,
+            }]
           }) => (
             <div
               className='grid__item medium-up--one-third text-center' 
               key={productId}
             >
-              <h3 className='h4'>{title}</h3>
+              <h3 className='h4'>{this.title({price, title})}</h3>
               <img src={src} />
               <div>
                 <button 
@@ -52,5 +55,10 @@ export default class ChooseProducts extends React.Component<Props> {
         </div>
       </div>
     )
+  }
+
+  title = ({price, title}) => {
+    if (price === '0.00') return title
+    return `${title} (+${price})`
   }
 }
