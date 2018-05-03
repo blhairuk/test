@@ -17,9 +17,9 @@ import {
 } from '../cart'
 
 import {
-  BUNDLE_ADD_ON_TYPE,
-  BUNDLE_PARENT_TYPE,
-  BUNDLE_PRODUCT_TYPE,
+  BUNDLE_ADD_ON_TAG,
+  BUNDLE_PRODUCT_TAG,
+  BUNDLE_TYPE,
 } from '../../shop'
 
 interface Props {
@@ -271,6 +271,7 @@ export default class App extends React.Component<Props, State> {
       const {
         properties: {
           bundle_id: itemBundleId,
+          bundle_is_add_on,
           shipping_interval_frequency: frequency,
         },
         product_type: productType,
@@ -280,12 +281,12 @@ export default class App extends React.Component<Props, State> {
       } = item
 
       if (itemBundleId === bundleId) {
-        if (productType === BUNDLE_PARENT_TYPE) {
+        if (productType === BUNDLE_TYPE) {
           selectedSize = parseInt(size)
           selectedFrequency = frequency
         } else {
           for (let i = 0; i < quantity; ++i) {
-            if (productType === BUNDLE_ADD_ON_TYPE) selectedAddOnIds.push(variantId)
+            if (bundle_is_add_on) selectedAddOnIds.push(variantId)
             else selectedVariantIds.push(variantId) 
           }
         }
