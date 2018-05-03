@@ -251,7 +251,6 @@ export default class App extends React.Component<Props, State> {
     await this.addToCart({
       id: sizeVariantId,
       properties: {
-        bundle_composition: this.createBundleCompositionString(),
         bundle_id: bundleId,
       },
       quantity: 1,
@@ -260,7 +259,10 @@ export default class App extends React.Component<Props, State> {
     for (let id in idQuantities) {
       await this.addToCart({
         id,
-        properties: {bundle_id: bundleId},
+        properties: {
+          bundle_id: bundleId,
+          bundle_is_add_on: selectedAddOnIds.includes(id) || undefined,
+        },
         quantity: idQuantities[id],
       })
     }

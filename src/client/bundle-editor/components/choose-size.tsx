@@ -30,7 +30,7 @@ export default class ChooseSize extends React.Component<Props> {
         <div className='grid grid--uniform'>
           {variants.map(variant => (
             <GridItem
-              className='grid__item medium-up--one-quarter text-center' 
+              className='grid__item medium-up--one-half text-center' 
               key={variant.id}
               onClick={setSelectedSize.bind(this, parseInt(variant.option1))}
               selected={selectedSize === parseInt(variant.option1)}
