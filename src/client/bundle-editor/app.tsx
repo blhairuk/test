@@ -7,6 +7,8 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import Hero from './components/hero'
 
+import updateStateKeys from '../../update-state-keys'
+
 import {
   addToCart,
   fetchCart,
@@ -58,10 +60,8 @@ export default class App extends React.Component<Props, State> {
     const {bid: bundleId} = this.props.query
 
     if (bundleId) {
-      this.setState({
-        ...this.state,
-        ...(await this.extractStateFromCart(parseInt(bundleId)))
-      })
+      const cartState = await this.extractStateFromCart(parseInt(bundleId))
+      this.setState(updateStateKeys(cartState))
     }
   }
 
@@ -127,17 +127,11 @@ export default class App extends React.Component<Props, State> {
   private metafieldValue = key => this.props.bundleProductMetafields.find(m => m.key === key).value
 
   private setSelectedFrequency = selectedFrequency => {
-    this.setState({
-      ...this.state, 
-      selectedFrequency
-    })
+    this.setState(updateStateKeys({selectedFrequency}))
   }
 
   private setSelectedSize = selectedSize => {
-    this.setState({
-      ...this.state, 
-      selectedSize
-    })
+    this.setState(updateStateKeys({selectedSize}))
   }
 
   private addVariantId = id => {
@@ -151,10 +145,7 @@ export default class App extends React.Component<Props, State> {
 
     const selectedVariantIds = oldIds.concat(id)
 
-    this.setState({
-      ...this.state, 
-      selectedVariantIds,
-    })
+    this.setState(updateStateKeys({selectedVariantIds}))
   }
 
   private removeVariantId = id => {
@@ -165,10 +156,7 @@ export default class App extends React.Component<Props, State> {
 
     const selectedVariantIds = oldIds.filter((_, i) => i !== existingIndex)
 
-    this.setState({
-      ...this.state,
-      selectedVariantIds,
-    })
+    this.setState(updateStateKeys({selectedVariantIds}))
   }
 
   private addAddOnId = id => {
@@ -181,10 +169,7 @@ export default class App extends React.Component<Props, State> {
 
     const selectedAddOnIds = oldIds.concat([...Array(selectedSize)].map(() => id))
 
-    this.setState({
-      ...this.state,
-      selectedAddOnIds,
-    })
+    this.setState(updateStateKeys({selectedAddOnIds}))
   }
 
   private removeAddOnId = id => {
@@ -201,10 +186,7 @@ export default class App extends React.Component<Props, State> {
       selectedAddOnIds.splice(index, 1)
     }
 
-    this.setState({
-      ...this.state,
-      selectedAddOnIds
-    })
+    this.setState(updateStateKeys({selectedAddOnIds}))
   }
 
   private addToCart = extraData => {
@@ -220,7 +202,9 @@ export default class App extends React.Component<Props, State> {
   }
 
   private submit = async () => {
-    this.setState({...this.state, isSubmitting: true})
+    this.setState(updateStateKeys({
+      isSubmitting: true,
+    }))
 
     const {
       bundleProduct,
@@ -267,11 +251,10 @@ export default class App extends React.Component<Props, State> {
       })
     }
 
-    this.setState({
-      ...this.state,
+    this.setState(updateStateKeys({
       editingBundleId: bundleId,
-      isSubmitting: false
-    })
+      isSubmitting: false,
+    }))
 
     updateCartDrawerUI()
   }
