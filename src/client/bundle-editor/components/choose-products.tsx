@@ -16,43 +16,50 @@ export default class ChooseProducts extends React.Component<Props> {
       selectedVariantIds,
     } = this.props
 
+    const productTypes = [...new Set(products.map(p => p.product_type))]
+
     return (
       <div>
         <h2 className='h3'>Choose your products:</h2>
-        <div className='grid grid--uniform'>
-          {products.map(({
-            id: productId, 
-            title, 
-            image: {src}, 
-            variants: [{
-              id: variantId,
-              price,
-            }]
-          }) => (
-            <div
-              className='grid__item medium-up--one-third text-center' 
-              key={productId}
-            >
-              <h3 className='h4'>{this.title({price, title})}</h3>
-              <img src={src} />
-              <div>
-                <button 
-                  onClick={addVariantId.bind(this, variantId)}
-                  type='button'
+        {productTypes.map(productType => (
+          <div key={productType}>
+            <h3 className='h4'>{productType}</h3>
+            <div className='grid grid--uniform'>
+              {products.filter(p => p.product_type === productType).map(({
+                id: productId, 
+                title, 
+                image: {src}, 
+                variants: [{
+                  id: variantId,
+                  price,
+                }]
+              }) => (
+                <div
+                  className='grid__item medium-up--one-third text-center' 
+                  key={productId}
                 >
-                  Add
-                </button>
-                <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                <button 
-                  onClick={removeVariantId.bind(this, variantId)}
-                  type='button'
-                >
-                  Del
-                </button>
-              </div>
+                  <h3 className='h4'>{this.title({price, title})}</h3>
+                  <img src={src} />
+                  <div>
+                    <button 
+                      onClick={addVariantId.bind(this, variantId)}
+                      type='button'
+                    >
+                      Add
+                    </button>
+                    <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
+                    <button 
+                      onClick={removeVariantId.bind(this, variantId)}
+                      type='button'
+                    >
+                      Del
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     )
   }
