@@ -32,6 +32,8 @@ declare interface RechargeSubscription {
   order_interval_unit: string,
   next_charge_scheduled_at: string,
   quantity: number,
+  shopify_product_id: number,
+  shopify_variant_id: number,
   status: 'ACTIVE' | 'CANCELLED',
 }
 

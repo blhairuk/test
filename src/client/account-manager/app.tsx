@@ -23,7 +23,6 @@ interface Props {
 }
 
 const path = path => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path}`
-const href = (path, customerHash) => `${process.env.APP_PROXY_PATH}/customer/${customerHash}${path}`
 
 export default class App extends React.Component<Props> {
   render () {
@@ -41,15 +40,17 @@ export default class App extends React.Component<Props> {
       }
     } = data
 
+    const routeProps = {...data, href: this.href}
+
     return (
       <Router {...routerProps}>
         <div className='grid grid--uniform'>
           <div className='grid__item medium-up--one-quarter'>
             <h3>{firstName} {lastName}</h3>
             <ul>
-              <li><a href={href('/schedule', customerHash)}>Delivery schedule</a></li>
-              <li><a href={href('/subscriptions', customerHash)}>Subscriptions</a></li>
-              <li><a href={href('/billing', customerHash)}>Billing information</a></li>
+              <li><a href={this.href('/schedule')}>Delivery schedule</a></li>
+              <li><a href={this.href('/subscriptions')}>Subscriptions</a></li>
+              <li><a href={this.href('/billing')}>Billing information</a></li>
             </ul>
           </div>
 
@@ -57,20 +58,26 @@ export default class App extends React.Component<Props> {
             <Switch>
               <Route
                 path={path('/billing')}
-                render={() => <Billing {...data} />}
+                render={() => <Billing {...routeProps} />}
               />
               <Route
                 path={path('/schedule')}
-                render={() => <Schedule {...data} />}
+                render={() => <Schedule {...routeProps} />}
               />
               <Route
                 path={path('/subscriptions')}
-                render={() => <Subscriptions {...data} />}
+                render={() => <Subscriptions {...routeProps} />}
               />
             </Switch>
           </div>
         </div>
       </Router>
     )
+  }
+
+  private href = (path, opts = {prefix: null}) => {
+    const {customerHash} = this.props
+    const prefix = opts.prefix || 'customer'
+    return `${process.env.APP_PROXY_PATH}/${prefix}/${customerHash}${path}`
   }
 }

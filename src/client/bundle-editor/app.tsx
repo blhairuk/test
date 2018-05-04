@@ -30,9 +30,11 @@ interface Props {
   }],
   bundleProduct: ShopifyProduct,
   bundleProducts: ShopifyProduct[],
+  customerHash: string,
   query: {
     bid?: string,
   },
+  subscriptions: RechargeSubscription[],
 }
 
 interface State {
@@ -55,6 +57,15 @@ const initialState = {
 
 export default class App extends React.Component<Props, State> {
   public state = initialState
+
+  constructor (props) {
+    super(props)
+    
+    if (props.subscriptions) {
+      const cartState = this.extractStateFromSubscriptions()
+      this.state = updateStateKeys(cartState)(initialState, props)
+    }
+  }
 
   async componentDidMount () {
     const {bid: bundleId} = this.props.query
@@ -295,6 +306,53 @@ export default class App extends React.Component<Props, State> {
 
     return {
       editingBundleId: bundleId,
+      selectedAddOnIds,    
+      selectedFrequency,
+      selectedVariantIds,
+      selectedSize,
+    }
+  }
+
+  private extractStateFromSubscriptions = () => {
+    const {
+      bundleAddOns,
+      bundleProduct,
+      bundleProducts,
+      subscriptions,
+    } = this.props
+
+    let selectedAddOnIds = []
+    let selectedFrequency = null
+    let selectedSize = null
+    let selectedVariantIds = []
+
+    for (const {
+      properties,
+      quantity,
+      shopify_product_id,
+      shopify_variant_id,
+    } of subscriptions) {
+      if (shopify_product_id == bundleProduct.id) {
+        selectedFrequency = parseInt(properties.find(p => p.name === 'shipping_interval_frequency').value)
+        selectedSize = parseInt(bundleProduct.variants.find(v => v.id === shopify_variant_id).option1)
+      } else {
+        const selectedArray = (() => {
+          if (bundleAddOns.some(p => p.id === shopify_product_id)) {
+            return selectedAddOnIds
+          } else if (bundleProducts.some(p => p.id === shopify_product_id)) {
+            return selectedVariantIds
+          }
+        })()
+
+        if (selectedArray) {
+          for (let i = 0; i < quantity; ++i) {
+            selectedArray.push(shopify_variant_id)
+          }
+        }
+      }
+    }
+
+    return {
       selectedAddOnIds,    
       selectedFrequency,
       selectedVariantIds,

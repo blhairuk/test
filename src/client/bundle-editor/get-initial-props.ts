@@ -7,12 +7,18 @@ import {
 } from '../../shop'
 
 import {getToken} from '../../server/db'
+import {rechargeApi} from '../../server/fetch'
+import {getBundleIdFromProperties} from '../../helpers'
 
-export default async ctx => {
-  const accessToken = await getToken(ctx.query.shop)
+export default async ({
+  params: {customerHash}, 
+  query: urlQuery,
+}) => {
+  const {shop} = urlQuery
+  const accessToken = await getToken(shop)
 
   const shopify = new Shopify({
-    shopName: ctx.query.shop,
+    shopName: shop,
     accessToken
   })
   
@@ -29,7 +35,15 @@ export default async ctx => {
     }
   })
 
-  const query = Object.assign({}, ctx.query, {
+  let subscriptions
+  if (customerHash) {
+    const customerId = (await rechargeApi(`/customers?hash=${customerHash}`))[0].id
+    subscriptions = 
+      (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250`))
+      .filter(s => getBundleIdFromProperties(s.properties))
+  }
+
+  const query = Object.assign({}, urlQuery, {
     path_prefix: undefined,
     shop: undefined,
     signature: undefined,
@@ -41,6 +55,8 @@ export default async ctx => {
     bundleProduct,
     bundleProductMetafields,
     bundleProducts,
+    customerHash,
     query,
+    subscriptions,
   }
 }

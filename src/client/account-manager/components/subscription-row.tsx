@@ -1,8 +1,11 @@
 import {format as formatDate} from 'date-fns'
 import * as React from 'react'
 
+import {getBundleIdFromProperties} from '../../../helpers'
+
 export interface Props {
   addresses: RechargeAddress[],
+  href: (string, Object?) => any,
   subscriptions: RechargeSubscription[]
 }
 
@@ -37,6 +40,7 @@ export default class SubscriptionRow extends React.Component<Props> {
               next_charge_scheduled_at,
               order_interval_frequency,
               order_interval_unit,
+              properties,
               quantity,
               status,
             }) => (
@@ -46,7 +50,7 @@ export default class SubscriptionRow extends React.Component<Props> {
                 <td>{price}</td>
                 <td>{`${order_interval_frequency} ${order_interval_unit}s`}</td>
                 <td>{this.nextChargeDate(next_charge_scheduled_at)}</td>
-                <td>{this.controls(status)}</td>
+                <td>{this.controls({bundleId: getBundleIdFromProperties(properties), status})}</td>
               </tr>
             ))}
           </tbody>
@@ -73,11 +77,17 @@ export default class SubscriptionRow extends React.Component<Props> {
       .join(', ')
   }
 
-  private controls = status => {
+  private controls = ({bundleId, status}) => {
+    const {href} = this.props
+
     if (status === 'CANCELLED') {
       return 'Re-activate'
     }
-    return 'Edit - Cancel'
+    return (
+      <div>
+        <a href={href(`/bundle/${bundleId}`)}>Edit</a>
+      </div>
+    )
   }
 
   private nextChargeDate = date => date ? formatDate(date, 'dddd, MMMM D') : '-'

@@ -27,6 +27,11 @@ router
     getInitialProps: getAccountManagerInitialProps,
     Component: AccountManager
   }))
+  .get('/customer/:customerHash/bundle/:bundleId', validateRequestSignature(), serveApp({
+    assetName: 'bundle-editor',
+    getInitialProps: getBundleEditorInitialProps,
+    Component: BundleEditor
+  }))
   .get('/bundle', validateRequestSignature(), serveApp({
     assetName: 'bundle-editor',
     getInitialProps: getBundleEditorInitialProps,

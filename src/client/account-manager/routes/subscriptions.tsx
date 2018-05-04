@@ -2,9 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import SubscriptionRow from '../components/subscription-row'
+import {getBundleIdFromProperties} from '../../../helpers'
 
 export interface Props {
   addresses: RechargeAddress[],
+  href: (string, Object?) => any,
   subscriptions: RechargeSubscription[]
 }
 
@@ -17,6 +19,7 @@ export default class Subscriptions extends React.Component<Props> {
   render () {
     const {
       addresses,
+      href,
       subscriptions,
     } = this.props
 
@@ -29,6 +32,7 @@ export default class Subscriptions extends React.Component<Props> {
           {Object.keys(bundleSubscriptions).map(bundleId => (
             <SubscriptionRow
               addresses={addresses}
+              href={href}
               key={bundleId}
               subscriptions={bundleSubscriptions[bundleId]}
             />
@@ -40,11 +44,8 @@ export default class Subscriptions extends React.Component<Props> {
 
   private bundleSubscriptions = () => (
     this.props.subscriptions.reduce((obj, s) => {
-      const property = s.properties.find(({name}) => (
-        name === 'bundle_id' || name === 'parent_bundle_id' // TODO: remove parent_bundle_id
-      ))
-      if (property) {
-        const {value} = property
+      const value = getBundleIdFromProperties(s.properties)
+      if (value) {
         obj[value] = (obj[value] || []).concat(s)
       }
       return obj
