@@ -16,11 +16,7 @@ import {
   updateCartDrawerUI,
 } from '../cart'
 
-import {
-  BUNDLE_ADD_ON_TAG,
-  BUNDLE_PRODUCT_TAG,
-  BUNDLE_TYPE,
-} from '../../shop'
+import {BUNDLE_TYPE} from '../../shop'
 
 interface Props {
   bundleAddOns: ShopifyProduct[],
@@ -81,7 +77,6 @@ export default class App extends React.Component<Props, State> {
       bundleAddOns,
       bundleProduct,
       bundleProducts,
-      bundleProductMetafields,
     } = this.props
 
     const {
@@ -271,6 +266,11 @@ export default class App extends React.Component<Props, State> {
   }
   
   private extractStateFromCart = async bundleId => {
+    const {
+      bundleAddOns,
+      bundleProducts,
+    } = this.props
+
     const cart = await fetchCart()
 
     let selectedAddOnIds = []
@@ -282,9 +282,9 @@ export default class App extends React.Component<Props, State> {
       const {
         properties: {
           bundle_id: itemBundleId,
-          bundle_is_add_on,
           shipping_interval_frequency: frequency,
         },
+        product_id,
         product_type: productType,
         quantity,
         variant_id: variantId,
@@ -296,9 +296,14 @@ export default class App extends React.Component<Props, State> {
           selectedSize = parseInt(size)
           selectedFrequency = frequency
         } else {
-          for (let i = 0; i < quantity; ++i) {
-            if (bundle_is_add_on) selectedAddOnIds.push(variantId)
-            else selectedVariantIds.push(variantId) 
+          const selectedArray = (() => {
+            if (bundleAddOns.some(p => p.id === product_id)) return selectedAddOnIds
+            if (bundleProducts.some(p => p.id === product_id)) return selectedVariantIds
+          })()
+          if (selectedArray) {
+            for (let i = 0; i < quantity; ++i) {
+              selectedArray.push(variantId)
+            }
           }
         }
       }
@@ -337,13 +342,9 @@ export default class App extends React.Component<Props, State> {
         selectedSize = parseInt(bundleProduct.variants.find(v => v.id === shopify_variant_id).option1)
       } else {
         const selectedArray = (() => {
-          if (bundleAddOns.some(p => p.id === shopify_product_id)) {
-            return selectedAddOnIds
-          } else if (bundleProducts.some(p => p.id === shopify_product_id)) {
-            return selectedVariantIds
-          }
+          if (bundleAddOns.some(p => p.id === shopify_product_id)) return selectedAddOnIds
+          if (bundleProducts.some(p => p.id === shopify_product_id)) return selectedVariantIds
         })()
-
         if (selectedArray) {
           for (let i = 0; i < quantity; ++i) {
             selectedArray.push(shopify_variant_id)
@@ -358,29 +359,5 @@ export default class App extends React.Component<Props, State> {
       selectedVariantIds,
       selectedSize,
     }
-  }
-
-  private createBundleCompositionString = () => {
-    const {bundleProducts} = this.props
-    const {selectedVariantIds} = this.state
-
-    const parts = []
-
-    const variantIdNums = {}
-    for (const id of selectedVariantIds) {
-      if (!variantIdNums[id]) {
-        variantIdNums[id] = 0
-      }
-      ++variantIdNums[id]
-    }
-
-    for (const id in variantIdNums) {
-      const product = bundleProducts.find(p => 
-        p.variants.find(v => v.id === parseInt(id)
-      ) ? true : false)
-      parts.push(`${variantIdNums[id]} x ${product.title}`)
-    }
-
-    return parts.join(',')
   }
 }
