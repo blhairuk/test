@@ -13,9 +13,7 @@ interface Props {
 export default class Controls extends React.Component<Props> {
   render () {
     const {
-      isEditingBundle,
       isSubmitting,
-      selectedAddOnIds,
       selectedFrequency,
       selectedSize,
       selectedVariantIds,

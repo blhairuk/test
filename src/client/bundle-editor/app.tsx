@@ -20,6 +20,7 @@ import {BUNDLE_TYPE} from '../../shop'
 
 interface Props {
   bundleAddOns: ShopifyProduct[],
+  bundleId: number,
   bundleProductMetafields: [{
     key: string,
     value: string,
@@ -27,9 +28,6 @@ interface Props {
   bundleProduct: ShopifyProduct,
   bundleProducts: ShopifyProduct[],
   customerHash: string,
-  query: {
-    bid?: string,
-  },
   subscriptions: RechargeSubscription[],
 }
 
@@ -64,10 +62,13 @@ export default class App extends React.Component<Props, State> {
   }
 
   async componentDidMount () {
-    const {bid: bundleId} = this.props.query
+    const {
+      bundleId,
+      customerHash,
+    } = this.props
 
-    if (bundleId) {
-      const cartState = await this.extractStateFromCart(parseInt(bundleId))
+    if (bundleId && !customerHash) {
+      const cartState = await this.extractStateFromCart(bundleId)
       this.setState(updateStateKeys(cartState))
     }
   }
@@ -208,13 +209,48 @@ export default class App extends React.Component<Props, State> {
   }
 
   private submit = async () => {
-    this.setState(updateStateKeys({
-      isSubmitting: true,
-    }))
+    this.setState(updateStateKeys({isSubmitting: true}))
 
     const {
-      bundleProduct,
+      bundleId,
+      customerHash,
     } = this.props
+
+    if (bundleId && customerHash) {
+      await this.submitCustomerBundleUpdates()
+    } else {
+      await this.submitCartBundleUpdates()
+    }
+
+    this.setState(updateStateKeys({isSubmitting: false}))
+  }
+
+  private submitCustomerBundleUpdates = async () => {
+    const {
+      selectedAddOnIds,
+      selectedFrequency,
+      selectedSize,
+      selectedVariantIds,
+    } = this.state
+
+    const data = {
+      add_on_ids: selectedAddOnIds,
+      frequency: selectedFrequency,
+      size: selectedSize,
+      variant_ids: selectedVariantIds,
+    }
+
+    await $.ajax({
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      type: 'POST',
+      url: window.location.pathname,
+    })
+  }
+
+  private submitCartBundleUpdates = async () => {
+    const {bundleProduct} = this.props
 
     const {
       editingBundleId,
@@ -222,6 +258,10 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
       selectedVariantIds,
     } = this.state
+
+    if (editingBundleId) {
+      await removeBundleIdFromCart(editingBundleId)
+    }
 
     const sizeVariantId = bundleProduct.variants
       .find(v => parseInt(v.option1) === selectedSize)
@@ -234,35 +274,23 @@ export default class App extends React.Component<Props, State> {
         return obj
       }, {})
 
-    if (editingBundleId) {
-      await removeBundleIdFromCart(editingBundleId)
-    }
-
     await this.addToCart({
       id: sizeVariantId,
-      properties: {
-        bundle_id: bundleId,
-      },
+      properties: {bundle_id: bundleId},
       quantity: 1,
     })
 
     for (let id in idQuantities) {
       await this.addToCart({
         id,
-        properties: {
-          bundle_id: bundleId,
-          bundle_is_add_on: selectedAddOnIds.includes(parseInt(id)) || undefined,
-        },
+        properties: {bundle_id: bundleId},
         quantity: idQuantities[id],
       })
     }
 
-    this.setState(updateStateKeys({
-      editingBundleId: bundleId,
-      isSubmitting: false,
-    }))
-
     updateCartDrawerUI()
+
+    this.setState(updateStateKeys({editingBundleId: bundleId}))
   }
   
   private extractStateFromCart = async bundleId => {
@@ -321,6 +349,7 @@ export default class App extends React.Component<Props, State> {
   private extractStateFromSubscriptions = () => {
     const {
       bundleAddOns,
+      bundleId,
       bundleProduct,
       bundleProducts,
       subscriptions,
@@ -354,6 +383,7 @@ export default class App extends React.Component<Props, State> {
     }
 
     return {
+      editingBundleId: bundleId,
       selectedAddOnIds,    
       selectedFrequency,
       selectedVariantIds,

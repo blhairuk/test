@@ -1,5 +1,5 @@
-import {Agent} from 'https'
 import * as Koa from 'koa'
+import * as bodyParser from 'koa-bodyparser'
 import * as logger from 'koa-logger'
 import * as mount from 'koa-mount'
 import * as Router from 'koa-router'
@@ -13,6 +13,7 @@ import validateRequestSignature from './validate-request-signature'
 import home from './routes'
 import install from './routes/install'
 import confirmInstall from './routes/install/confirm'
+import updateBundle from './routes/update-bundle'
 
 import AccountManager from '../client/account-manager/app'
 import BundleEditor from '../client/bundle-editor/app'
@@ -32,7 +33,8 @@ router
     getInitialProps: getBundleEditorInitialProps,
     Component: BundleEditor
   }))
-  .get('/bundle', validateRequestSignature(), serveApp({
+  .post('/customer/:customerHash/bundle/:bundleId', validateRequestSignature(), bodyParser(), updateBundle())
+  .get('/bundle/:bundleId?', validateRequestSignature(), serveApp({
     assetName: 'bundle-editor',
     getInitialProps: getBundleEditorInitialProps,
     Component: BundleEditor

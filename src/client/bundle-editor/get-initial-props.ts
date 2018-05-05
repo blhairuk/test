@@ -12,16 +12,18 @@ import {isBundleIdInProperties} from '../../helpers'
 
 export default async ({
   params: {
-    bundleId,
+    bundleId: bundleIdS,
     customerHash,
   }, 
-  query: urlQuery,
+  query: {
+    shop: shopName,
+  },
 }) => {
-  const {shop} = urlQuery
-  const accessToken = await getToken(shop)
+  const accessToken = await getToken(shopName)
+  const bundleId = parseInt(bundleIdS)
 
   const shopify = new Shopify({
-    shopName: shop,
+    shopName,
     accessToken
   })
   
@@ -43,23 +45,16 @@ export default async ({
     const customerId = (await rechargeApi(`/customers?hash=${customerHash}`))[0].id
     subscriptions = 
       (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250`))
-      .filter(s => isBundleIdInProperties(parseInt(bundleId), s.properties))
+      .filter(s => isBundleIdInProperties(bundleId, s.properties))
   }
-
-  const query = Object.assign({}, urlQuery, {
-    path_prefix: undefined,
-    shop: undefined,
-    signature: undefined,
-    timestamp: undefined,
-  })
 
   return {
     bundleAddOns,
+    bundleId,
     bundleProduct,
     bundleProductMetafields,
     bundleProducts,
     customerHash,
-    query,
     subscriptions,
   }
 }
