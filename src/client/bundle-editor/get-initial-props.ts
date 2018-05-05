@@ -8,10 +8,13 @@ import {
 
 import {getToken} from '../../server/db'
 import {rechargeApi} from '../../server/fetch'
-import {getBundleIdFromProperties} from '../../helpers'
+import {isBundleIdInProperties} from '../../helpers'
 
 export default async ({
-  params: {customerHash}, 
+  params: {
+    bundleId,
+    customerHash,
+  }, 
   query: urlQuery,
 }) => {
   const {shop} = urlQuery
@@ -36,11 +39,11 @@ export default async ({
   })
 
   let subscriptions
-  if (customerHash) {
+  if (customerHash && bundleId) {
     const customerId = (await rechargeApi(`/customers?hash=${customerHash}`))[0].id
     subscriptions = 
       (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250`))
-      .filter(s => getBundleIdFromProperties(s.properties))
+      .filter(s => isBundleIdInProperties(parseInt(bundleId), s.properties))
   }
 
   const query = Object.assign({}, urlQuery, {

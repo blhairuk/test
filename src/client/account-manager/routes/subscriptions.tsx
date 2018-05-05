@@ -20,7 +20,6 @@ export default class Subscriptions extends React.Component<Props> {
     const {
       addresses,
       href,
-      subscriptions,
     } = this.props
 
     const bundleSubscriptions = this.bundleSubscriptions()
