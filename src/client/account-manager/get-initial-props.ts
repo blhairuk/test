@@ -1,13 +1,10 @@
 import {format as formatDate} from 'date-fns'
-import {resolve} from 'url'
 import {StaticRouter} from 'react-router'
-import * as Shopify from 'shopify-api-node'
 
 import {
   rechargeApi,
   stripeApi,
 } from '../../server/fetch'
-import {getToken} from '../../server/db'
 
 const {
   APP_PROXY_PATH,

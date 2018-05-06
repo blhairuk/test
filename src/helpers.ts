@@ -8,8 +8,20 @@ export const getBundleIdFromProperties = properties => {
     return property.value
   }
 }
+
+export const findProductByVariantId = (products, variantId) => (
+  products.find(({variants}) => variants.find(({id}) => id === variantId))
+)
+
 export const isBundleIdInProperties = (bundleId, properties) => {
   const property = getBundleIdProperty(properties)
-  console.log(`${property && property.value} ${bundleId}`)
   return property && property.value === bundleId
 }
+
+// turns an array of [1, 1, 1, 2, 2, 3] into {1: 3, 2: 2, 3: 1}
+export const createIdQuantities = ids => (
+  ids.reduce((obj, id) => {
+    obj[id] = (obj[id] || 0) + 1
+    return obj
+  }, {})
+)

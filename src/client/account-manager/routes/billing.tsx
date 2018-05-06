@@ -18,7 +18,6 @@ export default class Billing extends React.Component<Props> {
 
     const {
       address_city,
-      address_country,
       address_line1,
       address_line2,
       address_state,

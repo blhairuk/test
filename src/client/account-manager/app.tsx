@@ -27,7 +27,6 @@ const path = path => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path
 export default class App extends React.Component<Props> {
   render () {
     const {
-      customerHash,
       data,
       Router, 
       routerProps

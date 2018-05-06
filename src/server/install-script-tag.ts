@@ -1,5 +1,5 @@
 import assetCacheKey from './asset-cache-key'
-import fetch from './shopify-api-fetch'
+import {shopifyApi} from './fetch'
 
 const {APP_PROXY_HOST} = process.env
 
@@ -14,21 +14,21 @@ export default async ({shop, token}) => {
   const srcPath = '/static/theme.bundle.js'
   const src = `${APP_PROXY_HOST}${srcPath}?v=${assetCacheKey}`
 
-  const {script_tags: scriptTags} = await fetch(shop, '/script_tags.json', {
+  const {script_tags} = await shopifyApi(shop, '/script_tags.json', {
     ...options,
     method: 'GET'
   })
 
-  for (const scriptTag of scriptTags) {
+  for (const scriptTag of script_tags) {
     if (scriptTag.src.includes(srcPath)) {
-      await fetch(shop, `/script_tags/${scriptTag.id}.json`, {
+      await shopifyApi(shop, `/script_tags/${scriptTag.id}.json`, {
         ...options,
         method: 'DELETE'
       })
     }
   }
 
-  await fetch(shop, '/script_tags.json', {
+  await shopifyApi(shop, '/script_tags.json', {
     ...options,
     body: JSON.stringify({
       script_tag: {

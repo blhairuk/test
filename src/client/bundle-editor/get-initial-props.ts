@@ -44,8 +44,8 @@ export default async ({
   if (customerHash && bundleId) {
     const customerId = (await rechargeApi(`/customers?hash=${customerHash}`))[0].id
     subscriptions = 
-      (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250`))
-      .filter(s => isBundleIdInProperties(bundleId, s.properties))
+      (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250&status=ACTIVE`))
+      .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
   }
 
   return {

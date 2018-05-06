@@ -7,6 +7,7 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import Hero from './components/hero'
 
+import {createIdQuantities} from '../../helpers'
 import updateStateKeys from '../../update-state-keys'
 
 import {
@@ -267,12 +268,7 @@ export default class App extends React.Component<Props, State> {
       .find(v => parseInt(v.option1) === selectedSize)
       .id
     const bundleId = editingBundleId || (new Date()).getTime()
-    const idQuantities = selectedVariantIds
-      .concat(selectedAddOnIds)
-      .reduce((obj, id) => {
-        obj[id] = (obj[id] || 0) + 1
-        return obj
-      }, {})
+    const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
 
     await this.addToCart({
       id: sizeVariantId,
@@ -361,13 +357,13 @@ export default class App extends React.Component<Props, State> {
     let selectedVariantIds = []
 
     for (const {
-      properties,
+      order_interval_frequency,
       quantity,
       shopify_product_id,
       shopify_variant_id,
     } of subscriptions) {
       if (shopify_product_id == bundleProduct.id) {
-        selectedFrequency = parseInt(properties.find(p => p.name === 'shipping_interval_frequency').value)
+        selectedFrequency = parseInt(order_interval_frequency)
         selectedSize = parseInt(bundleProduct.variants.find(v => v.id === shopify_variant_id).option1)
       } else {
         const selectedArray = (() => {
