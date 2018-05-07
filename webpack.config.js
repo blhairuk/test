@@ -30,6 +30,17 @@ module.exports = {
       test: /\.js$/, 
     }]
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+        }
+      }
+    }
+  },
   output: {
     filename: '[name].js',
     path: join(__dirname, './dist/public')

@@ -6,13 +6,13 @@ import assetCacheKey from './asset-cache-key'
 
 const {APP_PROXY_PATH} = process.env
 
+const scriptSrc = assetName => `${APP_PROXY_PATH}/static/${assetName}.js`
+
 export default ({
   assetName,
   getInitialProps,
   Component
-}) => async ctx => {
-  const scriptSrc = `${APP_PROXY_PATH}/static/${assetName}.js`
-  
+}) => async ctx => {  
   const props = getInitialProps ? await getInitialProps(ctx) : {}
   const sheet = new ServerStyleSheet()
   const app = renderToString(sheet.collectStyles(<Component {...props} />))
@@ -22,7 +22,8 @@ export default ({
 <div class="page-width">
   <div id="app">${app}</div>
   ${styleTags}
-  <script src="${scriptSrc}?v=${assetCacheKey}" async=""></script>
+  <script src="${scriptSrc(assetName)}?v=${assetCacheKey}" async=""></script>
+  <script src="${scriptSrc('commons')}?v=${assetCacheKey}" async=""></script>
   <script type="text/javascript">var AppProps = ${JSON.stringify(props)};</script>
 </div>`
   ctx.type = 'application/liquid'
