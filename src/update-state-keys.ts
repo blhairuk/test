@@ -1,4 +1,4 @@
-export default keys => (prevState, props) => ({
+export default keys => prevState => ({
   ...prevState,
   ...keys,
 })

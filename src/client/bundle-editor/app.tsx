@@ -58,7 +58,7 @@ export default class App extends React.Component<Props, State> {
     
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
-      this.state = updateStateKeys(cartState)(initialState, props)
+      this.state = updateStateKeys(cartState)(initialState)
     }
   }
 
