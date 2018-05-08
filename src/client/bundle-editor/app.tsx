@@ -7,8 +7,11 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import Hero from './components/hero'
 
-import {createIdQuantities} from '../../helpers'
-import updateStateKeys from '../../update-state-keys'
+import {
+  createBundleId,
+  createIdQuantities,
+} from '../../helpers'
+import updateStateKeys from '../update-state-keys'
 
 import {
   addToCart,
@@ -245,7 +248,7 @@ export default class App extends React.Component<Props, State> {
       contentType: 'application/json',
       data: JSON.stringify(data),
       dataType: 'json',
-      type: 'POST',
+      method: 'PUT',
       url: window.location.pathname,
     })
   }
@@ -267,7 +270,7 @@ export default class App extends React.Component<Props, State> {
     const sizeVariantId = bundleProduct.variants
       .find(v => parseInt(v.option1) === selectedSize)
       .id
-    const bundleId = editingBundleId || (new Date()).getTime()
+    const bundleId = editingBundleId || createBundleId()
     const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
 
     await this.addToCart({

@@ -3,7 +3,7 @@ export const addToCart = async data => (
     contentType: 'application/json',
     data: JSON.stringify(data),
     dataType: 'json',
-    type: 'POST',
+    method: 'POST',
     url: '/cart/add.js',
   })
 )
@@ -26,7 +26,7 @@ export const updateCart = updates => (
     contentType: 'application/json',
     data: JSON.stringify({updates}),
     dataType: 'json',
-    type: 'POST',
+    method: 'POST',
     url: '/cart/update.js',
   })
 )

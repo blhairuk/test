@@ -80,15 +80,44 @@ export default class SubscriptionRow extends React.Component<Props> {
   private controls = ({bundleId, status}) => {
     const {href} = this.props
 
-    if (status === 'CANCELLED') {
-      return 'Re-activate'
-    }
     return (
       <div>
-        <a href={href(`/bundle/${bundleId}`)}>Edit</a>
+        {status === 'CANCELLED' ? (
+          <a
+            href='javascript:void(0)'
+            onClick={this.submitReactivate.bind(this, bundleId)}
+          >
+            Re-activate
+          </a>
+        ) : (
+          <>
+            <a href={href(`/bundles/${bundleId}`)}>Edit</a>
+            <span> - </span>
+            <a
+              href='javascript:void(0)'
+              onClick={this.submitCancel.bind(this, bundleId)}
+            >
+              Cancel
+            </a>
+          </>
+        )}
       </div>
     )
   }
 
   private nextChargeDate = date => date ? formatDate(date, 'dddd, MMMM D') : '-'
+
+  private submitCancel = async bundleId => {
+    const {href} = this.props
+    await $.ajax({
+      contentType: 'application/json',
+      dataType: 'json',
+      method: 'DELETE',
+      url: href(`/bundles/${bundleId}`),
+    })
+  }
+
+  private submitReactivate = () => {
+
+  }
 }

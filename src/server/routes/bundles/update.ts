@@ -1,12 +1,17 @@
 import * as Shopify from 'shopify-api-node'
 
-import {rechargeApi} from '../fetch'
+import {rechargeApi} from '../../fetch'
 import {
   createIdQuantities,
   findProductByVariantId,
   isBundleIdInProperties,
-} from '../../helpers'
-import {getToken} from '../../server/db'
+} from '../../../helpers'
+import {getToken} from '../../db'
+import {
+  cancel as cancelBundle,
+  create as createBundle
+} from '../../bundles'
+
 
 export default () => async ctx => {
   const {
@@ -39,7 +44,7 @@ export default () => async ctx => {
   const products = await shopify.product.list({limit: 250})
 
   const customer = (await rechargeApi(`/customers?hash=${customerHash}`))[0]
-  const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}&status=ACTIVE`))
+  const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}&status=ACTIVE&limit=250`))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 
   const {
@@ -55,26 +60,16 @@ export default () => async ctx => {
     .find(({option1}) => option1 === size)
     .id
 
-  try {
-    await Promise.all(subscriptions.map(({id}) => (
-      rechargeApi(`/subscriptions/${id}/cancel`, {
-        body: JSON.stringify({
-          cancellation_reason: 'automated, editing bundle subscription',
-        }),
-        method: 'POST'
-      })
-    )))
-  } catch (err) {
-    console.error(err)
-  }
+  await cancelBundle(subscriptions.map(({id}) => id))
 
-  try {
-    await Promise.all(Object.entries(idQuantities).concat([[`${bundleVariantId}`, 1]]).map(([idS, quantity]) => {
+  const newSubscriptionsData = Object.entries(idQuantities)
+    .concat([[`${bundleVariantId}`, 1]])
+    .map(([idS, quantity]) => {
       const id = parseInt(idS)
       const product = findProductByVariantId(products, id)
       const variant = product.variants.find(v => v.id === id)
 
-      const data = {
+      return {
         address_id,
         charge_interval_frequency,
         next_charge_scheduled_at,
@@ -82,22 +77,13 @@ export default () => async ctx => {
         order_interval_unit,
         price: variant.price,
         product_title: product.title,
-        properties: {
-          bundle_id: bundleId
-        },
         quantity,
         shopify_product_id: product.id,
         shopify_variant_id: id,
       }
+    })
 
-      return rechargeApi(`/subscriptions`, {
-        body: JSON.stringify(data),
-        method: 'POST',
-      })
-    }))
-  } catch (err) {
-    console.error(err)
-  }
+  await createBundle(newSubscriptionsData)
 
   ctx.status = 204
 }
