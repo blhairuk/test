@@ -115,9 +115,17 @@ export default class SubscriptionRow extends React.Component<Props> {
       method: 'DELETE',
       url: href(`/bundles/${bundleId}`),
     })
+    window.location.reload()
   }
 
-  private submitReactivate = () => {
-
+  private submitReactivate = async bundleId => {
+    const {href} = this.props
+    await $.ajax({
+      contentType: 'application/json',
+      dataType: 'json',
+      method: 'POST',
+      url: href(`/bundles/${bundleId}`),
+    })
+    window.location.reload()
   }
 }

@@ -1,6 +1,17 @@
 import {rechargeApi} from './fetch'
 import {createBundleId} from '../helpers'
 
+export const activate = async subscriptionIds => (
+  Promise.all(subscriptionIds.map(id => (
+    rechargeApi(`/subscriptions/${id}/activate`, {
+      body: JSON.stringify({
+        status: 'ACTIVE',
+      }),
+      method: 'POST',
+    })
+  )))
+)
+
 export const cancel = async subscriptionIds => (
   Promise.all(subscriptionIds.map(id => (
     rechargeApi(`/subscriptions/${id}/cancel`, {
