@@ -38,6 +38,7 @@ interface Props {
 }
 
 interface State {
+  bundleName: string,
   editingBundleId: number,
   enteredEmail: string,
   enteredName: string,
@@ -49,6 +50,7 @@ interface State {
 }
 
 const initialState = {
+  bundleName: '',
   editingBundleId: null,
   enteredEmail: '',
   enteredName: '',
@@ -91,6 +93,7 @@ export default class App extends React.Component<Props, State> {
     } = this.props
 
     const {
+      bundleName,
       editingBundleId,
       enteredEmail,
       enteredName,
@@ -111,6 +114,7 @@ export default class App extends React.Component<Props, State> {
           enterName={this.enterName}
           enteredName={enteredName} 
         />
+        <h4>{bundleName}</h4>
         <EnterEmail 
           enterEmail={this.enterEmail}
           enteredEmail={enteredEmail} 
@@ -159,7 +163,10 @@ export default class App extends React.Component<Props, State> {
   }
 
   private enterName = ({target: {value: enteredName}}) => {
-    this.setState(updateStateKeys({enteredName}))
+    this.setState(updateStateKeys({
+      bundleName: enteredName ? `${enteredName}'s box` : '',
+      enteredName,
+    }))
   }
 
   private setSelectedFrequency = selectedFrequency => {
@@ -225,10 +232,11 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({selectedAddOnIds}))
   }
 
-  private addToCart = extraData => {
+  private addToCart = (bundleId, extraData) => {
     return addToCart({
       ...extraData,
       properties: {
+        bundle_id: bundleId,
         subscription_id: this.metafieldValue('subscription_id'),
         shipping_interval_frequency: this.state.selectedFrequency,
         shipping_interval_unit_type: this.metafieldValue('shipping_interval_unit_type'),
@@ -282,7 +290,9 @@ export default class App extends React.Component<Props, State> {
     const {bundleProduct} = this.props
 
     const {
+      bundleName,
       editingBundleId,
+      enteredName,
       selectedAddOnIds,
       selectedSize,
       selectedVariantIds,
@@ -298,16 +308,18 @@ export default class App extends React.Component<Props, State> {
     const bundleId = editingBundleId || createBundleId()
     const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
 
-    await this.addToCart({
+    await this.addToCart(bundleId, {
       id: sizeVariantId,
-      properties: {bundle_id: bundleId},
+      properties: {
+        bundle_customer_name: enteredName,
+        bundle_name: bundleName,
+      },
       quantity: 1,
     })
 
     for (let id in idQuantities) {
-      await this.addToCart({
+      await this.addToCart(bundleId, {
         id,
-        properties: {bundle_id: bundleId},
         quantity: idQuantities[id],
       })
     }
@@ -325,6 +337,8 @@ export default class App extends React.Component<Props, State> {
 
     const cart = await fetchCart()
 
+    let bundleName = ''
+    let enteredName = ''
     let selectedAddOnIds = []
     let selectedFrequency = null
     let selectedSize = null
@@ -333,7 +347,9 @@ export default class App extends React.Component<Props, State> {
     for (const item of cart.items) {
       const {
         properties: {
+          bundle_customer_name,
           bundle_id: itemBundleId,
+          bundle_name,
           shipping_interval_frequency: frequency,
         },
         product_id,
@@ -345,6 +361,8 @@ export default class App extends React.Component<Props, State> {
 
       if (itemBundleId === bundleId) {
         if (productType === BUNDLE_TYPE) {
+          bundleName = bundle_name
+          enteredName = bundle_customer_name
           selectedSize = parseInt(size)
           selectedFrequency = frequency
         } else {
@@ -362,7 +380,9 @@ export default class App extends React.Component<Props, State> {
     }
 
     return {
+      bundleName,
       editingBundleId: bundleId,
+      enteredName,
       selectedAddOnIds,    
       selectedFrequency,
       selectedVariantIds,
