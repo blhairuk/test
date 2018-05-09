@@ -5,6 +5,7 @@ import ChooseFrequency from './components/choose-frequency'
 import ChooseProducts from './components/choose-products'
 import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
+import EnterEmail from './components/enter-email'
 import EnterName from './components/enter-name'
 import Hero from './components/hero'
 
@@ -38,6 +39,7 @@ interface Props {
 
 interface State {
   editingBundleId: number,
+  enteredEmail: string,
   enteredName: string,
   isSubmitting: boolean,
   selectedAddOnIds: number[],
@@ -48,6 +50,7 @@ interface State {
 
 const initialState = {
   editingBundleId: null,
+  enteredEmail: '',
   enteredName: '',
   isSubmitting: false,
   selectedAddOnIds: [],    
@@ -89,6 +92,7 @@ export default class App extends React.Component<Props, State> {
 
     const {
       editingBundleId,
+      enteredEmail,
       enteredName,
       isSubmitting,
       selectedAddOnIds,
@@ -106,6 +110,10 @@ export default class App extends React.Component<Props, State> {
         <EnterName 
           enterName={this.enterName}
           enteredName={enteredName} 
+        />
+        <EnterEmail 
+          enterEmail={this.enterEmail}
+          enteredEmail={enteredEmail} 
         />
         <ChooseSize 
           variants={bundleProduct.variants} 
@@ -145,6 +153,10 @@ export default class App extends React.Component<Props, State> {
   }
 
   private metafieldValue = key => this.props.bundleProductMetafields.find(m => m.key === key).value
+
+  private enterEmail = ({target: {value: enteredEmail}}) => {
+    this.setState(updateStateKeys({enteredEmail}))
+  }
 
   private enterName = ({target: {value: enteredName}}) => {
     this.setState(updateStateKeys({enteredName}))
