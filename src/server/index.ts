@@ -18,22 +18,26 @@ import cancelBundle from './routes/bundles/cancel'
 import reactivateBundle from './routes/bundles/reactivate'
 import updateBundle from './routes/bundles/update'
 
+const bundlesRouter = new Router()
+bundlesRouter
+  .get('/:bundleId', serveApp('bundle-editor'))
+  .put('/:bundleId', bodyParser(), updateBundle())
+  .delete('/:bundleId', bodyParser(), cancelBundle())
+  .post('/:bundleId', bodyParser(), reactivateBundle())
+
 const accountManagerRouter = new Router()
 accountManagerRouter
   .get('/:page?', serveApp('account-manager'))
-  .get('/bundles/:bundleId', serveApp('bundle-editor'))
-  .put('/bundles/:bundleId', bodyParser(), updateBundle())
-  .delete('/bundles/:bundleId', bodyParser(), cancelBundle())
-  .post('/bundles/:bundleId', bodyParser(), reactivateBundle())
+  .use('/bundles', bundlesRouter.routes(), bundlesRouter.allowedMethods())
 
 const router = new Router()
 router
   .get('/', home())
   .use(validateRequestSignature())
-  .use('/customer/:customerHash', accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
   .get('/bundle/:bundleId?', serveApp('bundle-editor'))
   .get('/install', install())
   .get('/install/confirm', confirmInstall())
+  .use('/customer/:customerHash', accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
 
 const serveStatic = () => ctx => (
   send(ctx, ctx.path, {root: join(__dirname, '../../dist/public')})
