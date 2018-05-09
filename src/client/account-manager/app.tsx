@@ -4,9 +4,9 @@ import {
   Switch,
 } from 'react-router-dom'
 
-import Billing, {Props as BillingProps} from './routes/billing'
-import Schedule, {Props as ScheduleProps} from './routes/schedule'
-import Subscriptions, {Props as SubscriptionProps} from './routes/subscriptions'
+import Billing, {Props as BillingProps} from './components/billing'
+import Schedule, {Props as ScheduleProps} from './components/schedule'
+import Subscriptions, {Props as SubscriptionProps} from './components/subscriptions'
 
 interface Data extends BillingProps, ScheduleProps, SubscriptionProps {
   customer: {
