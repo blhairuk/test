@@ -19,4 +19,12 @@ export const getCustomer = async customerHash => (
   (await api(`/customers?hash=${customerHash}`))[0]
 )
 
+export const getSubscriptions = async ({
+  customerId, 
+  status = '',
+}) => {
+  const page = await api(`/subscriptions?customer_id=${customerId}&status=${status}&limit=250`)
+  return page
+}
+
 export default api

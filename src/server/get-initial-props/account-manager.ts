@@ -1,7 +1,11 @@
 import {format as formatDate} from 'date-fns'
 import {StaticRouter} from 'react-router'
 
-import rechargeApi, {getCustomer} from '../apis/recharge'
+import rechargeApi, {
+  getCustomer,
+  getSubscriptions,
+} from '../apis/recharge'
+
 import stripeApi from '../apis/stripe'
 
 const {
@@ -35,7 +39,7 @@ export default async ctx => {
         data.subscriptions, 
         data.addresses
       ] = await Promise.all([
-        rechargeApi(`/subscriptions?customer_id=${customer.id}`),
+        getSubscriptions({customerId: customer.id}),
         rechargeApi(`/customers/${customer.id}/addresses`),
       ])
       break

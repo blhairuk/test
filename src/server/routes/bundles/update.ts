@@ -1,17 +1,22 @@
 import * as Shopify from 'shopify-api-node'
 
-import rechargeApi, {getCustomer} from '../../apis/recharge'
+import {
+  getCustomer,
+  getSubscriptions,
+} from '../../apis/recharge'
+
 import {
   createIdQuantities,
   findProductByVariantId,
   isBundleIdInProperties,
 } from '../../../shared/helpers'
-import {getToken} from '../../db'
+
 import {
   cancel as cancelBundle,
   create as createBundle
 } from '../../bundles'
 
+import {getToken} from '../../db'
 
 export default () => async ctx => {
   const {
@@ -44,7 +49,7 @@ export default () => async ctx => {
   const products = await shopify.product.list({limit: 250})
 
   const customer = await getCustomer(customerHash)
-  const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}&status=ACTIVE&limit=250`))
+  const subscriptions = (await getSubscriptions({customerId: customer.id, status: 'ACTIVE'}))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 
   const {
