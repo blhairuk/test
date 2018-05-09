@@ -4,6 +4,7 @@
   "description": "A Node.js web server that powers a fully-customized subscription management portal for ReCharge/Shopify customers.",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "migrate": "knex migrate:latest",
     "tsc": "tsc",
     "webpack": "webpack",
@@ -47,7 +48,16 @@
     "webpack-cli": "^2.0.15"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "dotenv": "^5.0.1",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.3"
+  },
+  "jest": {
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/jest-preprocessor.js"
+    },
+    "testMatch": ["**/__tests__/*.+(ts|tsx|js)"]
   }
 }
