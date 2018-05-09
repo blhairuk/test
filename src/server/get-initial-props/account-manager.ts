@@ -4,7 +4,7 @@ import {StaticRouter} from 'react-router'
 import {
   rechargeApi,
   stripeApi,
-} from '../../server/fetch'
+} from '../fetch'
 
 const {
   APP_PROXY_PATH,

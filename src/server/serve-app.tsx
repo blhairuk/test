@@ -14,7 +14,7 @@ export default appPath => async ctx => {
     {default: getInitialProps},
   ] = await Promise.all([
     import(`../client/${appPath}/app`),
-    import(`../client/${appPath}/get-initial-props`)
+    import(`./get-initial-props/${appPath}`)
   ])
 
   const props = await getInitialProps(ctx)

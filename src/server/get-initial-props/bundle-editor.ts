@@ -6,8 +6,8 @@ import {
   BUNDLE_TYPE,
 } from '../../shared/constants'
 
-import {getToken} from '../../server/db'
-import {rechargeApi} from '../../server/fetch'
+import {getToken} from '../db'
+import {rechargeApi} from '../fetch'
 import {isBundleIdInProperties} from '../../shared/helpers'
 
 export default async ({

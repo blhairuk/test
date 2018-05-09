@@ -34,8 +34,8 @@ export default class App extends React.Component<Props> {
 
     const {
       customer: {
-        first_name: firstName,
-        last_name: lastName,
+        first_name,
+        last_name,
       }
     } = data
 
@@ -45,7 +45,7 @@ export default class App extends React.Component<Props> {
       <Router {...routerProps}>
         <div className='grid grid--uniform'>
           <div className='grid__item medium-up--one-quarter'>
-            <h3>{firstName} {lastName}</h3>
+            <h3>{first_name} {last_name}</h3>
             <ul>
               <li><a href={this.href('/schedule')}>Delivery schedule</a></li>
               <li><a href={this.href('/subscriptions')}>Subscriptions</a></li>
