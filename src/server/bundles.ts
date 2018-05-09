@@ -1,4 +1,4 @@
-import {rechargeApi} from './fetch'
+import rechargeApi from './apis/recharge'
 import {createBundleId} from '../shared/helpers'
 
 export const activate = async subscriptionIds => (

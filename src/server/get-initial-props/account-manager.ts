@@ -1,10 +1,8 @@
 import {format as formatDate} from 'date-fns'
 import {StaticRouter} from 'react-router'
 
-import {
-  rechargeApi,
-  stripeApi,
-} from '../fetch'
+import rechargeApi from '../apis/recharge'
+import stripeApi from '../apis/stripe'
 
 const {
   APP_PROXY_PATH,

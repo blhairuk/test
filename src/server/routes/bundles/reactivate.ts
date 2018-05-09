@@ -1,4 +1,4 @@
-import {rechargeApi} from '../../fetch'
+import rechargeApi from '../../apis/recharge'
 import {isBundleIdInProperties} from '../../../shared/helpers'
 import {activate} from '../../bundles'
 

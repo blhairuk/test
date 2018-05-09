@@ -1,6 +1,6 @@
 import * as Shopify from 'shopify-api-node'
 
-import {rechargeApi} from '../../fetch'
+import rechargeApi from '../../apis/recharge'
 import {
   createIdQuantities,
   findProductByVariantId,

@@ -7,7 +7,7 @@ import {
 } from '../../shared/constants'
 
 import {getToken} from '../db'
-import {rechargeApi} from '../fetch'
+import rechargeApi from '../apis/recharge'
 import {isBundleIdInProperties} from '../../shared/helpers'
 
 export default async ({
