@@ -18,32 +18,15 @@ import cancelBundle from './routes/bundles/cancel'
 import reactivateBundle from './routes/bundles/reactivate'
 import updateBundle from './routes/bundles/update'
 
-import AccountManager from '../client/account-manager/app'
-import BundleEditor from '../client/bundle-editor/app'
-import getBundleEditorInitialProps from '../client/bundle-editor/get-initial-props'
-import getAccountManagerInitialProps from '../client/account-manager/get-initial-props'
-
 const router = new Router()
 router
   .get('/', home())
-  .get('/customer/:customerHash/:page?', validateRequestSignature(), serveApp({
-    assetName: 'account-manager',
-    getInitialProps: getAccountManagerInitialProps,
-    Component: AccountManager
-  }))
-  .get('/customer/:customerHash/bundles/:bundleId', validateRequestSignature(), serveApp({
-    assetName: 'bundle-editor',
-    getInitialProps: getBundleEditorInitialProps,
-    Component: BundleEditor
-  }))
+  .get('/customer/:customerHash/:page?', validateRequestSignature(), serveApp('account-manager'))
+  .get('/customer/:customerHash/bundles/:bundleId', validateRequestSignature(), serveApp('bundle-editor'))
   .put('/customer/:customerHash/bundles/:bundleId', validateRequestSignature(), bodyParser(), updateBundle())
   .delete('/customer/:customerHash/bundles/:bundleId', validateRequestSignature(), bodyParser(), cancelBundle())
   .post('/customer/:customerHash/bundles/:bundleId', validateRequestSignature(), bodyParser(), reactivateBundle())
-  .get('/bundle/:bundleId?', validateRequestSignature(), serveApp({
-    assetName: 'bundle-editor',
-    getInitialProps: getBundleEditorInitialProps,
-    Component: BundleEditor
-  }))
+  .get('/bundle/:bundleId?', validateRequestSignature(), serveApp('bundle-editor'))
   .get('/install', install())
   .get('/install/confirm', validateRequestSignature(), confirmInstall())
 
