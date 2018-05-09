@@ -2,7 +2,7 @@ import * as React from 'react'
 import {renderToString} from 'react-dom/server'
 import {ServerStyleSheet} from 'styled-components'
 
-import assetCacheKey from './asset-cache-key'
+import assetCacheKey from './helpers/asset-cache-key'
 
 const {APP_PROXY_PATH} = process.env
 

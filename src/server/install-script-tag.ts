@@ -1,4 +1,4 @@
-import assetCacheKey from './asset-cache-key'
+import assetCacheKey from './helpers/asset-cache-key'
 import {shopifyApi} from './fetch'
 
 const {APP_PROXY_HOST} = process.env
