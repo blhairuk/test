@@ -10,7 +10,7 @@ import Hero from './components/hero'
 import {
   createBundleId,
   createIdQuantities,
-} from '../../helpers'
+} from '../../shared/helpers'
 import updateStateKeys from '../update-state-keys'
 
 import {
@@ -20,7 +20,7 @@ import {
   updateCartDrawerUI,
 } from '../cart'
 
-import {BUNDLE_TYPE} from '../../shop'
+import {BUNDLE_TYPE} from '../../shared/constants'
 
 interface Props {
   bundleAddOns: ShopifyProduct[],

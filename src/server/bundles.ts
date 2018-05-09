@@ -1,5 +1,5 @@
 import {rechargeApi} from './fetch'
-import {createBundleId} from '../helpers'
+import {createBundleId} from '../shared/helpers'
 
 export const activate = async subscriptionIds => (
   Promise.all(subscriptionIds.map(id => (

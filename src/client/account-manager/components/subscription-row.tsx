@@ -1,7 +1,7 @@
 import {format as formatDate} from 'date-fns'
 import * as React from 'react'
 
-import {getBundleIdFromProperties} from '../../../helpers'
+import {getBundleIdFromProperties} from '../../../shared/helpers'
 
 export interface Props {
   addresses: RechargeAddress[],

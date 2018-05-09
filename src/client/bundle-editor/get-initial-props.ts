@@ -4,11 +4,11 @@ import {
   BUNDLE_ADD_ON_TAG,
   BUNDLE_PRODUCT_TAG,
   BUNDLE_TYPE,
-} from '../../shop'
+} from '../../shared/constants'
 
 import {getToken} from '../../server/db'
 import {rechargeApi} from '../../server/fetch'
-import {isBundleIdInProperties} from '../../helpers'
+import {isBundleIdInProperties} from '../../shared/helpers'
 
 export default async ({
   params: {

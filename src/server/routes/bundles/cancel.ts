@@ -1,5 +1,5 @@
 import {rechargeApi} from '../../fetch'
-import {isBundleIdInProperties} from '../../../helpers'
+import {isBundleIdInProperties} from '../../../shared/helpers'
 import {cancel} from '../../bundles'
 
 export default () => async ctx => {

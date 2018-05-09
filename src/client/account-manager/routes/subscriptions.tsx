@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import SubscriptionRow from '../components/subscription-row'
-import {getBundleIdFromProperties} from '../../../helpers'
+import {getBundleIdFromProperties} from '../../../shared/helpers'
 
 export interface Props {
   addresses: RechargeAddress[],

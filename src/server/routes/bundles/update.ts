@@ -5,7 +5,7 @@ import {
   createIdQuantities,
   findProductByVariantId,
   isBundleIdInProperties,
-} from '../../../helpers'
+} from '../../../shared/helpers'
 import {getToken} from '../../db'
 import {
   cancel as cancelBundle,
