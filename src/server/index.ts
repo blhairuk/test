@@ -7,8 +7,8 @@ import * as send from 'koa-send'
 import {join} from 'path'
 
 import serveApp from './serve-app'
-import setCacheHeaders from './set-cache-headers'
-import validateRequestSignature from './validate-request-signature'
+import setCacheHeaders from './middlewares/set-cache-headers'
+import validateRequestSignature from './middlewares/validate-request-signature'
 
 import home from './routes'
 import install from './routes/install'
