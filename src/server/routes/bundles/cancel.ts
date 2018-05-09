@@ -1,4 +1,4 @@
-import rechargeApi from '../../apis/recharge'
+import rechargeApi, {getCustomer} from '../../apis/recharge'
 import {isBundleIdInProperties} from '../../../shared/helpers'
 import {cancel} from '../../bundles'
 
@@ -12,7 +12,7 @@ export default () => async ctx => {
 
   const bundleId = parseInt(bundleIdS)
 
-  const customer = (await rechargeApi(`/customers?hash=${customerHash}`))[0]
+  const customer = await getCustomer(customerHash)
   const subscriptions = (await rechargeApi(`/subscriptions?customer_id=${customer.id}&status=ACTIVE&limit=250`))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
   

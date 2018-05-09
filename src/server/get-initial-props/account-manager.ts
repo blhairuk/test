@@ -1,7 +1,7 @@
 import {format as formatDate} from 'date-fns'
 import {StaticRouter} from 'react-router'
 
-import rechargeApi from '../apis/recharge'
+import rechargeApi, {getCustomer} from '../apis/recharge'
 import stripeApi from '../apis/stripe'
 
 const {
@@ -14,7 +14,7 @@ export default async ctx => {
     page
   } = ctx.params
 
-  const customer = (await rechargeApi(`/customers?hash=${customerHash}`))[0]
+  const customer = await getCustomer(customerHash)
   const data: any = {customer}
   const location = `${APP_PROXY_PATH}${ctx.request.path}`
 

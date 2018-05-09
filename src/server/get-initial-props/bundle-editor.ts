@@ -7,7 +7,7 @@ import {
 } from '../../shared/constants'
 
 import {getToken} from '../db'
-import rechargeApi from '../apis/recharge'
+import rechargeApi, {getCustomer} from '../apis/recharge'
 import {isBundleIdInProperties} from '../../shared/helpers'
 
 export default async ({
@@ -42,7 +42,7 @@ export default async ({
 
   let subscriptions
   if (customerHash && bundleId) {
-    const customerId = (await rechargeApi(`/customers?hash=${customerHash}`))[0].id
+    const customerId = (await getCustomer(customerHash)).id
     subscriptions = 
       (await rechargeApi(`/subscriptions?customer_id=${customerId}&limit=250&status=ACTIVE`))
       .filter(({properties}) => isBundleIdInProperties(bundleId, properties))

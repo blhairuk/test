@@ -15,4 +15,8 @@ const api = async (path, options = null) => {
   return json[rootKey]
 }
 
+export const getCustomer = async customerHash => (
+  (await api(`/customers?hash=${customerHash}`))[0]
+)
+
 export default api
