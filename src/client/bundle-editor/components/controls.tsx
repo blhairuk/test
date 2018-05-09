@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 interface Props {
+  enteredName: string,
   isEditingBundle: boolean,
   isSubmitting: boolean,
   selectedAddOnIds: number[],
@@ -13,6 +14,7 @@ interface Props {
 export default class Controls extends React.Component<Props> {
   render () {
     const {
+      enteredName,
       isSubmitting,
       selectedFrequency,
       selectedSize,
@@ -20,7 +22,7 @@ export default class Controls extends React.Component<Props> {
       submit
     } = this.props
 
-    if (!selectedSize || !selectedFrequency) return null
+    if (!enteredName || !selectedSize || !selectedFrequency) return null
     if (selectedVariantIds.length !== selectedSize) return null
 
     return (

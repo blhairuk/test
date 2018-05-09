@@ -5,6 +5,7 @@ import ChooseFrequency from './components/choose-frequency'
 import ChooseProducts from './components/choose-products'
 import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
+import EnterName from './components/enter-name'
 import Hero from './components/hero'
 
 import {
@@ -37,6 +38,7 @@ interface Props {
 
 interface State {
   editingBundleId: number,
+  enteredName: string,
   isSubmitting: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
@@ -46,6 +48,7 @@ interface State {
 
 const initialState = {
   editingBundleId: null,
+  enteredName: '',
   isSubmitting: false,
   selectedAddOnIds: [],    
   selectedFrequency: null,
@@ -86,6 +89,7 @@ export default class App extends React.Component<Props, State> {
 
     const {
       editingBundleId,
+      enteredName,
       isSubmitting,
       selectedAddOnIds,
       selectedFrequency,
@@ -99,6 +103,10 @@ export default class App extends React.Component<Props, State> {
     return (
       <div>
         <Hero product={bundleProduct} />
+        <EnterName 
+          enterName={this.enterName}
+          enteredName={enteredName} 
+        />
         <ChooseSize 
           variants={bundleProduct.variants} 
           selectedSize={selectedSize}
@@ -123,6 +131,7 @@ export default class App extends React.Component<Props, State> {
           selectedAddOnIds={selectedAddOnIds}
         />
         <Controls
+          enteredName={enteredName}
           isEditingBundle={!!editingBundleId}
           isSubmitting={isSubmitting}
           selectedAddOnIds={selectedAddOnIds}
@@ -136,6 +145,10 @@ export default class App extends React.Component<Props, State> {
   }
 
   private metafieldValue = key => this.props.bundleProductMetafields.find(m => m.key === key).value
+
+  private enterName = ({target: {value: enteredName}}) => {
+    this.setState(updateStateKeys({enteredName}))
+  }
 
   private setSelectedFrequency = selectedFrequency => {
     this.setState(updateStateKeys({selectedFrequency}))
