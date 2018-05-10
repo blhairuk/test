@@ -9,6 +9,8 @@ import Controls from './components/controls'
 import EnterEmail from './components/enter-email'
 import EnterName from './components/enter-name'
 
+import Modal from '../helpers/modal'
+
 import {
   createBundleId,
   createIdQuantities,
@@ -46,6 +48,7 @@ interface State {
   editingBundleId: number,
   enteredEmail: string,
   enteredName: string,
+  isBundleFullModalOpen: boolean,
   isSubmitting: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
@@ -59,6 +62,7 @@ const initialState = {
   editingBundleId: null,
   enteredEmail: '',
   enteredName: '',
+  isBundleFullModalOpen: false,
   isSubmitting: false,
   selectedAddOnIds: [],    
   selectedFrequency: null,
@@ -102,6 +106,7 @@ export default class App extends React.Component<Props, State> {
       editingBundleId,
       enteredEmail,
       enteredName,
+      isBundleFullModalOpen,
       isSubmitting,
       selectedAddOnIds,
       selectedFrequency,
@@ -194,6 +199,13 @@ export default class App extends React.Component<Props, State> {
         <div>
           <a onClick={this.stepPrev}>Prev</a> | <a onClick={this.stepNext}>Next</a>
         </div>
+
+        <Modal 
+          handleClose={this.handleBundleFullModalClose}
+          isOpen={isBundleFullModalOpen}
+        >
+          Your bundle is full!
+        </Modal>
       </div>
     )
   }
@@ -226,7 +238,7 @@ export default class App extends React.Component<Props, State> {
     } = this.state
 
     if (!selectedSize) return alert('You must selected a size first.')
-    if (oldIds.length >= selectedSize) return alert('You must remove other products first.')
+    if (oldIds.length >= selectedSize) return this.setState(updateStateKeys({isBundleFullModalOpen: true}))
 
     const selectedVariantIds = oldIds.concat(id)
 
@@ -486,4 +498,6 @@ export default class App extends React.Component<Props, State> {
     e.preventDefault()
     this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
   }
+
+  private handleBundleFullModalClose = () => this.setState(updateStateKeys({isBundleFullModalOpen: false}))
 }
