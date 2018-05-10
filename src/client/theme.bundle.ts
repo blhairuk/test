@@ -7,7 +7,7 @@ declare global {
 import {
   removeBundleIdFromCart,
   updateCartDrawerUI,
-} from './cart'
+} from './helpers/cart'
 
 const BUNDLE_ID_ATTR = 'data-cb-rem-cart-bundle-id'
 const SUBMITTING_TEXT = 'Removing...'

@@ -16,14 +16,14 @@ import {
   createBundleId,
   createIdQuantities,
 } from '../../shared/helpers'
-import updateStateKeys from '../update-state-keys'
+import updateStateKeys from '../helpers/update-state-keys'
 
 import {
   addToCart,
   fetchCart,
   removeBundleIdFromCart,
   updateCartDrawerUI,
-} from '../cart'
+} from '../helpers/cart'
 
 import {BUNDLE_TYPE} from '../../shared/constants'
 
