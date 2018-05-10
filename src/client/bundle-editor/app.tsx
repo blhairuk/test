@@ -519,11 +519,6 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] + 1}))
   }
 
-  private stepPrev = (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault()
-    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
-  }
-
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
   }
