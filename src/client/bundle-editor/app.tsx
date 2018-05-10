@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Transition from 'react-transition-group/Transition'
 
 import ChooseAddOns from './components/choose-add-ons'
 import ChooseFrequency from './components/choose-frequency'
@@ -7,7 +8,6 @@ import ChooseSize from './components/choose-size'
 import Controls from './components/controls'
 import EnterEmail from './components/enter-email'
 import EnterName from './components/enter-name'
-import Hero from './components/hero'
 
 import {
   createBundleId,
@@ -37,6 +37,10 @@ interface Props {
   subscriptions: RechargeSubscription[],
 }
 
+enum Steps {
+  Name, Email, Frequency, Size, Products, AddOns
+}
+
 interface State {
   bundleName: string,
   editingBundleId: number,
@@ -47,6 +51,7 @@ interface State {
   selectedFrequency: number,
   selectedVariantIds: number[],
   selectedSize: number,
+  step: Steps
 }
 
 const initialState = {
@@ -59,7 +64,10 @@ const initialState = {
   selectedFrequency: null,
   selectedVariantIds: [],
   selectedSize: null,
+  step: Steps.Name,
 }
+
+const TRANSITION_TIMEOUT = 1000
 
 export default class App extends React.Component<Props, State> {
   public state = initialState
@@ -93,7 +101,6 @@ export default class App extends React.Component<Props, State> {
     } = this.props
 
     const {
-      bundleName,
       editingBundleId,
       enteredEmail,
       enteredName,
@@ -102,6 +109,7 @@ export default class App extends React.Component<Props, State> {
       selectedFrequency,
       selectedVariantIds,
       selectedSize,
+      step,
     } = this.state
 
     const shippingFrequencies = this.metafieldValue('shipping_interval_frequency').split(',')
@@ -109,39 +117,79 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <Hero product={bundleProduct} />
-        <EnterName 
-          enterName={this.enterName}
-          enteredName={enteredName} 
-        />
-        <h4>{bundleName}</h4>
-        <EnterEmail 
-          enterEmail={this.enterEmail}
-          enteredEmail={enteredEmail} 
-        />
-        <ChooseSize 
-          variants={bundleProduct.variants} 
-          selectedSize={selectedSize}
-          setSelectedSize={this.setSelectedSize}
-        />
-        <ChooseFrequency
-          frequencies={shippingFrequencies}
-          selectedFrequency={selectedFrequency}
-          setSelectedFrequency={this.setSelectedFrequency}
-          unitType={shippingUnitType}
-        />
-        <ChooseProducts 
-          addVariantId={this.addVariantId}
-          products={bundleProducts} 
-          removeVariantId={this.removeVariantId}
-          selectedVariantIds={selectedVariantIds}
-        />
-        <ChooseAddOns 
-          addAddOnId={this.addAddOnId}
-          products={bundleAddOns}
-          removeAddOnId={this.removeAddOnId}
-          selectedAddOnIds={selectedAddOnIds}
-        />
+        <Transition 
+          in={step === Steps.Name}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <EnterName 
+            enterName={this.enterName}
+            enteredName={enteredName}
+            stepNext={this.stepNext}
+          />
+        </Transition>
+
+        <Transition 
+          in={step === Steps.Email}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <EnterEmail 
+            enterEmail={this.enterEmail}
+            enteredEmail={enteredEmail} 
+          />
+        </Transition>
+
+        <Transition 
+          in={step === Steps.Frequency}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <ChooseFrequency
+            frequencies={shippingFrequencies}
+            selectedFrequency={selectedFrequency}
+            setSelectedFrequency={this.setSelectedFrequency}
+            unitType={shippingUnitType}
+          />
+        </Transition>
+
+        <Transition 
+          in={step === Steps.Size}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <ChooseSize 
+            variants={bundleProduct.variants} 
+            selectedSize={selectedSize}
+            setSelectedSize={this.setSelectedSize}
+          />
+        </Transition>
+
+        <Transition 
+          in={step === Steps.Products}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <ChooseProducts 
+            addVariantId={this.addVariantId}
+            products={bundleProducts} 
+            removeVariantId={this.removeVariantId}
+            selectedVariantIds={selectedVariantIds}
+          />
+        
+        </Transition>
+
+        <Transition 
+          in={step === Steps.AddOns}
+          timeout={TRANSITION_TIMEOUT}
+        >
+          <ChooseAddOns 
+            addAddOnId={this.addAddOnId}
+            products={bundleAddOns}
+            removeAddOnId={this.removeAddOnId}
+            selectedAddOnIds={selectedAddOnIds}
+          />
+        </Transition>
+
+        <div>
+          <a onClick={this.stepPrev}>Prev</a> | <a onClick={this.stepNext}>Next</a>
+        </div>
+
         <Controls
           enteredName={enteredName}
           isEditingBundle={!!editingBundleId}
@@ -433,5 +481,15 @@ export default class App extends React.Component<Props, State> {
       selectedVariantIds,
       selectedSize,
     }
+  }
+
+  private stepNext = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault()
+    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] + 1}))
+  }
+
+  private stepPrev = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault()
+    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
   }
 }
