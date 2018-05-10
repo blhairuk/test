@@ -5,6 +5,7 @@ interface Props {
   frequencies: string[],
   selectedFrequency: number,
   setSelectedFrequency: (number) => any,
+  stepNext: (e?: React.FormEvent<HTMLElement>) => any,
   unitType: string,
 }
 
@@ -22,7 +23,6 @@ export default class ChooseFrequency extends React.Component<Props> {
     const {
       frequencies,
       selectedFrequency,
-      setSelectedFrequency,
       unitType,
     } = this.props
 
@@ -34,7 +34,7 @@ export default class ChooseFrequency extends React.Component<Props> {
             <GridItem
               className='grid__item medium-up--one-third text-center' 
               key={frequency}
-              onClick={setSelectedFrequency.bind(this, parseInt(frequency))}
+              onClick={this.setSelectedFrequency.bind(this, parseInt(frequency))}
               selected={selectedFrequency === parseInt(frequency)}
             >
               {frequency} {unitType}
@@ -43,5 +43,10 @@ export default class ChooseFrequency extends React.Component<Props> {
         </div>
       </div>
     )
+  }
+
+  private setSelectedFrequency = frequency => {
+    this.props.setSelectedFrequency(frequency)
+    this.props.stepNext()
   }
 }

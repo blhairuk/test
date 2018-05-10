@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {TransitionGroup, CSSTransition} from 'react-transition-group'
+import {injectGlobal} from 'styled-components'
 
 import ChooseAddOns from './components/choose-add-ons'
 import ChooseFrequency from './components/choose-frequency'
@@ -71,6 +72,26 @@ const initialState = {
   step: Steps.Name,
 }
 
+injectGlobal`
+  .slide-container {
+    position: relative;
+  }
+  .slide-enter {
+    transform: translateX(-100%);
+  }
+  .slide-enter-active {
+    transform: translateX(0);
+    transition: all 1s ease-out;
+  }
+  .slide-exit {
+    transform: translateX(0);
+  }
+  .slide-exit-active {
+    transform: translateX(100%);
+    transition: all 1s ease-out;
+  }
+`
+
 export default class App extends React.Component<Props, State> {
   public state = initialState
 
@@ -120,84 +141,88 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <TransitionGroup>
-          <CSSTransition 
-            classNames='fade'
-            key={step} 
-            timeout={1000}
-          >
-            {(() => {
-              switch (step) {
-                case Steps.Name:
-                  return (
-                    <EnterName 
-                      enterName={this.enterName}
-                      enteredName={enteredName}
-                      stepNext={this.stepNext}
-                    />
-                  )
-                case Steps.Email:
-                  return (
-                    <EnterEmail 
-                      enterEmail={this.enterEmail}
-                      enteredEmail={enteredEmail} 
-                    />
-                  )
-                case Steps.Frequency:
-                  return (
-                    <ChooseFrequency
-                      frequencies={shippingFrequencies}
-                      selectedFrequency={selectedFrequency}
-                      setSelectedFrequency={this.setSelectedFrequency}
-                      unitType={shippingUnitType}
-                    />
-                  )
-                case Steps.Size:
-                  return (
-                    <ChooseSize 
-                      variants={bundleProduct.variants} 
-                      selectedSize={selectedSize}
-                      setSelectedSize={this.setSelectedSize}
-                    />
-                  )
-                case Steps.Products:
-                  return (
-                    <ChooseProducts 
-                      addVariantId={this.addVariantId}
-                      products={bundleProducts} 
-                      removeVariantId={this.removeVariantId}
-                      selectedVariantIds={selectedVariantIds}
-                    />
-                  )
-                case Steps.AddOns:
-                  return (
-                    <ChooseAddOns 
-                      addAddOnId={this.addAddOnId}
-                      products={bundleAddOns}
-                      removeAddOnId={this.removeAddOnId}
-                      selectedAddOnIds={selectedAddOnIds}
-                    />
-                  )
-                case Steps.Confirm:
-                  return (
-                    <Controls
-                      enteredName={enteredName}
-                      isEditingBundle={!!editingBundleId}
-                      isSubmitting={isSubmitting}
-                      selectedAddOnIds={selectedAddOnIds}
-                      selectedFrequency={selectedFrequency}
-                      selectedSize={selectedSize}
-                      selectedVariantIds={selectedVariantIds} 
-                      submit={this.submit} 
-                    />
-                  )
-              }
-            })()}
-          </CSSTransition>
-        </TransitionGroup>
-
-        <div>
-          <a onClick={this.stepPrev}>Prev</a> | <a onClick={this.stepNext}>Next</a>
+        <div className='slide-container'>
+          <TransitionGroup component={null}>
+            <CSSTransition 
+              classNames='slide'
+              key={step} 
+              timeout={1000}
+            >
+              {(() => {
+                switch (step) {
+                  case Steps.Name:
+                    return (
+                      <EnterName 
+                        enterName={this.enterName}
+                        enteredName={enteredName}
+                        stepNext={this.stepNext}
+                      />
+                    )
+                  case Steps.Email:
+                    return (
+                      <EnterEmail 
+                        enterEmail={this.enterEmail}
+                        enteredEmail={enteredEmail}
+                        stepNext={this.stepNext}
+                      />
+                    )
+                  case Steps.Frequency:
+                    return (
+                      <ChooseFrequency
+                        frequencies={shippingFrequencies}
+                        selectedFrequency={selectedFrequency}
+                        setSelectedFrequency={this.setSelectedFrequency}
+                        stepNext={this.stepNext}
+                        unitType={shippingUnitType}
+                      />
+                    )
+                  case Steps.Size:
+                    return (
+                      <ChooseSize 
+                        variants={bundleProduct.variants} 
+                        selectedSize={selectedSize}
+                        setSelectedSize={this.setSelectedSize}
+                        stepNext={this.stepNext}
+                      />
+                    )
+                  case Steps.Products:
+                    return (
+                      <ChooseProducts 
+                        addVariantId={this.addVariantId}
+                        products={bundleProducts} 
+                        selectedSize={selectedSize}
+                        removeVariantId={this.removeVariantId}
+                        selectedVariantIds={selectedVariantIds}
+                        stepNext={this.stepNext}
+                      />
+                    )
+                  case Steps.AddOns:
+                    return (
+                      <ChooseAddOns 
+                        addAddOnId={this.addAddOnId}
+                        products={bundleAddOns}
+                        removeAddOnId={this.removeAddOnId}
+                        selectedAddOnIds={selectedAddOnIds}
+                        stepNext={this.stepNext}
+                      />
+                    )
+                  case Steps.Confirm:
+                    return (
+                      <Controls
+                        enteredName={enteredName}
+                        isEditingBundle={!!editingBundleId}
+                        isSubmitting={isSubmitting}
+                        selectedAddOnIds={selectedAddOnIds}
+                        selectedFrequency={selectedFrequency}
+                        selectedSize={selectedSize}
+                        selectedVariantIds={selectedVariantIds} 
+                        submit={this.submit} 
+                      />
+                    )
+                }
+              })()}
+            </CSSTransition>
+          </TransitionGroup>
         </div>
 
         <Modal 
@@ -489,8 +514,8 @@ export default class App extends React.Component<Props, State> {
     }
   }
 
-  private stepNext = (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault()
+  private stepNext = (e?: React.FormEvent<HTMLElement>) => {
+    if (e) e.preventDefault()
     this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] + 1}))
   }
 
@@ -499,5 +524,7 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
   }
 
-  private handleBundleFullModalClose = () => this.setState(updateStateKeys({isBundleFullModalOpen: false}))
+  private handleBundleFullModalClose = () => {
+    this.setState(updateStateKeys({isBundleFullModalOpen: false}))
+  }
 }

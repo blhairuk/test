@@ -4,7 +4,9 @@ interface Props {
   addVariantId: (ShopifyVariant) => any,
   products: ShopifyProduct[],
   removeVariantId: (ShopifyVariant) => any,
+  selectedSize: number,
   selectedVariantIds: number[],
+  stepNext: (e?: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class ChooseProducts extends React.Component<Props> {
@@ -13,7 +15,9 @@ export default class ChooseProducts extends React.Component<Props> {
       addVariantId,
       products,
       removeVariantId,
+      selectedSize,
       selectedVariantIds,
+      stepNext,
     } = this.props
 
     const productTypes = [...new Set(products.map(p => p.product_type))]
@@ -21,6 +25,7 @@ export default class ChooseProducts extends React.Component<Props> {
     return (
       <div>
         <h2 className='h3'>Choose your products:</h2>
+
         {productTypes.map(productType => (
           <div key={productType}>
             <h3 className='h4'>{productType}</h3>
@@ -60,6 +65,12 @@ export default class ChooseProducts extends React.Component<Props> {
             </div>
           </div>
         ))}
+
+        {selectedVariantIds.length === selectedSize && (
+          <div>
+            <a onClick={stepNext}>Next</a>
+          </div>
+        )}
       </div>
     )
   }

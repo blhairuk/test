@@ -5,6 +5,7 @@ interface Props {
   products: ShopifyProduct[],
   removeAddOnId: (number) => any,
   selectedAddOnIds: number[],
+  stepNext: (e?: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class ChooseAddOns extends React.Component<Props> {
@@ -14,6 +15,7 @@ export default class ChooseAddOns extends React.Component<Props> {
       products,
       removeAddOnId,
       selectedAddOnIds,
+      stepNext,
     } = this.props
 
     return (
@@ -49,6 +51,10 @@ export default class ChooseAddOns extends React.Component<Props> {
               </div>
             </div>
           ))}
+        </div>
+
+        <div>
+          <a onClick={stepNext}>Next</a>
         </div>
       </div>
     )

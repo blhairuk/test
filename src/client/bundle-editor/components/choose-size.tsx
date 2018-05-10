@@ -5,6 +5,7 @@ interface Props {
   variants: ShopifyVariant[],
   selectedSize: number,
   setSelectedSize: (number) => any,
+  stepNext: (e?: React.FormEvent<HTMLElement>) => any,
 }
 
 interface GridItemProps {
@@ -20,8 +21,7 @@ export default class ChooseSize extends React.Component<Props> {
   render () {
     const {
       selectedSize,
-      setSelectedSize,
-      variants
+      variants,
     } = this.props
 
     return (
@@ -32,7 +32,7 @@ export default class ChooseSize extends React.Component<Props> {
             <GridItem
               className='grid__item medium-up--one-half text-center' 
               key={variant.id}
-              onClick={setSelectedSize.bind(this, parseInt(variant.option1))}
+              onClick={this.setSelectedSize.bind(this, parseInt(variant.option1))}
               selected={selectedSize === parseInt(variant.option1)}
             >
               {variant.option1} for {variant.price}
@@ -41,5 +41,10 @@ export default class ChooseSize extends React.Component<Props> {
         </div>
       </div>
     )
+  }
+
+  private setSelectedSize = size => {
+    this.props.setSelectedSize(size)
+    this.props.stepNext()
   }
 }
