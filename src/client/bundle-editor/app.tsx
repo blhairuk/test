@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Transition from 'react-transition-group/Transition'
+import {TransitionGroup, CSSTransition} from 'react-transition-group'
 
 import ChooseAddOns from './components/choose-add-ons'
 import ChooseFrequency from './components/choose-frequency'
@@ -38,7 +38,7 @@ interface Props {
 }
 
 enum Steps {
-  Name, Email, Frequency, Size, Products, AddOns
+  Name, Email, Frequency, Size, Products, AddOns, Confirm
 }
 
 interface State {
@@ -66,8 +66,6 @@ const initialState = {
   selectedSize: null,
   step: Steps.Name,
 }
-
-const TRANSITION_TIMEOUT = 1000
 
 export default class App extends React.Component<Props, State> {
   public state = initialState
@@ -117,89 +115,85 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <Transition 
-          in={step === Steps.Name}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <EnterName 
-            enterName={this.enterName}
-            enteredName={enteredName}
-            stepNext={this.stepNext}
-          />
-        </Transition>
-
-        <Transition 
-          in={step === Steps.Email}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <EnterEmail 
-            enterEmail={this.enterEmail}
-            enteredEmail={enteredEmail} 
-          />
-        </Transition>
-
-        <Transition 
-          in={step === Steps.Frequency}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <ChooseFrequency
-            frequencies={shippingFrequencies}
-            selectedFrequency={selectedFrequency}
-            setSelectedFrequency={this.setSelectedFrequency}
-            unitType={shippingUnitType}
-          />
-        </Transition>
-
-        <Transition 
-          in={step === Steps.Size}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <ChooseSize 
-            variants={bundleProduct.variants} 
-            selectedSize={selectedSize}
-            setSelectedSize={this.setSelectedSize}
-          />
-        </Transition>
-
-        <Transition 
-          in={step === Steps.Products}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <ChooseProducts 
-            addVariantId={this.addVariantId}
-            products={bundleProducts} 
-            removeVariantId={this.removeVariantId}
-            selectedVariantIds={selectedVariantIds}
-          />
-        
-        </Transition>
-
-        <Transition 
-          in={step === Steps.AddOns}
-          timeout={TRANSITION_TIMEOUT}
-        >
-          <ChooseAddOns 
-            addAddOnId={this.addAddOnId}
-            products={bundleAddOns}
-            removeAddOnId={this.removeAddOnId}
-            selectedAddOnIds={selectedAddOnIds}
-          />
-        </Transition>
+        <TransitionGroup>
+          <CSSTransition 
+            classNames='fade'
+            key={step} 
+            timeout={1000}
+          >
+            {(() => {
+              switch (step) {
+                case Steps.Name:
+                  return (
+                    <EnterName 
+                      enterName={this.enterName}
+                      enteredName={enteredName}
+                      stepNext={this.stepNext}
+                    />
+                  )
+                case Steps.Email:
+                  return (
+                    <EnterEmail 
+                      enterEmail={this.enterEmail}
+                      enteredEmail={enteredEmail} 
+                    />
+                  )
+                case Steps.Frequency:
+                  return (
+                    <ChooseFrequency
+                      frequencies={shippingFrequencies}
+                      selectedFrequency={selectedFrequency}
+                      setSelectedFrequency={this.setSelectedFrequency}
+                      unitType={shippingUnitType}
+                    />
+                  )
+                case Steps.Size:
+                  return (
+                    <ChooseSize 
+                      variants={bundleProduct.variants} 
+                      selectedSize={selectedSize}
+                      setSelectedSize={this.setSelectedSize}
+                    />
+                  )
+                case Steps.Products:
+                  return (
+                    <ChooseProducts 
+                      addVariantId={this.addVariantId}
+                      products={bundleProducts} 
+                      removeVariantId={this.removeVariantId}
+                      selectedVariantIds={selectedVariantIds}
+                    />
+                  )
+                case Steps.AddOns:
+                  return (
+                    <ChooseAddOns 
+                      addAddOnId={this.addAddOnId}
+                      products={bundleAddOns}
+                      removeAddOnId={this.removeAddOnId}
+                      selectedAddOnIds={selectedAddOnIds}
+                    />
+                  )
+                case Steps.Confirm:
+                  return (
+                    <Controls
+                      enteredName={enteredName}
+                      isEditingBundle={!!editingBundleId}
+                      isSubmitting={isSubmitting}
+                      selectedAddOnIds={selectedAddOnIds}
+                      selectedFrequency={selectedFrequency}
+                      selectedSize={selectedSize}
+                      selectedVariantIds={selectedVariantIds} 
+                      submit={this.submit} 
+                    />
+                  )
+              }
+            })()}
+          </CSSTransition>
+        </TransitionGroup>
 
         <div>
           <a onClick={this.stepPrev}>Prev</a> | <a onClick={this.stepNext}>Next</a>
         </div>
-
-        <Controls
-          enteredName={enteredName}
-          isEditingBundle={!!editingBundleId}
-          isSubmitting={isSubmitting}
-          selectedAddOnIds={selectedAddOnIds}
-          selectedFrequency={selectedFrequency}
-          selectedSize={selectedSize}
-          selectedVariantIds={selectedVariantIds} 
-          submit={this.submit} 
-        />
       </div>
     )
   }
