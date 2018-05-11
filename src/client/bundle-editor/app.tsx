@@ -219,6 +219,7 @@ export default class App extends React.Component<Props, State> {
                 enteredName={enteredName}
                 isEditingBundle={!!editingBundleId}
                 isSubmitting={isSubmitting}
+                products={bundleProducts.concat(bundleAddOns)}
                 selectedAddOnIds={selectedAddOnIds}
                 selectedFrequency={selectedFrequency}
                 selectedSize={selectedSize}
