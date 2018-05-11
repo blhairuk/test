@@ -102,6 +102,14 @@ export default class App extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate (_, {step: oldStep}) {
+    const {step} = this.state
+
+    if (step !== oldStep) {
+      this.scrollToStep(step)
+    }
+  }
+
   render () {
     const {
       bundleAddOns,
@@ -126,21 +134,21 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <Step>
+        <Step id={this.stepId(Steps.Name)}>
           <EnterName 
             enterName={this.enterName}
             enteredName={enteredName}
             stepNext={this.stepNext}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.Email)}>
           <EnterEmail 
             enterEmail={this.enterEmail}
             enteredEmail={enteredEmail}
             stepNext={this.stepNext}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.Frequency)}>
           <ChooseFrequency
             frequencies={shippingFrequencies}
             selectedFrequency={selectedFrequency}
@@ -149,7 +157,7 @@ export default class App extends React.Component<Props, State> {
             unitType={shippingUnitType}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.Size)}>
           <ChooseSize 
             variants={bundleProduct.variants} 
             selectedSize={selectedSize}
@@ -157,7 +165,7 @@ export default class App extends React.Component<Props, State> {
             stepNext={this.stepNext}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.Products)}>
           <ChooseProducts 
             addVariantId={this.addVariantId}
             products={bundleProducts} 
@@ -167,7 +175,7 @@ export default class App extends React.Component<Props, State> {
             stepNext={this.stepNext}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.AddOns)}>
           <ChooseAddOns 
             addAddOnId={this.addAddOnId}
             products={bundleAddOns}
@@ -176,7 +184,7 @@ export default class App extends React.Component<Props, State> {
             stepNext={this.stepNext}
           />
         </Step>
-        <Step>
+        <Step id={this.stepId(Steps.Confirm)}>
           <Confirm
             enteredName={enteredName}
             isEditingBundle={!!editingBundleId}
@@ -491,5 +499,13 @@ export default class App extends React.Component<Props, State> {
 
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
+  }
+
+  private stepId = step => `step-${step}`
+
+  private scrollToStep = step => {
+    $('html, body').animate({
+      scrollTop: $(`#${this.stepId(step)}`).offset().top
+    }, 1000)
   }
 }
