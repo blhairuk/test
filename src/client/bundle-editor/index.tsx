@@ -5,6 +5,7 @@ import * as ReactModal from "react-modal"
 import App from "./app"
 
 ReactModal.setAppElement("#app")
+ReactModal.defaultStyles.overlay.zIndex = 21
 
 hydrate(
   <App {...window.AppProps} />,

@@ -3,7 +3,7 @@ import * as ReactModal from "react-modal"
 
 interface Props {
   children: any,
-  handleClose: (any) => any,
+  handleClose: () => any,
   isOpen: boolean,
 }
 
