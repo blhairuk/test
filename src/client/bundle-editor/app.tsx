@@ -1,12 +1,11 @@
 import * as React from 'react'
-import {TransitionGroup, CSSTransition} from 'react-transition-group'
-import {injectGlobal} from 'styled-components'
+import styled from 'styled-components'
 
 import ChooseAddOns from './components/choose-add-ons'
 import ChooseFrequency from './components/choose-frequency'
 import ChooseProducts from './components/choose-products'
 import ChooseSize from './components/choose-size'
-import Controls from './components/controls'
+import Confirm from './components/confirm'
 import EnterEmail from './components/enter-email'
 import EnterName from './components/enter-name'
 
@@ -72,24 +71,11 @@ const initialState = {
   step: Steps.Name,
 }
 
-injectGlobal`
-  .slide-container {
-    position: relative;
-  }
-  .slide-enter {
-    transform: translateX(-100%);
-  }
-  .slide-enter-active {
-    transform: translateX(0);
-    transition: all 1s ease-out;
-  }
-  .slide-exit {
-    transform: translateX(0);
-  }
-  .slide-exit-active {
-    transform: translateX(100%);
-    transition: all 1s ease-out;
-  }
+const Step = styled.div`
+  align-items: center;
+  display: flex;
+  min-height: calc(100vh - 89px); /* adjust to header height */
+  justify-content: center;
 `
 
 export default class App extends React.Component<Props, State> {
@@ -133,7 +119,6 @@ export default class App extends React.Component<Props, State> {
       selectedFrequency,
       selectedVariantIds,
       selectedSize,
-      step,
     } = this.state
 
     const shippingFrequencies = this.metafieldValue('shipping_interval_frequency').split(',')
@@ -141,89 +126,69 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <div className='slide-container'>
-          <TransitionGroup component={null}>
-            <CSSTransition 
-              classNames='slide'
-              key={step} 
-              timeout={1000}
-            >
-              {(() => {
-                switch (step) {
-                  case Steps.Name:
-                    return (
-                      <EnterName 
-                        enterName={this.enterName}
-                        enteredName={enteredName}
-                        stepNext={this.stepNext}
-                      />
-                    )
-                  case Steps.Email:
-                    return (
-                      <EnterEmail 
-                        enterEmail={this.enterEmail}
-                        enteredEmail={enteredEmail}
-                        stepNext={this.stepNext}
-                      />
-                    )
-                  case Steps.Frequency:
-                    return (
-                      <ChooseFrequency
-                        frequencies={shippingFrequencies}
-                        selectedFrequency={selectedFrequency}
-                        setSelectedFrequency={this.setSelectedFrequency}
-                        stepNext={this.stepNext}
-                        unitType={shippingUnitType}
-                      />
-                    )
-                  case Steps.Size:
-                    return (
-                      <ChooseSize 
-                        variants={bundleProduct.variants} 
-                        selectedSize={selectedSize}
-                        setSelectedSize={this.setSelectedSize}
-                        stepNext={this.stepNext}
-                      />
-                    )
-                  case Steps.Products:
-                    return (
-                      <ChooseProducts 
-                        addVariantId={this.addVariantId}
-                        products={bundleProducts} 
-                        selectedSize={selectedSize}
-                        removeVariantId={this.removeVariantId}
-                        selectedVariantIds={selectedVariantIds}
-                        stepNext={this.stepNext}
-                      />
-                    )
-                  case Steps.AddOns:
-                    return (
-                      <ChooseAddOns 
-                        addAddOnId={this.addAddOnId}
-                        products={bundleAddOns}
-                        removeAddOnId={this.removeAddOnId}
-                        selectedAddOnIds={selectedAddOnIds}
-                        stepNext={this.stepNext}
-                      />
-                    )
-                  case Steps.Confirm:
-                    return (
-                      <Controls
-                        enteredName={enteredName}
-                        isEditingBundle={!!editingBundleId}
-                        isSubmitting={isSubmitting}
-                        selectedAddOnIds={selectedAddOnIds}
-                        selectedFrequency={selectedFrequency}
-                        selectedSize={selectedSize}
-                        selectedVariantIds={selectedVariantIds} 
-                        submit={this.submit} 
-                      />
-                    )
-                }
-              })()}
-            </CSSTransition>
-          </TransitionGroup>
-        </div>
+        <Step>
+          <EnterName 
+            enterName={this.enterName}
+            enteredName={enteredName}
+            stepNext={this.stepNext}
+          />
+        </Step>
+        <Step>
+          <EnterEmail 
+            enterEmail={this.enterEmail}
+            enteredEmail={enteredEmail}
+            stepNext={this.stepNext}
+          />
+        </Step>
+        <Step>
+          <ChooseFrequency
+            frequencies={shippingFrequencies}
+            selectedFrequency={selectedFrequency}
+            setSelectedFrequency={this.setSelectedFrequency}
+            stepNext={this.stepNext}
+            unitType={shippingUnitType}
+          />
+        </Step>
+        <Step>
+          <ChooseSize 
+            variants={bundleProduct.variants} 
+            selectedSize={selectedSize}
+            setSelectedSize={this.setSelectedSize}
+            stepNext={this.stepNext}
+          />
+        </Step>
+        <Step>
+          <ChooseProducts 
+            addVariantId={this.addVariantId}
+            products={bundleProducts} 
+            selectedSize={selectedSize}
+            removeVariantId={this.removeVariantId}
+            selectedVariantIds={selectedVariantIds}
+            stepNext={this.stepNext}
+          />
+        </Step>
+        <Step>
+          <ChooseAddOns 
+            addAddOnId={this.addAddOnId}
+            products={bundleAddOns}
+            removeAddOnId={this.removeAddOnId}
+            selectedAddOnIds={selectedAddOnIds}
+            stepNext={this.stepNext}
+          />
+        </Step>
+        <Step>
+          <Confirm
+            enteredName={enteredName}
+            isEditingBundle={!!editingBundleId}
+            isSubmitting={isSubmitting}
+            selectedAddOnIds={selectedAddOnIds}
+            selectedFrequency={selectedFrequency}
+            selectedSize={selectedSize}
+            selectedVariantIds={selectedVariantIds} 
+            stepPrev={this.stepPrev}
+            submit={this.submit} 
+          />
+        </Step>
 
         <Modal 
           handleClose={this.handleBundleFullModalClose}
@@ -517,6 +482,11 @@ export default class App extends React.Component<Props, State> {
   private stepNext = (e?: React.FormEvent<HTMLElement>) => {
     if (e) e.preventDefault()
     this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] + 1}))
+  }
+
+  private stepPrev = (e?: React.FormEvent<HTMLElement>) => {
+    if (e) e.preventDefault()
+    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
   }
 
   private handleBundleFullModalClose = () => {

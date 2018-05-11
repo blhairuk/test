@@ -8,10 +8,11 @@ interface Props {
   selectedFrequency: number,
   selectedSize: number,
   selectedVariantIds: number[],
+  stepPrev: (e?: React.FormEvent<HTMLElement>) => any,
   submit: (any) => any,
 }
 
-export default class Controls extends React.Component<Props> {
+export default class Confirm extends React.Component<Props> {
   render () {
     const {
       enteredName,
@@ -22,8 +23,13 @@ export default class Controls extends React.Component<Props> {
       submit
     } = this.props
 
-    if (!enteredName || !selectedSize || !selectedFrequency) return null
-    if (selectedVariantIds.length !== selectedSize) return null
+    let errorMessage
+    if (!enteredName) errorMessage = 'Enter a name'
+    else if (!selectedSize) errorMessage = 'Enter a size'
+    else if (!selectedFrequency) errorMessage = 'Enter a frequency'
+    else if (selectedVariantIds.length < selectedSize) errorMessage = 'You need to add products'
+    else if (selectedVariantIds.length > selectedSize) errorMessage = 'You need to remove products'
+    if (errorMessage) return <div>{errorMessage}</div>
 
     return (
       <div>
