@@ -4,6 +4,7 @@
   "description": "A Node.js web server that powers a fully-customized subscription management portal for ReCharge/Shopify customers.",
   "main": "index.js",
   "scripts": {
+    "tslint": "tslint -c tslint.json 'src/**/*'",
     "test": "jest",
     "migrate": "knex migrate:latest",
     "tsc": "tsc",
@@ -54,7 +55,9 @@
     "@types/jest": "^22.2.3",
     "dotenv": "^5.0.1",
     "jest": "^22.4.3",
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "tslint": "^5.10.0",
+    "tslint-react": "^3.6.0"
   },
   "jest": {
     "moduleFileExtensions": [
