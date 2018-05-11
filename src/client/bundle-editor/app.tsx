@@ -71,11 +71,19 @@ const initialState = {
   step: Steps.Name,
 }
 
+const HEADER_HEIGHT = 89
+
 const Step = styled.div`
   align-items: center;
   display: flex;
-  min-height: calc(100vh - 89px); /* adjust to header height */
   justify-content: center;
+  min-height: 100vh;
+  padding-top: ${HEADER_HEIGHT}px;
+
+  &:first-child { 
+    min-height: calc(100vh - ${HEADER_HEIGHT}px);
+    padding-top: 0;
+  }
 `
 
 export default class App extends React.Component<Props, State> {
