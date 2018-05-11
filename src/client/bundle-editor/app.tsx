@@ -40,10 +40,6 @@ interface Props {
   subscriptions: RechargeSubscription[],
 }
 
-enum Steps {
-  Name, Email, Frequency, Size, Products, AddOns, Confirm
-}
-
 interface State {
   bundleName: string,
   editingBundleId: number,
@@ -55,7 +51,6 @@ interface State {
   selectedFrequency: number,
   selectedVariantIds: number[],
   selectedSize: number,
-  step: Steps
 }
 
 const initialState = {
@@ -69,7 +64,6 @@ const initialState = {
   selectedFrequency: null,
   selectedVariantIds: [],
   selectedSize: null,
-  step: Steps.Name,
 }
 
 const Step = styled.div`
@@ -103,14 +97,6 @@ export default class App extends React.Component<Props, State> {
     if (bundleId && !customerHash) {
       const cartState = await this.extractStateFromCart(bundleId)
       this.setState(updateStateKeys(cartState))
-    }
-  }
-
-  componentDidUpdate (_, {step: oldStep}) {
-    const {step} = this.state
-
-    if (step !== oldStep) {
-      this.scrollToStep(step)
     }
   }
 
@@ -532,14 +518,6 @@ export default class App extends React.Component<Props, State> {
 
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
-  }
-
-  private stepId = step => `step-${step}`
-
-  private scrollToStep = step => {
-    $('html, body').animate({
-      scrollTop: $(`#${this.stepId(step)}`).offset().top
-    }, 1000)
   }
 
   private handleSlideChange = () => {

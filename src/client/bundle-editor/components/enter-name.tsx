@@ -21,12 +21,13 @@ export default class EnterName extends React.Component<Props> {
           <div>
             <input 
               onChange={enterName}
+              required
               type='text'
               value={enteredName}
             />
           </div>
           <div>
-            {enteredName.length > 2 && (
+            {enteredName.length > 0 && (
               <button type='submit'>Next</button>
             )}
           </div>

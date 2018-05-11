@@ -22,6 +22,7 @@ export default class EnterEmail extends React.Component<Props> {
           <h2 className='h3'>What's your email?</h2>
           <input 
             onChange={enterEmail}
+            required
             type='text'
             value={enteredEmail}
           />
@@ -33,7 +34,7 @@ export default class EnterEmail extends React.Component<Props> {
               Prev
             </button>
 
-            {enteredEmail.length > 2 && (
+            {enteredEmail.length > 0 && (
               <button type='submit'>Next</button>
             )}
           </div>
