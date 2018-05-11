@@ -1,9 +1,9 @@
-import * as React from 'react'
+import * as React from "react"
 
 import {
-  createIdQuantities, 
+  createIdQuantities,
   findProductByVariantId,
-} from '../../../shared/helpers'
+} from "../../../shared/helpers"
 
 interface Props {
   enteredName: string,
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default class Confirm extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       enteredName,
       isSubmitting,
@@ -29,16 +29,16 @@ export default class Confirm extends React.Component<Props> {
       selectedSize,
       selectedVariantIds,
       stepPrev,
-      submit
+      submit,
     } = this.props
 
     let errorMessage
-    if (!enteredName) errorMessage = 'Enter a name'
-    else if (!selectedSize) errorMessage = 'Enter a size'
-    else if (!selectedFrequency) errorMessage = 'Enter a frequency'
-    else if (selectedVariantIds.length < selectedSize) errorMessage = 'You need to add products'
-    else if (selectedVariantIds.length > selectedSize) errorMessage = 'You need to remove products'
-    if (errorMessage) return <div>{errorMessage}</div>
+    if (!enteredName) { errorMessage = "Enter a name" }
+    else if (!selectedSize) { errorMessage = "Enter a size" }
+    else if (!selectedFrequency) { errorMessage = "Enter a frequency" }
+    else if (selectedVariantIds.length < selectedSize) { errorMessage = "You need to add products" }
+    else if (selectedVariantIds.length > selectedSize) { errorMessage = "You need to remove products" }
+    if (errorMessage) { return <div>{errorMessage}</div> }
 
     const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
     const productQuantities = Object.entries(idQuantities).map(([id, quantity]) => ({
@@ -49,9 +49,9 @@ export default class Confirm extends React.Component<Props> {
     return (
       <div>
         <div>
-          <button 
+          <button
             onClick={stepPrev}
-            type='button'
+            type="button"
           >
             Prev
           </button>
@@ -72,10 +72,10 @@ export default class Confirm extends React.Component<Props> {
         </div>
 
         <button
-          className='btn'
+          className="btn"
           disabled={isSubmitting}
-          onClick={submit} 
-          type='button'
+          onClick={submit}
+          type="button"
         >
           {this.buttonText()}
         </button>
@@ -89,7 +89,7 @@ export default class Confirm extends React.Component<Props> {
       isSubmitting,
     } = this.props
 
-    if (isEditingBundle) return isSubmitting ? 'Updating...' : 'Update bundle'
-    return isSubmitting ? 'Adding...' : 'Add to cart'
+    if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
+    return isSubmitting ? "Adding..." : "Add to cart"
   }
 }

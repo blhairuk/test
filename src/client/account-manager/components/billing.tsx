@@ -1,11 +1,11 @@
-import * as React from 'react'
+import * as React from "react"
 
 export interface Props {
   stripeCustomer: StripeCustomer
 }
 
 export default class Billing extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       stripeCustomer: {
         default_source,
@@ -14,7 +14,7 @@ export default class Billing extends React.Component<Props> {
       },
     } = this.props
 
-    const card = sources.data.find(s => s.id === default_source)
+    const card = sources.data.find((s) => s.id === default_source)
 
     const {
       address_city,
@@ -33,7 +33,7 @@ export default class Billing extends React.Component<Props> {
       <div>
         <h3>Billing information</h3>
 
-        <table className='full table--responsive'>
+        <table className="full table--responsive">
           <tbody>
             <tr>
               <td>

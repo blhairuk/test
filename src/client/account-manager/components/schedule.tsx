@@ -1,20 +1,20 @@
-import * as React from 'react'
+import * as React from "react"
 
-import ScheduleRow from '../components/schedule-row'
+import ScheduleRow from "../components/schedule-row"
 
 export interface Props {
   charges: RechargeCharge[],
 }
 
 export default class Schedule extends React.Component<Props> {
-  render () {
+  public render() {
     const {charges} = this.props
 
     return (
       <div>
         <h3>Delivery schedule</h3>
         <p>
-          Delivery schedule dates are when your order will be placed. 
+          Delivery schedule dates are when your order will be placed.
           Future deliveries will be added to your schedule as the date approaches.
         </p>
 
@@ -28,7 +28,7 @@ export default class Schedule extends React.Component<Props> {
               </tr>
             </thead>
             <tbody>
-              {charges.map(c => (
+              {charges.map((c) => (
                 <ScheduleRow
                   charge={c}
                   key={c.id}

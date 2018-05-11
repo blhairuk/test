@@ -1,7 +1,7 @@
-import {format as formatDate} from 'date-fns'
-import * as React from 'react'
+import {format as formatDate} from "date-fns"
+import * as React from "react"
 
-import {getBundleIdFromProperties} from '../../../shared/helpers'
+import {getBundleIdFromProperties} from "../../../shared/helpers"
 
 export interface Props {
   addresses: RechargeAddress[],
@@ -10,7 +10,7 @@ export interface Props {
 }
 
 export default class SubscriptionRow extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       subscriptions,
     } = this.props
@@ -21,7 +21,7 @@ export default class SubscriptionRow extends React.Component<Props> {
           <strong>Ships to: {this.addressLine()}</strong>
         </p>
 
-        <table className='full table--responsive'>
+        <table className="full table--responsive">
           <thead>
             <tr>
               <th>Product</th>
@@ -73,8 +73,8 @@ export default class SubscriptionRow extends React.Component<Props> {
       city,
       zip,
     ]
-      .filter(p => !!p)
-      .join(', ')
+      .filter((p) => !!p)
+      .join(", ")
   }
 
   private controls = ({bundleId, status}) => {
@@ -82,9 +82,9 @@ export default class SubscriptionRow extends React.Component<Props> {
 
     return (
       <div>
-        {status === 'CANCELLED' ? (
+        {status === "CANCELLED" ? (
           <a
-            href='javascript:void(0)'
+            href="javascript:void(0)"
             onClick={this.submitReactivate.bind(this, bundleId)}
           >
             Re-activate
@@ -94,7 +94,7 @@ export default class SubscriptionRow extends React.Component<Props> {
             <a href={href(`/bundles/${bundleId}`)}>Edit</a>
             <span> - </span>
             <a
-              href='javascript:void(0)'
+              href="javascript:void(0)"
               onClick={this.submitCancel.bind(this, bundleId)}
             >
               Cancel
@@ -105,25 +105,25 @@ export default class SubscriptionRow extends React.Component<Props> {
     )
   }
 
-  private nextChargeDate = date => date ? formatDate(date, 'dddd, MMMM D') : '-'
+  private nextChargeDate = (date) => date ? formatDate(date, "dddd, MMMM D") : "-"
 
-  private submitCancel = async bundleId => {
+  private submitCancel = async (bundleId) => {
     const {href} = this.props
     await $.ajax({
-      contentType: 'application/json',
-      dataType: 'json',
-      method: 'DELETE',
+      contentType: "application/json",
+      dataType: "json",
+      method: "DELETE",
       url: href(`/bundles/${bundleId}`),
     })
     window.location.reload()
   }
 
-  private submitReactivate = async bundleId => {
+  private submitReactivate = async (bundleId) => {
     const {href} = this.props
     await $.ajax({
-      contentType: 'application/json',
-      dataType: 'json',
-      method: 'POST',
+      contentType: "application/json",
+      dataType: "json",
+      method: "POST",
       url: href(`/bundles/${bundleId}`),
     })
     window.location.reload()

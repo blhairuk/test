@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 
 interface Props {
   enteredName: string,
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default class EnterName extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       enterName,
       enteredName,
@@ -17,18 +17,18 @@ export default class EnterName extends React.Component<Props> {
     return (
       <div>
         <form onSubmit={stepNext}>
-          <h2 className='h3'>What's your name?</h2>
+          <h2 className="h3">What's your name?</h2>
           <div>
-            <input 
+            <input
               onChange={enterName}
-              required
-              type='text'
+              required={true}
+              type="text"
               value={enteredName}
             />
           </div>
           <div>
             {enteredName.length > 0 && (
-              <button type='submit'>Next</button>
+              <button type="submit">Next</button>
             )}
           </div>
         </form>

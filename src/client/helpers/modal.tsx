@@ -1,5 +1,5 @@
-import * as React from 'react'
-import * as ReactModal from 'react-modal'
+import * as React from "react"
+import * as ReactModal from "react-modal"
 
 interface Props {
   children: any,
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default class Modal extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       children,
       handleClose,
@@ -16,7 +16,7 @@ export default class Modal extends React.Component<Props> {
     } = this.props
 
     return (
-      <ReactModal 
+      <ReactModal
         isOpen={isOpen}
         onRequestClose={handleClose}
       >

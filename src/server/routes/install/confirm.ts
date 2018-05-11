@@ -1,38 +1,38 @@
-import {URLSearchParams} from 'url'
+import {URLSearchParams} from "url"
 
-import installScriptTag from '../../install-script-tag'
-import {shopifyApi} from '../../fetch'
-import {saveToken} from '../../db'
+import {saveToken} from "../../db"
+import {shopifyApi} from "../../fetch"
+import installScriptTag from "../../install-script-tag"
 
-export default () => async ctx => {
+export default () => async (ctx) => {
   const {
-    code,  
-    shop
+    code,
+    shop,
   } = ctx.query
 
   const {
-    API_KEY, 
+    API_KEY,
     API_SECRET_KEY,
   } = process.env
 
   const body = new URLSearchParams()
-  body.append('client_id', API_KEY || '')
-  body.append('client_secret', API_SECRET_KEY || '')
-  body.append('code', code)
+  body.append("client_id", API_KEY || "")
+  body.append("client_secret", API_SECRET_KEY || "")
+  body.append("code", code)
 
-  const {access_token: token} = await shopifyApi(shop, '/oauth/access_token', {
+  const {access_token: token} = await shopifyApi(shop, "/oauth/access_token", {
     body,
-    method: 'POST'
+    method: "POST",
   })
 
   await saveToken({
-    shop, 
-    token
+    shop,
+    token,
   })
 
   await installScriptTag({
     shop,
-    token
+    token,
   })
 
   ctx.body = `Received token: ${token} for shop: ${shop}.`

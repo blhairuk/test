@@ -1,23 +1,23 @@
-import {format as formatDate} from 'date-fns'
-import * as React from 'react'
+import {format as formatDate} from "date-fns"
+import * as React from "react"
 
 export interface Props {
   charge: RechargeCharge
 }
 
 export default class ScheduleRow extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       charge: {
         line_items,
         scheduled_at,
-      }
+      },
     } = this.props
 
     return (
       <tr>
-        <td>{formatDate(scheduled_at, 'dddd, MMMM D')}</td>
-        <td>{line_items.map(l => l.title).join(', ')}</td>
+        <td>{formatDate(scheduled_at, "dddd, MMMM D")}</td>
+        <td>{line_items.map((l) => l.title).join(", ")}</td>
         <td>{this.controls()}</td>
       </tr>
     )
@@ -26,15 +26,15 @@ export default class ScheduleRow extends React.Component<Props> {
   private controls = () => {
     const {
       charge: {
-        status
-      }
+        status,
+      },
     } = this.props
 
     switch (status) {
-      case 'QUEUED':
-        return 'Skip'
-      case 'SKIPPED':
-        return 'Unskip'
+      case "QUEUED":
+        return "Skip"
+      case "SKIPPED":
+        return "Unskip"
     }
   }
 }

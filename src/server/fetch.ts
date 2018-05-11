@@ -1,5 +1,5 @@
-import {Agent} from 'https'
-import * as fetch from 'node-fetch'
+import {Agent} from "https"
+import * as fetch from "node-fetch"
 
 export const shopifyApi = async (shop, path, options) => {
   options.agent = new Agent({rejectUnauthorized: false})

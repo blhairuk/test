@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 
 interface Props {
   addVariantId: (ShopifyVariant) => any,
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default class ChooseProducts extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       addVariantId,
       products,
@@ -22,42 +22,42 @@ export default class ChooseProducts extends React.Component<Props> {
       stepPrev,
     } = this.props
 
-    const productTypes = [...new Set(products.map(p => p.product_type))]
+    const productTypes = [...new Set(products.map((p) => p.product_type))]
 
     return (
       <div>
-        <h2 className='h3'>Choose your products:</h2>
+        <h2 className="h3">Choose your products:</h2>
 
-        {productTypes.map(productType => (
+        {productTypes.map((productType) => (
           <div key={productType}>
-            <h3 className='h4'>{productType}</h3>
-            <div className='grid grid--uniform'>
-              {products.filter(p => p.product_type === productType).map(({
-                id: productId, 
-                title, 
-                image: {src}, 
+            <h3 className="h4">{productType}</h3>
+            <div className="grid grid--uniform">
+              {products.filter((p) => p.product_type === productType).map(({
+                id: productId,
+                title,
+                image: {src},
                 variants: [{
                   id: variantId,
                   price,
-                }]
+                }],
               }) => (
                 <div
-                  className='grid__item medium-up--one-third text-center' 
+                  className="grid__item medium-up--one-third text-center"
                   key={productId}
                 >
-                  <h3 className='h4'>{this.title({price, title})}</h3>
+                  <h3 className="h4">{this.title({price, title})}</h3>
                   <img src={src} />
                   <div>
-                    <button 
+                    <button
                       onClick={addVariantId.bind(this, variantId)}
-                      type='button'
+                      type="button"
                     >
                       Add
                     </button>
                     <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                    <button 
+                    <button
                       onClick={removeVariantId.bind(this, variantId)}
-                      type='button'
+                      type="button"
                     >
                       Del
                     </button>
@@ -69,17 +69,17 @@ export default class ChooseProducts extends React.Component<Props> {
         ))}
 
         <div>
-          <button 
+          <button
             onClick={stepPrev}
-            type='button'
+            type="button"
           >
             Prev
           </button>
 
           {selectedVariantIds.length === selectedSize && (
-            <button 
+            <button
               onClick={stepNext}
-              type='button'
+              type="button"
             >
               Next
             </button>
@@ -89,8 +89,8 @@ export default class ChooseProducts extends React.Component<Props> {
     )
   }
 
-  title = ({price, title}) => {
-    if (price === '0.00') return title
+  public title = ({price, title}) => {
+    if (price === "0.00") { return title }
     return `${title} (+${price})`
   }
 }

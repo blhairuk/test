@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 
 interface Props {
   enteredEmail: string,
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default class EnterEmail extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       enterEmail,
       enteredEmail,
@@ -19,23 +19,23 @@ export default class EnterEmail extends React.Component<Props> {
     return (
       <div>
         <form onSubmit={stepNext}>
-          <h2 className='h3'>What's your email?</h2>
-          <input 
+          <h2 className="h3">What's your email?</h2>
+          <input
             onChange={enterEmail}
-            required
-            type='text'
+            required={true}
+            type="text"
             value={enteredEmail}
           />
           <div>
-            <button 
+            <button
               onClick={stepPrev}
-              type='button'
+              type="button"
             >
               Prev
             </button>
 
             {enteredEmail.length > 0 && (
-              <button type='submit'>Next</button>
+              <button type="submit">Next</button>
             )}
           </div>
         </form>

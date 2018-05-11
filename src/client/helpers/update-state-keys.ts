@@ -1,4 +1,4 @@
-export default keys => prevState => ({
+export default (keys) => (prevState) => ({
   ...prevState,
   ...keys,
 })

@@ -1,24 +1,24 @@
-import * as Shopify from 'shopify-api-node'
+import * as Shopify from "shopify-api-node"
 
 import {
   getCustomer,
   getSubscriptions,
-} from '../../apis/recharge'
+} from "../../apis/recharge"
 
 import {
   createIdQuantities,
   findProductByVariantId,
   isBundleIdInProperties,
-} from '../../../shared/helpers'
+} from "../../../shared/helpers"
 
 import {
   cancel as cancelBundle,
-  create as createBundle
-} from '../../bundles'
+  create as createBundle,
+} from "../../bundles"
 
-import {getToken} from '../../db'
+import {getToken} from "../../db"
 
-export default () => async ctx => {
+export default () => async (ctx) => {
   const {
     params: {
       bundleId: bundleIdS,
@@ -26,7 +26,7 @@ export default () => async ctx => {
     },
     query: {
       shop: shopName,
-    }
+    },
   } = ctx
 
   const {
@@ -42,25 +42,25 @@ export default () => async ctx => {
 
   const shopify = new Shopify({
     shopName,
-    accessToken
+    accessToken,
   })
 
   const idQuantities = createIdQuantities(variant_ids.concat(add_on_ids))
   const products = await shopify.product.list({limit: 250})
 
   const customer = await getCustomer(customerHash)
-  const subscriptions = (await getSubscriptions({customerId: customer.id, status: 'ACTIVE'}))
+  const subscriptions = (await getSubscriptions({customerId: customer.id, status: "ACTIVE"}))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 
   const {
-    address_id, 
+    address_id,
     charge_interval_frequency,
-    next_charge_scheduled_at, 
-    order_interval_unit
+    next_charge_scheduled_at,
+    order_interval_unit,
   } = subscriptions[0]
 
   const bundleVariantId = products
-    .find(({product_type}) => product_type === 'Bundle')
+    .find(({product_type}) => product_type === "Bundle")
     .variants
     .find(({option1}) => option1 === size)
     .id
@@ -72,7 +72,7 @@ export default () => async ctx => {
     .map(([idS, quantity]) => {
       const id = parseInt(idS)
       const product = findProductByVariantId(products, id)
-      const variant = product.variants.find(v => v.id === id)
+      const variant = product.variants.find((v) => v.id === id)
 
       return {
         address_id,

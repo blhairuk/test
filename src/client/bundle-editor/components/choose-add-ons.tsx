@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 
 interface Props {
   addAddOnId: (number) => any,
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default class ChooseAddOns extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       addAddOnId,
       products,
@@ -22,31 +22,31 @@ export default class ChooseAddOns extends React.Component<Props> {
 
     return (
       <div>
-        <h2 className='h3'>Choose your add-ons:</h2>
-        <div className='grid grid--uniform'>
+        <h2 className="h3">Choose your add-ons:</h2>
+        <div className="grid grid--uniform">
         {products.map(({
-            id: productId, 
-            title, 
-            image: {src}, 
-            variants: [{id: variantId}]
+            id: productId,
+            title,
+            image: {src},
+            variants: [{id: variantId}],
           }) => (
             <div
-              className='grid__item medium-up--one-third text-center' 
+              className="grid__item medium-up--one-third text-center"
               key={productId}
             >
-              <h3 className='h4'>{title}</h3>
+              <h3 className="h4">{title}</h3>
               <img src={src} />
               <div>
-                <button 
+                <button
                   onClick={addAddOnId.bind(this, variantId)}
-                  type='button'
+                  type="button"
                 >
                   Add
                 </button>
                 <span>{selectedAddOnIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                <button 
+                <button
                   onClick={removeAddOnId.bind(this, variantId)}
-                  type='button'
+                  type="button"
                 >
                   Del
                 </button>
@@ -56,16 +56,16 @@ export default class ChooseAddOns extends React.Component<Props> {
         </div>
 
         <div>
-          <button 
+          <button
             onClick={stepPrev}
-            type='button'
+            type="button"
           >
             Prev
           </button>
 
-          <button 
+          <button
             onClick={stepNext}
-            type='button'
+            type="button"
           >
             Next
           </button>

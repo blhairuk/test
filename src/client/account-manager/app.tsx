@@ -1,12 +1,12 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   Route,
   Switch,
-} from 'react-router-dom'
+} from "react-router-dom"
 
-import Billing, {Props as BillingProps} from './components/billing'
-import Schedule, {Props as ScheduleProps} from './components/schedule'
-import Subscriptions, {Props as SubscriptionProps} from './components/subscriptions'
+import Billing, {Props as BillingProps} from "./components/billing"
+import Schedule, {Props as ScheduleProps} from "./components/schedule"
+import Subscriptions, {Props as SubscriptionProps} from "./components/subscriptions"
 
 interface Data extends BillingProps, ScheduleProps, SubscriptionProps {
   customer: {
@@ -22,49 +22,49 @@ interface Props {
   routerProps: Object,
 }
 
-const path = path => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path}`
+const path = (path) => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path}`
 
 export default class App extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       data,
-      Router, 
-      routerProps
+      Router,
+      routerProps,
     } = this.props
 
     const {
       customer: {
         first_name,
         last_name,
-      }
+      },
     } = data
 
     const routeProps = {...data, href: this.href}
 
     return (
       <Router {...routerProps}>
-        <div className='grid grid--uniform'>
-          <div className='grid__item medium-up--one-quarter'>
+        <div className="grid grid--uniform">
+          <div className="grid__item medium-up--one-quarter">
             <h3>{first_name} {last_name}</h3>
             <ul>
-              <li><a href={this.href('/schedule')}>Delivery schedule</a></li>
-              <li><a href={this.href('/subscriptions')}>Subscriptions</a></li>
-              <li><a href={this.href('/billing')}>Billing information</a></li>
+              <li><a href={this.href("/schedule")}>Delivery schedule</a></li>
+              <li><a href={this.href("/subscriptions")}>Subscriptions</a></li>
+              <li><a href={this.href("/billing")}>Billing information</a></li>
             </ul>
           </div>
 
-          <div className='grid__item medium-up--three-quarters'>
+          <div className="grid__item medium-up--three-quarters">
             <Switch>
               <Route
-                path={path('/billing')}
+                path={path("/billing")}
                 render={() => <Billing {...routeProps} />}
               />
               <Route
-                path={path('/schedule')}
+                path={path("/schedule")}
                 render={() => <Schedule {...routeProps} />}
               />
               <Route
-                path={path('/subscriptions')}
+                path={path("/subscriptions")}
                 render={() => <Subscriptions {...routeProps} />}
               />
             </Switch>
@@ -76,7 +76,7 @@ export default class App extends React.Component<Props> {
 
   private href = (path, opts = {prefix: null}) => {
     const {customerHash} = this.props
-    const prefix = opts.prefix || 'customer'
+    const prefix = opts.prefix || "customer"
     return `${process.env.APP_PROXY_PATH}/${prefix}/${customerHash}${path}`
   }
 }

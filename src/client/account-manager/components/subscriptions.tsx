@@ -1,8 +1,8 @@
-import * as React from 'react'
-import styled from 'styled-components'
+import * as React from "react"
+import styled from "styled-components"
 
-import SubscriptionRow from '../components/subscription-row'
-import {getBundleIdFromProperties} from '../../../shared/helpers'
+import {getBundleIdFromProperties} from "../../../shared/helpers"
+import SubscriptionRow from "../components/subscription-row"
 
 export interface Props {
   addresses: RechargeAddress[],
@@ -16,7 +16,7 @@ const List = styled.ol`
 `
 
 export default class Subscriptions extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       addresses,
       href,
@@ -28,7 +28,7 @@ export default class Subscriptions extends React.Component<Props> {
       <div>
         <h3>Subscription orders</h3>
         <List>
-          {Object.keys(bundleSubscriptions).map(bundleId => (
+          {Object.keys(bundleSubscriptions).map((bundleId) => (
             <SubscriptionRow
               addresses={addresses}
               href={href}

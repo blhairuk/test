@@ -1,5 +1,5 @@
-import * as React from 'react'
-import styled from 'styled-components'
+import * as React from "react"
+import styled from "styled-components"
 
 interface Props {
   variants: ShopifyVariant[],
@@ -14,12 +14,12 @@ interface GridItemProps {
 }
 
 const GridItem = styled.div`
-  border: ${({selected}: GridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
+  border: ${({selected}: GridItemProps) => selected ? "1px solid red" : "1px solid transparent"};
   cursor: pointer;
 `
 
 export default class ChooseSize extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       selectedSize,
       stepPrev,
@@ -28,11 +28,11 @@ export default class ChooseSize extends React.Component<Props> {
 
     return (
       <div>
-        <h2 className='h3'>Choose your size:</h2>
-        <div className='grid grid--uniform'>
-          {variants.map(variant => (
+        <h2 className="h3">Choose your size:</h2>
+        <div className="grid grid--uniform">
+          {variants.map((variant) => (
             <GridItem
-              className='grid__item medium-up--one-half text-center' 
+              className="grid__item medium-up--one-half text-center"
               key={variant.id}
               onClick={this.setSelectedSize.bind(this, parseInt(variant.option1))}
               selected={selectedSize === parseInt(variant.option1)}
@@ -42,9 +42,9 @@ export default class ChooseSize extends React.Component<Props> {
           ))}
         </div>
         <div>
-          <button 
+          <button
             onClick={stepPrev}
-            type='button'
+            type="button"
           >
             Prev
           </button>
@@ -53,7 +53,7 @@ export default class ChooseSize extends React.Component<Props> {
     )
   }
 
-  private setSelectedSize = size => {
+  private setSelectedSize = (size) => {
     this.props.setSelectedSize(size)
     this.props.stepNext()
   }

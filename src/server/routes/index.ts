@@ -1,3 +1,3 @@
-export default () => async ctx => {
-  ctx.body = 'Hello'
+export default () => async (ctx) => {
+  ctx.body = "Hello"
 }

@@ -1,7 +1,7 @@
 declare interface ShopifyCollection {
   body_html: string,
   image: {
-    src: string
+    src: string,
   },
   title: string,
 }
@@ -12,9 +12,9 @@ declare interface ShopifyProduct {
   image: {
     src: string,
   },
-  images: {
+  images: Array<{
     src: string,
-  }[],
+  }>,
   product_type: string,
   tags: string,
   title: string,

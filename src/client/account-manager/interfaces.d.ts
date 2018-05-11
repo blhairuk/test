@@ -8,11 +8,11 @@ declare interface RechargeAddress {
 
 declare interface RechargeCharge {
   id: number,
-  line_items: {
+  line_items: Array<{
     title: string,
-  }[],
+  }>,
   scheduled_at: string,
-  status: 'QUEUED' | 'SKIPPED',
+  status: "QUEUED" | "SKIPPED",
 }
 
 declare interface RechargeOrder {
@@ -24,17 +24,17 @@ declare interface RechargeSubscription {
   id: number,
   price: number,
   product_title: string,
-  properties: {
+  properties: Array<{
     name: string,
     value: string,
-  }[],
+  }>,
   order_interval_frequency: string,
   order_interval_unit: string,
   next_charge_scheduled_at: string,
   quantity: number,
   shopify_product_id: number,
   shopify_variant_id: number,
-  status: 'ACTIVE' | 'CANCELLED',
+  status: "ACTIVE" | "CANCELLED",
 }
 
 declare interface StripeCustomer {
@@ -42,7 +42,7 @@ declare interface StripeCustomer {
   email: string,
   id: string,
   sources: {
-    data: {
+    data: Array<{
       address_city: string,
       address_country: string,
       address_line1: string,
@@ -55,6 +55,6 @@ declare interface StripeCustomer {
       id: string,
       last4: string,
       name: string,
-    }[]
+    }>,
   }
 }

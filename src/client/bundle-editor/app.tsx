@@ -1,31 +1,31 @@
-import * as React from 'react'
-import Slider from 'react-slick'
-import styled from 'styled-components'
+import * as React from "react"
+import Slider from "react-slick"
+import styled from "styled-components"
 
-import ChooseAddOns from './components/choose-add-ons'
-import ChooseFrequency from './components/choose-frequency'
-import ChooseProducts from './components/choose-products'
-import ChooseSize from './components/choose-size'
-import Confirm from './components/confirm'
-import EnterEmail from './components/enter-email'
-import EnterName from './components/enter-name'
+import ChooseAddOns from "./components/choose-add-ons"
+import ChooseFrequency from "./components/choose-frequency"
+import ChooseProducts from "./components/choose-products"
+import ChooseSize from "./components/choose-size"
+import Confirm from "./components/confirm"
+import EnterEmail from "./components/enter-email"
+import EnterName from "./components/enter-name"
 
-import Modal from '../helpers/modal'
+import Modal from "../helpers/modal"
 
 import {
   createBundleId,
   createIdQuantities,
-} from '../../shared/helpers'
-import updateStateKeys from '../helpers/update-state-keys'
+} from "../../shared/helpers"
+import updateStateKeys from "../helpers/update-state-keys"
 
 import {
   addToCart,
   fetchCart,
   removeBundleIdFromCart,
   updateCartDrawerUI,
-} from '../helpers/cart'
+} from "../helpers/cart"
 
-import {BUNDLE_TYPE} from '../../shared/constants'
+import {BUNDLE_TYPE} from "../../shared/constants"
 
 interface Props {
   bundleAddOns: ShopifyProduct[],
@@ -54,13 +54,13 @@ interface State {
 }
 
 const initialState = {
-  bundleName: '',
+  bundleName: "",
   editingBundleId: null,
-  enteredEmail: '',
-  enteredName: '',
+  enteredEmail: "",
+  enteredName: "",
   isBundleFullModalOpen: false,
   isSubmitting: false,
-  selectedAddOnIds: [],    
+  selectedAddOnIds: [],
   selectedFrequency: null,
   selectedVariantIds: [],
   selectedSize: null,
@@ -77,18 +77,18 @@ export default class App extends React.Component<Props, State> {
   public sliderRef: React.RefObject<Slider>
   public state = initialState
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.sliderRef = React.createRef()
-    
+
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
       this.state = updateStateKeys(cartState)(initialState)
     }
   }
 
-  async componentDidMount () {
+  public async componentDidMount() {
     const {
       bundleId,
       customerHash,
@@ -100,7 +100,7 @@ export default class App extends React.Component<Props, State> {
     }
   }
 
-  render () {
+  public render() {
     const {
       bundleAddOns,
       bundleProduct,
@@ -119,14 +119,14 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     } = this.state
 
-    const shippingFrequencies = this.metafieldValue('shipping_interval_frequency').split(',')
-    const shippingUnitType = this.metafieldValue('shipping_interval_unit_type')
+    const shippingFrequencies = this.metafieldValue("shipping_interval_frequency").split(",")
+    const shippingUnitType = this.metafieldValue("shipping_interval_unit_type")
 
     return (
       <div>
         <Slider
           beforeChange={this.handleSlideChange}
-          adaptiveHeight
+          adaptiveHeight={true}
           arrows={null}
           draggable={false}
           infinite={false}
@@ -134,7 +134,7 @@ export default class App extends React.Component<Props, State> {
         >
           <div>
             <Step>
-              <EnterName 
+              <EnterName
                 enterName={this.enterName}
                 enteredName={enteredName}
                 stepNext={this.stepNext}
@@ -143,7 +143,7 @@ export default class App extends React.Component<Props, State> {
           </div>
           <div>
             <Step>
-              <EnterEmail 
+              <EnterEmail
                 enterEmail={this.enterEmail}
                 enteredEmail={enteredEmail}
                 stepNext={this.stepNext}
@@ -165,8 +165,8 @@ export default class App extends React.Component<Props, State> {
           </div>
           <div>
             <Step>
-              <ChooseSize 
-                variants={bundleProduct.variants} 
+              <ChooseSize
+                variants={bundleProduct.variants}
                 selectedSize={selectedSize}
                 setSelectedSize={this.setSelectedSize}
                 stepNext={this.stepNext}
@@ -176,9 +176,9 @@ export default class App extends React.Component<Props, State> {
           </div>
           <div>
             <Step>
-              <ChooseProducts 
+              <ChooseProducts
                 addVariantId={this.addVariantId}
-                products={bundleProducts} 
+                products={bundleProducts}
                 selectedSize={selectedSize}
                 removeVariantId={this.removeVariantId}
                 selectedVariantIds={selectedVariantIds}
@@ -189,7 +189,7 @@ export default class App extends React.Component<Props, State> {
           </div>
           <div>
             <Step>
-              <ChooseAddOns 
+              <ChooseAddOns
                 addAddOnId={this.addAddOnId}
                 products={bundleAddOns}
                 removeAddOnId={this.removeAddOnId}
@@ -209,15 +209,15 @@ export default class App extends React.Component<Props, State> {
                 selectedAddOnIds={selectedAddOnIds}
                 selectedFrequency={selectedFrequency}
                 selectedSize={selectedSize}
-                selectedVariantIds={selectedVariantIds} 
+                selectedVariantIds={selectedVariantIds}
                 stepPrev={this.stepPrev}
-                submit={this.submit} 
+                submit={this.submit}
               />
             </Step>
           </div>
         </Slider>
 
-        <Modal 
+        <Modal
           handleClose={this.handleBundleFullModalClose}
           isOpen={isBundleFullModalOpen}
         >
@@ -227,7 +227,7 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  private metafieldValue = key => this.props.bundleProductMetafields.find(m => m.key === key).value
+  private metafieldValue = (key) => this.props.bundleProductMetafields.find((m) => m.key === key).value
 
   private enterEmail = ({target: {value: enteredEmail}}) => {
     this.setState(updateStateKeys({enteredEmail}))
@@ -235,58 +235,58 @@ export default class App extends React.Component<Props, State> {
 
   private enterName = ({target: {value: enteredName}}) => {
     this.setState(updateStateKeys({
-      bundleName: enteredName ? `${enteredName}'s box` : '',
+      bundleName: enteredName ? `${enteredName}'s box` : "",
       enteredName,
     }))
   }
 
-  private setSelectedFrequency = selectedFrequency => {
+  private setSelectedFrequency = (selectedFrequency) => {
     this.setState(updateStateKeys({selectedFrequency}))
   }
 
-  private setSelectedSize = selectedSize => {
+  private setSelectedSize = (selectedSize) => {
     this.setState(updateStateKeys({selectedSize}))
   }
 
-  private addVariantId = id => {
+  private addVariantId = (id) => {
     const {
       selectedVariantIds: oldIds,
       selectedSize,
     } = this.state
 
-    if (!selectedSize) return alert('You must selected a size first.')
-    if (oldIds.length >= selectedSize) return this.setState(updateStateKeys({isBundleFullModalOpen: true}))
+    if (!selectedSize) { return alert("You must selected a size first.") }
+    if (oldIds.length >= selectedSize) { return this.setState(updateStateKeys({isBundleFullModalOpen: true})) }
 
     const selectedVariantIds = oldIds.concat(id)
 
     this.setState(updateStateKeys({selectedVariantIds}))
   }
 
-  private removeVariantId = id => {
+  private removeVariantId = (id) => {
     const {selectedVariantIds: oldIds} = this.state
 
     const existingIndex = oldIds.indexOf(id)
-    if (existingIndex <= -1) return
+    if (existingIndex <= -1) { return }
 
     const selectedVariantIds = oldIds.filter((_, i) => i !== existingIndex)
 
     this.setState(updateStateKeys({selectedVariantIds}))
   }
 
-  private addAddOnId = id => {
+  private addAddOnId = (id) => {
     const {
       selectedAddOnIds: oldIds,
       selectedSize,
     } = this.state
 
-    if (!selectedSize) return alert('You must select a size first.')
+    if (!selectedSize) { return alert("You must select a size first.") }
 
     const selectedAddOnIds = oldIds.concat([...Array(selectedSize)].map(() => id))
 
     this.setState(updateStateKeys({selectedAddOnIds}))
   }
 
-  private removeAddOnId = id => {
+  private removeAddOnId = (id) => {
     const {
       selectedAddOnIds: oldIds,
       selectedSize,
@@ -296,7 +296,7 @@ export default class App extends React.Component<Props, State> {
 
     for (let i = 0; i < (selectedSize || 1); ++i) {
       const index = selectedAddOnIds.indexOf(id)
-      if (index <= -1) return
+      if (index <= -1) { return }
       selectedAddOnIds.splice(index, 1)
     }
 
@@ -308,11 +308,11 @@ export default class App extends React.Component<Props, State> {
       ...extraData,
       properties: {
         bundle_id: bundleId,
-        subscription_id: this.metafieldValue('subscription_id'),
+        subscription_id: this.metafieldValue("subscription_id"),
         shipping_interval_frequency: this.state.selectedFrequency,
-        shipping_interval_unit_type: this.metafieldValue('shipping_interval_unit_type'),
-        ...extraData.properties
-      }
+        shipping_interval_unit_type: this.metafieldValue("shipping_interval_unit_type"),
+        ...extraData.properties,
+      },
     })
   }
 
@@ -349,10 +349,10 @@ export default class App extends React.Component<Props, State> {
     }
 
     await $.ajax({
-      contentType: 'application/json',
+      contentType: "application/json",
       data: JSON.stringify(data),
-      dataType: 'json',
-      method: 'PUT',
+      dataType: "json",
+      method: "PUT",
       url: window.location.pathname,
     })
   }
@@ -374,7 +374,7 @@ export default class App extends React.Component<Props, State> {
     }
 
     const sizeVariantId = bundleProduct.variants
-      .find(v => parseInt(v.option1) === selectedSize)
+      .find((v) => parseInt(v.option1) === selectedSize)
       .id
     const bundleId = editingBundleId || createBundleId()
     const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
@@ -388,7 +388,7 @@ export default class App extends React.Component<Props, State> {
       quantity: 1,
     })
 
-    for (let id in idQuantities) {
+    for (const id in idQuantities) {
       await this.addToCart(bundleId, {
         id,
         quantity: idQuantities[id],
@@ -399,8 +399,8 @@ export default class App extends React.Component<Props, State> {
 
     this.setState(updateStateKeys({editingBundleId: bundleId}))
   }
-  
-  private extractStateFromCart = async bundleId => {
+
+  private extractStateFromCart = async (bundleId) => {
     const {
       bundleAddOns,
       bundleProducts,
@@ -408,12 +408,12 @@ export default class App extends React.Component<Props, State> {
 
     const cart = await fetchCart()
 
-    let bundleName = ''
-    let enteredName = ''
-    let selectedAddOnIds = []
+    let bundleName = ""
+    let enteredName = ""
+    const selectedAddOnIds = []
     let selectedFrequency = null
     let selectedSize = null
-    let selectedVariantIds = []
+    const selectedVariantIds = []
 
     for (const item of cart.items) {
       const {
@@ -427,7 +427,7 @@ export default class App extends React.Component<Props, State> {
         product_type: productType,
         quantity,
         variant_id: variantId,
-        variant_options: [size]
+        variant_options: [size],
       } = item
 
       if (itemBundleId === bundleId) {
@@ -438,8 +438,8 @@ export default class App extends React.Component<Props, State> {
           selectedFrequency = frequency
         } else {
           const selectedArray = (() => {
-            if (bundleAddOns.some(p => p.id === product_id)) return selectedAddOnIds
-            if (bundleProducts.some(p => p.id === product_id)) return selectedVariantIds
+            if (bundleAddOns.some((p) => p.id === product_id)) { return selectedAddOnIds }
+            if (bundleProducts.some((p) => p.id === product_id)) { return selectedVariantIds }
           })()
           if (selectedArray) {
             for (let i = 0; i < quantity; ++i) {
@@ -454,7 +454,7 @@ export default class App extends React.Component<Props, State> {
       bundleName,
       editingBundleId: bundleId,
       enteredName,
-      selectedAddOnIds,    
+      selectedAddOnIds,
       selectedFrequency,
       selectedVariantIds,
       selectedSize,
@@ -470,10 +470,10 @@ export default class App extends React.Component<Props, State> {
       subscriptions,
     } = this.props
 
-    let selectedAddOnIds = []
+    const selectedAddOnIds = []
     let selectedFrequency = null
     let selectedSize = null
-    let selectedVariantIds = []
+    const selectedVariantIds = []
 
     for (const {
       order_interval_frequency,
@@ -483,11 +483,11 @@ export default class App extends React.Component<Props, State> {
     } of subscriptions) {
       if (shopify_product_id == bundleProduct.id) {
         selectedFrequency = parseInt(order_interval_frequency)
-        selectedSize = parseInt(bundleProduct.variants.find(v => v.id === shopify_variant_id).option1)
+        selectedSize = parseInt(bundleProduct.variants.find((v) => v.id === shopify_variant_id).option1)
       } else {
         const selectedArray = (() => {
-          if (bundleAddOns.some(p => p.id === shopify_product_id)) return selectedAddOnIds
-          if (bundleProducts.some(p => p.id === shopify_product_id)) return selectedVariantIds
+          if (bundleAddOns.some((p) => p.id === shopify_product_id)) { return selectedAddOnIds }
+          if (bundleProducts.some((p) => p.id === shopify_product_id)) { return selectedVariantIds }
         })()
         if (selectedArray) {
           for (let i = 0; i < quantity; ++i) {
@@ -499,7 +499,7 @@ export default class App extends React.Component<Props, State> {
 
     return {
       editingBundleId: bundleId,
-      selectedAddOnIds,    
+      selectedAddOnIds,
       selectedFrequency,
       selectedVariantIds,
       selectedSize,
@@ -507,12 +507,12 @@ export default class App extends React.Component<Props, State> {
   }
 
   private stepNext = (e?: React.FormEvent<HTMLElement>) => {
-    if (e) e.preventDefault()
+    if (e) { e.preventDefault() }
     this.sliderRef.current.slickNext()
   }
 
   private stepPrev = (e?: React.FormEvent<HTMLElement>) => {
-    if (e) e.preventDefault()
+    if (e) { e.preventDefault() }
     this.sliderRef.current.slickPrev()
   }
 
@@ -521,6 +521,6 @@ export default class App extends React.Component<Props, State> {
   }
 
   private handleSlideChange = () => {
-    $('html, body').animate({scrollTop: 0}, 500)
+    $("html, body").animate({scrollTop: 0}, 500)
   }
 }

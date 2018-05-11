@@ -1,5 +1,5 @@
-import * as React from 'react'
-import styled from 'styled-components'
+import * as React from "react"
+import styled from "styled-components"
 
 interface Props {
   frequencies: string[],
@@ -15,12 +15,12 @@ interface GridItemProps {
 }
 
 const GridItem = styled.div`
-  border: ${({selected}: GridItemProps) => selected ? '1px solid red' : '1px solid transparent'};
+  border: ${({selected}: GridItemProps) => selected ? "1px solid red" : "1px solid transparent"};
   cursor: pointer;
 `
 
 export default class ChooseFrequency extends React.Component<Props> {
-  render () {
+  public render() {
     const {
       frequencies,
       selectedFrequency,
@@ -30,11 +30,11 @@ export default class ChooseFrequency extends React.Component<Props> {
 
     return (
       <div>
-        <h2 className='h3'>Choose your frequency:</h2>
-        <div className='grid grid--uniform'>
-          {frequencies.map(frequency => (
+        <h2 className="h3">Choose your frequency:</h2>
+        <div className="grid grid--uniform">
+          {frequencies.map((frequency) => (
             <GridItem
-              className='grid__item medium-up--one-third text-center' 
+              className="grid__item medium-up--one-third text-center"
               key={frequency}
               onClick={this.setSelectedFrequency.bind(this, parseInt(frequency))}
               selected={selectedFrequency === parseInt(frequency)}
@@ -44,9 +44,9 @@ export default class ChooseFrequency extends React.Component<Props> {
           ))}
         </div>
         <div>
-          <button 
+          <button
             onClick={stepPrev}
-            type='button'
+            type="button"
           >
             Prev
           </button>
@@ -55,7 +55,7 @@ export default class ChooseFrequency extends React.Component<Props> {
     )
   }
 
-  private setSelectedFrequency = frequency => {
+  private setSelectedFrequency = (frequency) => {
     this.props.setSelectedFrequency(frequency)
     this.props.stepNext()
   }
