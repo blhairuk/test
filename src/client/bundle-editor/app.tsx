@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Slider from 'react-slick'
 import styled from 'styled-components'
 
 import ChooseAddOns from './components/choose-add-ons'
@@ -71,26 +72,21 @@ const initialState = {
   step: Steps.Name,
 }
 
-const HEADER_HEIGHT = 89
-
 const Step = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
-  padding-top: ${HEADER_HEIGHT}px;
-
-  &:first-child { 
-    min-height: calc(100vh - ${HEADER_HEIGHT}px);
-    padding-top: 0;
-  }
+  min-height: 611px;
 `
 
 export default class App extends React.Component<Props, State> {
+  public sliderRef: React.RefObject<Slider>
   public state = initialState
 
   constructor (props) {
     super(props)
+
+    this.sliderRef = React.createRef()
     
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
@@ -142,69 +138,97 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <div>
-        <Step id={this.stepId(Steps.Name)}>
-          <EnterName 
-            enterName={this.enterName}
-            enteredName={enteredName}
-            stepNext={this.stepNext}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.Email)}>
-          <EnterEmail 
-            enterEmail={this.enterEmail}
-            enteredEmail={enteredEmail}
-            stepNext={this.stepNext}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.Frequency)}>
-          <ChooseFrequency
-            frequencies={shippingFrequencies}
-            selectedFrequency={selectedFrequency}
-            setSelectedFrequency={this.setSelectedFrequency}
-            stepNext={this.stepNext}
-            unitType={shippingUnitType}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.Size)}>
-          <ChooseSize 
-            variants={bundleProduct.variants} 
-            selectedSize={selectedSize}
-            setSelectedSize={this.setSelectedSize}
-            stepNext={this.stepNext}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.Products)}>
-          <ChooseProducts 
-            addVariantId={this.addVariantId}
-            products={bundleProducts} 
-            selectedSize={selectedSize}
-            removeVariantId={this.removeVariantId}
-            selectedVariantIds={selectedVariantIds}
-            stepNext={this.stepNext}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.AddOns)}>
-          <ChooseAddOns 
-            addAddOnId={this.addAddOnId}
-            products={bundleAddOns}
-            removeAddOnId={this.removeAddOnId}
-            selectedAddOnIds={selectedAddOnIds}
-            stepNext={this.stepNext}
-          />
-        </Step>
-        <Step id={this.stepId(Steps.Confirm)}>
-          <Confirm
-            enteredName={enteredName}
-            isEditingBundle={!!editingBundleId}
-            isSubmitting={isSubmitting}
-            selectedAddOnIds={selectedAddOnIds}
-            selectedFrequency={selectedFrequency}
-            selectedSize={selectedSize}
-            selectedVariantIds={selectedVariantIds} 
-            stepPrev={this.stepPrev}
-            submit={this.submit} 
-          />
-        </Step>
+        <Slider
+          beforeChange={this.handleSlideChange}
+          adaptiveHeight
+          arrows={null}
+          draggable={false}
+          infinite={false}
+          ref={this.sliderRef}
+        >
+          <div>
+            <Step>
+              <EnterName 
+                enterName={this.enterName}
+                enteredName={enteredName}
+                stepNext={this.stepNext}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <EnterEmail 
+                enterEmail={this.enterEmail}
+                enteredEmail={enteredEmail}
+                stepNext={this.stepNext}
+                stepPrev={this.stepPrev}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <ChooseFrequency
+                frequencies={shippingFrequencies}
+                selectedFrequency={selectedFrequency}
+                setSelectedFrequency={this.setSelectedFrequency}
+                stepNext={this.stepNext}
+                stepPrev={this.stepPrev}
+                unitType={shippingUnitType}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <ChooseSize 
+                variants={bundleProduct.variants} 
+                selectedSize={selectedSize}
+                setSelectedSize={this.setSelectedSize}
+                stepNext={this.stepNext}
+                stepPrev={this.stepPrev}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <ChooseProducts 
+                addVariantId={this.addVariantId}
+                products={bundleProducts} 
+                selectedSize={selectedSize}
+                removeVariantId={this.removeVariantId}
+                selectedVariantIds={selectedVariantIds}
+                stepNext={this.stepNext}
+                stepPrev={this.stepPrev}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <ChooseAddOns 
+                addAddOnId={this.addAddOnId}
+                products={bundleAddOns}
+                removeAddOnId={this.removeAddOnId}
+                selectedAddOnIds={selectedAddOnIds}
+                stepNext={this.stepNext}
+                stepPrev={this.stepPrev}
+              />
+            </Step>
+          </div>
+          <div>
+            <Step>
+              <Confirm
+                enteredName={enteredName}
+                isEditingBundle={!!editingBundleId}
+                isSubmitting={isSubmitting}
+                selectedAddOnIds={selectedAddOnIds}
+                selectedFrequency={selectedFrequency}
+                selectedSize={selectedSize}
+                selectedVariantIds={selectedVariantIds} 
+                stepPrev={this.stepPrev}
+                submit={this.submit} 
+              />
+            </Step>
+          </div>
+        </Slider>
 
         <Modal 
           handleClose={this.handleBundleFullModalClose}
@@ -497,12 +521,12 @@ export default class App extends React.Component<Props, State> {
 
   private stepNext = (e?: React.FormEvent<HTMLElement>) => {
     if (e) e.preventDefault()
-    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] + 1}))
+    this.sliderRef.current.slickNext()
   }
 
   private stepPrev = (e?: React.FormEvent<HTMLElement>) => {
     if (e) e.preventDefault()
-    this.setState(updateStateKeys({step: Steps[Steps[this.state.step]] - 1}))
+    this.sliderRef.current.slickPrev()
   }
 
   private handleBundleFullModalClose = () => {
@@ -515,5 +539,9 @@ export default class App extends React.Component<Props, State> {
     $('html, body').animate({
       scrollTop: $(`#${this.stepId(step)}`).offset().top
     }, 1000)
+  }
+
+  private handleSlideChange = () => {
+    $('html, body').animate({scrollTop: 0}, 500)
   }
 }

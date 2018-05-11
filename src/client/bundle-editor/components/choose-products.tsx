@@ -7,6 +7,7 @@ interface Props {
   selectedSize: number,
   selectedVariantIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
+  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class ChooseProducts extends React.Component<Props> {
@@ -18,6 +19,7 @@ export default class ChooseProducts extends React.Component<Props> {
       selectedSize,
       selectedVariantIds,
       stepNext,
+      stepPrev,
     } = this.props
 
     const productTypes = [...new Set(products.map(p => p.product_type))]
@@ -66,11 +68,23 @@ export default class ChooseProducts extends React.Component<Props> {
           </div>
         ))}
 
-        {selectedVariantIds.length === selectedSize && (
-          <div>
-            <a onClick={stepNext}>Next</a>
-          </div>
-        )}
+        <div>
+          <button 
+            onClick={stepPrev}
+            type='button'
+          >
+            Prev
+          </button>
+
+          {selectedVariantIds.length === selectedSize && (
+            <button 
+              onClick={stepNext}
+              type='button'
+            >
+              Next
+            </button>
+          )}
+        </div>
       </div>
     )
   }

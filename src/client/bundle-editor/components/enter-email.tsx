@@ -4,6 +4,7 @@ interface Props {
   enteredEmail: string,
   enterEmail: (string) => any,
   stepNext: (e: React.FormEvent<HTMLElement>) => any,
+  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class EnterEmail extends React.Component<Props> {
@@ -12,6 +13,7 @@ export default class EnterEmail extends React.Component<Props> {
       enterEmail,
       enteredEmail,
       stepNext,
+      stepPrev,
     } = this.props
 
     return (
@@ -24,7 +26,16 @@ export default class EnterEmail extends React.Component<Props> {
             value={enteredEmail}
           />
           <div>
-            <button type='submit'>Next</button>
+            <button 
+              onClick={stepPrev}
+              type='button'
+            >
+              Prev
+            </button>
+
+            {enteredEmail.length > 2 && (
+              <button type='submit'>Next</button>
+            )}
           </div>
         </form>
       </div>

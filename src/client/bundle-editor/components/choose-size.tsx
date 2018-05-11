@@ -6,6 +6,7 @@ interface Props {
   selectedSize: number,
   setSelectedSize: (number) => any,
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
+  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
 interface GridItemProps {
@@ -21,6 +22,7 @@ export default class ChooseSize extends React.Component<Props> {
   render () {
     const {
       selectedSize,
+      stepPrev,
       variants,
     } = this.props
 
@@ -38,6 +40,14 @@ export default class ChooseSize extends React.Component<Props> {
               {variant.option1} for {variant.price}
             </GridItem>
           ))}
+        </div>
+        <div>
+          <button 
+            onClick={stepPrev}
+            type='button'
+          >
+            Prev
+          </button>
         </div>
       </div>
     )

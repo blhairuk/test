@@ -6,6 +6,7 @@ interface Props {
   selectedFrequency: number,
   setSelectedFrequency: (number) => any,
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
+  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
   unitType: string,
 }
 
@@ -23,6 +24,7 @@ export default class ChooseFrequency extends React.Component<Props> {
     const {
       frequencies,
       selectedFrequency,
+      stepPrev,
       unitType,
     } = this.props
 
@@ -40,6 +42,14 @@ export default class ChooseFrequency extends React.Component<Props> {
               {frequency} {unitType}
             </GridItem>
           ))}
+        </div>
+        <div>
+          <button 
+            onClick={stepPrev}
+            type='button'
+          >
+            Prev
+          </button>
         </div>
       </div>
     )

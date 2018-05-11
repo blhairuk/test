@@ -26,7 +26,9 @@ export default class EnterName extends React.Component<Props> {
             />
           </div>
           <div>
-            <button type='submit'>Next</button>
+            {enteredName.length > 2 && (
+              <button type='submit'>Next</button>
+            )}
           </div>
         </form>
       </div>

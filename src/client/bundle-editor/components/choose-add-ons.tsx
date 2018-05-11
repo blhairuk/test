@@ -6,6 +6,7 @@ interface Props {
   removeAddOnId: (number) => any,
   selectedAddOnIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
+  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class ChooseAddOns extends React.Component<Props> {
@@ -16,6 +17,7 @@ export default class ChooseAddOns extends React.Component<Props> {
       removeAddOnId,
       selectedAddOnIds,
       stepNext,
+      stepPrev,
     } = this.props
 
     return (
@@ -54,7 +56,19 @@ export default class ChooseAddOns extends React.Component<Props> {
         </div>
 
         <div>
-          <a onClick={stepNext}>Next</a>
+          <button 
+            onClick={stepPrev}
+            type='button'
+          >
+            Prev
+          </button>
+
+          <button 
+            onClick={stepNext}
+            type='button'
+          >
+            Next
+          </button>
         </div>
       </div>
     )
