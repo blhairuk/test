@@ -62,8 +62,8 @@ const initialState = {
   isSubmitting: false,
   selectedAddOnIds: [],
   selectedFrequency: null,
-  selectedVariantIds: [],
   selectedSize: null,
+  selectedVariantIds: [],
 }
 
 const Step = styled.div`
@@ -308,9 +308,9 @@ export default class App extends React.Component<Props, State> {
       ...extraData,
       properties: {
         bundle_id: bundleId,
-        subscription_id: this.metafieldValue("subscription_id"),
         shipping_interval_frequency: this.state.selectedFrequency,
         shipping_interval_unit_type: this.metafieldValue("shipping_interval_unit_type"),
+        subscription_id: this.metafieldValue("subscription_id"),
         ...extraData.properties,
       },
     })
@@ -363,6 +363,7 @@ export default class App extends React.Component<Props, State> {
     const {
       bundleName,
       editingBundleId,
+      enteredEmail,
       enteredName,
       selectedAddOnIds,
       selectedSize,
@@ -374,7 +375,7 @@ export default class App extends React.Component<Props, State> {
     }
 
     const sizeVariantId = bundleProduct.variants
-      .find((v) => parseInt(v.option1) === selectedSize)
+      .find((v) => parseInt(v.option1, 10) === selectedSize)
       .id
     const bundleId = editingBundleId || createBundleId()
     const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
@@ -383,16 +384,19 @@ export default class App extends React.Component<Props, State> {
       id: sizeVariantId,
       properties: {
         bundle_customer_name: enteredName,
+        bundle_email: enteredEmail,
         bundle_name: bundleName,
       },
       quantity: 1,
     })
 
     for (const id in idQuantities) {
-      await this.addToCart(bundleId, {
-        id,
-        quantity: idQuantities[id],
-      })
+      if (idQuantities.hasOwnProperty(id)) {
+        await this.addToCart(bundleId, {
+          id,
+          quantity: idQuantities[id],
+        })
+      }
     }
 
     updateCartDrawerUI()
@@ -409,6 +413,7 @@ export default class App extends React.Component<Props, State> {
     const cart = await fetchCart()
 
     let bundleName = ""
+    let enteredEmail = ""
     let enteredName = ""
     const selectedAddOnIds = []
     let selectedFrequency = null
@@ -419,6 +424,7 @@ export default class App extends React.Component<Props, State> {
       const {
         properties: {
           bundle_customer_name,
+          bundle_email,
           bundle_id: itemBundleId,
           bundle_name,
           shipping_interval_frequency: frequency,
@@ -432,9 +438,10 @@ export default class App extends React.Component<Props, State> {
 
       if (itemBundleId === bundleId) {
         if (productType === BUNDLE_TYPE) {
+          enteredEmail = bundle_email
           bundleName = bundle_name
           enteredName = bundle_customer_name
-          selectedSize = parseInt(size)
+          selectedSize = parseInt(size, 10)
           selectedFrequency = frequency
         } else {
           const selectedArray = (() => {
@@ -453,11 +460,12 @@ export default class App extends React.Component<Props, State> {
     return {
       bundleName,
       editingBundleId: bundleId,
+      enteredEmail,
       enteredName,
       selectedAddOnIds,
       selectedFrequency,
-      selectedVariantIds,
       selectedSize,
+      selectedVariantIds,
     }
   }
 
@@ -481,9 +489,9 @@ export default class App extends React.Component<Props, State> {
       shopify_product_id,
       shopify_variant_id,
     } of subscriptions) {
-      if (shopify_product_id == bundleProduct.id) {
-        selectedFrequency = parseInt(order_interval_frequency)
-        selectedSize = parseInt(bundleProduct.variants.find((v) => v.id === shopify_variant_id).option1)
+      if (shopify_product_id === bundleProduct.id) {
+        selectedFrequency = parseInt(order_interval_frequency, 10)
+        selectedSize = parseInt(bundleProduct.variants.find((v) => v.id === shopify_variant_id).option1, 10)
       } else {
         const selectedArray = (() => {
           if (bundleAddOns.some((p) => p.id === shopify_product_id)) { return selectedAddOnIds }
@@ -501,8 +509,8 @@ export default class App extends React.Component<Props, State> {
       editingBundleId: bundleId,
       selectedAddOnIds,
       selectedFrequency,
-      selectedVariantIds,
       selectedSize,
+      selectedVariantIds,
     }
   }
 
