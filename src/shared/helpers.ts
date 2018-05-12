@@ -11,6 +11,13 @@ export const getBundleIdFromProperties = (properties) => {
   if (property) { return property.value }
 }
 
+export const getPropertyValueForKey = (properties, key) => {
+  const property = properties.find(({name}) => name === key)
+  if (property) {
+    return property.value
+  }
+}
+
 export const findProductByVariantId = (products, variantId) => (
   products.find(({variants}) => variants.find(({id}) => id === variantId))
 )

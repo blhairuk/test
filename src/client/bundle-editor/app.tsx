@@ -15,6 +15,7 @@ import Modal from "../helpers/modal"
 import {
   createBundleId,
   createIdQuantities,
+  getPropertyValueForKey,
 } from "../../shared/helpers"
 import updateStateKeys from "../helpers/update-state-keys"
 
@@ -478,6 +479,8 @@ export default class App extends React.Component<Props, State> {
       subscriptions,
     } = this.props
 
+    let enteredEmail = ""
+    let enteredName = ""
     const selectedAddOnIds = []
     let selectedFrequency = null
     let selectedSize = null
@@ -485,11 +488,14 @@ export default class App extends React.Component<Props, State> {
 
     for (const {
       order_interval_frequency,
+      properties,
       quantity,
       shopify_product_id,
       shopify_variant_id,
     } of subscriptions) {
       if (shopify_product_id === bundleProduct.id) {
+        enteredEmail = getPropertyValueForKey(properties, "bundle_email")
+        enteredName = getPropertyValueForKey(properties, "bundle_customer_name")
         selectedFrequency = parseInt(order_interval_frequency, 10)
         selectedSize = parseInt(bundleProduct.variants.find((v) => v.id === shopify_variant_id).option1, 10)
       } else {
@@ -507,6 +513,8 @@ export default class App extends React.Component<Props, State> {
 
     return {
       editingBundleId: bundleId,
+      enteredEmail,
+      enteredName,
       selectedAddOnIds,
       selectedFrequency,
       selectedSize,

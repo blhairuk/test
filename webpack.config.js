@@ -17,7 +17,7 @@ module.exports = {
   entry: {
     'account-manager': './dist/client/account-manager/index.js',
     'bundle-editor': './dist/client/bundle-editor/index.js',
-    'theme.bundle': './dist/client/theme.bundle.js',
+    'theme.bundle': './dist/client/theme.bundle/index.js',
   },
   module: {
     rules: [{
