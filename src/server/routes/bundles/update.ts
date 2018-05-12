@@ -31,18 +31,21 @@ export default () => async (ctx) => {
 
   const {
     add_on_ids,
+    bundle_name,
+    customer_name,
+    email,
     frequency,
     size: sizeI,
     variant_ids,
   } = ctx.request.body
 
-  const bundleId = parseInt(bundleIdS)
+  const bundleId = parseInt(bundleIdS, 10)
   const size = `${sizeI}`
   const accessToken = await getToken(shopName)
 
   const shopify = new Shopify({
-    shopName,
     accessToken,
+    shopName,
   })
 
   const idQuantities = createIdQuantities(variant_ids.concat(add_on_ids))
@@ -70,7 +73,7 @@ export default () => async (ctx) => {
   const newSubscriptionsData = Object.entries(idQuantities)
     .concat([[`${bundleVariantId}`, 1]])
     .map(([idS, quantity]) => {
-      const id = parseInt(idS)
+      const id = parseInt(idS, 10)
       const product = findProductByVariantId(products, id)
       const variant = product.variants.find((v) => v.id === id)
 
@@ -82,6 +85,11 @@ export default () => async (ctx) => {
         order_interval_unit,
         price: variant.price,
         product_title: product.title,
+        properties: id === bundleVariantId ? {
+          bundle_customer_name: customer_name,
+          bundle_email: email,
+          bundle_name,
+        } : undefined,
         quantity,
         shopify_product_id: product.id,
         shopify_variant_id: id,

@@ -236,7 +236,7 @@ export default class App extends React.Component<Props, State> {
 
   private enterName = ({target: {value: enteredName}}) => {
     this.setState(updateStateKeys({
-      bundleName: enteredName ? `${enteredName}'s box` : "",
+      bundleName: enteredName ? this.createBundleName(enteredName) : "",
       enteredName,
     }))
   }
@@ -336,6 +336,9 @@ export default class App extends React.Component<Props, State> {
 
   private submitCustomerBundleUpdates = async () => {
     const {
+      bundleName,
+      enteredEmail,
+      enteredName,
       selectedAddOnIds,
       selectedFrequency,
       selectedSize,
@@ -344,6 +347,9 @@ export default class App extends React.Component<Props, State> {
 
     const data = {
       add_on_ids: selectedAddOnIds,
+      bundle_name: bundleName,
+      customer_name: enteredName,
+      email: enteredEmail,
       frequency: selectedFrequency,
       size: selectedSize,
       variant_ids: selectedVariantIds,
@@ -479,6 +485,7 @@ export default class App extends React.Component<Props, State> {
       subscriptions,
     } = this.props
 
+    let bundleName = ""
     let enteredEmail = ""
     let enteredName = ""
     const selectedAddOnIds = []
@@ -494,6 +501,7 @@ export default class App extends React.Component<Props, State> {
       shopify_variant_id,
     } of subscriptions) {
       if (shopify_product_id === bundleProduct.id) {
+        bundleName = getPropertyValueForKey(properties, "bundle_name")
         enteredEmail = getPropertyValueForKey(properties, "bundle_email")
         enteredName = getPropertyValueForKey(properties, "bundle_customer_name")
         selectedFrequency = parseInt(order_interval_frequency, 10)
@@ -512,6 +520,7 @@ export default class App extends React.Component<Props, State> {
     }
 
     return {
+      bundleName,
       editingBundleId: bundleId,
       enteredEmail,
       enteredName,
@@ -539,4 +548,6 @@ export default class App extends React.Component<Props, State> {
   private handleSlideChange = () => {
     $("html, body").animate({scrollTop: 0}, 500)
   }
+
+  private createBundleName = (customerName) => `${customerName}'s box`
 }
