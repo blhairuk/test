@@ -28,7 +28,6 @@ export default (appPath) => async (ctx) => {
   <div id="app">${app}</div>
   ${styleTags}
   <script src="${scriptSrc(appPath)}?v=${assetCacheKey}" async=""></script>
-  <script src="${scriptSrc("commons")}?v=${assetCacheKey}" async=""></script>
   <script type="text/javascript">
     var AppProps = ${JSON.stringify(props)};
     var Customer = {
