@@ -3,9 +3,8 @@ import Slider from "react-slick"
 import styled from "styled-components"
 
 import ChooseAddOns from "./components/choose-add-ons"
-import ChooseFrequency from "./components/choose-frequency"
+import ChooseFrequencySize from "./components/choose-frequency-size"
 import ChooseProducts from "./components/choose-products"
-import ChooseSize from "./components/choose-size"
 import Confirm from "./components/confirm"
 import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
@@ -157,24 +156,16 @@ export default class App extends React.Component<Props, State> {
           </div>
           <div>
             <Step>
-              <ChooseFrequency
+              <ChooseFrequencySize
                 frequencies={shippingFrequencies}
                 selectedFrequency={selectedFrequency}
                 setSelectedFrequency={this.setSelectedFrequency}
-                stepNext={this.stepNext}
-                stepPrev={this.stepPrev}
-                unitType={shippingUnitType}
-              />
-            </Step>
-          </div>
-          <div>
-            <Step>
-              <ChooseSize
-                variants={bundleProduct.variants}
                 selectedSize={selectedSize}
                 setSelectedSize={this.setSelectedSize}
                 stepNext={this.stepNext}
                 stepPrev={this.stepPrev}
+                unitType={shippingUnitType}
+                variants={bundleProduct.variants}
               />
             </Step>
           </div>
