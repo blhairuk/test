@@ -46,7 +46,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
           onClick={this.setSelectedSize.bind(this, size)}
           selected={selectedSize === size}
         >
-          <div>{option1} for {price}</div>
+          <div>{option1} for {price} ({price / option1} per cup)</div>
         </GridItem>
       )
     }
