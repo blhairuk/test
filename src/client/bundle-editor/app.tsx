@@ -10,6 +10,8 @@ import Confirm from "./components/confirm"
 import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
 
+import AppContainer from "./components/styled/app-container"
+
 import Modal from "../helpers/modal"
 
 import {
@@ -67,17 +69,11 @@ const initialState = {
   selectedVariantIds: [],
 }
 
-const AppContainer = styled.div`
-  background: #000;
-  color: #fff;
-  a, button { color: #fff; }
-`
-
 const Step = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  min-height: 611px;
+  min-height: 700px; /* should match .main-content */
 `
 
 export default class App extends React.Component<Props, State> {

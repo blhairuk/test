@@ -1,8 +1,10 @@
 import * as React from "react"
 
+import Button from "./styled/button"
+
 interface Props {
   enteredName: string,
-  enterName: (string) => any,
+  enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
   stepNext: (e: React.FormEvent<HTMLElement>) => any,
 }
 
@@ -27,9 +29,7 @@ export default class EnterName extends React.Component<Props> {
             />
           </div>
           <div>
-            {enteredName.length > 0 && (
-              <button type="submit">Next</button>
-            )}
+            {enteredName.length > 0 && <Button color="teal" type="submit">Next</Button>}
           </div>
         </form>
       </div>
