@@ -22,7 +22,6 @@ export default class ChooseAddOns extends React.Component<Props> {
 
     return (
       <div>
-        <h2 className="h3">Choose your add-ons:</h2>
         <div className="grid grid--uniform">
         {products.map(({
             id: productId,
