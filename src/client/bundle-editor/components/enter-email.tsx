@@ -1,8 +1,12 @@
 import * as React from "react"
 
+import Button from "./styled/button"
+import TextInput from "./styled/text-input"
+
 interface Props {
   enteredEmail: string,
-  enterEmail: (string) => any,
+  enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
+  enteredName: string,
   stepNext: (e: React.FormEvent<HTMLElement>) => any,
   stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
@@ -12,6 +16,7 @@ export default class EnterEmail extends React.Component<Props> {
     const {
       enterEmail,
       enteredEmail,
+      enteredName,
       stepNext,
       stepPrev,
     } = this.props
@@ -19,24 +24,29 @@ export default class EnterEmail extends React.Component<Props> {
     return (
       <div>
         <form onSubmit={stepNext}>
-          <h2 className="h3">What's your email?</h2>
-          <input
+          <div>You rock, {enteredName}!</div>
+          <div>What's your email?</div>
+          <TextInput
+            autoFocus={true}
             onChange={enterEmail}
             required={true}
-            type="text"
+            type="email"
             value={enteredEmail}
           />
           <div>
-            <button
+            <Button
               onClick={stepPrev}
               type="button"
             >
               Prev
-            </button>
+            </Button>
 
-            {enteredEmail.length > 0 && (
-              <button type="submit">Next</button>
-            )}
+            <Button
+              disabled={enteredEmail.length <= 0}
+              type="submit"
+            >
+              Next
+            </Button>
           </div>
         </form>
       </div>

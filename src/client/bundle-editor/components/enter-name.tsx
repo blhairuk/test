@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import Button from "./styled/button"
+import TextInput from "./styled/text-input"
 
 interface Props {
   enteredName: string,
@@ -19,17 +20,26 @@ export default class EnterName extends React.Component<Props> {
     return (
       <div>
         <form onSubmit={stepNext}>
-          <h2 className="h3">What's your name?</h2>
+          <h2>BUILD YOUR BOX</h2>
+          <div>We'd like to get to know you!</div>
+          <div>What's your name?</div>
           <div>
-            <input
+            <TextInput
+              autoFocus={true}
               onChange={enterName}
+              placeholder="Name"
               required={true}
               type="text"
               value={enteredName}
             />
           </div>
           <div>
-            {enteredName.length > 0 && <Button color="teal" type="submit">Next</Button>}
+            <Button
+              disabled={enteredName.length <= 0}
+              type="submit"
+            >
+              Next
+            </Button>
           </div>
         </form>
       </div>

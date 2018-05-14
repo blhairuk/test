@@ -149,6 +149,7 @@ export default class App extends React.Component<Props, State> {
               <EnterEmail
                 enterEmail={this.enterEmail}
                 enteredEmail={enteredEmail}
+                enteredName={enteredName}
                 stepNext={this.stepNext}
                 stepPrev={this.stepPrev}
               />
