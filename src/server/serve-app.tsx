@@ -4,9 +4,13 @@ import {ServerStyleSheet} from "styled-components"
 
 import assetCacheKey from "./helpers/asset-cache-key"
 
-const {APP_PROXY_PATH} = process.env
+const {
+  APP_PROXY_PATH,
+  NODE_ENV,
+} = process.env
 
-const scriptSrc = (assetName) => `${APP_PROXY_PATH}/static/${assetName}.js`
+const scriptHost = NODE_ENV === "development" ? "//localhost:8080" : APP_PROXY_PATH
+const scriptSrc = (assetName) => `${scriptHost}/static/${assetName}.js`
 
 export default (appPath) => async (ctx) => {
   const [

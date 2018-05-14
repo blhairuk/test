@@ -8,9 +8,10 @@
     "test": "jest",
     "migrate": "knex migrate:latest",
     "tsc": "tsc",
-    "webpack": "webpack",
+    "webpack": "webpack --config webpack/index.js",
+    "webpack-dev-server": "webpack-dev-server --config webpack/index.js",
     "nodemon": "nodemon -r dotenv/config dist/server/index.js",
-    "dev": "npm-run-all tsc webpack --parallel \"tsc -- --watch\" \"webpack -- --watch\" nodemon",
+    "dev": "run-p \"tsc -- --watch\" webpack-dev-server nodemon",
     "prestart": "run-s migrate tsc webpack",
     "start": "node dist/server/index.js"
   },
@@ -57,7 +58,8 @@
     "jest": "^22.4.3",
     "nodemon": "^1.17.3",
     "tslint": "^5.10.0",
-    "tslint-react": "^3.6.0"
+    "tslint-react": "^3.6.0",
+    "webpack-dev-server": "^3.1.4"
   },
   "jest": {
     "moduleFileExtensions": [

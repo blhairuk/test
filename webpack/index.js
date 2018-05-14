@@ -4,16 +4,11 @@ try {
   console.log('dotenv not found, .env file ignored.')
 }
 
-const {join} = require('path')
-const {EnvironmentPlugin} = require('webpack')
+const webpack = require('webpack')
 
-const {NODE_ENV} = process.env
-
-const devtool = NODE_ENV === 'development' ? 'eval-source-map' : 'source-map'
+const env = require(`./${process.env.NODE_ENV}.config.js`)
 
 module.exports = {
-  mode: NODE_ENV || 'development',
-  devtool,
   entry: {
     'account-manager': './dist/client/account-manager/index.js',
     'bundle-editor': './dist/client/bundle-editor/index.js',
@@ -30,14 +25,5 @@ module.exports = {
       test: /\.js$/, 
     }]
   },
-  output: {
-    filename: '[name].js',
-    path: join(__dirname, './dist/public')
-  },
-  plugins: [
-    new EnvironmentPlugin([
-      'APP_PROXY_PATH',
-      'NODE_ENV',
-    ])
-  ]
+  ...env
 }
