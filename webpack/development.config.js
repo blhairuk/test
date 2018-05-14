@@ -2,7 +2,7 @@ const {resolve} = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'eval',
   devServer: {
     headers: {
       'Access-Control-Allow-Origin': '*'
@@ -11,6 +11,20 @@ module.exports = {
     https: true
   },
   mode: 'development',
+  module: {
+    rules: [{
+      exclude: /node_modules/,
+      test: /\.tsx?$/, 
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          plugins: ['react-hot-loader/babel']
+        }
+      }, 
+      'ts-loader'
+      ]
+    }]
+  },
   plugins: [
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',

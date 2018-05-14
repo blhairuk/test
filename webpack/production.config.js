@@ -4,6 +4,13 @@ const webpack = require('webpack')
 module.exports = {
   devtool: 'source-map',
   mode: 'production',
+  module: {
+    rules: [{
+      exclude: /node_modules/,
+      test: /\.tsx?$/, 
+      use: ['babel-loader', 'ts-loader']
+    }]
+  },
   plugins: [
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',
