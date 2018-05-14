@@ -67,6 +67,12 @@ const initialState = {
   selectedVariantIds: [],
 }
 
+const AppContainer = styled.div`
+  background: #000;
+  color: #fff;
+  a, button { color: #fff; }
+`
+
 const Step = styled.div`
   align-items: center;
   display: flex;
@@ -124,7 +130,7 @@ export default class App extends React.Component<Props, State> {
     const shippingUnitType = this.metafieldValue("shipping_interval_unit_type")
 
     return (
-      <div>
+      <AppContainer>
         <Slider
           beforeChange={this.handleSlideChange}
           adaptiveHeight={true}
@@ -224,7 +230,7 @@ export default class App extends React.Component<Props, State> {
         >
           Your bundle is full!
         </Modal>
-      </div>
+      </AppContainer>
     )
   }
 

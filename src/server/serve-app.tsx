@@ -28,17 +28,15 @@ export default (appPath) => async (ctx) => {
   const styleTags = sheet.getStyleTags()
 
   ctx.body = `
-<div class="page-width">
-  <div id="app">${app}</div>
-  ${styleTags}
-  <script src="${scriptSrc(appPath)}?v=${assetCacheKey}" async=""></script>
-  <script type="text/javascript">
-    var AppProps = ${JSON.stringify(props)};
-    var Customer = {
-      "email": "{{ customer.email }}",
-      "firstName": "{{ customer.first_name }}"
-    };
-  </script>
-</div>`
+<div id="app">${app}</div>
+${styleTags}
+<script src="${scriptSrc(appPath)}?v=${assetCacheKey}" async=""></script>
+<script type="text/javascript">
+  var AppProps = ${JSON.stringify(props)};
+  var Customer = {
+    "email": "{{ customer.email }}",
+    "firstName": "{{ customer.first_name }}"
+  };
+</script>`.replace(/\n|\s{2,}/g, "")
   ctx.type = "application/liquid"
 }
