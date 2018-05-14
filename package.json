@@ -13,7 +13,7 @@
     "nodemon": "nodemon -r dotenv/config dist/server/index.js",
     "dev": "run-p \"tsc -- --watch\" webpack-dev-server nodemon",
     "prestart": "run-s migrate tsc webpack",
-    "start": "node -r dotenv/config dist/server/index.js"
+    "start": "node dist/server/index.js"
   },
   "author": "Ethan Jon",
   "license": "UNLICENSED",
