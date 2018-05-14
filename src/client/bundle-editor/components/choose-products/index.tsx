@@ -1,5 +1,8 @@
 import * as React from "react"
 
+import Modal from "../../../helpers/modal"
+import updateStateKeys from "../../../helpers/update-state-keys"
+import ProductDetails from "./product-details"
 import Progress from "./progress"
 
 interface Props {
@@ -12,7 +15,17 @@ interface Props {
   stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
-export default class ChooseProducts extends React.Component<Props> {
+interface State {
+  productDetailsModalProductId: number,
+}
+
+const initialState = {
+  productDetailsModalProductId: null,
+}
+
+export default class ChooseProducts extends React.Component<Props, State> {
+  public state = initialState
+
   public render() {
     const {
       addVariantId,
@@ -23,6 +36,8 @@ export default class ChooseProducts extends React.Component<Props> {
       stepNext,
       stepPrev,
     } = this.props
+
+    const {productDetailsModalProductId} = this.state
 
     const productTypes = [...new Set(products.map((p) => p.product_type))]
 
@@ -64,7 +79,11 @@ export default class ChooseProducts extends React.Component<Props> {
                       className="grid__item medium-up--one-third text-center"
                       key={productId}
                     >
-                      <h3 className="h4">{this.title({price, title})}</h3>
+                      <h3 className="h4">
+                        <a onClick={this.handleProductDetailsModalOpen.bind(this, productId)}>
+                          {this.title({price, title})}
+                        </a>
+                      </h3>
                       <img src={src} />
                       <div>
                         <button
@@ -110,6 +129,15 @@ export default class ChooseProducts extends React.Component<Props> {
             </button>
           )}
         </div>
+
+        <Modal
+          handleClose={this.handleProductDetailsModalClose}
+          isOpen={!!productDetailsModalProductId}
+        >
+          <ProductDetails
+            product={products.find(({id}) => id === productDetailsModalProductId)}
+          />
+        </Modal>
       </div>
     )
   }
@@ -117,5 +145,13 @@ export default class ChooseProducts extends React.Component<Props> {
   public title = ({price, title}) => {
     if (price === "0.00") { return title }
     return `${title} (+${price})`
+  }
+
+  private handleProductDetailsModalClose = () => {
+    this.setState(updateStateKeys({productDetailsModalProductId: null}))
+  }
+
+  private handleProductDetailsModalOpen = (productDetailsModalProductId) => {
+    this.setState(updateStateKeys({productDetailsModalProductId}))
   }
 }
