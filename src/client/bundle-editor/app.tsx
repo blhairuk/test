@@ -52,6 +52,7 @@ interface State {
   isSubmitting: boolean,
   selectedAddOnIds: number[],
   selectedFrequency: number,
+  selectedProductIds: number[],
   selectedVariantIds: number[],
   selectedSize: number,
 }
@@ -65,6 +66,7 @@ const initialState = {
   isSubmitting: false,
   selectedAddOnIds: [],
   selectedFrequency: null,
+  selectedProductIds: [],
   selectedSize: null,
   selectedVariantIds: [],
 }
@@ -250,59 +252,70 @@ export default class App extends React.Component<Props, State> {
     }))
   }
 
-  private addVariantId = (id) => () => {
+  private addVariantId = (productId, variantId) => () => {
     const {
-      selectedVariantIds: oldIds,
+      selectedProductIds,
+      selectedVariantIds,
       selectedSize,
     } = this.state
 
-    if (!selectedSize) { return alert("You must selected a size first.") }
-    if (oldIds.length >= selectedSize) { return this.setState(updateStateKeys({isBundleFullModalOpen: true})) }
-
-    const selectedVariantIds = oldIds.concat(id)
-
-    this.setState(updateStateKeys({selectedVariantIds}))
-  }
-
-  private removeVariantId = (id) => () => {
-    const {selectedVariantIds: oldIds} = this.state
-
-    const existingIndex = oldIds.indexOf(id)
-    if (existingIndex <= -1) { return }
-
-    const selectedVariantIds = oldIds.filter((_, i) => i !== existingIndex)
-
-    this.setState(updateStateKeys({selectedVariantIds}))
-  }
-
-  private addAddOnId = (id) => () => {
-    const {
-      selectedAddOnIds: oldIds,
-      selectedSize,
-    } = this.state
-
-    if (!selectedSize) { return alert("You must select a size first.") }
-
-    const selectedAddOnIds = oldIds.concat([...Array(selectedSize)].map(() => id))
-
-    this.setState(updateStateKeys({selectedAddOnIds}))
-  }
-
-  private removeAddOnId = (id) => () => {
-    const {
-      selectedAddOnIds: oldIds,
-      selectedSize,
-    } = this.state
-
-    const selectedAddOnIds = oldIds.slice(0)
-
-    for (let i = 0; i < (selectedSize || 1); ++i) {
-      const index = selectedAddOnIds.indexOf(id)
-      if (index <= -1) { return }
-      selectedAddOnIds.splice(index, 1)
+    if (!selectedSize) {
+      return alert("You must selected a size first.")
     }
 
-    this.setState(updateStateKeys({selectedAddOnIds}))
+    if (selectedVariantIds.length >= selectedSize) {
+      return this.setState(updateStateKeys({isBundleFullModalOpen: true}))
+    }
+
+    selectedProductIds.push(productId)
+    selectedVariantIds.push(variantId)
+
+    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+  }
+
+  private removeVariantId = (productId, variantId) => () => {
+    const {
+      selectedProductIds,
+      selectedVariantIds,
+    } = this.state
+
+    selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
+    selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
+
+    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+  }
+
+  private addAddOnId = (productId, variantId) => () => {
+    const {selectedSize} = this.state
+
+    let {
+      selectedAddOnIds,
+      selectedProductIds,
+    } = this.state
+
+    if (!selectedSize) {
+      return alert("You must select a size first.")
+    }
+
+    selectedAddOnIds = selectedAddOnIds.concat([...Array(selectedSize)].map(() => variantId))
+    selectedProductIds = selectedProductIds.concat([...Array(selectedSize)].map(() => productId))
+
+    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
+  }
+
+  private removeAddOnId = (productId, variantId) => () => {
+    const {
+      selectedAddOnIds,
+      selectedProductIds,
+      selectedSize,
+    } = this.state
+
+    for (let i = 0; i < (selectedSize || 1); ++i) {
+      selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
+      selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
+    }
+
+    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
   }
 
   private addToCart = (bundleId, extraData) => {
@@ -425,6 +438,7 @@ export default class App extends React.Component<Props, State> {
     let enteredName = ""
     const selectedAddOnIds = []
     let selectedFrequency = null
+    const selectedProductIds = []
     let selectedSize = null
     const selectedVariantIds = []
 
@@ -459,6 +473,7 @@ export default class App extends React.Component<Props, State> {
           if (selectedArray) {
             for (let i = 0; i < quantity; ++i) {
               selectedArray.push(variantId)
+              selectedProductIds.push(product_id)
             }
           }
         }
@@ -472,6 +487,7 @@ export default class App extends React.Component<Props, State> {
       enteredName,
       selectedAddOnIds,
       selectedFrequency,
+      selectedProductIds,
       selectedSize,
       selectedVariantIds,
     }
@@ -491,6 +507,7 @@ export default class App extends React.Component<Props, State> {
     let enteredName = ""
     const selectedAddOnIds = []
     let selectedFrequency = null
+    const selectedProductIds = []
     let selectedSize = null
     const selectedVariantIds = []
 
@@ -515,6 +532,7 @@ export default class App extends React.Component<Props, State> {
         if (selectedArray) {
           for (let i = 0; i < quantity; ++i) {
             selectedArray.push(shopify_variant_id)
+            selectedProductIds.push(shopify_product_id)
           }
         }
       }
@@ -527,6 +545,7 @@ export default class App extends React.Component<Props, State> {
       enteredName,
       selectedAddOnIds,
       selectedFrequency,
+      selectedProductIds,
       selectedSize,
       selectedVariantIds,
     }

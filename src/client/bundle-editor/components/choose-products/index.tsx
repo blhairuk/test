@@ -8,10 +8,10 @@ import ProductDetails from "./product-details"
 import Progress from "./progress"
 
 interface Props {
-  addVariantId: (variantId: number) => () => any,
+  addVariantId: (productId: number, variantId: number) => () => any,
   filters: any,
   products: ShopifyProduct[],
-  removeVariantId: (variantId: number) => () => any,
+  removeVariantId: (productId: number, variantId: number) => () => any,
   selectedSize: number,
   selectedVariantIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
@@ -71,7 +71,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           return (
             <div>
               <Button
-                onClick={addVariantId(variantId)}
+                onClick={addVariantId(productId, variantId)}
                 type="button"
               >
                 Add
@@ -83,14 +83,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
         return (
           <div>
             <button
-              onClick={addVariantId(variantId)}
+              onClick={addVariantId(productId, variantId)}
               type="button"
             >
               Add
             </button>
             <span>{numSelected}</span>
             <button
-              onClick={removeVariantId(variantId)}
+              onClick={removeVariantId(productId, variantId)}
               type="button"
             >
               Del
