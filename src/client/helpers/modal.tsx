@@ -5,7 +5,7 @@ interface Props {
   children: any,
   handleClose: () => any,
   isOpen: boolean,
-  style?: "modal" | "panel"
+  style?: "panel"
 }
 
 export default class Modal extends React.Component<Props> {
@@ -48,7 +48,21 @@ export default class Modal extends React.Component<Props> {
       }
     }
     return {
-
+      content: {
+        ...ReactModal.defaultStyles.content,
+        bottom: "auto",
+        left: "auto",
+        position: "initial",
+        right: "auto",
+        top: "auto",
+      },
+      overlay: {
+        ...ReactModal.defaultStyles.overlay,
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.65)",
+        display: "flex",
+        justifyContent: "center",
+      },
     }
   }
 }
