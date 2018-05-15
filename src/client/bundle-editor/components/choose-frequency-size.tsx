@@ -33,7 +33,6 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       stepNext,
       stepPrev,
       variants,
-      unitType,
     } = this.props
 
     const renderSize = ({id, option1, price}) => {
@@ -41,7 +40,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
       return (
         <GridItem
-          className="grid__item medium-up--one-half text-center"
+          className="grid__item one-half text-center"
           key={id}
           onClick={this.setSelectedSize.bind(this, size)}
           selected={selectedSize === size}
@@ -62,12 +61,12 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
       return (
         <GridItem
-          className="grid__item medium-up--one-third text-center"
+          className="grid__item medium-up--one-half text-center"
           key={frequency}
           onClick={this.setSelectedFrequency.bind(this, frequency)}
           selected={selectedFrequency === frequency}
         >
-          <div>{frequency} {unitType}</div>
+          <div>{this.frequencyTitle(frequency)}</div>
 
           {selectedFrequency === frequency && renderSizes()}
         </GridItem>
@@ -107,5 +106,12 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
   private setSelectedSize = (size) => {
     this.props.setSelectedSize(size)
+  }
+
+  private frequencyTitle = (frequency) => {
+    const {unitType} = this.props
+
+    if (frequency === 1 && unitType === "Weeks") { return "Weekly" }
+    if (frequency === 4 && unitType === "Weeks") { return "Monthly" }
   }
 }
