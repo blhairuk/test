@@ -11,19 +11,6 @@ module.exports = {
     https: true
   },
   mode: 'development',
-  module: {
-    rules: [{
-      exclude: /node_modules/,
-      test: /\.tsx?$/, 
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          plugins: ['react-hot-loader/babel', 'transform-runtime'],
-          presets: ['env']
-        }
-      }, 'ts-loader']
-    }]
-  },
   plugins: [
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',

@@ -1,27 +1,18 @@
 const {resolve} = require('path')
 const webpack = require('webpack')
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 
 module.exports = {
   devtool: 'source-map',
   mode: 'production',
-  module: {
-    rules: [{
-      exclude: /node_modules/,
-      test: /\.tsx?$/, 
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          plugins: ['transform-runtime'],
-          presets: ['env']
-        }
-      }, 'ts-loader']
-    }]
-  },
   plugins: [
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',
       'NODE_ENV',
-    ])
+    ]),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled' // remove to see the output
+    })
   ],
   output: {
     filename: '[name].js',
