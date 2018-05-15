@@ -16,11 +16,11 @@ injectGlobal`
     border-radius: 0;
     bottom: 0;
     left: auto;
-    min-width: 280px;
     position: absolute;
     right: 0;
     top: 0;
-    width: 40%;
+    width: 100%;
+    @media (min-width: 768px) { width: 400px; }
   }
   .bu-modal-overlay--panel {
     background-color: rgba(0, 0, 0, 0.65);
