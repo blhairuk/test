@@ -168,7 +168,7 @@ export default class App extends React.Component<Props, State> {
             </Step>
           </div>
           <div>
-            <Step>
+            <Step align="top">
               <ChooseProducts
                 addVariantId={this.addVariantId}
                 bundleAddOns={bundleAddOns}
@@ -184,7 +184,7 @@ export default class App extends React.Component<Props, State> {
             </Step>
           </div>
           <div>
-            <Step>
+            <Step align="top">
               <ChooseAddOns
                 addAddOnId={this.addAddOnId}
                 bundleAddOns={bundleAddOns}
