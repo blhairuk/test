@@ -17,4 +17,9 @@ const Button = styled.button`
 
 export default Button
 
-export const YellowButton = Button.extend`background-color: ${YELLOW}`
+export const BlackButton = Button.extend`
+  background-color: #000;
+  color: #fff;
+`
+
+export const YellowButton = Button.extend`background-color: ${YELLOW};`

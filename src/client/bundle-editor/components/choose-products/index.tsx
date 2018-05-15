@@ -18,11 +18,13 @@ interface Props {
 }
 
 interface State {
+  activeFilters: string[],
   isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
 }
 
 const initialState = {
+  activeFilters: [],
   isFiltersModalOpen: false,
   productDetailsModalProductId: null,
 }
@@ -43,6 +45,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     } = this.props
 
     const {
+      activeFilters,
       isFiltersModalOpen,
       productDetailsModalProductId,
     } = this.state
@@ -160,7 +163,12 @@ export default class ChooseProducts extends React.Component<Props, State> {
           isOpen={isFiltersModalOpen}
           style="panel"
         >
-          <Filters filters={filters} />
+          <Filters
+            activeFilters={activeFilters}
+            filters={filters}
+            resetFilters={this.resetFilters}
+            toggleFilter={this.toggleFilter}
+          />
         </Modal>
       </div>
     )
@@ -185,5 +193,20 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
   private handleFiltersModalOpen = () => {
     this.setState(updateStateKeys({isFiltersModalOpen: true}))
+  }
+
+  private resetFilters = () => {
+    this.setState(updateStateKeys({activeFilters: []}))
+  }
+
+  private toggleFilter = (filterTag) => {
+    const {activeFilters} = this.state
+    const index = activeFilters.indexOf(filterTag)
+    if (index === -1) {
+      activeFilters.push(filterTag)
+    } else {
+      activeFilters.splice(index, 1)
+    }
+    this.setState(updateStateKeys({activeFilters}))
   }
 }
