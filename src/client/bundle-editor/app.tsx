@@ -113,6 +113,7 @@ export default class App extends React.Component<Props, State> {
       isSubmitting,
       selectedAddOnIds,
       selectedFrequency,
+      selectedProductIds,
       selectedVariantIds,
       selectedSize,
     } = this.state
@@ -201,6 +202,7 @@ export default class App extends React.Component<Props, State> {
                 products={bundleProducts.concat(bundleAddOns)}
                 selectedAddOnIds={selectedAddOnIds}
                 selectedFrequency={selectedFrequency}
+                selectedProductIds={selectedProductIds}
                 selectedSize={selectedSize}
                 selectedVariantIds={selectedVariantIds}
                 stepPrev={this.stepPrev}

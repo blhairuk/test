@@ -1,9 +1,6 @@
 import * as React from "react"
 
-import {
-  createIdQuantities,
-  findProductByVariantId,
-} from "../../../shared/helpers"
+import {createIdQuantities} from "../../../shared/helpers"
 
 interface Props {
   enteredName: string,
@@ -12,39 +9,48 @@ interface Props {
   products: ShopifyProduct[],
   selectedAddOnIds: number[],
   selectedFrequency: number,
+  selectedProductIds: number[],
   selectedSize: number,
   selectedVariantIds: number[],
   stepPrev: (e?: React.FormEvent<HTMLElement>) => any,
-  submit: (any) => any,
+  submit: () => any,
 }
 
 export default class Confirm extends React.Component<Props> {
   public render() {
     const {
-      enteredName,
+      // enteredName,
       isSubmitting,
       products,
-      selectedAddOnIds,
+      // selectedAddOnIds,
       selectedFrequency,
+      selectedProductIds,
       selectedSize,
-      selectedVariantIds,
+      // selectedVariantIds,
       stepPrev,
       submit,
     } = this.props
 
-    let errorMessage
-    if (!enteredName) { errorMessage = "Enter a name" }
-    else if (!selectedSize) { errorMessage = "Enter a size" }
-    else if (!selectedFrequency) { errorMessage = "Enter a frequency" }
-    else if (selectedVariantIds.length < selectedSize) { errorMessage = "You need to add products" }
-    else if (selectedVariantIds.length > selectedSize) { errorMessage = "You need to remove products" }
-    if (errorMessage) { return <div>{errorMessage}</div> }
+    // let errorMessage
+    // if (!enteredName) { errorMessage = "Enter a name" }
+    // else if (!selectedSize) { errorMessage = "Enter a size" }
+    // else if (!selectedFrequency) { errorMessage = "Enter a frequency" }
+    // else if (selectedVariantIds.length < selectedSize) { errorMessage = "You need to add products" }
+    // else if (selectedVariantIds.length > selectedSize) { errorMessage = "You need to remove products" }
+    // if (errorMessage) { return <div>{errorMessage}</div> }
 
-    const idQuantities = createIdQuantities(selectedVariantIds.concat(selectedAddOnIds))
-    const productQuantities = Object.entries(idQuantities).map(([id, quantity]) => ({
-      product: findProductByVariantId(products, parseInt(id)),
-      quantity,
-    }))
+    const idQuantities = createIdQuantities(selectedProductIds)
+
+    const renderProduct = ([productIdS, quantity]) => {
+      const productId = parseInt(productIdS, 10)
+      const product = products.find(({id}) => id === productId)
+
+      return (
+        <div key={productId}>
+          {quantity}x {product.title}
+        </div>
+      )
+    }
 
     return (
       <div>
@@ -64,11 +70,7 @@ export default class Confirm extends React.Component<Props> {
 
         <div>
           <h3>Items</h3>
-          {productQuantities.map(({product: {id, title}, quantity}) => (
-            <div key={id}>
-              {quantity}x {title}
-            </div>
-          ))}
+          {Object.entries(idQuantities).map(renderProduct)}
         </div>
 
         <button
