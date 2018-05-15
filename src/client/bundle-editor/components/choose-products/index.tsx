@@ -52,6 +52,65 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     const productTypes = [...new Set(products.map((p) => p.product_type))]
 
+    const renderProduct = ({
+      id: productId,
+      title,
+      image: {src},
+      variants,
+    }) => {
+      const {
+        id: variantId,
+        price,
+      } = variants[0]
+
+      return (
+        <div
+          className="grid__item medium-up--one-third text-center"
+          key={productId}
+        >
+          <h3 className="h4">
+            <a onClick={this.handleProductDetailsModalOpen.bind(this, productId)}>
+              {this.title({price, title})}
+            </a>
+          </h3>
+          <img src={src} />
+          <div>
+            <button
+              onClick={addVariantId.bind(this, variantId)}
+              type="button"
+            >
+              Add
+            </button>
+            <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
+            <button
+              onClick={removeVariantId.bind(this, variantId)}
+              type="button"
+            >
+              Del
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    const renderProductType = (productType) => {
+      const renderableProducts = products
+        .filter(({product_type, tags}) => (
+          product_type === productType && (
+            !activeFilters.length ? true : activeFilters.some((f) => tags.includes(f))
+          )
+        ))
+
+      return (
+        <div key={productType}>
+          <h3 className="h4">{productType}</h3>
+          <div className="grid grid--uniform">
+            {renderableProducts.map(renderProduct)}
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div>
         <div className="grid grid--uniform">
@@ -80,49 +139,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
               {productTypes.map((productType) => <span key={productType}>{productType}</span>)}
             </div>
 
-            {productTypes.map((productType) => (
-              <div key={productType}>
-                <h3 className="h4">{productType}</h3>
-                <div className="grid grid--uniform">
-                  {products.filter((p) => p.product_type === productType).filter((p) => !activeFilters.length ? true : activeFilters.some((f) => p.tags.includes(f))).map(({
-                    id: productId,
-                    title,
-                    image: {src},
-                    variants: [{
-                      id: variantId,
-                      price,
-                    }],
-                  }) => (
-                    <div
-                      className="grid__item medium-up--one-third text-center"
-                      key={productId}
-                    >
-                      <h3 className="h4">
-                        <a onClick={this.handleProductDetailsModalOpen.bind(this, productId)}>
-                          {this.title({price, title})}
-                        </a>
-                      </h3>
-                      <img src={src} />
-                      <div>
-                        <button
-                          onClick={addVariantId.bind(this, variantId)}
-                          type="button"
-                        >
-                          Add
-                        </button>
-                        <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                        <button
-                          onClick={removeVariantId.bind(this, variantId)}
-                          type="button"
-                        >
-                          Del
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+            {productTypes.map(renderProductType)}
           </div>
 
           <div className="grid__item medium-up--one-third">
