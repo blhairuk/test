@@ -133,6 +133,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
         <Modal
           handleClose={this.handleProductDetailsModalClose}
           isOpen={!!productDetailsModalProductId}
+          style="panel"
         >
           <ProductDetails
             product={products.find(({id}) => id === productDetailsModalProductId)}
