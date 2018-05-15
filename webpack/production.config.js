@@ -11,6 +11,7 @@ module.exports = {
       use: [{
         loader: 'babel-loader',
         options: {
+          plugins: ['transform-runtime'],
           presets: ['env']
         }
       }, 'ts-loader']
