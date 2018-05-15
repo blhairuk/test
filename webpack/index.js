@@ -28,7 +28,6 @@ module.exports = {
             .filter(a => a),
           presets: [[
             'env', {
-              modules: false,
               targets: {
                 browsers: ['last 2 versions']
               }
@@ -36,12 +35,7 @@ module.exports = {
           ]]
         }
       }, {
-        loader: 'ts-loader',
-        options: {
-          compilerOptions: {
-            target: 'es2015'
-          }
-        }
+        loader: 'ts-loader'
       }]
     }]
   },
