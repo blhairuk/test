@@ -84,7 +84,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
               <div key={productType}>
                 <h3 className="h4">{productType}</h3>
                 <div className="grid grid--uniform">
-                  {products.filter((p) => p.product_type === productType).map(({
+                  {products.filter((p) => p.product_type === productType).filter((p) => !activeFilters.length ? true : activeFilters.some((f) => p.tags.includes(f))).map(({
                     id: productId,
                     title,
                     image: {src},
