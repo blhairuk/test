@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as ReactModal from "react-modal"
+import {injectGlobal} from "styled-components"
 
 interface Props {
   children: any,
@@ -7,6 +8,44 @@ interface Props {
   isOpen: boolean,
   style?: "panel"
 }
+
+// tslint:disable-next-line
+injectGlobal`
+  .bu-modal-content--panel {
+    background: #fff;
+    border-radius: 0;
+    bottom: 0;
+    left: auto;
+    min-width: 280px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40%;
+  }
+  .bu-modal-overlay--panel {
+    background-color: rgba(0, 0, 0, 0.65);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 21;
+  }
+  .bu-modal-content--default {
+    background-color: #fff;
+  }
+  .bu-modal-overlay--default {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.65);
+    bottom: 0;
+    display: flex;
+    left: 0;
+    justify-content: center;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
+`
 
 export default class Modal extends React.Component<Props> {
   public render() {
@@ -18,51 +57,16 @@ export default class Modal extends React.Component<Props> {
 
     return (
       <ReactModal
+        className={this.modalContentClassName()}
         isOpen={isOpen}
         onRequestClose={handleClose}
-        style={this.styles()}
+        overlayClassName={this.modalOverlayClassName()}
       >
         {children}
       </ReactModal>
     )
   }
 
-  private styles() {
-    const {style} = this.props
-    if (style === "panel") {
-      return {
-        content: {
-          ...ReactModal.defaultStyles.content,
-          borderRadius: 0,
-          bottom: 0,
-          left: "auto",
-          minWidth: "280px",
-          right: 0,
-          top: 0,
-          width: "40%",
-        },
-        overlay: {
-          ...ReactModal.defaultStyles.overlay,
-          backgroundColor: "rgba(0, 0, 0, 0.65)",
-        },
-      }
-    }
-    return {
-      content: {
-        ...ReactModal.defaultStyles.content,
-        bottom: "auto",
-        left: "auto",
-        position: "initial",
-        right: "auto",
-        top: "auto",
-      },
-      overlay: {
-        ...ReactModal.defaultStyles.overlay,
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.65)",
-        display: "flex",
-        justifyContent: "center",
-      },
-    }
-  }
+  private modalContentClassName = () => `bu-modal-content--${this.props.style || "default"}`
+  private modalOverlayClassName = () => `bu-modal-overlay--${this.props.style || "default"}`
 }
