@@ -1,6 +1,5 @@
 import * as React from "react"
 import Slider from "react-slick"
-import styled from "styled-components"
 
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
@@ -10,6 +9,7 @@ import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
 
 import AppContainer from "./components/styled/app-container"
+import Step from "./components/styled/step"
 
 import Modal from "../helpers/modal"
 
@@ -67,13 +67,6 @@ const initialState = {
   selectedSize: null,
   selectedVariantIds: [],
 }
-
-const Step = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  min-height: 700px; /* should match .main-content */
-`
 
 export default class App extends React.Component<Props, State> {
   public sliderRef: React.RefObject<Slider>
