@@ -34,6 +34,7 @@ interface Props {
   bundleId: number,
   bundleProductMetafields: [{
     key: string,
+    namespace: string,
     value: string,
   }],
   bundleProduct: ShopifyProduct,
@@ -114,8 +115,9 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     } = this.state
 
-    const shippingFrequencies = this.metafieldValue("shipping_interval_frequency").split(",")
-    const shippingUnitType = this.metafieldValue("shipping_interval_unit_type")
+    const shippingFrequencies = this.metafieldValue("subscriptions", "shipping_interval_frequency").split(",")
+    const shippingUnitType = this.metafieldValue("subscriptions", "shipping_interval_unit_type")
+    const filters = JSON.parse(this.metafieldValue("bundle_editor", "filters"))
 
     return (
       <AppContainer>
@@ -166,6 +168,7 @@ export default class App extends React.Component<Props, State> {
             <Step>
               <ChooseProducts
                 addVariantId={this.addVariantId}
+                filters={filters}
                 products={bundleProducts}
                 selectedSize={selectedSize}
                 removeVariantId={this.removeVariantId}
@@ -215,7 +218,11 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  private metafieldValue = (key) => this.props.bundleProductMetafields.find((m) => m.key === key).value
+  private metafieldValue = (namespace, key) => (
+    this.props.bundleProductMetafields.find((mf) => (
+      key === mf.key && namespace === mf.namespace
+    )).value
+  )
 
   private enterEmail = ({target: {value: enteredEmail}}) => {
     this.setState(updateStateKeys({enteredEmail}))
@@ -297,8 +304,8 @@ export default class App extends React.Component<Props, State> {
       properties: {
         bundle_id: bundleId,
         shipping_interval_frequency: this.state.selectedFrequency,
-        shipping_interval_unit_type: this.metafieldValue("shipping_interval_unit_type"),
-        subscription_id: this.metafieldValue("subscription_id"),
+        shipping_interval_unit_type: this.metafieldValue("subscriptions", "shipping_interval_unit_type"),
+        subscription_id: this.metafieldValue("subscriptions", "subscription_id"),
         ...extraData.properties,
       },
     })

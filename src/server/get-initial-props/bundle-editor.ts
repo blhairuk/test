@@ -24,11 +24,11 @@ export default async ({
   },
 }) => {
   const accessToken = await getToken(shopName)
-  const bundleId = parseInt(bundleIdS)
+  const bundleId = parseInt(bundleIdS, 10)
 
   const shopify = new Shopify({
-    shopName,
     accessToken,
+    shopName,
   })
 
   const products = await shopify.product.list({limit: 250})
@@ -39,8 +39,8 @@ export default async ({
 
   const bundleProductMetafields = await shopify.metafield.list({
     metafield: {
-      owner_resource: "product",
       owner_id: bundleProduct.id,
+      owner_resource: "product",
     },
   })
 

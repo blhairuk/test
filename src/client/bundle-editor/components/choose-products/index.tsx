@@ -2,11 +2,13 @@ import * as React from "react"
 
 import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
+import Filters from "./filters"
 import ProductDetails from "./product-details"
 import Progress from "./progress"
 
 interface Props {
   addVariantId: (ShopifyVariant) => any,
+  filters: any,
   products: ShopifyProduct[],
   removeVariantId: (ShopifyVariant) => any,
   selectedSize: number,
@@ -16,10 +18,12 @@ interface Props {
 }
 
 interface State {
+  isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
 }
 
 const initialState = {
+  isFiltersModalOpen: false,
   productDetailsModalProductId: null,
 }
 
@@ -29,6 +33,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
   public render() {
     const {
       addVariantId,
+      filters,
       products,
       removeVariantId,
       selectedSize,
@@ -37,7 +42,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
       stepPrev,
     } = this.props
 
-    const {productDetailsModalProductId} = this.state
+    const {
+      isFiltersModalOpen,
+      productDetailsModalProductId,
+    } = this.state
 
     const productTypes = [...new Set(products.map((p) => p.product_type))]
 
@@ -53,7 +61,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
             </button>
           </div>
           <div className="grid__item eight-tenths text-center">FILL YOUR BOX</div>
-          <div className="grid__item one-tenth text-right">Filter</div>
+          <div className="grid__item one-tenth text-right">
+            <button
+              onClick={this.handleFiltersModalOpen}
+              type="button"
+            >
+              Filters
+            </button>
+          </div>
         </div>
 
         <div className="grid grid--uniform">
@@ -139,6 +154,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
             product={products.find(({id}) => id === productDetailsModalProductId)}
           />
         </Modal>
+
+        <Modal
+          handleClose={this.handleFiltersModalClose}
+          isOpen={isFiltersModalOpen}
+          style="panel"
+        >
+          <Filters filters={filters} />
+        </Modal>
       </div>
     )
   }
@@ -154,5 +177,13 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
   private handleProductDetailsModalOpen = (productDetailsModalProductId) => {
     this.setState(updateStateKeys({productDetailsModalProductId}))
+  }
+
+  private handleFiltersModalClose = () => {
+    this.setState(updateStateKeys({isFiltersModalOpen: false}))
+  }
+
+  private handleFiltersModalOpen = () => {
+    this.setState(updateStateKeys({isFiltersModalOpen: true}))
   }
 }
