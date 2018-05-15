@@ -7,7 +7,7 @@ interface Props {
   activeFilters: string[],
   filters: any,
   resetFilters: () => any,
-  toggleFilter: (category: string, filter: string) => any,
+  toggleFilter: (filterTag: string) => () => any,
 }
 
 export default class Filters extends React.Component<Props> {
@@ -19,14 +19,14 @@ export default class Filters extends React.Component<Props> {
       toggleFilter,
     } = this.props
 
-    const renderFilter = (category, filter) => {
+    const renderFilter = (category) => (filter) => {
       const filterTag = createProductFilterTag(category, filter)
       const Component = activeFilters.includes(filterTag) ? BlackButton : Button
 
       return (
         <Component
           key={filter}
-          onClick={toggleFilter.bind(this, filterTag)}
+          onClick={toggleFilter(filterTag)}
           type="button"
         >
           {filter}
@@ -37,7 +37,7 @@ export default class Filters extends React.Component<Props> {
     const renderFilters = ([category, names]) => (
       <div key={category}>
         <h4>{category}</h4>
-        {names.map(renderFilter.bind(this, category))}
+        {names.map(renderFilter(category))}
       </div>
     )
 

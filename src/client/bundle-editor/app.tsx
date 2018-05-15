@@ -250,7 +250,7 @@ export default class App extends React.Component<Props, State> {
     }))
   }
 
-  private addVariantId = (id) => {
+  private addVariantId = (id) => () => {
     const {
       selectedVariantIds: oldIds,
       selectedSize,
@@ -264,7 +264,7 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({selectedVariantIds}))
   }
 
-  private removeVariantId = (id) => {
+  private removeVariantId = (id) => () => {
     const {selectedVariantIds: oldIds} = this.state
 
     const existingIndex = oldIds.indexOf(id)
@@ -275,7 +275,7 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({selectedVariantIds}))
   }
 
-  private addAddOnId = (id) => {
+  private addAddOnId = (id) => () => {
     const {
       selectedAddOnIds: oldIds,
       selectedSize,
@@ -288,7 +288,7 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({selectedAddOnIds}))
   }
 
-  private removeAddOnId = (id) => {
+  private removeAddOnId = (id) => () => {
     const {
       selectedAddOnIds: oldIds,
       selectedSize,

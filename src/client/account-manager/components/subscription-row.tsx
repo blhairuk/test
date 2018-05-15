@@ -85,7 +85,7 @@ export default class SubscriptionRow extends React.Component<Props> {
         {status === "CANCELLED" ? (
           <a
             href="javascript:void(0)"
-            onClick={this.submitReactivate.bind(this, bundleId)}
+            onClick={this.submitReactivate(bundleId)}
           >
             Re-activate
           </a>
@@ -95,7 +95,7 @@ export default class SubscriptionRow extends React.Component<Props> {
             <span> - </span>
             <a
               href="javascript:void(0)"
-              onClick={this.submitCancel.bind(this, bundleId)}
+              onClick={this.submitCancel(bundleId)}
             >
               Cancel
             </a>
@@ -107,7 +107,7 @@ export default class SubscriptionRow extends React.Component<Props> {
 
   private nextChargeDate = (date) => date ? formatDate(date, "dddd, MMMM D") : "-"
 
-  private submitCancel = async (bundleId) => {
+  private submitCancel = (bundleId) => async () => {
     const {href} = this.props
     await $.ajax({
       contentType: "application/json",
@@ -118,7 +118,7 @@ export default class SubscriptionRow extends React.Component<Props> {
     window.location.reload()
   }
 
-  private submitReactivate = async (bundleId) => {
+  private submitReactivate = (bundleId) => async () => {
     const {href} = this.props
     await $.ajax({
       contentType: "application/json",

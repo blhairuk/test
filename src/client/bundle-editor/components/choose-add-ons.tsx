@@ -1,9 +1,9 @@
 import * as React from "react"
 
 interface Props {
-  addAddOnId: (number) => any,
+  addAddOnId: (id: number) => () => any,
   products: ShopifyProduct[],
-  removeAddOnId: (number) => any,
+  removeAddOnId: (id: number) => () => any,
   selectedAddOnIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
   stepPrev: (e: React.FormEvent<HTMLElement>) => any,
@@ -37,14 +37,14 @@ export default class ChooseAddOns extends React.Component<Props> {
               <img src={src} />
               <div>
                 <button
-                  onClick={addAddOnId.bind(this, variantId)}
+                  onClick={addAddOnId(variantId)}
                   type="button"
                 >
                   Add
                 </button>
                 <span>{selectedAddOnIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
                 <button
-                  onClick={removeAddOnId.bind(this, variantId)}
+                  onClick={removeAddOnId(variantId)}
                   type="button"
                 >
                   Del

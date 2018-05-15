@@ -8,10 +8,10 @@ import ProductDetails from "./product-details"
 import Progress from "./progress"
 
 interface Props {
-  addVariantId: (ShopifyVariant) => any,
+  addVariantId: (variantId: number) => () => any,
   filters: any,
   products: ShopifyProduct[],
-  removeVariantId: (ShopifyVariant) => any,
+  removeVariantId: (variantId: number) => () => any,
   selectedSize: number,
   selectedVariantIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
@@ -71,7 +71,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           return (
             <div>
               <Button
-                onClick={addVariantId.bind(this, variantId)}
+                onClick={addVariantId(variantId)}
                 type="button"
               >
                 Add
@@ -83,14 +83,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
         return (
           <div>
             <button
-              onClick={addVariantId.bind(this, variantId)}
+              onClick={addVariantId(variantId)}
               type="button"
             >
               Add
             </button>
             <span>{numSelected}</span>
             <button
-              onClick={removeVariantId.bind(this, variantId)}
+              onClick={removeVariantId(variantId)}
               type="button"
             >
               Del
@@ -105,7 +105,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           key={productId}
         >
           <h3 className="h4">
-            <a onClick={this.handleProductDetailsModalOpen.bind(this, productId)}>
+            <a onClick={this.handleProductDetailsModalOpen(productId)}>
               {this.title({price, title})}
             </a>
           </h3>
@@ -222,7 +222,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     this.setState(updateStateKeys({productDetailsModalProductId: null}))
   }
 
-  private handleProductDetailsModalOpen = (productDetailsModalProductId) => {
+  private handleProductDetailsModalOpen = (productDetailsModalProductId) => () => {
     this.setState(updateStateKeys({productDetailsModalProductId}))
   }
 
@@ -238,7 +238,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     this.setState(updateStateKeys({activeFilters: []}))
   }
 
-  private toggleFilter = (filterTag) => {
+  private toggleFilter = (filterTag) => () => {
     const {activeFilters} = this.state
     const index = activeFilters.indexOf(filterTag)
     if (index === -1) {

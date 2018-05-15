@@ -42,7 +42,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
         <GridItem
           className="grid__item one-half text-center"
           key={id}
-          onClick={this.setSelectedSize.bind(this, size)}
+          onClick={this.setSelectedSize(size)}
           selected={selectedSize === size}
         >
           <div>{option1} for {price} ({price / option1} per cup)</div>
@@ -63,7 +63,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
         <GridItem
           className="grid__item medium-up--one-half text-center"
           key={frequency}
-          onClick={this.setSelectedFrequency.bind(this, frequency)}
+          onClick={this.setSelectedFrequency(frequency)}
           selected={selectedFrequency === frequency}
         >
           <div>{this.frequencyTitle(frequency)}</div>
@@ -100,11 +100,11 @@ export default class ChooseFrequencySize extends React.Component<Props> {
     )
   }
 
-  private setSelectedFrequency = (frequency) => {
+  private setSelectedFrequency = (frequency) => () => {
     this.props.setSelectedFrequency(frequency)
   }
 
-  private setSelectedSize = (size) => {
+  private setSelectedSize = (size) => () => {
     this.props.setSelectedSize(size)
   }
 
