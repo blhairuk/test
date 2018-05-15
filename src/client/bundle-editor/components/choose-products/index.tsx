@@ -9,9 +9,11 @@ import Progress from "./progress"
 
 interface Props {
   addVariantId: (productId: number, variantId: number) => () => any,
+  bundleAddOns: ShopifyProduct[],
+  bundleProducts: ShopifyProduct[],
   filters: any,
-  products: ShopifyProduct[],
   removeVariantId: (productId: number, variantId: number) => () => any,
+  selectedProductIds: number[],
   selectedSize: number,
   selectedVariantIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
@@ -36,9 +38,11 @@ export default class ChooseProducts extends React.Component<Props, State> {
   public render() {
     const {
       addVariantId,
+      bundleAddOns,
+      bundleProducts,
       filters,
-      products,
       removeVariantId,
+      selectedProductIds,
       selectedSize,
       selectedVariantIds,
       stepNext,
@@ -51,7 +55,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       productDetailsModalProductId,
     } = this.state
 
-    const productTypes = [...new Set(products.map((p) => p.product_type))]
+    const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
     const renderProduct = ({
       id: productId,
@@ -116,7 +120,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     }
 
     const renderProductType = (productType) => {
-      const renderableProducts = products
+      const renderableProducts = bundleProducts
         .filter(({product_type, tags}) => (
           product_type === productType && (
             !activeFilters.length ? true : activeFilters.some((f) => tags.includes(f))
@@ -165,7 +169,11 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Progress />
+            <Progress
+              bundleAddOns={bundleAddOns}
+              bundleProducts={bundleProducts}
+              selectedProductIds={selectedProductIds}
+            />
           </div>
         </div>
 
@@ -193,7 +201,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           style="panel"
         >
           <ProductDetails
-            product={products.find(({id}) => id === productDetailsModalProductId)}
+            product={bundleProducts.find(({id}) => id === productDetailsModalProductId)}
           />
         </Modal>
 

@@ -2,7 +2,7 @@ import * as React from "react"
 
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
-  products: ShopifyProduct[],
+  bundleAddOns: ShopifyProduct[],
   removeAddOnId: (productId: number, variantId: number) => () => any,
   selectedAddOnIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
@@ -13,7 +13,7 @@ export default class ChooseAddOns extends React.Component<Props> {
   public render() {
     const {
       addAddOnId,
-      products,
+      bundleAddOns,
       removeAddOnId,
       selectedAddOnIds,
       stepNext,
@@ -23,7 +23,7 @@ export default class ChooseAddOns extends React.Component<Props> {
     return (
       <div>
         <div className="grid grid--uniform">
-        {products.map(({
+        {bundleAddOns.map(({
             id: productId,
             title,
             image: {src},

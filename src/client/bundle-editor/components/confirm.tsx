@@ -3,10 +3,11 @@ import * as React from "react"
 import {createIdQuantities} from "../../../shared/helpers"
 
 interface Props {
+  bundleAddOns: ShopifyProduct[],
+  bundleProducts: ShopifyProduct[],
   enteredName: string,
   isEditingBundle: boolean,
   isSubmitting: boolean,
-  products: ShopifyProduct[],
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedProductIds: number[],
@@ -19,9 +20,10 @@ interface Props {
 export default class Confirm extends React.Component<Props> {
   public render() {
     const {
+      bundleAddOns,
+      bundleProducts,
       // enteredName,
       isSubmitting,
-      products,
       // selectedAddOnIds,
       selectedFrequency,
       selectedProductIds,
@@ -41,9 +43,11 @@ export default class Confirm extends React.Component<Props> {
 
     const idQuantities = createIdQuantities(selectedProductIds)
 
+    const allProducts = bundleProducts.concat(bundleAddOns)
+
     const renderProduct = ([productIdS, quantity]) => {
       const productId = parseInt(productIdS, 10)
-      const product = products.find(({id}) => id === productId)
+      const product = allProducts.find(({id}) => id === productId)
 
       return (
         <div key={productId}>

@@ -171,8 +171,10 @@ export default class App extends React.Component<Props, State> {
             <Step>
               <ChooseProducts
                 addVariantId={this.addVariantId}
+                bundleAddOns={bundleAddOns}
+                bundleProducts={bundleProducts}
                 filters={filters}
-                products={bundleProducts}
+                selectedProductIds={selectedProductIds}
                 selectedSize={selectedSize}
                 removeVariantId={this.removeVariantId}
                 selectedVariantIds={selectedVariantIds}
@@ -185,7 +187,7 @@ export default class App extends React.Component<Props, State> {
             <Step>
               <ChooseAddOns
                 addAddOnId={this.addAddOnId}
-                products={bundleAddOns}
+                bundleAddOns={bundleAddOns}
                 removeAddOnId={this.removeAddOnId}
                 selectedAddOnIds={selectedAddOnIds}
                 stepNext={this.stepNext}
@@ -196,10 +198,11 @@ export default class App extends React.Component<Props, State> {
           <div>
             <Step>
               <Confirm
+                bundleAddOns={bundleAddOns}
+                bundleProducts={bundleProducts}
                 enteredName={enteredName}
                 isEditingBundle={!!editingBundleId}
                 isSubmitting={isSubmitting}
-                products={bundleProducts.concat(bundleAddOns)}
                 selectedAddOnIds={selectedAddOnIds}
                 selectedFrequency={selectedFrequency}
                 selectedProductIds={selectedProductIds}
