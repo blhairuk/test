@@ -2,6 +2,7 @@ import * as React from "react"
 
 import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
+import Button from "../styled/button"
 import Filters from "./filters"
 import ProductDetails from "./product-details"
 import Progress from "./progress"
@@ -63,6 +64,41 @@ export default class ChooseProducts extends React.Component<Props, State> {
         price,
       } = variants[0]
 
+      const numSelected = selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
+
+      const renderButtons = () => {
+        if (numSelected === 0) {
+          return (
+            <div>
+              <Button
+                onClick={addVariantId.bind(this, variantId)}
+                type="button"
+              >
+                Add
+              </Button>
+            </div>
+          )
+        }
+
+        return (
+          <div>
+            <button
+              onClick={addVariantId.bind(this, variantId)}
+              type="button"
+            >
+              Add
+            </button>
+            <span>{numSelected}</span>
+            <button
+              onClick={removeVariantId.bind(this, variantId)}
+              type="button"
+            >
+              Del
+            </button>
+          </div>
+        )
+      }
+
       return (
         <div
           className="grid__item medium-up--one-third text-center"
@@ -74,21 +110,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             </a>
           </h3>
           <img src={src} />
-          <div>
-            <button
-              onClick={addVariantId.bind(this, variantId)}
-              type="button"
-            >
-              Add
-            </button>
-            <span>{selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-            <button
-              onClick={removeVariantId.bind(this, variantId)}
-              type="button"
-            >
-              Del
-            </button>
-          </div>
+          {renderButtons()}
         </div>
       )
     }
