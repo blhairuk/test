@@ -18,11 +18,10 @@ module.exports = {
       use: [{
         loader: 'babel-loader',
         options: {
-          plugins: ['react-hot-loader/babel']
+          plugins: ['react-hot-loader/babel'],
+          presets: ['env']
         }
-      }, 
-      'ts-loader'
-      ]
+      }, 'ts-loader']
     }]
   },
   plugins: [

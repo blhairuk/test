@@ -8,7 +8,12 @@ module.exports = {
     rules: [{
       exclude: /node_modules/,
       test: /\.tsx?$/, 
-      use: ['babel-loader', 'ts-loader']
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          presets: ['env']
+        }
+      }, 'ts-loader']
     }]
   },
   plugins: [
