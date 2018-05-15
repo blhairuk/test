@@ -240,7 +240,14 @@ export default class App extends React.Component<Props, State> {
   }
 
   private setSelectedSize = (selectedSize) => {
-    this.setState(updateStateKeys({selectedSize}))
+    const {selectedVariantIds} = this.state
+
+    selectedVariantIds.splice(selectedSize)
+
+    this.setState(updateStateKeys({
+      selectedSize,
+      selectedVariantIds,
+    }))
   }
 
   private addVariantId = (id) => {
