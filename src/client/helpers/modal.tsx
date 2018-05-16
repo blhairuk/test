@@ -9,16 +9,6 @@ interface Props {
   style?: "panel"
 }
 
-const commonOverlayStyles = `
-  background-color: rgba(0, 0, 0, 0.65);
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 21;
-`
-
 // tslint:disable-next-line
 injectGlobal`
   .bu-modal-content--panel {
@@ -33,18 +23,24 @@ injectGlobal`
     @media (min-width: 768px) { width: 400px }
   }
 
-  .bu-modal-overlay--panel {
-    ${commonOverlayStyles}
-  }
-
   .bu-modal-content--default {
     background-color: #fff;
     width: 100%;
     @media (min-width: 768px) { width: 600px }
   }
 
+  .bu-modal-overlay--panel,
   .bu-modal-overlay--default {
-    ${commonOverlayStyles}
+    background-color: rgba(0, 0, 0, 0.65);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 21;
+  }
+
+  .bu-modal-overlay--default {
     align-items: center;
     display: flex;
     justify-content: center;
