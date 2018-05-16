@@ -9,7 +9,7 @@
     "interface-name": false,
     "no-implicit-dependencies": [true, "dev"],
     "semicolon": false,
-    "variable-name": [true, "allow-snake-case"]
+    "variable-name": [true, "allow-snake-case", "allow-pascal-case"]
   },
   "rulesDirectory": []
 }

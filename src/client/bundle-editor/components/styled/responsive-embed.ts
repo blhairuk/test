@@ -4,7 +4,7 @@ export default styled.div`
   height: 360px;
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
-  width: 640px;
+  width: 100%;
 
   iframe {
     height: 100%;

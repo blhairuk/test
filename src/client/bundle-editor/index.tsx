@@ -5,7 +5,6 @@ import * as ReactModal from "react-modal"
 import App from "./app"
 
 ReactModal.setAppElement("#app")
-ReactModal.defaultStyles.overlay.zIndex = 21
 
 const renderApp = (Component) => {
   let AppTree

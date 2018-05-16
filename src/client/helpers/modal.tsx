@@ -11,6 +11,16 @@ interface Props {
 
 // tslint:disable-next-line
 injectGlobal`
+  @mixin commonOverlay {
+    background-color: rgba(0, 0, 0, 0.65);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 21;
+  }
+
   .bu-modal-content--panel {
     background: #fff;
     border-radius: 0;
@@ -20,30 +30,21 @@ injectGlobal`
     right: 0;
     top: 0;
     width: 100%;
-    @media (min-width: 768px) { width: 400px; }
+    @media (min-width: 768px) { width: 400px }
   }
   .bu-modal-overlay--panel {
-    background-color: rgba(0, 0, 0, 0.65);
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 21;
+    @include commonOverlay;
   }
   .bu-modal-content--default {
     background-color: #fff;
+    width: 100%;
+    @media (min-width: 768px) { width: 600px }
   }
   .bu-modal-overlay--default {
+    @include commonOverlay;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.65);
-    bottom: 0;
     display: flex;
-    left: 0;
     justify-content: center;
-    position: fixed;
-    right: 0;
-    top: 0;
   }
 `
 
