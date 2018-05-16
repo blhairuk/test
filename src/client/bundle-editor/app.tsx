@@ -41,6 +41,7 @@ interface Props {
 
 interface State {
   bundleName: string,
+  currentStepIndex: number,
   editingBundleId: number,
   enteredEmail: string,
   enteredName: string,
@@ -55,6 +56,7 @@ interface State {
 
 const initialState = {
   bundleName: "",
+  currentStepIndex: 0,
   editingBundleId: null,
   enteredEmail: "",
   enteredName: "",
@@ -91,17 +93,7 @@ export default class App extends React.Component<Props, State> {
       this.setState(updateStateKeys(cartState))
     }
 
-    $(() => {
-      this.slickRef = $(".bu-slick").slick({
-        accessibility: false,
-        adaptiveHeight: true,
-        arrows: false,
-        draggable: false,
-        infinite: false,
-        swipe: false,
-        touchMove: false,
-      })
-    })
+    this.initSlick()
   }
 
   public render() {
@@ -113,6 +105,7 @@ export default class App extends React.Component<Props, State> {
     } = this.props
 
     const {
+      currentStepIndex,
       editingBundleId,
       enteredEmail,
       enteredName,
@@ -130,11 +123,13 @@ export default class App extends React.Component<Props, State> {
       "subscriptions",
       "shipping_interval_frequency",
     ).split(",")
+
     const shippingUnitType = getMetafieldValue(
       bundleProductMetafields,
       "subscriptions",
       "shipping_interval_unit_type",
     )
+
     const filters = JSON.parse(
       getMetafieldValue(
         bundleProductMetafields,
@@ -151,6 +146,7 @@ export default class App extends React.Component<Props, State> {
               <EnterName
                 enterName={this.enterName}
                 enteredName={enteredName}
+                isActiveStep={currentStepIndex === 0}
                 stepNext={this.stepNext}
               />
             </Step>
@@ -161,6 +157,7 @@ export default class App extends React.Component<Props, State> {
                 enterEmail={this.enterEmail}
                 enteredEmail={enteredEmail}
                 enteredName={enteredName}
+                isActiveStep={currentStepIndex === 1}
                 stepNext={this.stepNext}
                 stepPrev={this.stepPrev}
               />
@@ -170,6 +167,7 @@ export default class App extends React.Component<Props, State> {
             <Step>
               <ChooseFrequencySize
                 frequencies={shippingFrequencies}
+                isActiveStep={currentStepIndex === 2}
                 selectedFrequency={selectedFrequency}
                 setSelectedFrequency={this.setSelectedFrequency}
                 selectedSize={selectedSize}
@@ -189,6 +187,7 @@ export default class App extends React.Component<Props, State> {
                 bundleProductMetafields={bundleProductMetafields}
                 bundleProducts={bundleProducts}
                 filters={filters}
+                isActiveStep={currentStepIndex === 3}
                 selectedProductIds={selectedProductIds}
                 selectedSize={selectedSize}
                 removeVariantId={this.removeVariantId}
@@ -203,6 +202,7 @@ export default class App extends React.Component<Props, State> {
               <ChooseAddOns
                 addAddOnId={this.addAddOnId}
                 bundleAddOns={bundleAddOns}
+                isActiveStep={currentStepIndex === 4}
                 removeAddOnId={this.removeAddOnId}
                 selectedAddOnIds={selectedAddOnIds}
                 stepNext={this.stepNext}
@@ -216,6 +216,7 @@ export default class App extends React.Component<Props, State> {
                 bundleAddOns={bundleAddOns}
                 bundleProducts={bundleProducts}
                 enteredName={enteredName}
+                isActiveStep={currentStepIndex === 5}
                 isEditingBundle={!!editingBundleId}
                 isSubmitting={isSubmitting}
                 selectedAddOnIds={selectedAddOnIds}
@@ -593,4 +594,23 @@ export default class App extends React.Component<Props, State> {
   }
 
   private createBundleName = (customerName) => `${customerName}'s box`
+
+  private initSlick = () => {
+    $(() => {
+      this.slickRef = $(".bu-slick").slick({
+        accessibility: false,
+        adaptiveHeight: true,
+        arrows: false,
+        draggable: false,
+        infinite: false,
+        swipe: false,
+        touchMove: false,
+      })
+
+      this.slickRef.on("afterChange", () => {
+        const currentStepIndex = this.slickRef.slick("slickCurrentSlide")
+        this.setState(updateStateKeys({currentStepIndex}))
+      })
+    })
+  }
 }

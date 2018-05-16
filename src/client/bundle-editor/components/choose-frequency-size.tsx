@@ -5,6 +5,7 @@ import Button from "./styled/button"
 
 interface Props {
   frequencies: string[],
+  isActiveStep: boolean,
   variants: ShopifyVariant[],
   selectedSize: number,
   setSelectedSize: (e: React.MouseEvent<HTMLElement>) => any,

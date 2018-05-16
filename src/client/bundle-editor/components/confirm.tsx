@@ -6,6 +6,7 @@ interface Props {
   bundleAddOns: ShopifyProduct[],
   bundleProducts: ShopifyProduct[],
   enteredName: string,
+  isActiveStep: boolean,
   isEditingBundle: boolean,
   isSubmitting: boolean,
   selectedAddOnIds: number[],

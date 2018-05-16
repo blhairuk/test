@@ -3,6 +3,7 @@ import * as React from "react"
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
   bundleAddOns: ShopifyProduct[],
+  isActiveStep: boolean,
   removeAddOnId: (productId: number, variantId: number) => () => any,
   selectedAddOnIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,

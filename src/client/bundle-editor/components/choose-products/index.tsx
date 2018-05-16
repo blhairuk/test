@@ -16,6 +16,7 @@ interface Props {
   bundleProducts: ShopifyProduct[],
   bundleProductMetafields: ShopifyProductMetafield[],
   filters: any,
+  isActiveStep: boolean,
   removeVariantId: (productId: number, variantId: number) => () => any,
   selectedProductIds: number[],
   selectedSize: number,

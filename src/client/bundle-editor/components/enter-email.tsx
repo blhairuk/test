@@ -7,11 +7,25 @@ interface Props {
   enteredEmail: string,
   enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
   enteredName: string,
+  isActiveStep: boolean,
   stepNext: (e: React.FormEvent<HTMLElement>) => any,
   stepPrev: (e: React.FormEvent<HTMLElement>) => any,
 }
 
 export default class EnterEmail extends React.Component<Props> {
+  private textInputRef
+
+  constructor(props) {
+    super(props)
+    this.textInputRef = React.createRef()
+  }
+
+  public componentDidUpdate(prevProps) {
+    if (!prevProps.isActiveStep && this.props.isActiveStep) {
+      this.textInputRef.current.focus()
+    }
+  }
+
   public render() {
     const {
       enterEmail,
@@ -27,7 +41,7 @@ export default class EnterEmail extends React.Component<Props> {
           <div>You rock, {enteredName}!</div>
           <div>What's your email?</div>
           <TextInput
-            autoFocus={true}
+            innerRef={this.textInputRef}
             onChange={enterEmail}
             required={true}
             type="email"
