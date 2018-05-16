@@ -1,5 +1,4 @@
 import * as React from "react"
-import Slider from "react-slick"
 
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
@@ -69,13 +68,11 @@ const initialState = {
 }
 
 export default class App extends React.Component<Props, State> {
-  public sliderRef: React.RefObject<Slider>
   public state = initialState
+  private slickRef
 
   constructor(props) {
     super(props)
-
-    this.sliderRef = React.createRef()
 
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
@@ -93,6 +90,18 @@ export default class App extends React.Component<Props, State> {
       const cartState = await this.extractStateFromCart(bundleId)
       this.setState(updateStateKeys(cartState))
     }
+
+    $(() => {
+      this.slickRef = $(".bu-slick").slick({
+        accessibility: false,
+        adaptiveHeight: true,
+        arrows: false,
+        draggable: false,
+        infinite: false,
+        swipe: false,
+        touchMove: false,
+      })
+    })
   }
 
   public render() {
@@ -136,17 +145,7 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <AppContainer>
-        <Slider
-          accessibility={false}
-          beforeChange={this.handleSlideChange}
-          adaptiveHeight={true}
-          arrows={null}
-          draggable={false}
-          infinite={false}
-          ref={this.sliderRef}
-          swipe={false}
-          touchMove={false}
-        >
+        <div className="bu-slick">
           <div>
             <Step>
               <EnterName
@@ -229,7 +228,7 @@ export default class App extends React.Component<Props, State> {
               />
             </Step>
           </div>
-        </Slider>
+        </div>
 
         <Modal
           handleClose={this.handleBundleFullModalClose}
@@ -581,20 +580,16 @@ export default class App extends React.Component<Props, State> {
 
   private stepNext = (e?: React.FormEvent<HTMLElement>) => {
     if (e) { e.preventDefault() }
-    this.sliderRef.current.slickNext()
+    this.slickRef.slick("slickNext")
   }
 
   private stepPrev = (e?: React.FormEvent<HTMLElement>) => {
     if (e) { e.preventDefault() }
-    this.sliderRef.current.slickPrev()
+    this.slickRef.slick("slickPrev")
   }
 
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
-  }
-
-  private handleSlideChange = () => {
-    $("html, body").animate({scrollTop: 0}, 500)
   }
 
   private createBundleName = (customerName) => `${customerName}'s box`
