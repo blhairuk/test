@@ -137,12 +137,15 @@ export default class App extends React.Component<Props, State> {
     return (
       <AppContainer>
         <Slider
+          accessibility={false}
           beforeChange={this.handleSlideChange}
           adaptiveHeight={true}
           arrows={null}
           draggable={false}
           infinite={false}
           ref={this.sliderRef}
+          swipe={false}
+          touchMove={false}
         >
           <div>
             <Step>
