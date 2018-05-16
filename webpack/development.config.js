@@ -7,7 +7,7 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    hotOnly: true,
+    hot: true,
     https: true
   },
   mode: 'development',
