@@ -21,6 +21,12 @@ declare interface ShopifyProduct {
   variants: ShopifyVariant[],
 }
 
+declare interface ShopifyProductMetafield {
+  key: string,
+  namespace: string,
+  value: string,
+}
+
 declare interface ShopifyVariant {
   id: number,
   price: string,

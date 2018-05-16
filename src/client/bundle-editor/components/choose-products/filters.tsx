@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import createProductFilterTag from "../../../helpers/create-product-filter-tag"
-import Button, {BlackButton} from "../styled/button"
+import Button from "../styled/button"
 
 interface Props {
   activeFilters: string[],
@@ -21,16 +21,16 @@ export default class Filters extends React.Component<Props> {
 
     const renderFilter = (category) => (filter) => {
       const filterTag = createProductFilterTag(category, filter)
-      const Component = activeFilters.includes(filterTag) ? BlackButton : Button
 
       return (
-        <Component
+        <Button
+          color={activeFilters.includes(filterTag) ? "black" : undefined}
           key={filter}
           onClick={toggleFilter(filterTag)}
           type="button"
         >
           {filter}
-        </Component>
+        </Button>
       )
     }
 

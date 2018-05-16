@@ -6,11 +6,15 @@ import Button from "../styled/button"
 import Filters from "./filters"
 import ProductDetails from "./product-details"
 import Progress from "./progress"
+import VideoHero from "./video-hero"
+
+import {getMetafieldValue} from "../../../../shared/helpers"
 
 interface Props {
   addVariantId: (productId: number, variantId: number) => () => any,
   bundleAddOns: ShopifyProduct[],
   bundleProducts: ShopifyProduct[],
+  bundleProductMetafields: ShopifyProductMetafield[],
   filters: any,
   removeVariantId: (productId: number, variantId: number) => () => any,
   selectedProductIds: number[],
@@ -40,6 +44,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       addVariantId,
       bundleAddOns,
       bundleProducts,
+      bundleProductMetafields,
       filters,
       removeVariantId,
       selectedProductIds,
@@ -127,9 +132,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
           )
         ))
 
+      const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
+
       return (
         <div key={productType}>
-          <h3 className="h4">{productType}</h3>
+          <VideoHero
+            title={productType}
+            youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
+          />
           <div className="grid grid--uniform">
             {renderableProducts.map(renderProduct)}
           </div>

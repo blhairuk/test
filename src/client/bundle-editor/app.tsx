@@ -16,6 +16,7 @@ import Modal from "../helpers/modal"
 import {
   createBundleId,
   createIdQuantities,
+  getMetafieldValue,
   getPropertyValueForKey,
 } from "../../shared/helpers"
 import updateStateKeys from "../helpers/update-state-keys"
@@ -32,11 +33,7 @@ import {BUNDLE_TYPE} from "../../shared/constants"
 interface Props {
   bundleAddOns: ShopifyProduct[],
   bundleId: number,
-  bundleProductMetafields: [{
-    key: string,
-    namespace: string,
-    value: string,
-  }],
+  bundleProductMetafields: ShopifyProductMetafield[],
   bundleProduct: ShopifyProduct,
   bundleProducts: ShopifyProduct[],
   customerHash: string,
@@ -103,6 +100,7 @@ export default class App extends React.Component<Props, State> {
       bundleAddOns,
       bundleProduct,
       bundleProducts,
+      bundleProductMetafields,
     } = this.props
 
     const {
@@ -118,9 +116,23 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     } = this.state
 
-    const shippingFrequencies = this.metafieldValue("subscriptions", "shipping_interval_frequency").split(",")
-    const shippingUnitType = this.metafieldValue("subscriptions", "shipping_interval_unit_type")
-    const filters = JSON.parse(this.metafieldValue("bundle_editor", "filters"))
+    const shippingFrequencies = getMetafieldValue(
+      bundleProductMetafields,
+      "subscriptions",
+      "shipping_interval_frequency",
+    ).split(",")
+    const shippingUnitType = getMetafieldValue(
+      bundleProductMetafields,
+      "subscriptions",
+      "shipping_interval_unit_type",
+    )
+    const filters = JSON.parse(
+      getMetafieldValue(
+        bundleProductMetafields,
+        "bundle_editor",
+        "filters",
+      ),
+    )
 
     return (
       <AppContainer>
@@ -172,6 +184,7 @@ export default class App extends React.Component<Props, State> {
               <ChooseProducts
                 addVariantId={this.addVariantId}
                 bundleAddOns={bundleAddOns}
+                bundleProductMetafields={bundleProductMetafields}
                 bundleProducts={bundleProducts}
                 filters={filters}
                 selectedProductIds={selectedProductIds}
@@ -224,12 +237,6 @@ export default class App extends React.Component<Props, State> {
       </AppContainer>
     )
   }
-
-  private metafieldValue = (namespace, key) => (
-    this.props.bundleProductMetafields.find((mf) => (
-      key === mf.key && namespace === mf.namespace
-    )).value
-  )
 
   private enterEmail = ({target: {value: enteredEmail}}) => {
     this.setState(updateStateKeys({enteredEmail}))
@@ -324,13 +331,26 @@ export default class App extends React.Component<Props, State> {
   }
 
   private addToCart = (bundleId, extraData) => {
+    const {bundleProductMetafields} = this.props
+
+    const shipping_interval_unit_type = getMetafieldValue(
+      bundleProductMetafields,
+      "subscriptions",
+      "shipping_interval_unit_type",
+    )
+    const subscription_id = getMetafieldValue(
+      bundleProductMetafields,
+      "subscriptions",
+      "subscription_id",
+    )
+
     return addToCart({
       ...extraData,
       properties: {
         bundle_id: bundleId,
         shipping_interval_frequency: this.state.selectedFrequency,
-        shipping_interval_unit_type: this.metafieldValue("subscriptions", "shipping_interval_unit_type"),
-        subscription_id: this.metafieldValue("subscriptions", "subscription_id"),
+        shipping_interval_unit_type,
+        subscription_id,
         ...extraData.properties,
       },
     })

@@ -34,3 +34,10 @@ export const createIdQuantities = (ids) => (
     return obj
   }, {})
 )
+
+export const getMetafieldValue = (metafields, namespace, key) => {
+  const property = metafields.find(({key: mkey, namespace: mnamespace}) => (
+    key === mkey && namespace === mnamespace
+  ))
+  return property ? property.value : null
+}
