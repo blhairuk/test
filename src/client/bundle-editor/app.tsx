@@ -214,9 +214,11 @@ export default class App extends React.Component<Props, State> {
           isOpen={!!productDetailsModalProductId}
           style="panel"
         >
-          <ProductDetails
-            product={allProducts.find(({id}) => id === productDetailsModalProductId)}
-          />
+          {productDetailsModalProductId && (
+            <ProductDetails
+              product={allProducts.find(({id}) => id === productDetailsModalProductId)}
+            />
+          )}
         </Modal>
 
         <Modal
