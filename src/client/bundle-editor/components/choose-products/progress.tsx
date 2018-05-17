@@ -6,7 +6,9 @@ interface Props {
   bundleAddOns: ShopifyProduct[],
   bundleName: string,
   bundleProducts: ShopifyProduct[],
+  numSelected: number,
   selectedProductIds: number[],
+  selectedSize: number,
   updateBundleName: (e) => any,
 }
 
@@ -16,7 +18,9 @@ export default class Progress extends React.Component<Props> {
       bundleAddOns,
       bundleName,
       bundleProducts,
+      numSelected,
       selectedProductIds,
+      selectedSize,
       updateBundleName,
     } = this.props
 
@@ -42,6 +46,9 @@ export default class Progress extends React.Component<Props> {
             type="text"
             value={bundleName}
           />
+        </div>
+        <div>
+          {numSelected} of {selectedSize}
         </div>
         {Object.entries(idQuantities).map(renderProduct)}
       </div>

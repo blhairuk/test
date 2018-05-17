@@ -194,7 +194,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
               bundleAddOns={bundleAddOns}
               bundleName={bundleName}
               bundleProducts={bundleProducts}
+              numSelected={selectedVariantIds.length}
               selectedProductIds={selectedProductIds}
+              selectedSize={selectedSize}
               updateBundleName={updateBundleName}
             />
           </div>
