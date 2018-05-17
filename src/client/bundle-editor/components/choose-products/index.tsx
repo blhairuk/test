@@ -92,19 +92,25 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
         return (
           <div>
-            <button
-              onClick={addVariantId(productId, variantId)}
-              type="button"
-            >
-              Add
-            </button>
-            <span>{numSelected}</span>
-            <button
+            <Button
+              color="black"
               onClick={removeVariantId(productId, variantId)}
               type="button"
             >
-              Del
-            </button>
+              -
+            </Button>
+
+            <span style={{fontSize: "150%", fontWeight: "bold"}}>
+              {numSelected}
+            </span>
+
+            <Button
+              color="black"
+              onClick={addVariantId(productId, variantId)}
+              type="button"
+            >
+              +
+            </Button>
           </div>
         )
       }
