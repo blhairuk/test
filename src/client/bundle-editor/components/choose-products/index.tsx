@@ -6,6 +6,7 @@ import updateStateKeys from "../../../helpers/update-state-keys"
 import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 import Filters from "./filters"
+import Product from "./product"
 import Progress from "./progress"
 import VideoHero from "./video-hero"
 
@@ -37,11 +38,8 @@ export default class ChooseProducts extends React.Component<Props, State> {
   }
 
   private renderWithContext = ({
-    addVariantId,
     bundleProducts,
     bundleProductMetafields,
-    openProductDetailsModal,
-    removeVariantId,
     selectedSize,
     selectedVariantIds,
     stepNext,
@@ -62,70 +60,17 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
-    const renderProduct = ({
-      id: productId,
-      title,
-      image: {src},
-      variants,
-    }) => {
+    const renderProduct = (product) => {
       const {
-        id: variantId,
-        price,
-      } = variants[0]
-
-      const numSelected = selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
-
-      const renderButtons = () => {
-        if (numSelected === 0) {
-          return (
-            <div>
-              <Button
-                onClick={addVariantId(productId, variantId)}
-                type="button"
-              >
-                Add
-              </Button>
-            </div>
-          )
-        }
-
-        return (
-          <div>
-            <Button
-              color="black"
-              onClick={removeVariantId(productId, variantId)}
-              type="button"
-            >
-              -
-            </Button>
-
-            <span style={{fontSize: "150%", fontWeight: "bold"}}>
-              {numSelected}
-            </span>
-
-            <Button
-              color="black"
-              onClick={addVariantId(productId, variantId)}
-              type="button"
-            >
-              +
-            </Button>
-          </div>
-        )
-      }
+        id: productId,
+      } = product
 
       return (
         <div
           className="grid__item medium-up--one-third text-center"
           key={productId}
         >
-          <h3 className="h4">
-            <a onClick={openProductDetailsModal(productId)}>
-              {this.title({price, title})}
-            </a>
-          </h3>
-          <img src={src} />
-          {renderButtons()}
+          <Product product={product} />
         </div>
       )
     }
@@ -208,11 +153,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
         </Modal>
       </div>
     )
-  }
-
-  private title = ({price, title}) => {
-    if (price === "0.00") { return title }
-    return `${title} (+${price})`
   }
 
   private handleFiltersModalClose = () => {
