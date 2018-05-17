@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import {createIdQuantities} from "../../../../shared/helpers"
+import ProgressGradientBar from "../styled/progress-gradient-bar"
 
 interface Props {
   bundleAddOns: ShopifyProduct[],
@@ -50,6 +51,7 @@ export default class Progress extends React.Component<Props> {
         <div>
           {numSelected} of {selectedSize}
         </div>
+        <ProgressGradientBar width={numSelected / selectedSize} />
         {Object.entries(idQuantities).map(renderProduct)}
       </div>
     )
