@@ -1,10 +1,13 @@
 import * as React from "react"
 
+import {getMetafieldValue} from "../../../shared/helpers"
+import VideoHero from "./choose-products/video-hero"
 import Button from "./styled/button"
 
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
   bundleAddOns: ShopifyProduct[],
+  bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
   removeAddOnId: (productId: number, variantId: number) => () => any,
   selectedAddOnIds: number[],
@@ -17,6 +20,7 @@ export default class ChooseAddOns extends React.Component<Props> {
     const {
       addAddOnId,
       bundleAddOns,
+      bundleProductMetafields,
       removeAddOnId,
       selectedAddOnIds,
       stepNext,
@@ -75,6 +79,11 @@ export default class ChooseAddOns extends React.Component<Props> {
             &nbsp;
           </div>
         </div>
+
+        <VideoHero
+          title="Boosters"
+          youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", "youtube_id_boosters")}
+        />
 
         <div className="grid grid--uniform">
           {bundleAddOns.map(renderAddOn)}

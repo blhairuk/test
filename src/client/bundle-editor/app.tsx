@@ -205,6 +205,7 @@ export default class App extends React.Component<Props, State> {
               <ChooseAddOns
                 addAddOnId={this.addAddOnId}
                 bundleAddOns={bundleAddOns}
+                bundleProductMetafields={bundleProductMetafields}
                 isActiveStep={currentStepIndex === 4}
                 removeAddOnId={this.removeAddOnId}
                 selectedAddOnIds={selectedAddOnIds}
