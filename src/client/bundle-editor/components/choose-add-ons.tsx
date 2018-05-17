@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import Button from "./styled/button"
+
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
   bundleAddOns: ShopifyProduct[],
@@ -21,55 +23,71 @@ export default class ChooseAddOns extends React.Component<Props> {
       stepPrev,
     } = this.props
 
+    const renderAddOn = ({
+      id: productId,
+      title,
+      image: {src},
+      variants,
+    }) => {
+      const {id: variantId} = variants[0]
+      return (
+        <div
+          className="grid__item medium-up--one-third text-center"
+          key={productId}
+        >
+          <h3 className="h4">{title}</h3>
+          <img src={src} />
+          <div>
+            <button
+              onClick={addAddOnId(productId, variantId)}
+              type="button"
+            >
+              Add
+            </button>
+            <span>{selectedAddOnIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
+            <button
+              onClick={removeAddOnId(productId, variantId)}
+              type="button"
+            >
+              Del
+            </button>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div>
         <div className="grid grid--uniform">
-        {bundleAddOns.map(({
-            id: productId,
-            title,
-            image: {src},
-            variants: [{id: variantId}],
-          }) => (
-            <div
-              className="grid__item medium-up--one-third text-center"
-              key={productId}
+          <div className="grid__item one-tenth">
+            <Button
+              color="black"
+              onClick={stepPrev}
+              type="button"
             >
-              <h3 className="h4">{title}</h3>
-              <img src={src} />
-              <div>
-                <button
-                  onClick={addAddOnId(productId, variantId)}
-                  type="button"
-                >
-                  Add
-                </button>
-                <span>{selectedAddOnIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                <button
-                  onClick={removeAddOnId(productId, variantId)}
-                  type="button"
-                >
-                  Del
-                </button>
-              </div>
+              Prev
+            </Button>
+          </div>
+          <div className="grid__item eight-tenths text-center">
+            BOOST YOUR BOX
             </div>
-          ))}
+          <div className="grid__item one-tenth text-right">
+            &nbsp;
+          </div>
         </div>
 
-        <div>
-          <button
-            onClick={stepPrev}
-            type="button"
-          >
-            Prev
-          </button>
-
-          <button
-            onClick={stepNext}
-            type="button"
-          >
-            Next
-          </button>
+        <div className="grid grid--uniform">
+          {bundleAddOns.map(renderAddOn)}
         </div>
+
+        <Button
+          className="one-whole"
+          color="purple"
+          onClick={stepNext}
+          type="button"
+        >
+          Next
+        </Button>
       </div>
     )
   }
