@@ -3,6 +3,7 @@ import * as React from "react"
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
 import ChooseProducts from "./components/choose-products"
+import ProductDetails from "./components/choose-products/product-details"
 import Confirm from "./components/confirm"
 import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
@@ -47,6 +48,7 @@ interface State {
   enteredName: string,
   isBundleFullModalOpen: boolean,
   isSubmitting: boolean,
+  productDetailsModalProductId: number,
   selectedAddOnIds: number[],
   selectedFrequency: number,
   selectedProductIds: number[],
@@ -62,6 +64,7 @@ const initialState = {
   enteredName: "",
   isBundleFullModalOpen: false,
   isSubmitting: false,
+  productDetailsModalProductId: null,
   selectedAddOnIds: [],
   selectedFrequency: null,
   selectedProductIds: [],
@@ -114,6 +117,7 @@ export default class App extends React.Component<Props, State> {
       enteredName,
       isBundleFullModalOpen,
       isSubmitting,
+      productDetailsModalProductId,
       selectedAddOnIds,
       selectedFrequency,
       selectedProductIds,
@@ -129,12 +133,14 @@ export default class App extends React.Component<Props, State> {
       bundleProduct,
       bundleProductMetafields,
       bundleProducts,
+      closeProductDetailsModal: this.closeProductDetailsModal,
       enterEmail: this.enterEmail,
       enterName: this.enterName,
       enteredEmail,
       enteredName,
       isEditingBundle: !!editingBundleId,
       isSubmitting,
+      openProductDetailsModal: this.openProductDetailsModal,
       removeAddOnId: this.removeAddOnId,
       removeVariantId: this.removeVariantId,
       selectedAddOnIds,
@@ -193,6 +199,16 @@ export default class App extends React.Component<Props, State> {
             Your bundle is full!
           </Modal>
         </AppContainer>
+
+        <Modal
+          handleClose={this.closeProductDetailsModal}
+          isOpen={!!productDetailsModalProductId}
+          style="panel"
+        >
+          <ProductDetails
+            product={bundleProducts.find(({id}) => id === productDetailsModalProductId)}
+          />
+        </Modal>
       </Context.Provider>
     )
   }
@@ -574,5 +590,13 @@ export default class App extends React.Component<Props, State> {
         this.setState(updateStateKeys({currentStepIndex}))
       })
     })
+  }
+
+  private closeProductDetailsModal = () => {
+    this.setState(updateStateKeys({productDetailsModalProductId: null}))
+  }
+
+  private openProductDetailsModal = (productDetailsModalProductId) => () => {
+    this.setState(updateStateKeys({productDetailsModalProductId}))
   }
 }

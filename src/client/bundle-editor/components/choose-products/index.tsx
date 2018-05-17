@@ -6,7 +6,6 @@ import updateStateKeys from "../../../helpers/update-state-keys"
 import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 import Filters from "./filters"
-import ProductDetails from "./product-details"
 import Progress from "./progress"
 import VideoHero from "./video-hero"
 
@@ -41,6 +40,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     addVariantId,
     bundleProducts,
     bundleProductMetafields,
+    openProductDetailsModal,
     removeVariantId,
     selectedSize,
     selectedVariantIds,
@@ -50,7 +50,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
     const {
       activeFilters,
       isFiltersModalOpen,
-      productDetailsModalProductId,
     } = this.state
 
     const filters = JSON.parse(
@@ -121,7 +120,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           key={productId}
         >
           <h3 className="h4">
-            <a onClick={this.handleProductDetailsModalOpen(productId)}>
+            <a onClick={openProductDetailsModal(productId)}>
               {this.title({price, title})}
             </a>
           </h3>
@@ -196,16 +195,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
         </div>
 
         <Modal
-          handleClose={this.handleProductDetailsModalClose}
-          isOpen={!!productDetailsModalProductId}
-          style="panel"
-        >
-          <ProductDetails
-            product={bundleProducts.find(({id}) => id === productDetailsModalProductId)}
-          />
-        </Modal>
-
-        <Modal
           handleClose={this.handleFiltersModalClose}
           isOpen={isFiltersModalOpen}
           style="panel"
@@ -224,14 +213,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
   private title = ({price, title}) => {
     if (price === "0.00") { return title }
     return `${title} (+${price})`
-  }
-
-  private handleProductDetailsModalClose = () => {
-    this.setState(updateStateKeys({productDetailsModalProductId: null}))
-  }
-
-  private handleProductDetailsModalOpen = (productDetailsModalProductId) => () => {
-    this.setState(updateStateKeys({productDetailsModalProductId}))
   }
 
   private handleFiltersModalClose = () => {
