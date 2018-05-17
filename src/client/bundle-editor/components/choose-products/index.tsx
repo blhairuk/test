@@ -199,25 +199,16 @@ export default class ChooseProducts extends React.Component<Props, State> {
               selectedSize={selectedSize}
               updateBundleName={updateBundleName}
             />
-          </div>
-        </div>
 
-        <div>
-          <button
-            onClick={stepPrev}
-            type="button"
-          >
-            Prev
-          </button>
-
-          {selectedVariantIds.length === selectedSize && (
-            <button
+            <Button
+              color="purple"
+              disabled={selectedVariantIds.length < selectedSize}
               onClick={stepNext}
               type="button"
             >
               Next
-            </button>
-          )}
+            </Button>
+          </div>
         </div>
 
         <Modal

@@ -2,11 +2,12 @@ import styled from "styled-components"
 
 import {
   BLUE_GREEN,
+  LIGHT_PURPLE,
   YELLOW,
 } from "../../../colors"
 
 interface Props {
-  color?: "white" | "black" | "yellow"
+  color?: "white" | "black" | "yellow" | "purple"
 }
 
 const getBackgroundColor = ({color}: Props) => {
@@ -17,6 +18,8 @@ const getBackgroundColor = ({color}: Props) => {
       return "#000"
     case "yellow":
       return YELLOW
+    case "purple":
+      return LIGHT_PURPLE
     default:
       return BLUE_GREEN
   }
@@ -25,11 +28,9 @@ const getBackgroundColor = ({color}: Props) => {
 const getColor = ({color}: Props) => {
   switch (color) {
     case "white":
-      return "#000"
-    case "black":
-      return "#fff"
     case "yellow":
       return "#000"
+    case "black":
     default:
       return "#fff"
   }

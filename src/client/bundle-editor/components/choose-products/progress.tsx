@@ -51,7 +51,7 @@ export default class Progress extends React.Component<Props> {
         <div>
           {numSelected} of {selectedSize}
         </div>
-        <ProgressGradientBar width={numSelected / selectedSize} />
+        <ProgressGradientBar width={(numSelected / selectedSize) || 0} />
         {Object.entries(idQuantities).map(renderProduct)}
       </div>
     )
