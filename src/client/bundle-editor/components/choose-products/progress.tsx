@@ -4,16 +4,20 @@ import {createIdQuantities} from "../../../../shared/helpers"
 
 interface Props {
   bundleAddOns: ShopifyProduct[],
+  bundleName: string,
   bundleProducts: ShopifyProduct[],
   selectedProductIds: number[],
+  updateBundleName: (e) => any,
 }
 
 export default class Progress extends React.Component<Props> {
   public render() {
     const {
       bundleAddOns,
+      bundleName,
       bundleProducts,
       selectedProductIds,
+      updateBundleName,
     } = this.props
 
     const allProducts = bundleProducts.concat(bundleAddOns)
@@ -32,6 +36,13 @@ export default class Progress extends React.Component<Props> {
 
     return (
       <div>
+        <div>
+          <input
+            onChange={updateBundleName}
+            type="text"
+            value={bundleName}
+          />
+        </div>
         {Object.entries(idQuantities).map(renderProduct)}
       </div>
     )

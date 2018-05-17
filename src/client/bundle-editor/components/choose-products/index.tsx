@@ -13,6 +13,7 @@ import {getMetafieldValue} from "../../../../shared/helpers"
 interface Props {
   addVariantId: (productId: number, variantId: number) => () => any,
   bundleAddOns: ShopifyProduct[],
+  bundleName: string,
   bundleProducts: ShopifyProduct[],
   bundleProductMetafields: ShopifyProductMetafield[],
   filters: any,
@@ -23,6 +24,7 @@ interface Props {
   selectedVariantIds: number[],
   stepNext: (e?: React.FormEvent<HTMLElement>) => any,
   stepPrev: (e: React.FormEvent<HTMLElement>) => any,
+  updateBundleName: (e) => any,
 }
 
 interface State {
@@ -44,6 +46,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     const {
       addVariantId,
       bundleAddOns,
+      bundleName,
       bundleProducts,
       bundleProductMetafields,
       filters,
@@ -53,6 +56,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       selectedVariantIds,
       stepNext,
       stepPrev,
+      updateBundleName,
     } = this.props
 
     const {
@@ -188,8 +192,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
           <div className="grid__item medium-up--one-third">
             <Progress
               bundleAddOns={bundleAddOns}
+              bundleName={bundleName}
               bundleProducts={bundleProducts}
               selectedProductIds={selectedProductIds}
+              updateBundleName={updateBundleName}
             />
           </div>
         </div>

@@ -105,6 +105,7 @@ export default class App extends React.Component<Props, State> {
     } = this.props
 
     const {
+      bundleName,
       currentStepIndex,
       editingBundleId,
       enteredEmail,
@@ -184,6 +185,7 @@ export default class App extends React.Component<Props, State> {
               <ChooseProducts
                 addVariantId={this.addVariantId}
                 bundleAddOns={bundleAddOns}
+                bundleName={bundleName}
                 bundleProductMetafields={bundleProductMetafields}
                 bundleProducts={bundleProducts}
                 filters={filters}
@@ -194,6 +196,7 @@ export default class App extends React.Component<Props, State> {
                 selectedVariantIds={selectedVariantIds}
                 stepNext={this.stepNext}
                 stepPrev={this.stepPrev}
+                updateBundleName={this.updateBundleName}
               />
             </Step>
           </div>
@@ -250,6 +253,10 @@ export default class App extends React.Component<Props, State> {
       bundleName: enteredName ? this.createBundleName(enteredName) : "",
       enteredName,
     }))
+  }
+
+  private updateBundleName = ({target: {value: bundleName}}) => {
+    this.setState(updateStateKeys({bundleName}))
   }
 
   private setSelectedFrequency = (selectedFrequency) => {
