@@ -56,7 +56,7 @@ interface State {
 
 const initialState = {
   bundleName: "",
-  currentStepIndex: 0,
+  currentStepIndex: null,
   editingBundleId: null,
   enteredEmail: "",
   enteredName: "",
@@ -597,7 +597,11 @@ export default class App extends React.Component<Props, State> {
 
   private initSlick = () => {
     $(() => {
-      this.slickRef = $(".bu-slick").slick({
+      this.slickRef = $(".bu-slick")
+      .on("init", (_, {currentSlide: currentStepIndex}) => {
+        this.setState(updateStateKeys({currentStepIndex}))
+      })
+      .slick({
         accessibility: false,
         adaptiveHeight: true,
         arrows: false,
@@ -606,9 +610,7 @@ export default class App extends React.Component<Props, State> {
         swipe: false,
         touchMove: false,
       })
-
-      this.slickRef.on("afterChange", () => {
-        const currentStepIndex = this.slickRef.slick("slickCurrentSlide")
+      .on("afterChange", (_, {currentSlide: currentStepIndex}) => {
         this.setState(updateStateKeys({currentStepIndex}))
       })
     })

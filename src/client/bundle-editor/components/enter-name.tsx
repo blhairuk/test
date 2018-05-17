@@ -20,7 +20,7 @@ export default class EnterName extends React.Component<Props> {
 
   public componentDidUpdate(prevProps) {
     if (!prevProps.isActiveStep && this.props.isActiveStep) {
-      this.textInputRef.current.focus()
+      setTimeout(() => this.textInputRef.current.focus(), 100)
     }
   }
 
@@ -39,7 +39,6 @@ export default class EnterName extends React.Component<Props> {
           <div>What's your name?</div>
           <div>
             <TextInput
-              autoFocus={true}
               innerRef={this.textInputRef}
               onChange={enterName}
               placeholder="Name"
