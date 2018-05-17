@@ -1,30 +1,17 @@
 import * as React from "react"
 
+import {getMetafieldValue} from "../../../../shared/helpers"
 import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
+import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 import Filters from "./filters"
 import ProductDetails from "./product-details"
 import Progress from "./progress"
 import VideoHero from "./video-hero"
 
-import {getMetafieldValue} from "../../../../shared/helpers"
-
 interface Props {
-  addVariantId: (productId: number, variantId: number) => () => any,
-  bundleAddOns: ShopifyProduct[],
-  bundleName: string,
-  bundleProducts: ShopifyProduct[],
-  bundleProductMetafields: ShopifyProductMetafield[],
-  filters: any,
   isActiveStep: boolean,
-  removeVariantId: (productId: number, variantId: number) => () => any,
-  selectedProductIds: number[],
-  selectedSize: number,
-  selectedVariantIds: number[],
-  stepNext: (e?: React.FormEvent<HTMLElement>) => any,
-  stepPrev: (e: React.FormEvent<HTMLElement>) => any,
-  updateBundleName: (e) => any,
 }
 
 interface State {
@@ -43,27 +30,36 @@ export default class ChooseProducts extends React.Component<Props, State> {
   public state = initialState
 
   public render() {
-    const {
-      addVariantId,
-      bundleAddOns,
-      bundleName,
-      bundleProducts,
-      bundleProductMetafields,
-      filters,
-      removeVariantId,
-      selectedProductIds,
-      selectedSize,
-      selectedVariantIds,
-      stepNext,
-      stepPrev,
-      updateBundleName,
-    } = this.props
+    return (
+      <AppContext.Consumer>
+        {this.renderWithContext}
+      </AppContext.Consumer>
+    )
+  }
 
+  private renderWithContext = ({
+    addVariantId,
+    bundleProducts,
+    bundleProductMetafields,
+    removeVariantId,
+    selectedSize,
+    selectedVariantIds,
+    stepNext,
+    stepPrev,
+  }) => {
     const {
       activeFilters,
       isFiltersModalOpen,
       productDetailsModalProductId,
     } = this.state
+
+    const filters = JSON.parse(
+      getMetafieldValue(
+        bundleProductMetafields,
+        "bundle_editor",
+        "filters",
+      ),
+    )
 
     const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
@@ -182,23 +178,11 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--two-thirds">
-            <div>
-              {productTypes.map((productType) => <span key={productType}>{productType}</span>)}
-            </div>
-
             {productTypes.map(renderProductType)}
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Progress
-              bundleAddOns={bundleAddOns}
-              bundleName={bundleName}
-              bundleProducts={bundleProducts}
-              numSelected={selectedVariantIds.length}
-              selectedProductIds={selectedProductIds}
-              selectedSize={selectedSize}
-              updateBundleName={updateBundleName}
-            />
+            <Progress />
 
             <Button
               color="purple"
@@ -237,7 +221,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     )
   }
 
-  public title = ({price, title}) => {
+  private title = ({price, title}) => {
     if (price === "0.00") { return title }
     return `${title} (+${price})`
   }

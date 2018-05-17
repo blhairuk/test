@@ -69,6 +69,8 @@ const initialState = {
   selectedVariantIds: [],
 }
 
+export const Context = React.createContext()
+
 export default class App extends React.Component<Props, State> {
   public state = initialState
   private slickRef
@@ -119,129 +121,79 @@ export default class App extends React.Component<Props, State> {
       selectedSize,
     } = this.state
 
-    const shippingFrequencies = getMetafieldValue(
+    const contextValue = {
+      addAddOnId: this.addAddOnId,
+      addVariantId: this.addVariantId,
+      bundleAddOns,
+      bundleName,
+      bundleProduct,
       bundleProductMetafields,
-      "subscriptions",
-      "shipping_interval_frequency",
-    ).split(",")
-
-    const shippingUnitType = getMetafieldValue(
-      bundleProductMetafields,
-      "subscriptions",
-      "shipping_interval_unit_type",
-    )
-
-    const filters = JSON.parse(
-      getMetafieldValue(
-        bundleProductMetafields,
-        "bundle_editor",
-        "filters",
-      ),
-    )
+      bundleProducts,
+      enterEmail: this.enterEmail,
+      enterName: this.enterName,
+      enteredEmail,
+      enteredName,
+      isEditingBundle: !!editingBundleId,
+      isSubmitting,
+      removeAddOnId: this.removeAddOnId,
+      removeVariantId: this.removeVariantId,
+      selectedAddOnIds,
+      selectedFrequency,
+      selectedProductIds,
+      selectedSize,
+      selectedVariantIds,
+      setSelectedFrequency: this.setSelectedFrequency,
+      setSelectedSize: this.setSelectedSize,
+      stepNext: this.stepNext,
+      stepPrev: this.stepPrev,
+      submit: this.submit,
+      updateBundleName: this.updateBundleName,
+    }
 
     return (
-      <AppContainer>
-        <div className="bu-slick">
-          <div>
-            <Step>
-              <EnterName
-                enterName={this.enterName}
-                enteredName={enteredName}
-                isActiveStep={currentStepIndex === 0}
-                stepNext={this.stepNext}
-              />
-            </Step>
+      <Context.Provider value={contextValue}>
+        <AppContainer>
+          <div className="bu-slick">
+            <div>
+              <Step>
+                <EnterName isActiveStep={currentStepIndex === 0} />
+              </Step>
+            </div>
+            <div>
+              <Step>
+                <EnterEmail isActiveStep={currentStepIndex === 1} />
+              </Step>
+            </div>
+            <div>
+              <Step>
+                <ChooseFrequencySize isActiveStep={currentStepIndex === 2} />
+              </Step>
+            </div>
+            <div>
+              <Step align="top">
+                <ChooseProducts isActiveStep={currentStepIndex === 3} />
+              </Step>
+            </div>
+            <div>
+              <Step align="top">
+                <ChooseAddOns isActiveStep={currentStepIndex === 4} />
+              </Step>
+            </div>
+            <div>
+              <Step align="top">
+                <Confirm isActiveStep={currentStepIndex === 5} />
+              </Step>
+            </div>
           </div>
-          <div>
-            <Step>
-              <EnterEmail
-                enterEmail={this.enterEmail}
-                enteredEmail={enteredEmail}
-                enteredName={enteredName}
-                isActiveStep={currentStepIndex === 1}
-                stepNext={this.stepNext}
-                stepPrev={this.stepPrev}
-              />
-            </Step>
-          </div>
-          <div>
-            <Step>
-              <ChooseFrequencySize
-                frequencies={shippingFrequencies}
-                isActiveStep={currentStepIndex === 2}
-                selectedFrequency={selectedFrequency}
-                setSelectedFrequency={this.setSelectedFrequency}
-                selectedSize={selectedSize}
-                setSelectedSize={this.setSelectedSize}
-                stepNext={this.stepNext}
-                stepPrev={this.stepPrev}
-                unitType={shippingUnitType}
-                variants={bundleProduct.variants}
-              />
-            </Step>
-          </div>
-          <div>
-            <Step align="top">
-              <ChooseProducts
-                addVariantId={this.addVariantId}
-                bundleAddOns={bundleAddOns}
-                bundleName={bundleName}
-                bundleProductMetafields={bundleProductMetafields}
-                bundleProducts={bundleProducts}
-                filters={filters}
-                isActiveStep={currentStepIndex === 3}
-                selectedProductIds={selectedProductIds}
-                selectedSize={selectedSize}
-                removeVariantId={this.removeVariantId}
-                selectedVariantIds={selectedVariantIds}
-                stepNext={this.stepNext}
-                stepPrev={this.stepPrev}
-                updateBundleName={this.updateBundleName}
-              />
-            </Step>
-          </div>
-          <div>
-            <Step align="top">
-              <ChooseAddOns
-                addAddOnId={this.addAddOnId}
-                bundleAddOns={bundleAddOns}
-                bundleProductMetafields={bundleProductMetafields}
-                isActiveStep={currentStepIndex === 4}
-                removeAddOnId={this.removeAddOnId}
-                selectedAddOnIds={selectedAddOnIds}
-                stepNext={this.stepNext}
-                stepPrev={this.stepPrev}
-              />
-            </Step>
-          </div>
-          <div>
-            <Step align="top">
-              <Confirm
-                bundleAddOns={bundleAddOns}
-                bundleProducts={bundleProducts}
-                enteredName={enteredName}
-                isActiveStep={currentStepIndex === 5}
-                isEditingBundle={!!editingBundleId}
-                isSubmitting={isSubmitting}
-                selectedAddOnIds={selectedAddOnIds}
-                selectedFrequency={selectedFrequency}
-                selectedProductIds={selectedProductIds}
-                selectedSize={selectedSize}
-                selectedVariantIds={selectedVariantIds}
-                stepPrev={this.stepPrev}
-                submit={this.submit}
-              />
-            </Step>
-          </div>
-        </div>
 
-        <Modal
-          handleClose={this.handleBundleFullModalClose}
-          isOpen={isBundleFullModalOpen}
-        >
-          Your bundle is full!
-        </Modal>
-      </AppContainer>
+          <Modal
+            handleClose={this.handleBundleFullModalClose}
+            isOpen={isBundleFullModalOpen}
+          >
+            Your bundle is full!
+          </Modal>
+        </AppContainer>
+      </Context.Provider>
     )
   }
 
@@ -260,11 +212,11 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({bundleName}))
   }
 
-  private setSelectedFrequency = (selectedFrequency) => {
+  private setSelectedFrequency = (selectedFrequency) => () => {
     this.setState(updateStateKeys({selectedFrequency}))
   }
 
-  private setSelectedSize = (selectedSize) => {
+  private setSelectedSize = (selectedSize) => () => {
     const {selectedVariantIds} = this.state
 
     selectedVariantIds.splice(selectedSize)

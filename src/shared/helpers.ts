@@ -41,3 +41,8 @@ export const getMetafieldValue = (metafields, namespace, key) => {
   ))
   return property ? property.value : null
 }
+
+export const frequencyTitle = (unitType, frequency) => {
+  if (frequency === 1 && unitType === "Weeks") { return "Weekly" }
+  if (frequency === 4 && unitType === "Weeks") { return "Monthly" }
+}

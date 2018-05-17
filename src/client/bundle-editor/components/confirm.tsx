@@ -1,61 +1,34 @@
 import * as React from "react"
 
 import {createIdQuantities} from "../../../shared/helpers"
+import {Context as AppContext} from "../app"
 
 interface Props {
-  bundleAddOns: ShopifyProduct[],
-  bundleProducts: ShopifyProduct[],
-  enteredName: string,
   isActiveStep: boolean,
-  isEditingBundle: boolean,
-  isSubmitting: boolean,
-  selectedAddOnIds: number[],
-  selectedFrequency: number,
-  selectedProductIds: number[],
-  selectedSize: number,
-  selectedVariantIds: number[],
-  stepPrev: (e?: React.FormEvent<HTMLElement>) => any,
-  submit: () => any,
 }
 
 export default class Confirm extends React.Component<Props> {
   public render() {
-    const {
-      bundleAddOns,
-      bundleProducts,
-      // enteredName,
-      isSubmitting,
-      // selectedAddOnIds,
-      selectedFrequency,
-      selectedProductIds,
-      selectedSize,
-      // selectedVariantIds,
-      stepPrev,
-      submit,
-    } = this.props
+    return (
+      <AppContext.Consumer>
+        {this.renderWithContext}
+      </AppContext.Consumer>
+    )
+  }
 
-    // let errorMessage
-    // if (!enteredName) { errorMessage = "Enter a name" }
-    // else if (!selectedSize) { errorMessage = "Enter a size" }
-    // else if (!selectedFrequency) { errorMessage = "Enter a frequency" }
-    // else if (selectedVariantIds.length < selectedSize) { errorMessage = "You need to add products" }
-    // else if (selectedVariantIds.length > selectedSize) { errorMessage = "You need to remove products" }
-    // if (errorMessage) { return <div>{errorMessage}</div> }
-
+  private renderWithContext = ({
+    bundleAddOns,
+    bundleProducts,
+    isEditingBundle,
+    isSubmitting,
+    selectedFrequency,
+    selectedProductIds,
+    selectedSize,
+    stepPrev,
+    submit,
+  }) => {
     const idQuantities = createIdQuantities(selectedProductIds)
-
     const allProducts = bundleProducts.concat(bundleAddOns)
-
-    const renderProduct = ([productIdS, quantity]) => {
-      const productId = parseInt(productIdS, 10)
-      const product = allProducts.find(({id}) => id === productId)
-
-      return (
-        <div key={productId}>
-          {quantity}x {product.title}
-        </div>
-      )
-    }
 
     return (
       <div>
@@ -75,7 +48,16 @@ export default class Confirm extends React.Component<Props> {
 
         <div>
           <h3>Items</h3>
-          {Object.entries(idQuantities).map(renderProduct)}
+          {Object.entries(idQuantities).map(([productIdS, quantity]) => {
+            const productId = parseInt(productIdS, 10)
+            const product = allProducts.find(({id}) => id === productId)
+
+            return (
+              <div key={productId}>
+                {quantity}x {product.title}
+              </div>
+            )
+          })}
         </div>
 
         <button
@@ -84,19 +66,12 @@ export default class Confirm extends React.Component<Props> {
           onClick={submit}
           type="button"
         >
-          {this.buttonText()}
+          {(() => {
+            if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
+            return isSubmitting ? "Adding..." : "Add to cart"
+          })()}
         </button>
       </div>
     )
-  }
-
-  private buttonText = () => {
-    const {
-      isEditingBundle,
-      isSubmitting,
-    } = this.props
-
-    if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
-    return isSubmitting ? "Adding..." : "Add to cart"
   }
 }
