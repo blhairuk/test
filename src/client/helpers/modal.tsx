@@ -9,6 +9,8 @@ interface Props {
   style?: "panel"
 }
 
+const transitionDuration = "250ms"
+
 // tslint:disable-next-line
 injectGlobal`
   .bu-modal-content--panel {
@@ -19,8 +21,14 @@ injectGlobal`
     position: absolute;
     right: 0;
     top: 0;
+    transform: translate3d(100%, 0, 0);
+    transition: transform ${transitionDuration} ease-out;
     width: 100%;
     @media (min-width: 768px) { width: 400px }
+
+    &.ReactModal__Content--after-open {
+      transform: translate3d(0, 0, 0);
+    }
   }
 
   .bu-modal-content--default {
@@ -35,9 +43,15 @@ injectGlobal`
     bottom: 0;
     left: 0;
     position: fixed;
+    opacity: 0;
     right: 0;
     top: 0;
+    transition: opacity ${transitionDuration} ease-out;
     z-index: 21;
+
+    &.ReactModal__Overlay--after-open {
+      opacity: 1;
+    }
   }
 
   .bu-modal-overlay--default {
