@@ -7,6 +7,7 @@ import ProductDetails from "./components/choose-products/product-details"
 import Confirm from "./components/confirm"
 import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
+import ResponsiveEmbed from "./components/styled/responsive-embed"
 
 import AppContainer from "./components/styled/app-container"
 import Step from "./components/styled/step"
@@ -54,6 +55,7 @@ interface State {
   selectedProductIds: number[],
   selectedVariantIds: number[],
   selectedSize: number,
+  videoModalYouTubeId: number,
 }
 
 const initialState = {
@@ -70,6 +72,7 @@ const initialState = {
   selectedProductIds: [],
   selectedSize: null,
   selectedVariantIds: [],
+  videoModalYouTubeId: null,
 }
 
 export const Context = React.createContext()
@@ -123,6 +126,7 @@ export default class App extends React.Component<Props, State> {
       selectedProductIds,
       selectedVariantIds,
       selectedSize,
+      videoModalYouTubeId,
     } = this.state
 
     const contextValue = {
@@ -134,6 +138,7 @@ export default class App extends React.Component<Props, State> {
       bundleProductMetafields,
       bundleProducts,
       closeProductDetailsModal: this.closeProductDetailsModal,
+      closeVideoModal: this.closeVideoModal,
       enterEmail: this.enterEmail,
       enterName: this.enterName,
       enteredEmail,
@@ -141,6 +146,7 @@ export default class App extends React.Component<Props, State> {
       isEditingBundle: !!editingBundleId,
       isSubmitting,
       openProductDetailsModal: this.openProductDetailsModal,
+      openVideoModal: this.openVideoModal,
       removeAddOnId: this.removeAddOnId,
       removeVariantId: this.removeVariantId,
       selectedAddOnIds,
@@ -208,6 +214,21 @@ export default class App extends React.Component<Props, State> {
           <ProductDetails
             product={bundleProducts.find(({id}) => id === productDetailsModalProductId)}
           />
+        </Modal>
+
+        <Modal
+          handleClose={this.closeVideoModal}
+          isOpen={!!videoModalYouTubeId}
+        >
+          <ResponsiveEmbed>
+            <iframe
+              allowFullScreen={true}
+              frameBorder={0}
+              height={360}
+              src={`https://www.youtube.com/embed/${videoModalYouTubeId}?autoplay=1`}
+              width={640}
+            />
+          </ResponsiveEmbed>
         </Modal>
       </Context.Provider>
     )
@@ -598,5 +619,13 @@ export default class App extends React.Component<Props, State> {
 
   private openProductDetailsModal = (productDetailsModalProductId) => () => {
     this.setState(updateStateKeys({productDetailsModalProductId}))
+  }
+
+  private openVideoModal = (videoModalYouTubeId) => () => {
+    this.setState(updateStateKeys({videoModalYouTubeId}))
+  }
+
+  private closeVideoModal = () => {
+    this.setState(updateStateKeys({videoModalYouTubeId: null}))
   }
 }

@@ -1,10 +1,7 @@
 import * as React from "react"
 
-import Modal from "../../../helpers/modal"
-import updateStateKeys from "../../../helpers/update-state-keys"
-
+import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
-import ResponsiveEmbed from "../styled/responsive-embed"
 import VideoHeroContainer from "../styled/video-hero-container"
 
 interface Props {
@@ -12,22 +9,22 @@ interface Props {
   youtubeId: string,
 }
 
-interface State {
-  isModalOpen: boolean
-}
-
-export default class VideoHero extends React.Component<Props, State> {
-  public state = {
-    isModalOpen: false,
+export default class VideoHero extends React.Component<Props> {
+  public render() {
+    return (
+      <AppContext.Consumer>
+        {this.renderWithContext}
+      </AppContext.Consumer>
+    )
   }
 
-  public render() {
+  private renderWithContext = ({
+    openVideoModal,
+  }) => {
     const {
       title,
       youtubeId,
     } = this.props
-
-    const {isModalOpen} = this.state
 
     return (
       <VideoHeroContainer
@@ -37,36 +34,13 @@ export default class VideoHero extends React.Component<Props, State> {
           <h1>{title}</h1>
           <Button
             color="white"
-            onClick={this.handleButtonClick}
+            onClick={openVideoModal(youtubeId)}
             type="button"
           >
             WATCH
           </Button>
         </div>
-
-        <Modal
-          handleClose={this.handleModalClose}
-          isOpen={isModalOpen}
-        >
-          <ResponsiveEmbed>
-            <iframe
-              allowFullScreen={true}
-              frameBorder={0}
-              height={360}
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
-              width={640}
-            />
-          </ResponsiveEmbed>
-        </Modal>
       </VideoHeroContainer>
     )
-  }
-
-  private handleButtonClick = () => {
-    this.setState(updateStateKeys({isModalOpen: true}))
-  }
-
-  private handleModalClose = () => {
-    this.setState(updateStateKeys({isModalOpen: false}))
   }
 }
