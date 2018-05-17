@@ -2,6 +2,7 @@ import * as React from "react"
 
 import {getMetafieldValue} from "../../../shared/helpers"
 import {Context as AppContext} from "../app"
+import Product from "./choose-products/product"
 import VideoHero from "./choose-products/video-hero"
 import Button from "./styled/button"
 
@@ -19,11 +20,8 @@ export default class ChooseAddOns extends React.Component<Props> {
   }
 
   private renderWithContext = ({
-    addAddOnId,
     bundleAddOns,
     bundleProductMetafields,
-    removeAddOnId,
-    selectedAddOnIds,
     stepNext,
     stepPrev,
   }) => {
@@ -53,38 +51,17 @@ export default class ChooseAddOns extends React.Component<Props> {
         />
 
         <div className="grid grid--uniform">
-          {bundleAddOns.map(({
-            id: productId,
-            title,
-            image: {src},
-            variants,
-          }) => {
-            const {id: variantId} = variants[0]
-            return (
-              <div
-                className="grid__item medium-up--one-third text-center"
-                key={productId}
-              >
-                <h3 className="h4">{title}</h3>
-                <img src={src} />
-                <div>
-                  <button
-                    onClick={addAddOnId(productId, variantId)}
-                    type="button"
-                  >
-                    Add
-                  </button>
-                  <span>{selectedAddOnIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)}</span>
-                  <button
-                    onClick={removeAddOnId(productId, variantId)}
-                    type="button"
-                  >
-                    Del
-                  </button>
-                </div>
-              </div>
-            )
-          })}
+          {bundleAddOns.map((product) => (
+            <div
+              className="grid__item medium-up--one-third text-center"
+              key={product.id}
+            >
+              <Product
+                isAddOn={true}
+                product={product}
+              />
+            </div>
+          ))}
         </div>
 
         <Button

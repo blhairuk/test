@@ -17,8 +17,7 @@ export default class Confirm extends React.Component<Props> {
   }
 
   private renderWithContext = ({
-    bundleAddOns,
-    bundleProducts,
+    allProducts,
     isEditingBundle,
     isSubmitting,
     selectedFrequency,
@@ -28,7 +27,6 @@ export default class Confirm extends React.Component<Props> {
     submit,
   }) => {
     const idQuantities = createIdQuantities(selectedProductIds)
-    const allProducts = bundleProducts.concat(bundleAddOns)
 
     return (
       <div>

@@ -60,21 +60,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
-    const renderProduct = (product) => {
-      const {
-        id: productId,
-      } = product
-
-      return (
-        <div
-          className="grid__item medium-up--one-third text-center"
-          key={productId}
-        >
-          <Product product={product} />
-        </div>
-      )
-    }
-
     const renderProductType = (productType) => {
       const renderableProducts = bundleProducts
         .filter(({product_type, tags}) => (
@@ -92,7 +77,17 @@ export default class ChooseProducts extends React.Component<Props, State> {
             youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
           />
           <div className="grid grid--uniform">
-            {renderableProducts.map(renderProduct)}
+            {renderableProducts.map((product) => (
+              <div
+                className="grid__item medium-up--one-third text-center"
+                key={product.id}
+              >
+                <Product
+                  isAddOn={false}
+                  product={product}
+                />
+              </div>
+            ))}
           </div>
         </div>
       )

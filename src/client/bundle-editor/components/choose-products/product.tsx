@@ -4,6 +4,7 @@ import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 
 interface Props {
+  isAddOn: boolean,
   product?: ShopifyProduct
 }
 
@@ -17,12 +18,18 @@ export default class Product extends React.Component<Props> {
   }
 
   private renderWithContext = ({
+    addAddOnId,
     addVariantId,
     openProductDetailsModal,
+    removeAddOnId,
     removeVariantId,
+    selectedAddOnIds,
     selectedVariantIds,
   }) => {
-    const {product} = this.props
+    const {
+      isAddOn,
+      product,
+    } = this.props
 
     const {
       id: productId,
@@ -36,7 +43,10 @@ export default class Product extends React.Component<Props> {
       price,
     } = variants[0]
 
-    const numSelected = selectedVariantIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
+    const selectedIds = isAddOn ? selectedAddOnIds : selectedVariantIds
+    const numSelected = selectedIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
+    const addFunc = isAddOn ? addAddOnId : addVariantId
+    const removeFunc = isAddOn ? removeAddOnId : removeVariantId
 
     return (
       <div>
@@ -56,7 +66,7 @@ export default class Product extends React.Component<Props> {
             return (
               <div>
                 <Button
-                  onClick={addVariantId(productId, variantId)}
+                  onClick={addFunc(productId, variantId)}
                   type="button"
                 >
                   Add
@@ -69,7 +79,7 @@ export default class Product extends React.Component<Props> {
             <div>
               <Button
                 color="black"
-                onClick={removeVariantId(productId, variantId)}
+                onClick={removeFunc(productId, variantId)}
                 type="button"
               >
                 -
@@ -81,7 +91,7 @@ export default class Product extends React.Component<Props> {
 
               <Button
                 color="black"
-                onClick={addVariantId(productId, variantId)}
+                onClick={addFunc(productId, variantId)}
                 type="button"
               >
                 +

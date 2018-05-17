@@ -14,16 +14,14 @@ export default class Progress extends React.Component<{}> {
   }
 
   private renderWithContext = ({
-    bundleAddOns,
+    allProducts,
     bundleName,
-    bundleProducts,
     selectedProductIds,
     selectedVariantIds,
     selectedSize,
     updateBundleName,
   }) => {
     const numSelected = selectedVariantIds.length
-    const allProducts = bundleProducts.concat(bundleAddOns)
     const idQuantities = createIdQuantities(selectedProductIds)
 
     return (

@@ -129,9 +129,12 @@ export default class App extends React.Component<Props, State> {
       videoModalYouTubeId,
     } = this.state
 
+    const allProducts = bundleProducts.concat(bundleAddOns)
+
     const contextValue = {
       addAddOnId: this.addAddOnId,
       addVariantId: this.addVariantId,
+      allProducts,
       bundleAddOns,
       bundleName,
       bundleProduct,
@@ -212,7 +215,7 @@ export default class App extends React.Component<Props, State> {
           style="panel"
         >
           <ProductDetails
-            product={bundleProducts.find(({id}) => id === productDetailsModalProductId)}
+            product={allProducts.find(({id}) => id === productDetailsModalProductId)}
           />
         </Modal>
 
