@@ -215,7 +215,7 @@ export default class App extends React.Component<Props, State> {
             </Step>
           </div>
           <div>
-            <Step>
+            <Step align="top">
               <Confirm
                 bundleAddOns={bundleAddOns}
                 bundleProducts={bundleProducts}
