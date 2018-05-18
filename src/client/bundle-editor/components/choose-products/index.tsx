@@ -160,16 +160,16 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 selectedSize={selectedSize}
                 updateBundleName={updateBundleName}
               />
-            </Sticky>
 
-            <Button
-              color="purple"
-              disabled={selectedVariantIds.length < selectedSize}
-              onClick={stepNext}
-              type="button"
-            >
-              Next
-            </Button>
+              <Button
+                color="purple"
+                disabled={selectedVariantIds.length < selectedSize}
+                onClick={stepNext}
+                type="button"
+              >
+                Next
+              </Button>
+            </Sticky>
           </div>
         </div>
 
