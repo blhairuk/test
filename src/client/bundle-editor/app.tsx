@@ -175,61 +175,67 @@ export default class App extends React.Component<Props, State> {
             </div>
             <div>
               <Step align="top">
-                <ChooseProducts
-                  addAddOnId={this.addAddOnId}
-                  addVariantId={this.addVariantId}
-                  allProducts={allProducts}
-                  bundleName={bundleName}
-                  bundleProducts={bundleProducts}
-                  bundleProductMetafields={bundleProductMetafields}
-                  isActiveStep={currentStepIndex === 3}
-                  openProductDetailsModal={this.openProductDetailsModal}
-                  openVideoModal={this.openVideoModal}
-                  removeAddOnId={this.removeAddOnId}
-                  removeVariantId={this.removeVariantId}
-                  selectedAddOnIds={selectedAddOnIds}
-                  selectedProductIds={selectedProductIds}
-                  selectedSize={selectedSize}
-                  selectedVariantIds={selectedVariantIds}
-                  stepNext={this.stepNext}
-                  stepPrev={this.stepPrev}
-                  updateBundleName={this.updateBundleName}
-                />
+                <div className="one-whole">
+                  <ChooseProducts
+                    addAddOnId={this.addAddOnId}
+                    addVariantId={this.addVariantId}
+                    allProducts={allProducts}
+                    bundleName={bundleName}
+                    bundleProducts={bundleProducts}
+                    bundleProductMetafields={bundleProductMetafields}
+                    isActiveStep={currentStepIndex === 3}
+                    openProductDetailsModal={this.openProductDetailsModal}
+                    openVideoModal={this.openVideoModal}
+                    removeAddOnId={this.removeAddOnId}
+                    removeVariantId={this.removeVariantId}
+                    selectedAddOnIds={selectedAddOnIds}
+                    selectedProductIds={selectedProductIds}
+                    selectedSize={selectedSize}
+                    selectedVariantIds={selectedVariantIds}
+                    stepNext={this.stepNext}
+                    stepPrev={this.stepPrev}
+                    updateBundleName={this.updateBundleName}
+                  />
+                </div>
               </Step>
             </div>
             <div>
               <Step align="top">
-                <ChooseAddOns
-                  addAddOnId={this.addAddOnId}
-                  addVariantId={this.addVariantId}
-                  bundleAddOns={bundleAddOns}
-                  bundleProductMetafields={bundleProductMetafields}
-                  bundleProducts={bundleProducts}
-                  isActiveStep={currentStepIndex === 4}
-                  openProductDetailsModal={this.openProductDetailsModal}
-                  openVideoModal={this.openVideoModal}
-                  removeAddOnId={this.removeAddOnId}
-                  removeVariantId={this.removeVariantId}
-                  selectedAddOnIds={selectedAddOnIds}
-                  selectedVariantIds={selectedVariantIds}
-                  stepNext={this.stepNext}
-                  stepPrev={this.stepPrev}
-                />
+                <div className="one-whole">
+                  <ChooseAddOns
+                    addAddOnId={this.addAddOnId}
+                    addVariantId={this.addVariantId}
+                    bundleAddOns={bundleAddOns}
+                    bundleProductMetafields={bundleProductMetafields}
+                    bundleProducts={bundleProducts}
+                    isActiveStep={currentStepIndex === 4}
+                    openProductDetailsModal={this.openProductDetailsModal}
+                    openVideoModal={this.openVideoModal}
+                    removeAddOnId={this.removeAddOnId}
+                    removeVariantId={this.removeVariantId}
+                    selectedAddOnIds={selectedAddOnIds}
+                    selectedVariantIds={selectedVariantIds}
+                    stepNext={this.stepNext}
+                    stepPrev={this.stepPrev}
+                  />
+                </div>
               </Step>
             </div>
             <div>
               <Step align="top">
-                <Confirm
-                  allProducts={allProducts}
-                  isActiveStep={currentStepIndex === 5}
-                  isEditingBundle={!!editingBundleId}
-                  isSubmitting={isSubmitting}
-                  selectedFrequency={selectedFrequency}
-                  selectedProductIds={selectedProductIds}
-                  selectedSize={selectedSize}
-                  stepPrev={this.stepPrev}
-                  submit={this.submit}
-                />
+                <div className="one-whole">
+                  <Confirm
+                    allProducts={allProducts}
+                    isActiveStep={currentStepIndex === 5}
+                    isEditingBundle={!!editingBundleId}
+                    isSubmitting={isSubmitting}
+                    selectedFrequency={selectedFrequency}
+                    selectedProductIds={selectedProductIds}
+                    selectedSize={selectedSize}
+                    stepPrev={this.stepPrev}
+                    submit={this.submit}
+                  />
+                </div>
               </Step>
             </div>
           </div>

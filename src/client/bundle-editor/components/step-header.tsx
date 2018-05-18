@@ -1,10 +1,17 @@
 import * as React from "react"
+import styled from "styled-components"
+
+import Button from "./styled/button"
 
 interface Props {
   rightSection?: React.ReactNode,
   stepPrev: () => any,
   title: string,
 }
+
+const Title = styled.h1`
+  margin: 0;
+`
 
 export default class StepHeader extends React.Component<Props> {
   public render() {
@@ -17,16 +24,17 @@ export default class StepHeader extends React.Component<Props> {
     return (
       <div className="grid grid--uniform">
         <div className="grid__item one-tenth">
-          <button
+          <Button
+            color="black"
             onClick={stepPrev}
             type="button"
           >
             Prev
-          </button>
+          </Button>
         </div>
 
         <div className="grid__item eight-tenths text-center">
-          {title}
+          <Title>{title}</Title>
         </div>
 
         <div className="grid__item one-tenth text-right">
