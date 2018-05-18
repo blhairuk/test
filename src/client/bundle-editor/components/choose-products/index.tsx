@@ -4,6 +4,7 @@ import {getMetafieldValue} from "../../../../shared/helpers"
 import Modal from "../../../helpers/modal"
 import Sticky from "../../../helpers/sticky"
 import updateStateKeys from "../../../helpers/update-state-keys"
+import StepHeader from "../step-header"
 import Button from "../styled/button"
 import Filters from "./filters"
 import Product from "./product"
@@ -125,25 +126,18 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     return (
       <div>
-        <div className="grid grid--uniform">
-          <div className="grid__item one-tenth">
-            <button
-              onClick={stepPrev}
-              type="button"
-            >
-              Prev
-            </button>
-          </div>
-          <div className="grid__item eight-tenths text-center">FILL YOUR BOX</div>
-          <div className="grid__item one-tenth text-right">
+        <StepHeader
+          rightSection={
             <button
               onClick={this.handleFiltersModalOpen}
               type="button"
             >
               Filters
             </button>
-          </div>
-        </div>
+          }
+          stepPrev={stepPrev}
+          title="FILL YOUR BOX"
+        />
 
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--two-thirds">

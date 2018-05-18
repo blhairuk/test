@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import {createIdQuantities} from "../../../shared/helpers"
+import StepHeader from "./step-header"
 
 interface Props {
   allProducts: ShopifyProduct[],
@@ -31,14 +32,10 @@ export default class Confirm extends React.Component<Props> {
 
     return (
       <div>
-        <div>
-          <button
-            onClick={stepPrev}
-            type="button"
-          >
-            Prev
-          </button>
-        </div>
+        <StepHeader
+          stepPrev={stepPrev}
+          title="REVIEW YOUR BOX"
+        />
 
         <div>
           <div>Selected frequency: {selectedFrequency}</div>

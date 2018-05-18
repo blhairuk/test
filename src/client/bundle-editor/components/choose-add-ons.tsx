@@ -3,6 +3,7 @@ import * as React from "react"
 import {getMetafieldValue} from "../../../shared/helpers"
 import Product from "./choose-products/product"
 import VideoHero from "./choose-products/video-hero"
+import StepHeader from "./step-header"
 import Button from "./styled/button"
 
 interface Props {
@@ -41,23 +42,10 @@ export default class ChooseAddOns extends React.Component<Props> {
 
     return (
       <div>
-        <div className="grid grid--uniform">
-          <div className="grid__item one-tenth">
-            <Button
-              color="black"
-              onClick={stepPrev}
-              type="button"
-            >
-              Prev
-            </Button>
-          </div>
-          <div className="grid__item eight-tenths text-center">
-            BOOST YOUR BOX
-            </div>
-          <div className="grid__item one-tenth text-right">
-            &nbsp;
-          </div>
-        </div>
+        <StepHeader
+          stepPrev={stepPrev}
+          title="BOOST YOUR BOX"
+        />
 
         <VideoHero
           openVideoModal={openVideoModal}
