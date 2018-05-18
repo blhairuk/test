@@ -2,6 +2,7 @@ import * as React from "react"
 
 import {getMetafieldValue} from "../../../../shared/helpers"
 import Modal from "../../../helpers/modal"
+import Sticky from "../../../helpers/sticky"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import Button from "../styled/button"
 import Filters from "./filters"
@@ -150,14 +151,16 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Progress
-              allProducts={allProducts}
-              bundleName={bundleName}
-              selectedProductIds={selectedProductIds}
-              selectedVariantIds={selectedVariantIds}
-              selectedSize={selectedSize}
-              updateBundleName={updateBundleName}
-            />
+            <Sticky offset={230}>
+              <Progress
+                allProducts={allProducts}
+                bundleName={bundleName}
+                selectedProductIds={selectedProductIds}
+                selectedVariantIds={selectedVariantIds}
+                selectedSize={selectedSize}
+                updateBundleName={updateBundleName}
+              />
+            </Sticky>
 
             <Button
               color="purple"
