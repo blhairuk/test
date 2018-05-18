@@ -27,7 +27,6 @@ export default class Sticky extends React.Component<Props> {
     return (
       <div ref={this.parentRef}>
         <div
-          className="one-whole"
           ref={this.nodeRef}
         >
           {this.props.children}
@@ -43,11 +42,15 @@ export default class Sticky extends React.Component<Props> {
     const offset = this.props.offset || 0
 
     if (window.pageYOffset >= (parentRef.offsetTop + offset)) {
-      nodeRef.style.position = "absolute"
+      if (nodeRef.style.position !== "absolute") {
+        nodeRef.style.position = "absolute"
+        nodeRef.style.width = `${parentRef.offsetWidth}px`
+      }
       nodeRef.style.top = `${window.scrollY}px`
-    } else {
+    } else if (nodeRef.style.position === "absolute") {
       nodeRef.style.position = null
       nodeRef.style.top = null
+      nodeRef.style.width = null
     }
-  }, 5)
+  }, 2)
 }
