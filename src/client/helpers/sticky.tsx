@@ -16,6 +16,7 @@ export default class Sticky extends React.Component<Props> {
   }
 
   public componentDidMount() {
+    this.init()
     window.addEventListener("scroll", this.handleScroll)
   }
 
@@ -35,6 +36,13 @@ export default class Sticky extends React.Component<Props> {
     )
   }
 
+  private init() {
+    const nodeRef = this.nodeRef.current
+    const transition = "transform 200ms ease-out"
+    nodeRef.style.transition = transition
+    nodeRef.style.webkitTransition = transition
+  }
+
   // tslint:disable-next-line
   private handleScroll = debounce(() => {
     const nodeRef = this.nodeRef.current
@@ -42,15 +50,12 @@ export default class Sticky extends React.Component<Props> {
     const offset = this.props.offset || 0
 
     if (window.pageYOffset >= (parentRef.offsetTop + offset)) {
-      if (nodeRef.style.position !== "absolute") {
-        nodeRef.style.position = "absolute"
-        nodeRef.style.width = `${parentRef.offsetWidth}px`
-      }
-      nodeRef.style.top = `${window.scrollY}px`
-    } else if (nodeRef.style.position === "absolute") {
-      nodeRef.style.position = null
-      nodeRef.style.top = null
-      nodeRef.style.width = null
+      const transform = `translate3d(0, ${window.scrollY}px, 0)`
+      nodeRef.style.transform = transform
+      nodeRef.style.webkitTransform = transform
+    } else {
+      nodeRef.style.transform = null
+      nodeRef.style.webkitTransform = null
     }
-  }, 2)
+  }, 10)
 }

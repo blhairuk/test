@@ -145,7 +145,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Sticky offset={230}>
+            <Sticky offset={180}>
               <Progress
                 allProducts={allProducts}
                 bundleName={bundleName}
