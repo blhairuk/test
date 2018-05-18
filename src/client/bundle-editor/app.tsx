@@ -255,6 +255,7 @@ export default class App extends React.Component<Props, State> {
         >
           {productDetailsModalProductId && (
             <ProductDetails
+              closeProductDetailsModal={this.closeProductDetailsModal}
               product={allProducts.find(({id}) => id === productDetailsModalProductId)}
             />
           )}
