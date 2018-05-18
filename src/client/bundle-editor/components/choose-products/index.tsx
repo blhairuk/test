@@ -3,7 +3,6 @@ import * as React from "react"
 import {getMetafieldValue} from "../../../../shared/helpers"
 import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
-import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 import Filters from "./filters"
 import Product from "./product"
@@ -11,7 +10,24 @@ import Progress from "./progress"
 import VideoHero from "./video-hero"
 
 interface Props {
+  addAddOnId: (productId: number, variantId: number) => () => any,
+  addVariantId: (productId: number, variantId: number) => () => any,
+  allProducts: ShopifyProduct[],
+  bundleName: string,
+  bundleProducts: ShopifyProduct[],
+  bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
+  openProductDetailsModal: (productId: number) => any,
+  openVideoModal: (youtubeId: string) => () => any,
+  removeAddOnId: (productId: number, variantId: number) => () => any,
+  removeVariantId: (productId: number, variantId: number) => () => any,
+  selectedAddOnIds: number[],
+  selectedProductIds: number[],
+  selectedSize: number,
+  selectedVariantIds: number[],
+  stepNext: () => any,
+  stepPrev: () => any,
+  updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
 }
 
 interface State {
@@ -30,21 +46,26 @@ export default class ChooseProducts extends React.Component<Props, State> {
   public state = initialState
 
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
+    const {
+      addAddOnId,
+      addVariantId,
+      allProducts,
+      bundleName,
+      bundleProducts,
+      bundleProductMetafields,
+      openProductDetailsModal,
+      openVideoModal,
+      removeAddOnId,
+      removeVariantId,
+      selectedAddOnIds,
+      selectedProductIds,
+      selectedSize,
+      selectedVariantIds,
+      stepNext,
+      stepPrev,
+      updateBundleName,
+    } = this.props
 
-  private renderWithContext = ({
-    bundleProducts,
-    bundleProductMetafields,
-    selectedSize,
-    selectedVariantIds,
-    stepNext,
-    stepPrev,
-  }) => {
     const {
       activeFilters,
       isFiltersModalOpen,
@@ -73,6 +94,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       return (
         <div key={productType}>
           <VideoHero
+            openVideoModal={openVideoModal}
             title={productType}
             youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
           />
@@ -83,8 +105,15 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 key={product.id}
               >
                 <Product
+                  addAddOnId={addAddOnId}
+                  addVariantId={addVariantId}
                   isAddOn={false}
+                  openProductDetailsModal={openProductDetailsModal}
                   product={product}
+                  removeAddOnId={removeAddOnId}
+                  removeVariantId={removeVariantId}
+                  selectedAddOnIds={selectedAddOnIds}
+                  selectedVariantIds={selectedVariantIds}
                 />
               </div>
             ))}
@@ -121,7 +150,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Progress />
+            <Progress
+              allProducts={allProducts}
+              bundleName={bundleName}
+              selectedProductIds={selectedProductIds}
+              selectedVariantIds={selectedVariantIds}
+              selectedSize={selectedSize}
+              updateBundleName={updateBundleName}
+            />
 
             <Button
               color="purple"

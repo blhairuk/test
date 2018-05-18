@@ -1,26 +1,28 @@
 import * as React from "react"
 
 import {createIdQuantities} from "../../../../shared/helpers"
-import {Context as AppContext} from "../../app"
 import ProgressGradientBar from "../styled/progress-gradient-bar"
 
-export default class Progress extends React.Component<{}> {
-  public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
+interface Props {
+  allProducts: ShopifyProduct[],
+  bundleName: string,
+  selectedProductIds: number[],
+  selectedSize: number,
+  selectedVariantIds: number[],
+  updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
+}
 
-  private renderWithContext = ({
-    allProducts,
-    bundleName,
-    selectedProductIds,
-    selectedVariantIds,
-    selectedSize,
-    updateBundleName,
-  }) => {
+export default class Progress extends React.Component<Props> {
+  public render() {
+    const {
+      allProducts,
+      bundleName,
+      selectedProductIds,
+      selectedVariantIds,
+      selectedSize,
+      updateBundleName,
+    } = this.props
+
     const numSelected = selectedVariantIds.length
     const idQuantities = createIdQuantities(selectedProductIds)
 

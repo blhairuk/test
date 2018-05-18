@@ -1,34 +1,31 @@
 import * as React from "react"
 
-import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 
 interface Props {
+  addAddOnId: (productId: number, variantId: number) => () => any,
+  addVariantId: (productId: number, variantId: number) => () => any,
   isAddOn: boolean,
-  product?: ShopifyProduct
+  openProductDetailsModal: (productId: number) => any,
+  product: ShopifyProduct,
+  removeAddOnId: (productId: number, variantId: number) => () => any,
+  removeVariantId: (productId: number, variantId: number) => () => any,
+  selectedAddOnIds: number[],
+  selectedVariantIds: number[],
 }
 
 export default class Product extends React.Component<Props> {
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
-
-  private renderWithContext = ({
-    addAddOnId,
-    addVariantId,
-    openProductDetailsModal,
-    removeAddOnId,
-    removeVariantId,
-    selectedAddOnIds,
-    selectedVariantIds,
-  }) => {
     const {
+      addAddOnId,
+      addVariantId,
       isAddOn,
+      openProductDetailsModal,
       product,
+      removeAddOnId,
+      removeVariantId,
+      selectedAddOnIds,
+      selectedVariantIds,
     } = this.props
 
     const {

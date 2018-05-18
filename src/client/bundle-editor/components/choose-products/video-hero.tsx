@@ -1,27 +1,18 @@
 import * as React from "react"
 
-import {Context as AppContext} from "../../app"
 import Button from "../styled/button"
 import VideoHeroContainer from "../styled/video-hero-container"
 
 interface Props {
+  openVideoModal: (youtubeId: string) => () => any,
   title: string,
   youtubeId: string,
 }
 
 export default class VideoHero extends React.Component<Props> {
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
-
-  private renderWithContext = ({
-    openVideoModal,
-  }) => {
     const {
+      openVideoModal,
       title,
       youtubeId,
     } = this.props

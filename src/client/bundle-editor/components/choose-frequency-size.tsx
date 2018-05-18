@@ -5,11 +5,18 @@ import {
   frequencyTitle,
   getMetafieldValue,
 } from "../../../shared/helpers"
-import {Context as AppContext} from "../app"
 import Button from "./styled/button"
 
 interface Props {
+  bundleProduct: ShopifyProduct,
+  bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
+  selectedFrequency: number,
+  setSelectedFrequency: (number) => () => any,
+  selectedSize: number,
+  setSelectedSize: (number) => () => any,
+  stepNext: () => any,
+  stepPrev: () => any,
 }
 
 interface GridItemProps {
@@ -23,23 +30,17 @@ const GridItem = styled.div`
 
 export default class ChooseFrequencySize extends React.Component<Props> {
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
+    const {
+      bundleProduct,
+      bundleProductMetafields,
+      selectedFrequency,
+      selectedSize,
+      setSelectedFrequency,
+      setSelectedSize,
+      stepNext,
+      stepPrev,
+    } = this.props
 
-  private renderWithContext = ({
-    bundleProduct: {variants},
-    bundleProductMetafields,
-    selectedFrequency,
-    selectedSize,
-    setSelectedFrequency,
-    setSelectedSize,
-    stepNext,
-    stepPrev,
-  }) => {
     const shippingFrequencies = getMetafieldValue(
       bundleProductMetafields,
       "subscriptions",
@@ -68,7 +69,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
               {selectedFrequency === frequency && (
                 <div className="grid grid--uniform">
-                  {variants.map(({id, option1, price}) => {
+                  {bundleProduct.variants.map(({id, option1, price}) => {
                     const size = parseInt(option1, 10)
                     return (
                       <GridItem
@@ -77,7 +78,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                         onClick={setSelectedSize(size)}
                         selected={selectedSize === size}
                       >
-                        <div>{option1} for {price} ({price / option1} per cup)</div>
+                        <div>{option1} for {price} ({parseInt(price, 10) / size} per cup)</div>
                       </GridItem>
                     )
                   })}

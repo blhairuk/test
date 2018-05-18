@@ -1,31 +1,32 @@
 import * as React from "react"
 
 import {createIdQuantities} from "../../../shared/helpers"
-import {Context as AppContext} from "../app"
 
 interface Props {
+  allProducts: ShopifyProduct[],
   isActiveStep: boolean,
+  isEditingBundle: boolean,
+  isSubmitting: boolean,
+  selectedFrequency: number,
+  selectedProductIds: number[],
+  selectedSize: number,
+  stepPrev: () => any,
+  submit: () => any,
 }
 
 export default class Confirm extends React.Component<Props> {
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
+    const {
+      allProducts,
+      isEditingBundle,
+      isSubmitting,
+      selectedFrequency,
+      selectedProductIds,
+      selectedSize,
+      stepPrev,
+      submit,
+    } = this.props
 
-  private renderWithContext = ({
-    allProducts,
-    isEditingBundle,
-    isSubmitting,
-    selectedFrequency,
-    selectedProductIds,
-    selectedSize,
-    stepPrev,
-    submit,
-  }) => {
     const idQuantities = createIdQuantities(selectedProductIds)
 
     return (

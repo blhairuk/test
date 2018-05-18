@@ -1,30 +1,44 @@
 import * as React from "react"
 
 import {getMetafieldValue} from "../../../shared/helpers"
-import {Context as AppContext} from "../app"
 import Product from "./choose-products/product"
 import VideoHero from "./choose-products/video-hero"
 import Button from "./styled/button"
 
 interface Props {
+  addAddOnId: (productId: number, variantId: number) => () => any,
+  addVariantId: (productId: number, variantId: number) => () => any,
+  bundleAddOns: ShopifyProduct[],
+  bundleProducts: ShopifyProduct[],
+  bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
+  openProductDetailsModal: (productId: number) => any,
+  openVideoModal: (youtubeId: string) => () => any,
+  removeAddOnId: (productId: number, variantId: number) => () => any,
+  removeVariantId: (productId: number, variantId: number) => () => any,
+  selectedAddOnIds: number[],
+  selectedVariantIds: number[],
+  stepNext: () => any,
+  stepPrev: () => any,
 }
 
 export default class ChooseAddOns extends React.Component<Props> {
   public render() {
-    return (
-      <AppContext.Consumer>
-        {this.renderWithContext}
-      </AppContext.Consumer>
-    )
-  }
+    const {
+      addAddOnId,
+      addVariantId,
+      bundleAddOns,
+      bundleProductMetafields,
+      openProductDetailsModal,
+      openVideoModal,
+      removeAddOnId,
+      removeVariantId,
+      selectedAddOnIds,
+      selectedVariantIds,
+      stepNext,
+      stepPrev,
+    } = this.props
 
-  private renderWithContext = ({
-    bundleAddOns,
-    bundleProductMetafields,
-    stepNext,
-    stepPrev,
-  }) => {
     return (
       <div>
         <div className="grid grid--uniform">
@@ -46,6 +60,7 @@ export default class ChooseAddOns extends React.Component<Props> {
         </div>
 
         <VideoHero
+          openVideoModal={openVideoModal}
           title="Boosters"
           youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", "youtube_id_boosters")}
         />
@@ -57,8 +72,15 @@ export default class ChooseAddOns extends React.Component<Props> {
               key={product.id}
             >
               <Product
+                addAddOnId={addAddOnId}
+                addVariantId={addVariantId}
                 isAddOn={true}
+                openProductDetailsModal={openProductDetailsModal}
                 product={product}
+                removeAddOnId={removeAddOnId}
+                removeVariantId={removeVariantId}
+                selectedAddOnIds={selectedAddOnIds}
+                selectedVariantIds={selectedVariantIds}
               />
             </div>
           ))}
