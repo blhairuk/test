@@ -2,6 +2,8 @@ import * as React from "react"
 import * as ReactModal from "react-modal"
 import {injectGlobal} from "styled-components"
 
+import {BACKGROUND_BLACK} from "../colors"
+
 interface Props {
   children: any,
   handleClose: () => any,
@@ -13,8 +15,14 @@ const transitionDuration = "250ms"
 
 // tslint:disable-next-line
 injectGlobal`
+  .bu-modal-content--panel,
+  .bu-modal-content--default {
+    background-color: ${BACKGROUND_BLACK};
+    color: #fff;
+    width: 100%;
+  }
+
   .bu-modal-content--panel {
-    background: #fff;
     border-radius: 0;
     bottom: 0;
     left: auto;
@@ -23,7 +31,6 @@ injectGlobal`
     top: 0;
     transform: translate3d(100%, 0, 0);
     transition: transform ${transitionDuration} ease-out;
-    width: 100%;
     @media (min-width: 768px) { width: 400px }
 
     &.ReactModal__Content--after-open {
@@ -32,8 +39,6 @@ injectGlobal`
   }
 
   .bu-modal-content--default {
-    background-color: #fff;
-    width: 100%;
     @media (min-width: 768px) { width: 600px }
   }
 

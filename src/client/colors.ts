@@ -1,3 +1,4 @@
+export const BACKGROUND_BLACK = "#1e2221"
 export const BLUE_GREEN = "#3CBFAE"
 export const LIGHT_PURPLE = "#D09AFF"
 export const YELLOW = "#FFF790"
