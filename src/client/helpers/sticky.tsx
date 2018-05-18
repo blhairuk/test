@@ -1,3 +1,4 @@
+import * as debounce from "debounce"
 import * as React from "react"
 
 interface Props {
@@ -35,7 +36,8 @@ export default class Sticky extends React.Component<Props> {
     )
   }
 
-  private handleScroll = () => {
+  // tslint:disable-next-line
+  private handleScroll = debounce(() => {
     const nodeRef = this.nodeRef.current
     const parentRef = this.parentRef.current
     const offset = this.props.offset || 0
@@ -47,5 +49,5 @@ export default class Sticky extends React.Component<Props> {
       nodeRef.style.position = null
       nodeRef.style.top = null
     }
-  }
+  }, 5)
 }
