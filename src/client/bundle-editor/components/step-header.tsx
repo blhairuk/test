@@ -23,7 +23,7 @@ export default class StepHeader extends React.Component<Props> {
 
     return (
       <div className="grid grid--uniform">
-        <div className="grid__item one-tenth">
+        <div className="grid__item one-fifth">
           <Button
             color="black"
             onClick={stepPrev}
@@ -33,11 +33,11 @@ export default class StepHeader extends React.Component<Props> {
           </Button>
         </div>
 
-        <div className="grid__item eight-tenths text-center">
+        <div className="grid__item three-fifths text-center">
           <Title>{title}</Title>
         </div>
 
-        <div className="grid__item one-tenth text-right">
+        <div className="grid__item one-fifth text-right">
           {rightSection}
         </div>
       </div>
