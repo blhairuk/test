@@ -2,9 +2,12 @@ import * as React from "react"
 import styled from "styled-components"
 
 import {
+  frequencySingularTitle,
   frequencyTitle,
   getMetafieldValue,
 } from "../../../shared/helpers"
+
+import SizeToggler from "./size-toggler"
 import Button from "./styled/button"
 
 interface Props {
@@ -53,6 +56,10 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       "shipping_interval_unit_type",
     )
 
+    const price = parseFloat(bundleProduct.variants
+      .find(({option1}) => parseInt(option1, 10) === selectedSize)
+      .price)
+
     return (
       <div>
         <h2>Thanks! Select your plan.</h2>
@@ -60,7 +67,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
         <div className="grid grid--uniform">
           {shippingFrequencies.map((frequency) => (
             <GridItem
-              className="grid__item medium-up--one-half text-center"
+              className="grid__item one-half text-center"
               key={frequency}
               onClick={setSelectedFrequency(frequency)}
               selected={selectedFrequency === frequency}
@@ -68,20 +75,15 @@ export default class ChooseFrequencySize extends React.Component<Props> {
               <div>{frequencyTitle(shippingUnitType, frequency)}</div>
 
               {selectedFrequency === frequency && (
-                <div className="grid grid--uniform">
-                  {bundleProduct.variants.map(({id, option1, price}) => {
-                    const size = parseInt(option1, 10)
-                    return (
-                      <GridItem
-                        className="grid__item one-half text-center"
-                        key={id}
-                        onClick={setSelectedSize(size)}
-                        selected={selectedSize === size}
-                      >
-                        <div>{option1} for {price} ({parseInt(price, 10) / size} per cup)</div>
-                      </GridItem>
-                    )
-                  })}
+                <div>
+                  <SizeToggler
+                    bundleProduct={bundleProduct}
+                    selectedSize={selectedSize}
+                    setSelectedSize={setSelectedSize}
+                  />
+
+                  <div>{price / selectedSize} per cup</div>
+                  <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
                 </div>
               )}
             </GridItem>

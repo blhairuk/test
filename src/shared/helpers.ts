@@ -46,3 +46,8 @@ export const frequencyTitle = (unitType, frequency) => {
   if (frequency === 1 && unitType === "Weeks") { return "Weekly" }
   if (frequency === 4 && unitType === "Weeks") { return "Monthly" }
 }
+
+export const frequencySingularTitle = (unitType, frequency) => {
+  if (frequency === 1 && unitType === "Weeks") { return "Week" }
+  if (frequency === 4 && unitType === "Weeks") { return "Month" }
+}
