@@ -20,7 +20,8 @@ import {
   getMetafieldValue,
   getPropertyValueForKey,
 } from "../../shared/helpers"
-import updateStateKeys from "../helpers/update-state-keys"
+
+import {updateStateKeysWithContextValue} from "../helpers/update-state-keys"
 
 import {
   addToCart,
@@ -43,6 +44,7 @@ interface Props {
 
 interface State {
   bundleName: string,
+  contextValue: object,
   currentStepIndex: number,
   editingBundleId: number,
   enteredEmail: string,
@@ -60,6 +62,7 @@ interface State {
 
 const initialState = {
   bundleName: "",
+  contextValue: null,
   currentStepIndex: null,
   editingBundleId: null,
   enteredEmail: "",
@@ -86,8 +89,10 @@ export default class App extends React.Component<Props, State> {
 
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
-      this.state = updateStateKeys(cartState)(initialState)
+      this.state = updateStateKeysWithContextValue(cartState)(initialState)
     }
+
+    this.state.contextValue = this.createContextValue()
   }
 
   public async componentDidMount() {
@@ -98,7 +103,7 @@ export default class App extends React.Component<Props, State> {
 
     if (bundleId && !customerHash) {
       const cartState = await this.extractStateFromCart(bundleId)
-      this.setState(updateStateKeys(cartState))
+      this.setState(updateStateKeysWithContextValue(cartState))
     }
 
     this.initSlick()
@@ -106,64 +111,12 @@ export default class App extends React.Component<Props, State> {
 
   public render() {
     const {
-      bundleAddOns,
-      bundleProduct,
-      bundleProducts,
-      bundleProductMetafields,
-    } = this.props
-
-    const {
-      bundleName,
+      contextValue,
       currentStepIndex,
-      editingBundleId,
-      enteredEmail,
-      enteredName,
       isBundleFullModalOpen,
-      isSubmitting,
       productDetailsModalProductId,
-      selectedAddOnIds,
-      selectedFrequency,
-      selectedProductIds,
-      selectedVariantIds,
-      selectedSize,
       videoModalYouTubeId,
     } = this.state
-
-    const allProducts = bundleProducts.concat(bundleAddOns)
-
-    const contextValue = {
-      addAddOnId: this.addAddOnId,
-      addVariantId: this.addVariantId,
-      allProducts,
-      bundleAddOns,
-      bundleName,
-      bundleProduct,
-      bundleProductMetafields,
-      bundleProducts,
-      closeProductDetailsModal: this.closeProductDetailsModal,
-      closeVideoModal: this.closeVideoModal,
-      enterEmail: this.enterEmail,
-      enterName: this.enterName,
-      enteredEmail,
-      enteredName,
-      isEditingBundle: !!editingBundleId,
-      isSubmitting,
-      openProductDetailsModal: this.openProductDetailsModal,
-      openVideoModal: this.openVideoModal,
-      removeAddOnId: this.removeAddOnId,
-      removeVariantId: this.removeVariantId,
-      selectedAddOnIds,
-      selectedFrequency,
-      selectedProductIds,
-      selectedSize,
-      selectedVariantIds,
-      setSelectedFrequency: this.setSelectedFrequency,
-      setSelectedSize: this.setSelectedSize,
-      stepNext: this.stepNext,
-      stepPrev: this.stepPrev,
-      submit: this.submit,
-      updateBundleName: this.updateBundleName,
-    }
 
     return (
       <Context.Provider value={contextValue}>
@@ -216,7 +169,7 @@ export default class App extends React.Component<Props, State> {
         >
           {productDetailsModalProductId && (
             <ProductDetails
-              product={allProducts.find(({id}) => id === productDetailsModalProductId)}
+              product={contextValue.allProducts.find(({id}) => id === productDetailsModalProductId)}
             />
           )}
         </Modal>
@@ -240,22 +193,22 @@ export default class App extends React.Component<Props, State> {
   }
 
   private enterEmail = ({target: {value: enteredEmail}}) => {
-    this.setState(updateStateKeys({enteredEmail}))
+    this.setState(updateStateKeysWithContextValue({enteredEmail}))
   }
 
   private enterName = ({target: {value: enteredName}}) => {
-    this.setState(updateStateKeys({
+    this.setState(updateStateKeysWithContextValue({
       bundleName: enteredName ? this.createBundleName(enteredName) : "",
       enteredName,
     }))
   }
 
   private updateBundleName = ({target: {value: bundleName}}) => {
-    this.setState(updateStateKeys({bundleName}))
+    this.setState(updateStateKeysWithContextValue({bundleName}))
   }
 
   private setSelectedFrequency = (selectedFrequency) => () => {
-    this.setState(updateStateKeys({selectedFrequency}))
+    this.setState(updateStateKeysWithContextValue({selectedFrequency}))
   }
 
   private setSelectedSize = (selectedSize) => () => {
@@ -263,7 +216,7 @@ export default class App extends React.Component<Props, State> {
 
     selectedVariantIds.splice(selectedSize)
 
-    this.setState(updateStateKeys({
+    this.setState(updateStateKeysWithContextValue({
       selectedSize,
       selectedVariantIds,
     }))
@@ -281,13 +234,13 @@ export default class App extends React.Component<Props, State> {
     }
 
     if (selectedVariantIds.length >= selectedSize) {
-      return this.setState(updateStateKeys({isBundleFullModalOpen: true}))
+      return this.setState(updateStateKeysWithContextValue({isBundleFullModalOpen: true}))
     }
 
     selectedProductIds.push(productId)
     selectedVariantIds.push(variantId)
 
-    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    this.setState(updateStateKeysWithContextValue({selectedProductIds, selectedVariantIds}))
   }
 
   private removeVariantId = (productId, variantId) => () => {
@@ -299,7 +252,7 @@ export default class App extends React.Component<Props, State> {
     selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
     selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
 
-    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    this.setState(updateStateKeysWithContextValue({selectedProductIds, selectedVariantIds}))
   }
 
   private addAddOnId = (productId, variantId) => () => {
@@ -317,7 +270,7 @@ export default class App extends React.Component<Props, State> {
     selectedAddOnIds = selectedAddOnIds.concat([...Array(selectedSize)].map(() => variantId))
     selectedProductIds = selectedProductIds.concat([...Array(selectedSize)].map(() => productId))
 
-    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
+    this.setState(updateStateKeysWithContextValue({selectedAddOnIds, selectedProductIds}))
   }
 
   private removeAddOnId = (productId, variantId) => () => {
@@ -332,7 +285,7 @@ export default class App extends React.Component<Props, State> {
       selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
     }
 
-    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
+    this.setState(updateStateKeysWithContextValue({selectedAddOnIds, selectedProductIds}))
   }
 
   private addToCart = (bundleId, extraData) => {
@@ -362,7 +315,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private submit = async () => {
-    this.setState(updateStateKeys({isSubmitting: true}))
+    this.setState(updateStateKeysWithContextValue({isSubmitting: true}))
 
     const {
       bundleId,
@@ -375,7 +328,7 @@ export default class App extends React.Component<Props, State> {
       await this.submitCartBundleUpdates()
     }
 
-    this.setState(updateStateKeys({isSubmitting: false}))
+    this.setState(updateStateKeysWithContextValue({isSubmitting: false}))
   }
 
   private submitCustomerBundleUpdates = async () => {
@@ -452,7 +405,7 @@ export default class App extends React.Component<Props, State> {
 
     updateCartDrawerUI()
 
-    this.setState(updateStateKeys({editingBundleId: bundleId}))
+    this.setState(updateStateKeysWithContextValue({editingBundleId: bundleId}))
   }
 
   private extractStateFromCart = async (bundleId) => {
@@ -592,7 +545,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private handleBundleFullModalClose = () => {
-    this.setState(updateStateKeys({isBundleFullModalOpen: false}))
+    this.setState(updateStateKeysWithContextValue({isBundleFullModalOpen: false}))
   }
 
   private createBundleName = (customerName) => `${customerName}'s box`
@@ -601,7 +554,7 @@ export default class App extends React.Component<Props, State> {
     $(() => {
       this.slickRef = $(".bu-slick")
       .on("init", (_, {currentSlide: currentStepIndex}) => {
-        this.setState(updateStateKeys({currentStepIndex}))
+        this.setState(updateStateKeysWithContextValue({currentStepIndex}))
       })
       .slick({
         accessibility: false,
@@ -613,24 +566,82 @@ export default class App extends React.Component<Props, State> {
         touchMove: false,
       })
       .on("afterChange", (_, {currentSlide: currentStepIndex}) => {
-        this.setState(updateStateKeys({currentStepIndex}))
+        this.setState(updateStateKeysWithContextValue({currentStepIndex}))
       })
     })
   }
 
   private closeProductDetailsModal = () => {
-    this.setState(updateStateKeys({productDetailsModalProductId: null}))
+    this.setState(updateStateKeysWithContextValue({productDetailsModalProductId: null}))
   }
 
   private openProductDetailsModal = (productDetailsModalProductId) => () => {
-    this.setState(updateStateKeys({productDetailsModalProductId}))
+    this.setState(updateStateKeysWithContextValue({productDetailsModalProductId}))
   }
 
   private openVideoModal = (videoModalYouTubeId) => () => {
-    this.setState(updateStateKeys({videoModalYouTubeId}))
+    this.setState(updateStateKeysWithContextValue({videoModalYouTubeId}))
   }
 
   private closeVideoModal = () => {
-    this.setState(updateStateKeys({videoModalYouTubeId: null}))
+    this.setState(updateStateKeysWithContextValue({videoModalYouTubeId: null}))
+  }
+
+  private createContextValue = () => {
+    const {
+      bundleAddOns,
+      bundleProduct,
+      bundleProducts,
+      bundleProductMetafields,
+    } = this.props
+
+    const {
+      bundleName,
+      editingBundleId,
+      enteredEmail,
+      enteredName,
+      isSubmitting,
+      selectedAddOnIds,
+      selectedFrequency,
+      selectedProductIds,
+      selectedVariantIds,
+      selectedSize,
+    } = this.state
+
+    const allProducts = bundleProducts.concat(bundleAddOns)
+
+    return {
+      addAddOnId: this.addAddOnId,
+      addVariantId: this.addVariantId,
+      allProducts,
+      bundleAddOns,
+      bundleName,
+      bundleProduct,
+      bundleProductMetafields,
+      bundleProducts,
+      closeProductDetailsModal: this.closeProductDetailsModal,
+      closeVideoModal: this.closeVideoModal,
+      enterEmail: this.enterEmail,
+      enterName: this.enterName,
+      enteredEmail,
+      enteredName,
+      isEditingBundle: !!editingBundleId,
+      isSubmitting,
+      openProductDetailsModal: this.openProductDetailsModal,
+      openVideoModal: this.openVideoModal,
+      removeAddOnId: this.removeAddOnId,
+      removeVariantId: this.removeVariantId,
+      selectedAddOnIds,
+      selectedFrequency,
+      selectedProductIds,
+      selectedSize,
+      selectedVariantIds,
+      setSelectedFrequency: this.setSelectedFrequency,
+      setSelectedSize: this.setSelectedSize,
+      stepNext: this.stepNext,
+      stepPrev: this.stepPrev,
+      submit: this.submit,
+      updateBundleName: this.updateBundleName,
+    }
   }
 }
