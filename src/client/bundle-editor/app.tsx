@@ -131,39 +131,45 @@ export default class App extends React.Component<Props, State> {
     } = this.state
 
     const allProducts = bundleProducts.concat(bundleAddOns)
+    const isEditingSubscription = this.isEditingSubscription()
 
     return (
       <>
         <AppContainer>
           <div className="bu-slick">
-            <div>
-              <Step>
-                <EnterName
-                  enterName={this.enterName}
-                  enteredName={enteredName}
-                  isActiveStep={currentStepIndex === 0}
-                  stepNext={this.stepNext}
-                />
-              </Step>
-            </div>
-            <div>
-              <Step>
-                <EnterEmail
-                  enterEmail={this.enterEmail}
-                  enteredEmail={enteredEmail}
-                  enteredName={enteredName}
-                  isActiveStep={currentStepIndex === 1}
-                  stepNext={this.stepNext}
-                  stepPrev={this.stepPrev}
-                />
-              </Step>
-            </div>
+            {!isEditingSubscription && (
+              <>
+                <div>
+                  <Step>
+                    <EnterName
+                      enterName={this.enterName}
+                      enteredName={enteredName}
+                      isActiveStep={currentStepIndex === 0}
+                      stepNext={this.stepNext}
+                    />
+                  </Step>
+                </div>
+                <div>
+                  <Step>
+                    <EnterEmail
+                      enterEmail={this.enterEmail}
+                      enteredEmail={enteredEmail}
+                      enteredName={enteredName}
+                      isActiveStep={currentStepIndex === 1}
+                      stepNext={this.stepNext}
+                      stepPrev={this.stepPrev}
+                    />
+                  </Step>
+                </div>
+              </>
+            )}
             <div>
               <Step>
                 <ChooseFrequencySize
                   bundleProduct={bundleProduct}
                   bundleProductMetafields={bundleProductMetafields}
                   isActiveStep={currentStepIndex === 2}
+                  isEditingSubscription={isEditingSubscription}
                   selectedFrequency={selectedFrequency}
                   setSelectedFrequency={this.setSelectedFrequency}
                   selectedSize={selectedSize}
@@ -637,11 +643,15 @@ export default class App extends React.Component<Props, State> {
 
   private createBundleName = (customerName) => `${customerName}'s box`
 
+  private isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
+
   private initSlick = () => {
+    const offset = this.isEditingSubscription ? 2 : 0
+
     $(() => {
       this.slickRef = $(".bu-slick")
-      .on("init", (_, {currentSlide: currentStepIndex}) => {
-        this.setState(updateStateKeys({currentStepIndex}))
+      .on("init afterChange", (_, {currentSlide}) => {
+        this.setState(updateStateKeys({currentStepIndex: currentSlide + offset}))
       })
       .slick({
         accessibility: false,
@@ -651,9 +661,6 @@ export default class App extends React.Component<Props, State> {
         infinite: false,
         swipe: false,
         touchMove: false,
-      })
-      .on("afterChange", (_, {currentSlide: currentStepIndex}) => {
-        this.setState(updateStateKeys({currentStepIndex}))
       })
     })
   }

@@ -1,5 +1,4 @@
 import * as React from "react"
-import styled from "styled-components"
 
 import {
   frequencySingularTitle,
@@ -14,6 +13,7 @@ interface Props {
   bundleProduct: ShopifyProduct,
   bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
+  isEditingSubscription: boolean,
   selectedFrequency: number,
   setSelectedFrequency: (number) => () => any,
   selectedSize: number,
@@ -22,20 +22,12 @@ interface Props {
   stepPrev: () => any,
 }
 
-interface GridItemProps {
-  selected: boolean
-}
-
-const GridItem = styled.div`
-  border: ${({selected}: GridItemProps) => selected ? "1px solid red" : "1px solid transparent"};
-  cursor: pointer;
-`
-
 export default class ChooseFrequencySize extends React.Component<Props> {
   public render() {
     const {
       bundleProduct,
       bundleProductMetafields,
+      isEditingSubscription,
       selectedFrequency,
       selectedSize,
       setSelectedFrequency,
@@ -59,17 +51,19 @@ export default class ChooseFrequencySize extends React.Component<Props> {
     const selectedVariant = bundleProduct.variants.find(({option1}) => parseInt(option1, 10) === selectedSize)
     const price = selectedVariant ? parseFloat(selectedVariant.price) : null
 
+    const title = isEditingSubscription ? "Select your plan." : "Thanks! Select your plan."
+
     return (
       <div>
-        <h2>Thanks! Select your plan.</h2>
+        <h2>{title}</h2>
         <div>Edit, pause, or cancel anytime.</div>
         <div className="grid grid--uniform grid--no-gutters">
           {shippingFrequencies.map((frequency) => (
-            <GridItem
+            <div
               className="grid__item one-half text-center"
               key={frequency}
               onClick={setSelectedFrequency(frequency)}
-              selected={selectedFrequency === frequency}
+              style={{backgroundColor: "#000"}}
             >
               <div>{frequencyTitle(shippingUnitType, frequency)}</div>
 
@@ -89,17 +83,19 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                   )}
                 </div>
               )}
-            </GridItem>
+            </div>
           ))}
         </div>
 
         <div>
-          <Button
-            onClick={stepPrev}
-            type="button"
-          >
-            Prev
-          </Button>
+          {!isEditingSubscription && (
+            <Button
+              onClick={stepPrev}
+              type="button"
+            >
+              Prev
+            </Button>
+          )}
 
           <Button
             disabled={!selectedSize || !selectedFrequency}
