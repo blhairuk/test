@@ -2,6 +2,7 @@ import * as React from "react"
 
 import bindCartHelper, {Helper as CartHelper} from "./app/cart-helper"
 import bindExistingCustomerHelper, {Helper as ExistingCustomerHelper} from "./app/existing-customer-helper"
+import bindSlickHelper, {Helper as SlickHelper} from "./app/slick-helper"
 import bindStateHelper, {Helper as StateHelper} from "./app/state-helper"
 
 import ChooseAddOns from "./components/choose-add-ons"
@@ -67,14 +68,15 @@ export default class App extends React.Component<Props, State> {
 
   private cartHelper: CartHelper
   private existingCustomerHelper: ExistingCustomerHelper
+  private slickHelper: SlickHelper
   private stateHelper: StateHelper
-  private slickRef
 
   constructor(props) {
     super(props)
 
     this.cartHelper = bindCartHelper(this)
     this.existingCustomerHelper = bindExistingCustomerHelper(this)
+    this.slickHelper = bindSlickHelper(this)
     this.stateHelper = bindStateHelper(this)
 
     if (props.subscriptions) {
@@ -94,7 +96,7 @@ export default class App extends React.Component<Props, State> {
       this.setState(updateStateKeys(cartState))
     }
 
-    this.initSlick()
+    this.slickHelper.init()
   }
 
   public render() {
@@ -140,7 +142,7 @@ export default class App extends React.Component<Props, State> {
                       enterName={this.stateHelper.enterName}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 0}
-                      stepNext={this.stepNext}
+                      stepNext={this.slickHelper.stepNext}
                     />
                   </Step>
                 </div>
@@ -151,8 +153,8 @@ export default class App extends React.Component<Props, State> {
                       enteredEmail={enteredEmail}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 1}
-                      stepNext={this.stepNext}
-                      stepPrev={this.stepPrev}
+                      stepNext={this.slickHelper.stepNext}
+                      stepPrev={this.slickHelper.stepPrev}
                     />
                   </Step>
                 </div>
@@ -169,8 +171,8 @@ export default class App extends React.Component<Props, State> {
                   setSelectedFrequency={this.stateHelper.setSelectedFrequency}
                   selectedSize={selectedSize}
                   setSelectedSize={this.stateHelper.setSelectedSize}
-                  stepNext={this.stepNext}
-                  stepPrev={this.stepPrev}
+                  stepNext={this.slickHelper.stepNext}
+                  stepPrev={this.slickHelper.stepPrev}
                 />
               </Step>
             </div>
@@ -193,8 +195,8 @@ export default class App extends React.Component<Props, State> {
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
                     selectedVariantIds={selectedVariantIds}
-                    stepNext={this.stepNext}
-                    stepPrev={this.stepPrev}
+                    stepNext={this.slickHelper.stepNext}
+                    stepPrev={this.slickHelper.stepPrev}
                     updateBundleName={this.stateHelper.updateBundleName}
                   />
                 </div>
@@ -216,8 +218,8 @@ export default class App extends React.Component<Props, State> {
                     removeVariantId={this.stateHelper.removeVariantId}
                     selectedAddOnIds={selectedAddOnIds}
                     selectedVariantIds={selectedVariantIds}
-                    stepNext={this.stepNext}
-                    stepPrev={this.stepPrev}
+                    stepNext={this.slickHelper.stepNext}
+                    stepPrev={this.slickHelper.stepPrev}
                   />
                 </div>
               </Step>
@@ -233,7 +235,7 @@ export default class App extends React.Component<Props, State> {
                     selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
-                    stepPrev={this.stepPrev}
+                    stepPrev={this.slickHelper.stepPrev}
                     submit={this.submit}
                   />
                 </div>
@@ -280,6 +282,8 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
+  public isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
+
   private submit = async () => {
     this.setState(updateStateKeys({isSubmitting: true}))
 
@@ -292,40 +296,8 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({isSubmitting: false}))
   }
 
-  private stepNext = (e?: React.FormEvent<HTMLElement>) => {
-    if (e) { e.preventDefault() }
-    this.slickRef.slick("slickNext")
-  }
-
-  private stepPrev = (e?: React.FormEvent<HTMLElement>) => {
-    if (e) { e.preventDefault() }
-    this.slickRef.slick("slickPrev")
-  }
-
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
-  }
-
-  private isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
-
-  private initSlick = () => {
-    const offset = this.isEditingSubscription() ? 2 : 0
-
-    $(() => {
-      this.slickRef = $(".bu-slick")
-      .on("init afterChange", (_, {currentSlide}) => {
-        this.setState(updateStateKeys({currentStepIndex: currentSlide + offset}))
-      })
-      .slick({
-        accessibility: false,
-        adaptiveHeight: true,
-        arrows: false,
-        draggable: false,
-        infinite: false,
-        swipe: false,
-        touchMove: false,
-      })
-    })
   }
 
   private closeProductDetailsModal = () => {
