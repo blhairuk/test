@@ -1,6 +1,6 @@
 import {getPropertyValueForKey} from "../../../shared/helpers"
 
-import App from "../App"
+import App from "../app"
 
 export interface Helper {
   extractState: () => any,

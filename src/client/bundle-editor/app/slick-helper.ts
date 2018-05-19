@@ -1,6 +1,6 @@
 import * as React from "react"
 import updateStateKeys from "../../helpers/update-state-keys"
-import App from "../App"
+import App from "../app"
 
 export interface Helper {
   init: () => any,

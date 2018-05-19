@@ -1,7 +1,7 @@
 import {BUNDLE_TYPE} from "../../../shared/constants"
 import updateStateKeys from "../../helpers/update-state-keys"
 
-import App from "../App"
+import App from "../app"
 
 import {
   createBundleId,

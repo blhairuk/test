@@ -1,5 +1,5 @@
 import updateStateKeys from "../../helpers/update-state-keys"
-import App from "../App"
+import App from "../app"
 
 import {createBundleName} from "../../../shared/helpers"
 
