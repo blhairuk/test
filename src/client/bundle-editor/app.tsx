@@ -280,8 +280,6 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  protected createBundleName = (customerName) => `${customerName}'s box`
-
   private submit = async () => {
     this.setState(updateStateKeys({isSubmitting: true}))
 

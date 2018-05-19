@@ -1,11 +1,13 @@
 import {getPropertyValueForKey} from "../../../shared/helpers"
 
+import App from "../App"
+
 export interface Helper {
   extractState: () => any,
   submitBundleUpdates: () => Promise<any>,
 }
 
-export default (App): Helper => ({
+export default (app: App): Helper => ({
   extractState: () => {
     const {
       bundleAddOns,
@@ -13,7 +15,7 @@ export default (App): Helper => ({
       bundleProduct,
       bundleProducts,
       subscriptions,
-    } = App.props
+    } = app.props
 
     let bundleName = ""
     let enteredEmail = ""
@@ -73,7 +75,7 @@ export default (App): Helper => ({
       selectedFrequency,
       selectedSize,
       selectedVariantIds,
-    } = App.state
+    } = app.state
 
     const data = {
       add_on_ids: selectedAddOnIds,

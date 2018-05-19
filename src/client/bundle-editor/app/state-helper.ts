@@ -1,4 +1,7 @@
 import updateStateKeys from "../../helpers/update-state-keys"
+import App from "../App"
+
+import {createBundleName} from "../../../shared/helpers"
 
 export interface Helper {
   addAddOnId: (productId: number, variantId: any) => () => any,
@@ -12,14 +15,14 @@ export interface Helper {
   updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
 }
 
-export default (App): Helper => ({
+export default (app: App): Helper => ({
   addAddOnId: (productId, variantId) => () => {
-    const {selectedSize} = App.state
+    const {selectedSize} = app.state
 
     let {
       selectedAddOnIds,
       selectedProductIds,
-    } = App.state
+    } = app.state
 
     if (!selectedSize) {
       return alert("You must select a size first.")
@@ -28,7 +31,7 @@ export default (App): Helper => ({
     selectedAddOnIds = selectedAddOnIds.concat([...Array(selectedSize)].map(() => variantId))
     selectedProductIds = selectedProductIds.concat([...Array(selectedSize)].map(() => productId))
 
-    App.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
+    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
   },
 
   addVariantId: (productId, variantId) => () => {
@@ -36,29 +39,29 @@ export default (App): Helper => ({
       selectedProductIds,
       selectedVariantIds,
       selectedSize,
-    } = App.state
+    } = app.state
 
     if (!selectedSize) {
       return alert("You must selected a size first.")
     }
 
     if (selectedVariantIds.length >= selectedSize) {
-      return App.setState(updateStateKeys({isBundleFullModalOpen: true}))
+      return app.setState(updateStateKeys({isBundleFullModalOpen: true}))
     }
 
     selectedProductIds.push(productId)
     selectedVariantIds.push(variantId)
 
-    App.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    app.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
   },
 
   enterEmail: ({target: {value: enteredEmail}}) => {
-    App.setState(updateStateKeys({enteredEmail}))
+    app.setState(updateStateKeys({enteredEmail}))
   },
 
   enterName: ({target: {value: enteredName}}) => {
-    App.setState(updateStateKeys({
-      bundleName: enteredName ? App.createBundleName(enteredName) : "",
+    app.setState(updateStateKeys({
+      bundleName: enteredName ? createBundleName(enteredName) : "",
       enteredName,
     }))
   },
@@ -68,44 +71,44 @@ export default (App): Helper => ({
       selectedAddOnIds,
       selectedProductIds,
       selectedSize,
-    } = App.state
+    } = app.state
 
     for (let i = 0; i < (selectedSize || 1); ++i) {
       selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
       selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
     }
 
-    App.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
+    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
   },
 
   removeVariantId: (productId, variantId) => () => {
     const {
       selectedProductIds,
       selectedVariantIds,
-    } = App.state
+    } = app.state
 
     selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
     selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
 
-    App.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    app.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
   },
 
   setSelectedFrequency: (selectedFrequency) => () => {
-    App.setState(updateStateKeys({selectedFrequency}))
+    app.setState(updateStateKeys({selectedFrequency}))
   },
 
   setSelectedSize: (selectedSize) => () => {
-    const {selectedVariantIds} = App.state
+    const {selectedVariantIds} = app.state
 
     selectedVariantIds.splice(selectedSize)
 
-    App.setState(updateStateKeys({
+    app.setState(updateStateKeys({
       selectedSize,
       selectedVariantIds,
     }))
   },
 
   updateBundleName({target: {value: bundleName}}) {
-    App.setState(updateStateKeys({bundleName}))
+    app.setState(updateStateKeys({bundleName}))
   },
 })

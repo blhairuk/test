@@ -1,6 +1,8 @@
 import {BUNDLE_TYPE} from "../../../shared/constants"
 import updateStateKeys from "../../helpers/update-state-keys"
 
+import App from "../App"
+
 import {
   createBundleId,
   createIdQuantities,
@@ -20,9 +22,9 @@ export interface Helper {
   submitBundleUpdates: () => Promise<any>,
 }
 
-export default (App): Helper => ({
+export default (app: App): Helper => ({
   addBundle: (bundleId, extraData) => {
-    const {bundleProductMetafields} = App.props
+    const {bundleProductMetafields} = app.props
 
     const shipping_interval_unit_type = getMetafieldValue(
       bundleProductMetafields,
@@ -39,7 +41,7 @@ export default (App): Helper => ({
       ...extraData,
       properties: {
         bundle_id: bundleId,
-        shipping_interval_frequency: App.state.selectedFrequency,
+        shipping_interval_frequency: app.state.selectedFrequency,
         shipping_interval_unit_type,
         subscription_id,
         ...extraData.properties,
@@ -51,7 +53,7 @@ export default (App): Helper => ({
     const {
       bundleAddOns,
       bundleProducts,
-    } = App.props
+    } = app.props
 
     const cart = await fetchCart()
 
@@ -116,7 +118,7 @@ export default (App): Helper => ({
   },
 
   async submitBundleUpdates() {
-    const {bundleProduct} = App.props
+    const {bundleProduct} = app.props
 
     const {
       bundleName,
@@ -126,7 +128,7 @@ export default (App): Helper => ({
       selectedAddOnIds,
       selectedSize,
       selectedVariantIds,
-    } = App.state
+    } = app.state
 
     if (editingBundleId) {
       await removeBundleIdFromCart(editingBundleId)
@@ -159,6 +161,6 @@ export default (App): Helper => ({
 
     updateCartDrawerUI()
 
-    App.setState(updateStateKeys({editingBundleId: bundleId}))
+    app.setState(updateStateKeys({editingBundleId: bundleId}))
   },
 })
