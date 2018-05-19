@@ -19,7 +19,7 @@ export default (App): Helper => ({
     let {
       selectedAddOnIds,
       selectedProductIds,
-    } = this.state
+    } = App.state
 
     if (!selectedSize) {
       return alert("You must select a size first.")
@@ -68,7 +68,7 @@ export default (App): Helper => ({
       selectedAddOnIds,
       selectedProductIds,
       selectedSize,
-    } = this.state
+    } = App.state
 
     for (let i = 0; i < (selectedSize || 1); ++i) {
       selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
