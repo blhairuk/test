@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import bindStateHelper from "./app/state-helper"
+
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
 import ChooseProducts from "./components/choose-products"
@@ -77,10 +79,13 @@ export default class App extends React.Component<Props, State> {
     videoModalYouTubeId: null,
   }
 
+  private stateHelper
   private slickRef
 
   constructor(props) {
     super(props)
+
+    this.stateHelper = bindStateHelper(this)
 
     if (props.subscriptions) {
       const cartState = this.extractStateFromSubscriptions()
@@ -142,7 +147,7 @@ export default class App extends React.Component<Props, State> {
                 <div>
                   <Step>
                     <EnterName
-                      enterName={this.enterName}
+                      enterName={this.stateHelper.enterName}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 0}
                       stepNext={this.stepNext}
@@ -152,7 +157,7 @@ export default class App extends React.Component<Props, State> {
                 <div>
                   <Step>
                     <EnterEmail
-                      enterEmail={this.enterEmail}
+                      enterEmail={this.stateHelper.enterEmail}
                       enteredEmail={enteredEmail}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 1}
@@ -171,9 +176,9 @@ export default class App extends React.Component<Props, State> {
                   isActiveStep={currentStepIndex === 2}
                   isEditingSubscription={isEditingSubscription}
                   selectedFrequency={selectedFrequency}
-                  setSelectedFrequency={this.setSelectedFrequency}
+                  setSelectedFrequency={this.stateHelper.setSelectedFrequency}
                   selectedSize={selectedSize}
-                  setSelectedSize={this.setSelectedSize}
+                  setSelectedSize={this.stateHelper.setSelectedSize}
                   stepNext={this.stepNext}
                   stepPrev={this.stepPrev}
                 />
@@ -183,8 +188,8 @@ export default class App extends React.Component<Props, State> {
               <Step align="top">
                 <div className="one-whole">
                   <ChooseProducts
-                    addAddOnId={this.addAddOnId}
-                    addVariantId={this.addVariantId}
+                    addAddOnId={this.stateHelper.addAddOnId}
+                    addVariantId={this.stateHelper.addVariantId}
                     allProducts={allProducts}
                     bundleName={bundleName}
                     bundleProducts={bundleProducts}
@@ -192,15 +197,15 @@ export default class App extends React.Component<Props, State> {
                     isActiveStep={currentStepIndex === 3}
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
-                    removeAddOnId={this.removeAddOnId}
-                    removeVariantId={this.removeVariantId}
+                    removeAddOnId={this.stateHelper.removeAddOnId}
+                    removeVariantId={this.stateHelper.removeVariantId}
                     selectedAddOnIds={selectedAddOnIds}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
                     selectedVariantIds={selectedVariantIds}
                     stepNext={this.stepNext}
                     stepPrev={this.stepPrev}
-                    updateBundleName={this.updateBundleName}
+                    updateBundleName={this.stateHelper.updateBundleName}
                   />
                 </div>
               </Step>
@@ -209,16 +214,16 @@ export default class App extends React.Component<Props, State> {
               <Step align="top">
                 <div className="one-whole">
                   <ChooseAddOns
-                    addAddOnId={this.addAddOnId}
-                    addVariantId={this.addVariantId}
+                    addAddOnId={this.stateHelper.addAddOnId}
+                    addVariantId={this.stateHelper.addVariantId}
                     bundleAddOns={bundleAddOns}
                     bundleProductMetafields={bundleProductMetafields}
                     bundleProducts={bundleProducts}
                     isActiveStep={currentStepIndex === 4}
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
-                    removeAddOnId={this.removeAddOnId}
-                    removeVariantId={this.removeVariantId}
+                    removeAddOnId={this.stateHelper.removeAddOnId}
+                    removeVariantId={this.stateHelper.removeVariantId}
                     selectedAddOnIds={selectedAddOnIds}
                     selectedVariantIds={selectedVariantIds}
                     stepNext={this.stepNext}
@@ -285,101 +290,7 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  private enterEmail = ({target: {value: enteredEmail}}) => {
-    this.setState(updateStateKeys({enteredEmail}))
-  }
-
-  private enterName = ({target: {value: enteredName}}) => {
-    this.setState(updateStateKeys({
-      bundleName: enteredName ? this.createBundleName(enteredName) : "",
-      enteredName,
-    }))
-  }
-
-  private updateBundleName = ({target: {value: bundleName}}) => {
-    this.setState(updateStateKeys({bundleName}))
-  }
-
-  private setSelectedFrequency = (selectedFrequency) => () => {
-    this.setState(updateStateKeys({selectedFrequency}))
-  }
-
-  private setSelectedSize = (selectedSize) => () => {
-    const {selectedVariantIds} = this.state
-
-    selectedVariantIds.splice(selectedSize)
-
-    this.setState(updateStateKeys({
-      selectedSize,
-      selectedVariantIds,
-    }))
-  }
-
-  private addVariantId = (productId, variantId) => () => {
-    const {
-      selectedProductIds,
-      selectedVariantIds,
-      selectedSize,
-    } = this.state
-
-    if (!selectedSize) {
-      return alert("You must selected a size first.")
-    }
-
-    if (selectedVariantIds.length >= selectedSize) {
-      return this.setState(updateStateKeys({isBundleFullModalOpen: true}))
-    }
-
-    selectedProductIds.push(productId)
-    selectedVariantIds.push(variantId)
-
-    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
-  }
-
-  private removeVariantId = (productId, variantId) => () => {
-    const {
-      selectedProductIds,
-      selectedVariantIds,
-    } = this.state
-
-    selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
-    selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
-
-    this.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
-  }
-
-  private addAddOnId = (productId, variantId) => () => {
-    const {selectedSize} = this.state
-
-    let {
-      selectedAddOnIds,
-      selectedProductIds,
-    } = this.state
-
-    if (!selectedSize) {
-      return alert("You must select a size first.")
-    }
-
-    selectedAddOnIds = selectedAddOnIds.concat([...Array(selectedSize)].map(() => variantId))
-    selectedProductIds = selectedProductIds.concat([...Array(selectedSize)].map(() => productId))
-
-    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
-  }
-
-  private removeAddOnId = (productId, variantId) => () => {
-    const {
-      selectedAddOnIds,
-      selectedProductIds,
-      selectedSize,
-    } = this.state
-
-    for (let i = 0; i < (selectedSize || 1); ++i) {
-      selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
-      selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
-    }
-
-    this.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
-  }
+  protected createBundleName = (customerName) => `${customerName}'s box`
 
   private addToCart = (bundleId, extraData) => {
     const {bundleProductMetafields} = this.props
@@ -640,8 +551,6 @@ export default class App extends React.Component<Props, State> {
   private handleBundleFullModalClose = () => {
     this.setState(updateStateKeys({isBundleFullModalOpen: false}))
   }
-
-  private createBundleName = (customerName) => `${customerName}'s box`
 
   private isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
 
