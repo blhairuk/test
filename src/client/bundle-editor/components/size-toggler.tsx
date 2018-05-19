@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import Switch from "./styled/switch"
+
 interface Props {
   bundleProduct: ShopifyProduct,
   selectedSize: number,
@@ -14,24 +16,25 @@ export default class SizeToggler extends React.Component<Props> {
       setSelectedSize,
     } = this.props
 
+    const sizes = bundleProduct.variants.map(({option1}) => parseInt(option1, 10))
+    const left = sizes.indexOf(selectedSize) * 100
+
     return (
-      <div className="grid grid--uniform grid--no-gutters">
-        {bundleProduct.variants.map(({id, option1}) => {
-          const size = parseInt(option1, 10)
-          return (
-            <div
-              className="grid__item one-half"
-              key={id}
-              onClick={setSelectedSize(size)}
-              style={{
-                backgroundColor: size === selectedSize ? "#fff" : null,
-                color: size === selectedSize ? "#000" : "#fff",
-              }}
-            >
-              {size}
-            </div>
-          )
-        })}
+      <div
+        className="grid grid--uniform grid--no-gutters"
+        style={{position: "relative"}}
+      >
+        {sizes.map((size) => (
+          <div
+            className="grid__item one-half"
+            key={size}
+            onClick={setSelectedSize(size)}
+          >
+            {size}
+          </div>
+        ))}
+
+        {selectedSize && <Switch left={left} />}
       </div>
     )
   }

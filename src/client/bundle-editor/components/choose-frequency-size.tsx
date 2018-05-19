@@ -56,15 +56,14 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       "shipping_interval_unit_type",
     )
 
-    const price = parseFloat(bundleProduct.variants
-      .find(({option1}) => parseInt(option1, 10) === selectedSize)
-      .price)
+    const selectedVariant = bundleProduct.variants.find(({option1}) => parseInt(option1, 10) === selectedSize)
+    const price = selectedVariant ? parseFloat(selectedVariant.price) : null
 
     return (
       <div>
         <h2>Thanks! Select your plan.</h2>
         <div>Edit, pause, or cancel anytime.</div>
-        <div className="grid grid--uniform">
+        <div className="grid grid--uniform grid--no-gutters">
           {shippingFrequencies.map((frequency) => (
             <GridItem
               className="grid__item one-half text-center"
@@ -82,8 +81,12 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                     setSelectedSize={setSelectedSize}
                   />
 
-                  <div>{price / selectedSize} per cup</div>
-                  <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                  {selectedSize && (
+                    <>
+                      <div>{price / selectedSize} per cup</div>
+                      <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                    </>
+                  )}
                 </div>
               )}
             </GridItem>
