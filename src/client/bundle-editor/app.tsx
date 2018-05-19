@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import bindCartHelper, {Helper as CartHelper} from "./app/cart-helper"
+import bindExistingCustomerHelper, {Helper as ExistingCustomerHelper} from "./app/existing-customer-helper"
 import bindStateHelper, {Helper as StateHelper} from "./app/state-helper"
 
 import ChooseAddOns from "./components/choose-add-ons"
@@ -16,10 +17,6 @@ import AppContainer from "./components/styled/app-container"
 import Step from "./components/styled/step"
 
 import Modal from "../helpers/modal"
-
-import {
-  getPropertyValueForKey,
-} from "../../shared/helpers"
 
 import updateStateKeys from "../helpers/update-state-keys"
 
@@ -69,6 +66,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private cartHelper: CartHelper
+  private existingCustomerHelper: ExistingCustomerHelper
   private stateHelper: StateHelper
   private slickRef
 
@@ -76,10 +74,11 @@ export default class App extends React.Component<Props, State> {
     super(props)
 
     this.cartHelper = bindCartHelper(this)
+    this.existingCustomerHelper = bindExistingCustomerHelper(this)
     this.stateHelper = bindStateHelper(this)
 
     if (props.subscriptions) {
-      const cartState = this.extractStateFromSubscriptions()
+      const cartState = this.existingCustomerHelper.extractState()
       this.state = updateStateKeys(cartState)(this.state)
     }
   }
@@ -286,106 +285,13 @@ export default class App extends React.Component<Props, State> {
   private submit = async () => {
     this.setState(updateStateKeys({isSubmitting: true}))
 
-    const {
-      bundleId,
-      customerHash,
-    } = this.props
-
-    if (bundleId && customerHash) {
-      await this.submitCustomerBundleUpdates()
+    if (this.isEditingSubscription()) {
+      await this.existingCustomerHelper.submitBundleUpdates()
     } else {
       await this.cartHelper.submitBundleUpdates()
     }
 
     this.setState(updateStateKeys({isSubmitting: false}))
-  }
-
-  private submitCustomerBundleUpdates = async () => {
-    const {
-      bundleName,
-      enteredEmail,
-      enteredName,
-      selectedAddOnIds,
-      selectedFrequency,
-      selectedSize,
-      selectedVariantIds,
-    } = this.state
-
-    const data = {
-      add_on_ids: selectedAddOnIds,
-      bundle_name: bundleName,
-      customer_name: enteredName,
-      email: enteredEmail,
-      frequency: selectedFrequency,
-      size: selectedSize,
-      variant_ids: selectedVariantIds,
-    }
-
-    await $.ajax({
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      dataType: "json",
-      method: "PUT",
-      url: window.location.pathname,
-    })
-  }
-
-  private extractStateFromSubscriptions = () => {
-    const {
-      bundleAddOns,
-      bundleId,
-      bundleProduct,
-      bundleProducts,
-      subscriptions,
-    } = this.props
-
-    let bundleName = ""
-    let enteredEmail = ""
-    let enteredName = ""
-    const selectedAddOnIds = []
-    let selectedFrequency = null
-    const selectedProductIds = []
-    let selectedSize = null
-    const selectedVariantIds = []
-
-    for (const {
-      order_interval_frequency,
-      properties,
-      quantity,
-      shopify_product_id,
-      shopify_variant_id,
-    } of subscriptions) {
-      if (shopify_product_id === bundleProduct.id) {
-        bundleName = getPropertyValueForKey(properties, "bundle_name")
-        enteredEmail = getPropertyValueForKey(properties, "bundle_email")
-        enteredName = getPropertyValueForKey(properties, "bundle_customer_name")
-        selectedFrequency = parseInt(order_interval_frequency, 10)
-        selectedSize = parseInt(bundleProduct.variants.find((v) => v.id === shopify_variant_id).option1, 10)
-      } else {
-        const selectedArray = (() => {
-          if (bundleAddOns.some((p) => p.id === shopify_product_id)) { return selectedAddOnIds }
-          if (bundleProducts.some((p) => p.id === shopify_product_id)) { return selectedVariantIds }
-        })()
-        if (selectedArray) {
-          for (let i = 0; i < quantity; ++i) {
-            selectedArray.push(shopify_variant_id)
-            selectedProductIds.push(shopify_product_id)
-          }
-        }
-      }
-    }
-
-    return {
-      bundleName,
-      editingBundleId: bundleId,
-      enteredEmail,
-      enteredName,
-      selectedAddOnIds,
-      selectedFrequency,
-      selectedProductIds,
-      selectedSize,
-      selectedVariantIds,
-    }
   }
 
   private stepNext = (e?: React.FormEvent<HTMLElement>) => {
