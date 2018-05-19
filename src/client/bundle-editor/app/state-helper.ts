@@ -1,6 +1,18 @@
-import updateStateKeys from "../helpers/update-state-keys"
+import updateStateKeys from "../../helpers/update-state-keys"
 
-export default (App) => ({
+export interface Helper {
+  addAddOnId: (productId: number, variantId: any) => () => any,
+  addVariantId: (productId: number, variantId: any) => () => any,
+  enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
+  enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
+  removeAddOnId: (productId: number, variantId: any) => () => any,
+  removeVariantId: (productId: number, variantId: any) => () => any,
+  setSelectedFrequency: (frequency: number) => () => any,
+  setSelectedSize: (size: number) => () => any,
+  updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
+}
+
+export default (App): Helper => ({
   addAddOnId: (productId, variantId) => () => {
     const {selectedSize} = App.state
 
