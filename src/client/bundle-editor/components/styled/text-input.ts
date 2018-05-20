@@ -6,4 +6,7 @@ export default styled.input`
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
   border-radius: 0;
+  font-size: 140%;
+  padding: 6px;
+  text-align: center;
 `

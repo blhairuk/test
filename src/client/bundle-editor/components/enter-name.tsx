@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import Button from "./styled/button"
+import StepButtons from "./step-buttons"
 import TextInput from "./styled/text-input"
 
 interface Props {
@@ -33,29 +33,26 @@ export default class EnterName extends React.Component<Props> {
 
     return (
       <div>
-        <form onSubmit={stepNext}>
-          <h2>BUILD YOUR BOX</h2>
-          <div>We'd like to get to know you!</div>
-          <div>What's your name?</div>
-          <div>
-            <TextInput
-              innerRef={this.textInputRef}
-              onChange={enterName}
-              placeholder="Name"
-              required={true}
-              type="text"
-              value={enteredName}
+        <div className="text-center larger-text">
+          <form onSubmit={stepNext}>
+            <h1>BUILD YOUR BOX</h1>
+            <p><strong>We'd like to get to know you!<br />What's your name?</strong></p>
+            <div style={{marginBottom: "20px"}}>
+              <TextInput
+                innerRef={this.textInputRef}
+                onChange={enterName}
+                placeholder="Name"
+                required={true}
+                type="text"
+                value={enteredName}
+              />
+            </div>
+            <StepButtons
+              hidePrev={true}
+              isNextDisabled={enteredName.length <= 0}
             />
-          </div>
-          <div>
-            <Button
-              disabled={enteredName.length <= 0}
-              type="submit"
-            >
-              Next
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     )
   }

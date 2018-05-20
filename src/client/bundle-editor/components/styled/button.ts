@@ -38,10 +38,11 @@ const getColor = ({color}: Props) => {
 
 export default styled.button`
   background-color: ${getBackgroundColor};
-  border-radius: 8px;
+  border-radius: 15px;
   color: ${getColor};
   display: inline-block;
-  padding: 6px 18px;
+  font-size: 85%;
+  padding: 7px 16px;
   text-transform: uppercase;
 
   &:disabled { opacity: 0.5 }

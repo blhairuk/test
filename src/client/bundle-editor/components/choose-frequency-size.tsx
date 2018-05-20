@@ -7,7 +7,7 @@ import {
 } from "../../../shared/helpers"
 
 import SizeToggler from "./size-toggler"
-import Button from "./styled/button"
+import StepButtons from "./step-buttons"
 
 interface Props {
   bundleProduct: ShopifyProduct,
@@ -54,57 +54,48 @@ export default class ChooseFrequencySize extends React.Component<Props> {
     const title = isEditingSubscription ? "Select your plan." : "Thanks! Select your plan."
 
     return (
-      <div>
-        <h2>{title}</h2>
-        <div>Edit, pause, or cancel anytime.</div>
-        <div className="grid grid--uniform grid--no-gutters">
-          {shippingFrequencies.map((frequency) => (
-            <div
-              className="grid__item one-half text-center"
-              key={frequency}
-              onClick={setSelectedFrequency(frequency)}
-              style={{backgroundColor: "#000"}}
-            >
-              <div>{frequencyTitle(shippingUnitType, frequency)}</div>
+      <div className="text-center larger-text">
+        <form onSubmit={stepNext}>
+          <h1>{title}</h1>
 
-              {selectedFrequency === frequency && (
-                <div>
-                  <SizeToggler
-                    bundleProduct={bundleProduct}
-                    selectedSize={selectedSize}
-                    setSelectedSize={setSelectedSize}
-                  />
+          <p><small><em>Edit, pause, or cancel anytime!</em></small></p>
 
-                  {selectedSize && (
-                    <>
-                      <div>{price / selectedSize} per cup</div>
-                      <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+          <div className="grid grid--uniform grid--no-gutters">
+            {shippingFrequencies.map((frequency) => (
+              <div
+                className="grid__item one-half text-center"
+                key={frequency}
+                onClick={setSelectedFrequency(frequency)}
+                style={{backgroundColor: "#000"}}
+              >
+                <div>{frequencyTitle(shippingUnitType, frequency)}</div>
 
-        <div>
-          {!isEditingSubscription && (
-            <Button
-              onClick={stepPrev}
-              type="button"
-            >
-              Prev
-            </Button>
-          )}
+                {selectedFrequency === frequency && (
+                  <div>
+                    <SizeToggler
+                      bundleProduct={bundleProduct}
+                      selectedSize={selectedSize}
+                      setSelectedSize={setSelectedSize}
+                    />
 
-          <Button
-            disabled={!selectedSize || !selectedFrequency}
-            onClick={stepNext}
-            type="submit"
-          >
-            Fill your box!
-          </Button>
-        </div>
+                    {selectedSize && (
+                      <>
+                        <div>{price / selectedSize} per cup</div>
+                        <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <StepButtons
+            hidePrev={isEditingSubscription}
+            isNextDisabled={!selectedSize || !selectedFrequency}
+            stepPrev={stepPrev}
+          />
+        </form>
       </div>
     )
   }
