@@ -8,6 +8,7 @@ import {
 
 import SizeToggler from "./size-toggler"
 import StepButtons from "./step-buttons"
+import FrequencySizeContainer from "./styled/frequency-size-container"
 
 interface Props {
   bundleProduct: ShopifyProduct,
@@ -60,32 +61,36 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
           <p><small><em>Edit, pause, or cancel anytime!</em></small></p>
 
-          <div className="grid grid--uniform grid--no-gutters">
+          <div
+            className="grid grid--uniform grid--no-gutters"
+            style={{marginBottom: "20px"}}
+          >
             {shippingFrequencies.map((frequency) => (
               <div
                 className="grid__item one-half text-center"
                 key={frequency}
                 onClick={setSelectedFrequency(frequency)}
-                style={{backgroundColor: "#000"}}
               >
-                <div>{frequencyTitle(shippingUnitType, frequency)}</div>
+                <FrequencySizeContainer isSelected={selectedFrequency === frequency}>
+                  <div>{frequencyTitle(shippingUnitType, frequency)}</div>
 
-                {selectedFrequency === frequency && (
-                  <div>
-                    <SizeToggler
-                      bundleProduct={bundleProduct}
-                      selectedSize={selectedSize}
-                      setSelectedSize={setSelectedSize}
-                    />
+                  {selectedFrequency === frequency && (
+                    <div>
+                      <SizeToggler
+                        bundleProduct={bundleProduct}
+                        selectedSize={selectedSize}
+                        setSelectedSize={setSelectedSize}
+                      />
 
-                    {selectedSize && (
-                      <>
-                        <div>{price / selectedSize} per cup</div>
-                        <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
-                      </>
-                    )}
-                  </div>
-                )}
+                      {selectedSize && (
+                        <>
+                          <div>{price / selectedSize} per cup</div>
+                          <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </FrequencySizeContainer>
               </div>
             ))}
           </div>

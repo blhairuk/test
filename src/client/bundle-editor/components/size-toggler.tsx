@@ -2,6 +2,8 @@ import * as React from "react"
 
 import Switch from "./styled/switch"
 
+import {BLUE_GREEN} from "../../colors"
+
 interface Props {
   bundleProduct: ShopifyProduct,
   selectedSize: number,
@@ -22,19 +24,26 @@ export default class SizeToggler extends React.Component<Props> {
     return (
       <div
         className="grid grid--uniform grid--no-gutters"
-        style={{position: "relative"}}
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.25)",
+          position: "relative",
+        }}
       >
+        {selectedSize && <Switch left={left} />}
+
         {sizes.map((size) => (
           <div
             className="grid__item one-half"
             key={size}
             onClick={setSelectedSize(size)}
+            style={{
+              color: size === selectedSize ? BLUE_GREEN : "#fff",
+              position: "relative",
+            }}
           >
             {size}
           </div>
         ))}
-
-        {selectedSize && <Switch left={left} />}
       </div>
     )
   }
