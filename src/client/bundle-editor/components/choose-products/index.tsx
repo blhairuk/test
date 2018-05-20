@@ -51,7 +51,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
     const {
       addAddOnId,
       addVariantId,
-      allProducts,
       bundleName,
       bundleProducts,
       bundleProductMetafields,
@@ -147,8 +146,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
           <div className="grid__item medium-up--one-third">
             <Sticky offset={180}>
               <Progress
-                allProducts={allProducts}
                 bundleName={bundleName}
+                bundleProducts={bundleProducts}
+                removeVariantId={removeVariantId}
                 selectedProductIds={selectedProductIds}
                 selectedVariantIds={selectedVariantIds}
                 selectedSize={selectedSize}

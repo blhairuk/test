@@ -1,11 +1,16 @@
 import * as React from "react"
 
-import {createIdQuantities} from "../../../../shared/helpers"
+import {
+  createIdQuantities,
+  findProductByVariantId,
+} from "../../../../shared/helpers"
+
 import ProgressGradientBar from "../styled/progress-gradient-bar"
 
 interface Props {
-  allProducts: ShopifyProduct[],
   bundleName: string,
+  bundleProducts: ShopifyProduct[],
+  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
   selectedProductIds: number[],
   selectedSize: number,
   selectedVariantIds: number[],
@@ -15,16 +20,16 @@ interface Props {
 export default class Progress extends React.Component<Props> {
   public render() {
     const {
-      allProducts,
       bundleName,
-      selectedProductIds,
+      bundleProducts,
+      removeVariantId,
       selectedVariantIds,
       selectedSize,
       updateBundleName,
     } = this.props
 
     const numSelected = selectedVariantIds.length
-    const idQuantities = createIdQuantities(selectedProductIds)
+    const idQuantities = createIdQuantities(selectedVariantIds)
 
     return (
       <div>
@@ -41,13 +46,35 @@ export default class Progress extends React.Component<Props> {
 
         <ProgressGradientBar width={(numSelected / selectedSize) || 0} />
 
-        {Object.entries(idQuantities).map(([productIdS, quantity]) => {
-          const productId = parseInt(productIdS, 10)
-          const product = allProducts.find(({id}) => id === productId)
+        {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
+          const variantId = parseInt(variantIdS, 10)
+          const product = findProductByVariantId(bundleProducts, variantId)
+
+          // product will not found for add-on items
+          if (!product) { return null }
+
+          const {
+            id: productId,
+            image: {src},
+            title,
+          } = product
 
           return (
-            <div key={productId}>
-              {quantity}x {product.title}
+            <div
+              className="grid grid--uniform grid--no-gutters"
+              key={productId}
+            >
+              <div className="grid__item one-quarter">
+                <img src={src} />
+              </div>
+
+              <div className="grid__item one-half">
+                <small>{quantity}x {title}</small>
+              </div>
+
+              <div className="grid__item one-quarter text-right">
+                <a onClick={removeVariantId(productId, variantId, quantity)}>REM</a>
+              </div>
             </div>
           )
         })}

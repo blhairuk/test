@@ -81,14 +81,16 @@ export default (app: App): Helper => ({
     app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
   },
 
-  removeVariantId: (productId, variantId) => () => {
+  removeVariantId: (productId, variantId, quantity = 1) => () => {
     const {
       selectedProductIds,
       selectedVariantIds,
     } = app.state
 
-    selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
-    selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
+    for (let i = 0; i < quantity; ++i) {
+      selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
+      selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
+    }
 
     app.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
   },
