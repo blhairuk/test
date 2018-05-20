@@ -83,6 +83,10 @@ export default class App extends React.Component<Props, State> {
       const cartState = this.existingCustomerHelper.extractState()
       this.state = updateStateKeys(cartState)(this.state)
     }
+
+    if (!this.state.selectedSize) {
+      this.state.selectedSize = parseInt(props.bundleProduct.variants[0].option1, 10)
+    }
   }
 
   public async componentDidMount() {
