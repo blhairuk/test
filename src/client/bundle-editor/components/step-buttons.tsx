@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import Button from "./styled/button"
+import FlexWrapper from "./styled/flex-wrapper"
 
 interface Props {
   hidePrev?: boolean,
@@ -17,8 +18,8 @@ export default class StepButtons extends React.Component<Props> {
     } = this.props
 
     return (
-      <div className="grid grid--uniform grid--no-gutters">
-        <div className="grid__item one-quarter text-left">
+      <FlexWrapper>
+        <div style={{width: "20%;"}}>
           {hidePrev ? <span>&nbsp;</span> : (
             <button
               onClick={stepPrev}
@@ -30,7 +31,7 @@ export default class StepButtons extends React.Component<Props> {
           )}
         </div>
 
-        <div className="grid__item one-half">
+        <div className="text-center">
           <Button
             disabled={isNextDisabled}
             type="submit"
@@ -39,8 +40,13 @@ export default class StepButtons extends React.Component<Props> {
           </Button>
         </div>
 
-        <div className="grid__item one-quarter">&nbsp;</div>
-      </div>
+        <div
+          className="text-right"
+          style={{width: "20%"}}
+        >
+          &nbsp;
+        </div>
+      </FlexWrapper>
     )
   }
 }

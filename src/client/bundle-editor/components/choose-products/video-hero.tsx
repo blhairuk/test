@@ -21,7 +21,7 @@ export default class VideoHero extends React.Component<Props> {
       <VideoHeroContainer
         imageUrl={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
       >
-        <div>
+        <div className="text-center">
           <h1>{title}</h1>
           <Button
             color="white"

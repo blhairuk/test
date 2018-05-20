@@ -1,17 +1,13 @@
 import * as React from "react"
-import styled from "styled-components"
 
 import Button from "./styled/button"
+import FlexWrapper from "./styled/flex-wrapper"
 
 interface Props {
   rightSection?: React.ReactNode,
   stepPrev: () => any,
   title: string,
 }
-
-const Title = styled.h1`
-  margin: 0;
-`
 
 export default class StepHeader extends React.Component<Props> {
   public render() {
@@ -22,8 +18,8 @@ export default class StepHeader extends React.Component<Props> {
     } = this.props
 
     return (
-      <div className="grid grid--uniform">
-        <div className="grid__item one-fifth">
+      <FlexWrapper>
+        <div style={{width: "10%"}}>
           <Button
             color="black"
             onClick={stepPrev}
@@ -33,14 +29,17 @@ export default class StepHeader extends React.Component<Props> {
           </Button>
         </div>
 
-        <div className="grid__item three-fifths text-center">
-          <Title>{title}</Title>
+        <div className="text-center">
+          <h1 style={{marginBottom: "0"}}>{title}</h1>
         </div>
 
-        <div className="grid__item one-fifth text-right">
-          {rightSection}
+        <div
+          className="text-right"
+          style={{width: "10%"}}
+        >
+          {rightSection || <span>&nbsp;</span>}
         </div>
-      </div>
+      </FlexWrapper>
     )
   }
 }
