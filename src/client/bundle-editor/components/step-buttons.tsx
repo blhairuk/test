@@ -19,7 +19,7 @@ export default class StepButtons extends React.Component<Props> {
 
     return (
       <FlexWrapper>
-        <div style={{width: "20%;"}}>
+        <div style={{width: "20%"}}>
           {hidePrev ? <span>&nbsp;</span> : (
             <button
               onClick={stepPrev}
