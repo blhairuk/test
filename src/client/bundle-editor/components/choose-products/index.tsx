@@ -36,16 +36,28 @@ interface State {
   activeFilters: string[],
   isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
-}
-
-const initialState = {
-  activeFilters: [],
-  isFiltersModalOpen: false,
-  productDetailsModalProductId: null,
+  productTypes: string[],
 }
 
 export default class ChooseProducts extends React.Component<Props, State> {
-  public state = initialState
+  public state = {
+    activeFilters: [],
+    isFiltersModalOpen: false,
+    productDetailsModalProductId: null,
+    productTypes: [],
+  }
+
+  private productTypeRefs = {}
+
+  constructor(props) {
+    super(props)
+
+    this.state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))]
+
+    this.state.productTypes.forEach((productType) => {
+      this.productTypeRefs[productType] = React.createRef()
+    })
+  }
 
   public render() {
     const {
@@ -70,6 +82,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     const {
       activeFilters,
       isFiltersModalOpen,
+      productTypes,
     } = this.state
 
     const filters = JSON.parse(
@@ -79,8 +92,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
         "filters",
       ),
     )
-
-    const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
     return (
       <div>
@@ -124,7 +135,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
               const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
 
               return (
-                <div key={productType}>
+                <div
+                  key={productType}
+                  ref={this.productTypeRefs[productType]}
+                >
                   <VideoHero
                     openVideoModal={openVideoModal}
                     title={productType}
@@ -156,7 +170,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Sticky offset={180}>
+            <Sticky>
               <Progress
                 bundleName={bundleName}
                 bundleProducts={bundleProducts}
@@ -219,6 +233,11 @@ export default class ChooseProducts extends React.Component<Props, State> {
   }
 
   private handleProductTypeClick = (productType) => () => {
-    console.log(`scroll to ${productType}`)
+    const ref = this.productTypeRefs[productType].current
+
+    window.scrollTo({
+      behavior: "smooth",
+      top: ref.offsetTop + 90, // header height
+    })
   }
 }
