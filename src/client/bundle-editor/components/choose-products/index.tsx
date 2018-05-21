@@ -11,6 +11,8 @@ import Product from "./product"
 import Progress from "./progress"
 import VideoHero from "./video-hero"
 
+import {BACKGROUND_BLACK} from "../../../colors"
+
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
   addVariantId: (productId: number, variantId: number) => () => any,
@@ -111,16 +113,30 @@ export default class ChooseProducts extends React.Component<Props, State> {
           title="FILL YOUR BOX"
         />
 
-        <div>
-          {productTypes.map((productType) => (
-            <a
-              key={productType}
-              onClick={this.handleProductTypeClick(productType)}
-            >
-              {productType}
-            </a>
-          ))}
-        </div>
+        <Sticky disabled={!isActiveStep}>
+          <div
+            style={{
+              backgroundColor: BACKGROUND_BLACK,
+              padding: "10px 0",
+            }}
+          >
+            {productTypes.map((productType) => (
+              <span
+                key={productType}
+                style={{
+                  paddingRight: "10px",
+                }}
+              >
+                <a
+                  onClick={this.handleProductTypeClick(productType)}
+                  style={{padding: "5px"}}
+                >
+                  {productType.toUpperCase()}
+                </a>
+              </span>
+            ))}
+          </div>
+        </Sticky>
 
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--two-thirds">
@@ -173,7 +189,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Sticky disabled={!isActiveStep}>
+            <Sticky
+              disabled={!isActiveStep}
+              offset={42} /* product types header height */
+            >
               <Progress
                 bundleName={bundleName}
                 bundleProducts={bundleProducts}
