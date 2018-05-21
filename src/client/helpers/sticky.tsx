@@ -2,6 +2,7 @@ import * as debounce from "debounce"
 import * as React from "react"
 
 interface Props {
+  disabled?: boolean,
   offset?: number,
 }
 
@@ -15,13 +16,12 @@ export default class Sticky extends React.Component<Props> {
     this.parentRef = React.createRef()
   }
 
-  public componentDidMount() {
-    this.init()
-    window.addEventListener("scroll", this.handleScroll)
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll)
+  public componentDidUpdate(prevProps) {
+    if (!this.props.disabled && prevProps.disabled) {
+      this.init()
+    } else if (this.props.disabled && !prevProps.disabled) {
+      this.teardown()
+    }
   }
 
   public render() {
@@ -41,16 +41,21 @@ export default class Sticky extends React.Component<Props> {
     const transition = "transform 200ms ease-out"
     nodeRef.style.transition = transition
     nodeRef.style.webkitTransition = transition
+    window.addEventListener("scroll", this.handleScroll)
+  }
+
+  private teardown() {
+    window.removeEventListener("scroll", this.handleScroll)
   }
 
   // tslint:disable-next-line
   private handleScroll = debounce(() => {
     const nodeRef = this.nodeRef.current
     const parentRef = this.parentRef.current
-    const offset = this.props.offset || 0
+    const parentRect = parentRef.getBoundingClientRect()
 
-    if (window.pageYOffset >= (parentRef.offsetTop + offset)) {
-      const transform = `translate3d(0, ${window.scrollY}px, 0)`
+    if (parentRect.top <= 0) {
+      const transform = `translate3d(0, ${parentRect.top * -1}px, 0)`
       nodeRef.style.transform = transform
       nodeRef.style.webkitTransform = transform
     } else {

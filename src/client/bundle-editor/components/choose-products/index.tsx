@@ -34,6 +34,7 @@ interface Props {
 
 interface State {
   activeFilters: string[],
+  isActiveStep: boolean,
   isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
   productTypes: string[],
@@ -42,6 +43,7 @@ interface State {
 export default class ChooseProducts extends React.Component<Props, State> {
   public state = {
     activeFilters: [],
+    isActiveStep: false,
     isFiltersModalOpen: false,
     productDetailsModalProductId: null,
     productTypes: [],
@@ -66,6 +68,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       bundleName,
       bundleProducts,
       bundleProductMetafields,
+      isActiveStep,
       openProductDetailsModal,
       openVideoModal,
       removeAddOnId,
@@ -170,7 +173,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--one-third">
-            <Sticky>
+            <Sticky disabled={!isActiveStep}>
               <Progress
                 bundleName={bundleName}
                 bundleProducts={bundleProducts}
