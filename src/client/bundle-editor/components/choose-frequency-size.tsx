@@ -128,6 +128,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
           <StepButtons
             hidePrev={isEditingSubscription}
             isNextDisabled={!selectedSize || !selectedFrequency}
+            nextText="FILL YOUR BOX!"
             stepPrev={stepPrev}
           />
         </form>

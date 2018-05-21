@@ -6,6 +6,7 @@ import FlexWrapper from "./styled/flex-wrapper"
 interface Props {
   hidePrev?: boolean,
   isNextDisabled: boolean,
+  nextText?: string,
   stepPrev?: () => any,
 }
 
@@ -14,6 +15,7 @@ export default class StepButtons extends React.Component<Props> {
     const {
       hidePrev,
       isNextDisabled,
+      nextText,
       stepPrev,
     } = this.props
 
@@ -36,7 +38,7 @@ export default class StepButtons extends React.Component<Props> {
             disabled={isNextDisabled}
             type="submit"
           >
-            Next
+            {nextText || "Next"}
           </Button>
         </div>
 
