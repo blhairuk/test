@@ -13,10 +13,10 @@ import FrequencySizeContainer from "./styled/frequency-size-container"
 interface Props {
   availableFrequencies: number[],
   availableSizes: number[],
-  bundleProduct: ShopifyProduct,
   bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
   isEditingSubscription: boolean,
+  selectedBundlePrice: number,
   selectedFrequency: number,
   setSelectedFrequency: (number) => () => any,
   selectedSize: number,
@@ -30,9 +30,9 @@ export default class ChooseFrequencySize extends React.Component<Props> {
     const {
       availableFrequencies,
       availableSizes,
-      bundleProduct,
       bundleProductMetafields,
       isEditingSubscription,
+      selectedBundlePrice,
       selectedFrequency,
       selectedSize,
       setSelectedFrequency,
@@ -46,9 +46,6 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       "subscriptions",
       "shipping_interval_unit_type",
     )
-
-    const selectedVariant = bundleProduct.variants.find(({option1}) => parseInt(option1, 10) === selectedSize)
-    const price = selectedVariant ? parseFloat(selectedVariant.price) : null
 
     const title = isEditingSubscription ? "Select your plan." : "Thanks! Select your plan."
 
@@ -82,8 +79,8 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
                       {selectedSize && (
                         <>
-                          <div>{price / selectedSize} per cup</div>
-                          <div>{price} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                          <div>{selectedBundlePrice / selectedSize} per cup</div>
+                          <div>{selectedBundlePrice} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
                         </>
                       )}
                     </div>

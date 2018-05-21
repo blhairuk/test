@@ -20,6 +20,7 @@ import Step from "./components/styled/step"
 import {
   getAvailableFrequencies,
   getAvailableSizes,
+  getBundlePrice,
 } from "../helpers/bundle"
 
 import Modal from "../helpers/modal"
@@ -48,6 +49,7 @@ interface State {
   isSubmitting: boolean,
   productDetailsModalProductId: number,
   selectedAddOnIds: number[],
+  selectedBundlePrice: number,
   selectedFrequency: number,
   selectedProductIds: number[],
   selectedVariantIds: number[],
@@ -68,6 +70,7 @@ export default class App extends React.Component<Props, State> {
     isSubmitting: false,
     productDetailsModalProductId: null,
     selectedAddOnIds: [],
+    selectedBundlePrice: null,
     selectedFrequency: null,
     selectedProductIds: [],
     selectedSize: null,
@@ -88,6 +91,7 @@ export default class App extends React.Component<Props, State> {
 
     this.state.selectedFrequency = this.state.selectedFrequency || this.state.availableFrequencies[0]
     this.state.selectedSize = this.state.selectedSize || this.state.availableSizes[0]
+    this.state.selectedBundlePrice = getBundlePrice(props.bundleProduct, this.state.selectedSize)
 
     this.cartHelper = bindCartHelper(this)
     this.existingCustomerHelper = bindExistingCustomerHelper(this)
@@ -117,7 +121,6 @@ export default class App extends React.Component<Props, State> {
   public render() {
     const {
       bundleAddOns,
-      bundleProduct,
       bundleProductMetafields,
       bundleProducts,
     } = this.props
@@ -138,6 +141,7 @@ export default class App extends React.Component<Props, State> {
       enteredName,
       isSubmitting,
       selectedAddOnIds,
+      selectedBundlePrice,
       selectedFrequency,
       selectedProductIds,
       selectedSize,
@@ -182,10 +186,10 @@ export default class App extends React.Component<Props, State> {
                 <ChooseFrequencySize
                   availableFrequencies={availableFrequencies}
                   availableSizes={availableSizes}
-                  bundleProduct={bundleProduct}
                   bundleProductMetafields={bundleProductMetafields}
                   isActiveStep={currentStepIndex === 2}
                   isEditingSubscription={isEditingSubscription}
+                  selectedBundlePrice={selectedBundlePrice}
                   selectedFrequency={selectedFrequency}
                   setSelectedFrequency={this.stateHelper.setSelectedFrequency}
                   selectedSize={selectedSize}

@@ -13,3 +13,7 @@ export const getAvailableFrequencies = (bundleProductMetafields: ShopifyProductM
 export const getAvailableSizes = (bundleProduct: ShopifyProduct) => (
   bundleProduct.variants.map(({option1}) => parseInt(option1, 10))
 )
+
+export const getBundlePrice = (bundleProduct: ShopifyProduct, selectedSize: number) => (
+  parseFloat(bundleProduct.variants.find(({option1}) => parseInt(option1, 10) === selectedSize).price)
+)

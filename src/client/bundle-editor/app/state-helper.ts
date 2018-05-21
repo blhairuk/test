@@ -2,6 +2,7 @@ import updateStateKeys from "../../helpers/update-state-keys"
 import App from "../app"
 
 import {createBundleName} from "../../../shared/helpers"
+import {getBundlePrice} from "../../helpers/bundle"
 
 export interface Helper {
   addAddOnId: (productId: number, variantId: any) => () => any,
@@ -100,11 +101,13 @@ export default (app: App): Helper => ({
   },
 
   setSelectedSize: (selectedSize) => () => {
+    const {bundleProduct} = app.props
     const {selectedVariantIds} = app.state
 
     selectedVariantIds.splice(selectedSize)
 
     app.setState(updateStateKeys({
+      selectedBundlePrice: getBundlePrice(bundleProduct, selectedSize),
       selectedSize,
       selectedVariantIds,
     }))
