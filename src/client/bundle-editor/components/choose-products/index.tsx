@@ -160,7 +160,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 >
                   <VideoHero
                     openVideoModal={openVideoModal}
-                    title={productType}
+                    title={productType.toUpperCase()}
                     youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
                   />
                   <div className="grid grid--uniform">
@@ -168,6 +168,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
                       <div
                         className="grid__item medium-up--one-third text-center"
                         key={product.id}
+                        style={{
+                          paddingBottom: "25px",
+                          paddingTop: "25px",
+                        }}
                       >
                         <Product
                           addAddOnId={addAddOnId}

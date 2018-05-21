@@ -4,12 +4,15 @@ interface Props {
   imageUrl: string,
 }
 
+const borderRadius = "12px"
+
 export default styled.div`
   align-items: center;
   background-image: url(${(props: Props) => props.imageUrl});
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: ${borderRadius};
   display: flex;
   height: 200px;
   position: relative;
@@ -18,6 +21,7 @@ export default styled.div`
 
   &::after {
     background: rgba(0, 0, 0, 0.45);
+    border-radius: ${borderRadius};
     bottom: 0;
     content: "";
     left: 0;

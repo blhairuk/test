@@ -22,7 +22,15 @@ export default class VideoHero extends React.Component<Props> {
         imageUrl={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
       >
         <div className="text-center">
-          <h1>{title}</h1>
+          <h1
+            style={{
+              letterSpacing: "1px",
+              marginBottom: "15px",
+            }}
+          >
+            {title}
+          </h1>
+
           <Button
             color="white"
             onClick={openVideoModal(youtubeId)}
