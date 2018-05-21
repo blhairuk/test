@@ -82,50 +82,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     const productTypes = [...new Set(bundleProducts.map((p) => p.product_type))]
 
-    const renderProductType = (productType) => {
-      const renderableProducts = bundleProducts
-        .filter(({product_type, tags}) => (
-          product_type === productType && (
-            !activeFilters.length ? true : activeFilters.some((f) => tags.includes(f))
-          )
-        ))
-
-      // hide the entire section if there are no products in the filters
-      if (renderableProducts.length === 0) { return null }
-
-      const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
-
-      return (
-        <div key={productType}>
-          <VideoHero
-            openVideoModal={openVideoModal}
-            title={productType}
-            youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
-          />
-          <div className="grid grid--uniform">
-            {renderableProducts.map((product) => (
-              <div
-                className="grid__item medium-up--one-third text-center"
-                key={product.id}
-              >
-                <Product
-                  addAddOnId={addAddOnId}
-                  addVariantId={addVariantId}
-                  isAddOn={false}
-                  openProductDetailsModal={openProductDetailsModal}
-                  product={product}
-                  removeAddOnId={removeAddOnId}
-                  removeVariantId={removeVariantId}
-                  selectedAddOnIds={selectedAddOnIds}
-                  selectedVariantIds={selectedVariantIds}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    }
-
     return (
       <div>
         <StepHeader
@@ -141,9 +97,62 @@ export default class ChooseProducts extends React.Component<Props, State> {
           title="FILL YOUR BOX"
         />
 
+        <div>
+          {productTypes.map((productType) => (
+            <a
+              key={productType}
+              onClick={this.handleProductTypeClick(productType)}
+            >
+              {productType}
+            </a>
+          ))}
+        </div>
+
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--two-thirds">
-            {productTypes.map(renderProductType)}
+            {productTypes.map((productType) => {
+              const renderableProducts = bundleProducts
+                .filter(({product_type, tags}) => (
+                  product_type === productType && (
+                    !activeFilters.length ? true : activeFilters.some((f) => tags.includes(f))
+                  )
+                ))
+
+              // hide the entire section if there are no products in the filters
+              if (renderableProducts.length === 0) { return null }
+
+              const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
+
+              return (
+                <div key={productType}>
+                  <VideoHero
+                    openVideoModal={openVideoModal}
+                    title={productType}
+                    youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
+                  />
+                  <div className="grid grid--uniform">
+                    {renderableProducts.map((product) => (
+                      <div
+                        className="grid__item medium-up--one-third text-center"
+                        key={product.id}
+                      >
+                        <Product
+                          addAddOnId={addAddOnId}
+                          addVariantId={addVariantId}
+                          isAddOn={false}
+                          openProductDetailsModal={openProductDetailsModal}
+                          product={product}
+                          removeAddOnId={removeAddOnId}
+                          removeVariantId={removeVariantId}
+                          selectedAddOnIds={selectedAddOnIds}
+                          selectedVariantIds={selectedVariantIds}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
           </div>
 
           <div className="grid__item medium-up--one-third">
@@ -207,5 +216,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
       activeFilters.splice(index, 1)
     }
     this.setState(updateStateKeys({activeFilters}))
+  }
+
+  private handleProductTypeClick = (productType) => () => {
+    console.log(`scroll to ${productType}`)
   }
 }

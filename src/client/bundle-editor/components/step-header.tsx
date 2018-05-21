@@ -18,7 +18,9 @@ export default class StepHeader extends React.Component<Props> {
     } = this.props
 
     return (
-      <FlexWrapper>
+      <FlexWrapper
+        margin="12px 0"
+      >
         <div style={{width: "10%"}}>
           <Button
             color="black"
@@ -30,7 +32,14 @@ export default class StepHeader extends React.Component<Props> {
         </div>
 
         <div className="text-center">
-          <h1 style={{marginBottom: "0"}}>{title}</h1>
+          <h1
+            style={{
+              fontSize: "170%",
+              marginBottom: "0",
+            }}
+          >
+            {title}
+          </h1>
         </div>
 
         <div
