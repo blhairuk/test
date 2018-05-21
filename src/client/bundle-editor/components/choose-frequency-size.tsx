@@ -26,6 +26,13 @@ interface Props {
 }
 
 export default class ChooseFrequencySize extends React.Component<Props> {
+  public componentDidUpdate(prevProps) {
+    if (!prevProps.isActiveStep && this.props.isActiveStep) {
+      const input = document.activeElement
+      if (input instanceof HTMLElement) { input.blur() }
+    }
+  }
+
   public render() {
     const {
       availableFrequencies,

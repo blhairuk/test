@@ -45,6 +45,7 @@ export default class EnterEmail extends React.Component<Props> {
               <TextInput
                 innerRef={this.textInputRef}
                 onChange={enterEmail}
+                placeholder="Email"
                 required={true}
                 type="email"
                 value={enteredEmail}
