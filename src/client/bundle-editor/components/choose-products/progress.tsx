@@ -32,7 +32,12 @@ export default class Progress extends React.Component<Props> {
     const idQuantities = createIdQuantities(selectedVariantIds)
 
     return (
-      <div>
+      <div
+        style={{
+          backgroundColor: "#000",
+          borderRadius: "10px",
+        }}
+      >
         <div>
           <input
             onChange={updateBundleName}

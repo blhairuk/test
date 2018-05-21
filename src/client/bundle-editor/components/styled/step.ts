@@ -9,4 +9,6 @@ export default styled.div`
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 87px); /* 87px = header height */
+
+  > div { max-width: 800px; }
 `
