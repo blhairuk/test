@@ -1,4 +1,5 @@
 import {getPropertyValueForKey} from "../../../shared/helpers"
+import {getBundlePrice} from "../../helpers/bundle"
 
 import App from "../app"
 
@@ -59,6 +60,7 @@ export default (app: App): Helper => ({
       enteredEmail,
       enteredName,
       selectedAddOnIds,
+      selectedBundlePrice: getBundlePrice(bundleProduct, selectedSize),
       selectedFrequency,
       selectedProductIds,
       selectedSize,

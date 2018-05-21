@@ -1,4 +1,5 @@
 import {BUNDLE_TYPE} from "../../../shared/constants"
+import {getBundlePrice} from "../../helpers/bundle"
 import updateStateKeys from "../../helpers/update-state-keys"
 
 import App from "../app"
@@ -52,6 +53,7 @@ export default (app: App): Helper => ({
   extractState: async (bundleId) => {
     const {
       bundleAddOns,
+      bundleProduct,
       bundleProducts,
     } = app.props
 
@@ -110,6 +112,7 @@ export default (app: App): Helper => ({
       enteredEmail,
       enteredName,
       selectedAddOnIds,
+      selectedBundlePrice: getBundlePrice(bundleProduct, selectedSize),
       selectedFrequency,
       selectedProductIds,
       selectedSize,

@@ -89,10 +89,6 @@ export default class App extends React.Component<Props, State> {
     this.state.availableFrequencies = getAvailableFrequencies(props.bundleProductMetafields)
     this.state.availableSizes = getAvailableSizes(props.bundleProduct)
 
-    this.state.selectedFrequency = this.state.selectedFrequency || this.state.availableFrequencies[0]
-    this.state.selectedSize = this.state.selectedSize || this.state.availableSizes[0]
-    this.state.selectedBundlePrice = getBundlePrice(props.bundleProduct, this.state.selectedSize)
-
     this.cartHelper = bindCartHelper(this)
     this.existingCustomerHelper = bindExistingCustomerHelper(this)
     this.slickHelper = bindSlickHelper(this)
@@ -101,6 +97,10 @@ export default class App extends React.Component<Props, State> {
     if (props.subscriptions) {
       const cartState = this.existingCustomerHelper.extractState()
       this.state = updateStateKeys(cartState)(this.state)
+    } else {
+      this.state.selectedFrequency = this.state.availableFrequencies[0]
+      this.state.selectedSize = this.state.availableSizes[0]
+      this.state.selectedBundlePrice = getBundlePrice(props.bundleProduct, this.state.selectedSize)
     }
   }
 
