@@ -90,6 +90,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
           )
         ))
 
+      // hide the entire section if there are no products in the filters
+      if (renderableProducts.length === 0) { return null }
+
       const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
 
       return (
