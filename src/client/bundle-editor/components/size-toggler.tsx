@@ -5,7 +5,7 @@ import Switch from "./styled/switch"
 import {BLUE_GREEN} from "../../colors"
 
 interface Props {
-  bundleProduct: ShopifyProduct,
+  availableSizes: number[],
   selectedSize: number,
   setSelectedSize: (number) => () => any,
 }
@@ -13,13 +13,12 @@ interface Props {
 export default class SizeToggler extends React.Component<Props> {
   public render() {
     const {
-      bundleProduct,
+      availableSizes,
       selectedSize,
       setSelectedSize,
     } = this.props
 
-    const sizes = bundleProduct.variants.map(({option1}) => parseInt(option1, 10))
-    const left = sizes.indexOf(selectedSize) * 100
+    const left = availableSizes.indexOf(selectedSize) * 100
 
     return (
       <div
@@ -31,7 +30,7 @@ export default class SizeToggler extends React.Component<Props> {
       >
         {selectedSize && <Switch left={left} />}
 
-        {sizes.map((size) => (
+        {availableSizes.map((size) => (
           <div
             className="grid__item one-half"
             key={size}

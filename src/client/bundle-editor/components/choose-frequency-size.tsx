@@ -11,6 +11,8 @@ import StepButtons from "./step-buttons"
 import FrequencySizeContainer from "./styled/frequency-size-container"
 
 interface Props {
+  availableFrequencies: number[],
+  availableSizes: number[],
   bundleProduct: ShopifyProduct,
   bundleProductMetafields: ShopifyProductMetafield[],
   isActiveStep: boolean,
@@ -26,6 +28,8 @@ interface Props {
 export default class ChooseFrequencySize extends React.Component<Props> {
   public render() {
     const {
+      availableFrequencies,
+      availableSizes,
       bundleProduct,
       bundleProductMetafields,
       isEditingSubscription,
@@ -36,12 +40,6 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       stepNext,
       stepPrev,
     } = this.props
-
-    const shippingFrequencies = getMetafieldValue(
-      bundleProductMetafields,
-      "subscriptions",
-      "shipping_interval_frequency",
-    ).split(",").map((f) => parseInt(f, 10))
 
     const shippingUnitType = getMetafieldValue(
       bundleProductMetafields,
@@ -65,7 +63,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
             className="grid grid--uniform grid--no-gutters"
             style={{marginBottom: "20px"}}
           >
-            {shippingFrequencies.map((frequency) => (
+            {availableFrequencies.map((frequency) => (
               <div
                 className="grid__item one-half text-center"
                 key={frequency}
@@ -77,7 +75,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                   {selectedFrequency === frequency && (
                     <div>
                       <SizeToggler
-                        bundleProduct={bundleProduct}
+                        availableSizes={availableSizes}
                         selectedSize={selectedSize}
                         setSelectedSize={setSelectedSize}
                       />

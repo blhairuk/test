@@ -17,6 +17,11 @@ import ResponsiveEmbed from "./components/styled/responsive-embed"
 import AppContainer from "./components/styled/app-container"
 import Step from "./components/styled/step"
 
+import {
+  getAvailableFrequencies,
+  getAvailableSizes,
+} from "../helpers/bundle"
+
 import Modal from "../helpers/modal"
 
 import updateStateKeys from "../helpers/update-state-keys"
@@ -32,6 +37,8 @@ interface Props {
 }
 
 interface State {
+  availableFrequencies: number[],
+  availableSizes: number[],
   bundleName: string,
   currentStepIndex: number,
   editingBundleId: number,
@@ -50,6 +57,8 @@ interface State {
 
 export default class App extends React.Component<Props, State> {
   public state = {
+    availableFrequencies: [],
+    availableSizes: [],
     bundleName: "",
     currentStepIndex: null,
     editingBundleId: null,
@@ -74,6 +83,12 @@ export default class App extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
+    this.state.availableFrequencies = getAvailableFrequencies(props.bundleProductMetafields)
+    this.state.availableSizes = getAvailableSizes(props.bundleProduct)
+
+    this.state.selectedFrequency = this.state.selectedFrequency || this.state.availableFrequencies[0]
+    this.state.selectedSize = this.state.selectedSize || this.state.availableSizes[0]
+
     this.cartHelper = bindCartHelper(this)
     this.existingCustomerHelper = bindExistingCustomerHelper(this)
     this.slickHelper = bindSlickHelper(this)
@@ -82,10 +97,6 @@ export default class App extends React.Component<Props, State> {
     if (props.subscriptions) {
       const cartState = this.existingCustomerHelper.extractState()
       this.state = updateStateKeys(cartState)(this.state)
-    }
-
-    if (!this.state.selectedSize) {
-      this.state.selectedSize = parseInt(props.bundleProduct.variants[0].option1, 10)
     }
   }
 
@@ -119,6 +130,8 @@ export default class App extends React.Component<Props, State> {
     } = this.state
 
     const {
+      availableFrequencies,
+      availableSizes,
       bundleName,
       editingBundleId,
       enteredEmail,
@@ -167,6 +180,8 @@ export default class App extends React.Component<Props, State> {
             <div>
               <Step>
                 <ChooseFrequencySize
+                  availableFrequencies={availableFrequencies}
+                  availableSizes={availableSizes}
                   bundleProduct={bundleProduct}
                   bundleProductMetafields={bundleProductMetafields}
                   isActiveStep={currentStepIndex === 2}
