@@ -10,5 +10,23 @@ interface Props {
 
 export default styled.div`
   background-color: ${({isSelected}: Props) => isSelected ? BLUE_GREEN : "#000"};
-  transition: background-color 200ms ease-out;
+  border-radius: 8px;
+  padding: 10px;
+
+  > .fsc-title {
+    font-size: 140%;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  > .fsc-subtitle {
+    font-size: 80%;
+  }
+
+  > .fsc-cpw {
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 10px;
+  }
 `

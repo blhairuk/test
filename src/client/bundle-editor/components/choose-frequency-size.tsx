@@ -54,30 +54,41 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       "shipping_interval_unit_type",
     )
 
-    const title = isEditingSubscription ? "Select your plan." : "Thanks! Select your plan."
+    const title = isEditingSubscription ? "Select a plan." : "Thanks! Select a plan."
 
     return (
-      <div className="text-center larger-text">
+      <div
+        className="text-center larger-text one-whole"
+        style={{maxWidth: "600px"}}
+      >
         <form onSubmit={stepNext}>
-          <h1>{title}</h1>
+          <h1 style={{marginBottom: "5px"}}>{title}</h1>
 
           <p><small><em>Edit, pause, or cancel anytime!</em></small></p>
 
           <div
-            className="grid grid--uniform grid--no-gutters"
+            className="grid grid--uniform"
             style={{marginBottom: "20px"}}
           >
             {availableFrequencies.map((frequency) => (
               <div
-                className="grid__item one-half text-center"
+                className="grid__item medium-up--one-half text-center"
                 key={frequency}
                 onClick={setSelectedFrequency(frequency)}
               >
                 <FrequencySizeContainer isSelected={selectedFrequency === frequency}>
-                  <div>{frequencyTitle(shippingUnitType, frequency)}</div>
+                  <div className="fsc-title">
+                    {frequencyTitle(shippingUnitType, frequency)}
+                  </div>
+
+                  <div className="fsc-subtitle">
+                    Ships every {frequency * 7} days.
+                  </div>
 
                   {selectedFrequency === frequency && (
-                    <div>
+                    <>
+                      <div className="fsc-cpw">Cups per week</div>
+
                       <SizeToggler
                         availableSizes={availableSizes}
                         selectedSize={selectedSize}
@@ -86,11 +97,13 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
                       {selectedSize && (
                         <>
-                          <div>{selectedBundlePrice / selectedSize} per cup</div>
-                          <div>{selectedBundlePrice} per {frequencySingularTitle(shippingUnitType, frequency)}</div>
+                          <div>${selectedBundlePrice / selectedSize}/CUP</div>
+                          <div>
+                            ${selectedBundlePrice}/{frequencySingularTitle(shippingUnitType, frequency).toUpperCase()}
+                          </div>
                         </>
                       )}
-                    </div>
+                    </>
                   )}
                 </FrequencySizeContainer>
               </div>

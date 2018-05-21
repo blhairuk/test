@@ -25,6 +25,8 @@ export default class SizeToggler extends React.Component<Props> {
         className="grid grid--uniform grid--no-gutters"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.25)",
+          borderRadius: "24px",
+          marginBottom: "10px",
           position: "relative",
         }}
       >
@@ -36,11 +38,19 @@ export default class SizeToggler extends React.Component<Props> {
             key={size}
             onClick={setSelectedSize(size)}
             style={{
-              color: size === selectedSize ? BLUE_GREEN : "#fff",
               position: "relative",
             }}
           >
-            {size}
+            <div
+              style={{
+                color: size === selectedSize ? BLUE_GREEN : "#fff",
+                fontSize: "350%",
+                fontWeight: "bold",
+                padding: "0",
+              }}
+            >
+              {size}
+            </div>
           </div>
         ))}
       </div>
