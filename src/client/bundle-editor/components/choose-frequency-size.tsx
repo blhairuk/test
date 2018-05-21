@@ -54,17 +54,32 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       "shipping_interval_unit_type",
     )
 
-    const title = isEditingSubscription ? "Select a plan." : "Thanks! Select a plan."
-
     return (
       <div
         className="text-center larger-text one-whole"
         style={{maxWidth: "600px"}}
       >
         <form onSubmit={stepNext}>
-          <h1 style={{marginBottom: "5px"}}>{title}</h1>
+          <div
+            style={{
+              fontSize: "200%",
+              fontWeight: "bold",
+              marginBottom: "5px",
+            }}
+          >
+            {isEditingSubscription ? "Select a plan." : "Thanks! Select a plan."}
+          </div>
 
-          <p><small><em>Edit, pause, or cancel anytime!</em></small></p>
+          <p
+            style={{
+              fontSize: "90%",
+              textTransform: "uppercase",
+            }}
+          >
+            <small>
+              <em>Edit, pause, or cancel anytime!</em>
+            </small>
+          </p>
 
           <div
             className="grid grid--uniform"

@@ -14,7 +14,7 @@ export default styled.div`
   padding: 10px;
 
   > .fsc-title {
-    font-size: 140%;
+    font-size: 160%;
     font-weight: bold;
     letter-spacing: 3px;
     text-transform: uppercase;
