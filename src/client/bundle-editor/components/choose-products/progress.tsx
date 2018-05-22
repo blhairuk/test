@@ -7,7 +7,11 @@ import {
 } from "../../../../shared/helpers"
 
 import FlexWrapper, {Col} from "../styled/flex-wrapper"
-import ProgressGradientBar from "../styled/progress-gradient-bar"
+
+import {
+  BLUE_GREEN,
+  LIGHT_PURPLE,
+} from "../../../colors"
 
 interface Props {
   bundleName: string,
@@ -35,63 +39,92 @@ export default class Progress extends React.Component<Props> {
 
     return (
       <Wrapper>
-        <div>
-          <input
-            onChange={updateBundleName}
-            type="text"
-            value={bundleName}
-          />
-        </div>
-        <div>
-          {numSelected} of {selectedSize}
-        </div>
+        <TopWrapper>
+          <FlexWrapper>
+            <Col>
+              <input
+                onChange={updateBundleName}
+                type="text"
+                value={bundleName}
+              />
+            </Col>
+            <NumSelectedCol>
+              {numSelected} of {selectedSize}
+            </NumSelectedCol>
+          </FlexWrapper>
+        </TopWrapper>
 
-        <ProgressGradientBar width={(numSelected / selectedSize) || 0} />
+        {selectedVariantIds.length > 0 ? (
+          <>
+            <GradientBar width={(numSelected / selectedSize) || 0} />
 
-        {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
-          const variantId = parseInt(variantIdS, 10)
-          const product = findProductByVariantId(bundleProducts, variantId)
+            {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
+              const variantId = parseInt(variantIdS, 10)
+              const product = findProductByVariantId(bundleProducts, variantId)
 
-          // product will not found for add-on items
-          if (!product) { return null }
+              // product will not found for add-on items
+              if (!product) { return null }
 
-          const {
-            id: productId,
-            image: {src},
-            title,
-          } = product
+              const {
+                id: productId,
+                image: {src},
+                title,
+              } = product
 
-          return (
-            <FlexWrapper key={productId}>
-              <LeftCol>
-                {quantity > 1 && <QuantityWrapper>{quantity}</QuantityWrapper>}
-                <img src={src} />
-              </LeftCol>
+              return (
+                <FlexWrapper key={productId}>
+                  <LeftCol>
+                    {quantity > 1 && <QuantityWrapper>{quantity}</QuantityWrapper>}
+                    <img src={src} />
+                  </LeftCol>
 
-              <Col>
-                <small>{title}</small>
-              </Col>
+                  <Col>
+                    <small>{title}</small>
+                  </Col>
 
-              <RightCol className="text-center">
-                <XButton
-                  href="javascript:void(0)"
-                  onClick={removeVariantId(productId, variantId, quantity)}
-                >
-                  X
-                </XButton>
-              </RightCol>
-            </FlexWrapper>
-          )
-        })}
+                  <RightCol className="text-center">
+                    <XButton
+                      href="javascript:void(0)"
+                      onClick={removeVariantId(productId, variantId, quantity)}
+                    >
+                      X
+                    </XButton>
+                  </RightCol>
+                </FlexWrapper>
+              )
+            })}
+          </>
+        ) : (
+          <div>Choose some products to get started!</div>
+        )}
       </Wrapper>
     )
   }
 }
 
+interface GradientBarProps {
+  width: number,
+}
+
+const GradientBar = styled.div`
+background: linear-gradient(to right, ${BLUE_GREEN}, ${LIGHT_PURPLE});
+height: 12px;
+margin: 15px 0 10px;
+transform: scale3d(${({width}: GradientBarProps) => width}, 1, 1);
+transform-origin: left;
+transition: transform 300ms ease-out;
+`
+
 const LeftCol = styled.div`
   padding: 8px 12px;
   position: relative;
   width: 25%;
+`
+
+const NumSelectedCol = styled.div`
+  font-weight: bold;
+  text-align: center;
+  width: 30%;
 `
 
 const RightCol = styled.div`
@@ -110,6 +143,10 @@ const QuantityWrapper = styled.div`
   text-align: center;
   top: 7px;
   width: 20px;
+`
+
+const TopWrapper = styled.div`
+  padding: 10px 6px 0;
 `
 
 const Wrapper = styled.div`
