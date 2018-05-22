@@ -1,4 +1,5 @@
 import * as React from "react"
+import styled from "styled-components"
 
 import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
@@ -51,11 +52,11 @@ export default class Product extends React.Component<Props> {
         <img src={src} />
 
         <div style={{margin: "12px 0"}}>
-          <a onClick={openProductDetailsModal(productId)}>
-            {(() => {
-              if (price === "0.00") { return title }
-              return `${title} (+${price})`
-            })()}
+          <a
+            href="javascript:void(0)"
+            onClick={openProductDetailsModal(productId)}
+          >
+            {title}
           </a>
         </div>
 
@@ -67,39 +68,34 @@ export default class Product extends React.Component<Props> {
                   onClick={addFunc(productId, variantId)}
                   type="button"
                 >
-                  Add
+                  {(() => {
+                    if (price === "0.00") { return "Add" }
+                    return `Add +$${price}`
+                  })()}
                 </Button>
               )
             }
 
             return (
               <>
-                <Button
+                <QuantityButton
                   color="black"
                   onClick={removeFunc(productId, variantId)}
                   type="button"
                 >
                   -
-                </Button>
+                </QuantityButton>
 
-                <span
-                  style={{
-                    fontSize: "250%",
-                    fontWeight: "bold",
-                    lineHeight: "0.8",
-                    padding: "0 10px",
-                  }}
-                >
+                <Number>
                   {numSelected}
-                </span>
+                </Number>
 
-                <Button
-                  color="black"
+                <QuantityButton
+                  href="javascript:void(0)"
                   onClick={addFunc(productId, variantId)}
-                  type="button"
                 >
                   +
-                </Button>
+                </QuantityButton>
               </>
             )
           })()}
@@ -108,3 +104,21 @@ export default class Product extends React.Component<Props> {
     )
   }
 }
+
+const Number = styled.div`
+  font-size: 220%;
+  font-weight: bold;
+  line-height: 0.8;
+  margin: 0 6px;
+  padding: 0 10px;
+`
+
+const QuantityButton = styled.a`
+  background-color: #000;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 24px;
+  line-height: 24px;
+  padding: 0;
+  width: 20px;
+`
