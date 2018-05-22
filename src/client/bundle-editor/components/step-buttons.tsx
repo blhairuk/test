@@ -3,6 +3,8 @@ import * as React from "react"
 import Button from "./styled/button"
 import FlexWrapper from "./styled/flex-wrapper"
 
+import {getPathToImages} from "../../../shared/helpers"
+
 interface Props {
   hidePrev?: boolean,
   isNextDisabled: boolean,
@@ -23,13 +25,13 @@ export default class StepButtons extends React.Component<Props> {
       <FlexWrapper>
         <div style={{width: "20%"}}>
           {hidePrev ? <span>&nbsp;</span> : (
-            <button
+            <a
+              href="javascript:void(0)"
               onClick={stepPrev}
-              type="button"
-              style={{color: "#fff"}}
+              style={{display: "block"}}
             >
-              Prev
-            </button>
+              <img src={getPathToImages("icon-arrow.svg")} />
+            </a>
           )}
         </div>
 

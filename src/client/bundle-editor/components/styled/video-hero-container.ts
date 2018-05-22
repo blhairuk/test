@@ -4,7 +4,7 @@ interface Props {
   imageUrl: string,
 }
 
-const borderRadius = "12px"
+const borderRadius = "8px"
 
 export default styled.div`
   align-items: center;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="10px" viewBox="0 0 17 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-chevron</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Mobile-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="10-quick-view" transform="translate(-313.000000, -682.000000)" stroke="#FFFFFF" stroke-width="2">
+            <polyline id="icon-chevron" transform="translate(321.500000, 687.000000) rotate(90.000000) translate(-321.500000, -687.000000) " points="318 680 325 687.000113 318 694"></polyline>
+        </g>
+    </g>
+</svg>

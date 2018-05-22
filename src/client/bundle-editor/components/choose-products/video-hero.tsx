@@ -1,6 +1,8 @@
 import * as React from "react"
+import styled from "styled-components"
 
 import Button from "../styled/button"
+import FlexWrapper from "../styled/flex-wrapper"
 import VideoHeroContainer from "../styled/video-hero-container"
 
 interface Props {
@@ -36,10 +38,18 @@ export default class VideoHero extends React.Component<Props> {
             onClick={openVideoModal(youtubeId)}
             type="button"
           >
-            WATCH
+            <FlexWrapper>
+              <strong>WATCH</strong>
+              <ArrowContainer>▸</ArrowContainer>
+            </FlexWrapper>
           </Button>
         </div>
       </VideoHeroContainer>
     )
   }
 }
+
+const ArrowContainer = styled.span`
+  margin-left: 6px;
+  transform: scale(2);
+`

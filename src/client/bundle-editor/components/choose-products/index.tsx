@@ -1,11 +1,16 @@
 import * as React from "react"
 
-import {getMetafieldValue} from "../../../../shared/helpers"
+import {
+  getMetafieldValue,
+  getPathToImages,
+} from "../../../../shared/helpers"
+
 import Modal from "../../../helpers/modal"
 import Sticky from "../../../helpers/sticky"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import StepHeader from "../step-header"
 import Button from "../styled/button"
+import FlexWrapper from "../styled/flex-wrapper"
 import Filters from "./filters"
 import Product from "./product"
 import Progress from "./progress"
@@ -102,12 +107,16 @@ export default class ChooseProducts extends React.Component<Props, State> {
       <div>
         <StepHeader
           rightSection={
-            <button
+            <a
+              href="javascript:void(0)"
               onClick={this.handleFiltersModalOpen}
-              type="button"
+              style={{display: "block"}}
             >
-              Filters
-            </button>
+              <FlexWrapper>
+                <img src={getPathToImages("icon-filter.svg")} />
+                <small>FILTER</small>
+              </FlexWrapper>
+            </a>
           }
           stepPrev={stepPrev}
           title="FILL YOUR BOX"
