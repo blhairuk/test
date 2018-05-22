@@ -1,4 +1,7 @@
 import * as React from "react"
+import styled from "styled-components"
+
+import {BACKGROUND_BLACK} from "../colors"
 
 import bindCartHelper, {Helper as CartHelper} from "./app/cart-helper"
 import bindExistingCustomerHelper, {Helper as ExistingCustomerHelper} from "./app/existing-customer-helper"
@@ -13,9 +16,6 @@ import Confirm from "./components/confirm"
 import EnterEmail from "./components/enter-email"
 import EnterName from "./components/enter-name"
 import ResponsiveEmbed from "./components/styled/responsive-embed"
-
-import AppContainer from "./components/styled/app-container"
-import Step from "./components/styled/step"
 
 import {
   getAvailableFrequencies,
@@ -153,7 +153,7 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <>
-        <AppContainer>
+        <Wrapper>
           <div className="bu-slick">
             {!isEditingSubscription && (
               <>
@@ -272,7 +272,7 @@ export default class App extends React.Component<Props, State> {
           >
             Your bundle is full!
           </Modal>
-        </AppContainer>
+        </Wrapper>
 
         <Modal
           handleClose={this.closeProductDetailsModal}
@@ -339,3 +339,22 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({videoModalYouTubeId: null}))
   }
 }
+
+const Wrapper = styled.div`
+  background: ${BACKGROUND_BLACK};
+  color: #fff;
+  a { color: #fff; }
+`
+
+interface StepProps {
+  align?: "top"
+}
+
+const Step = styled.div`
+  align-items: ${({align}: StepProps) => align === "top" ? "start" : "center"};
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 87px); /* 87px = header height */
+
+  > div { max-width: 800px; }
+`
