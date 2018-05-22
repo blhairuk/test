@@ -15,12 +15,22 @@ export default class Sticky extends React.Component<Props> {
     this.parentRef = React.createRef()
   }
 
+  public componentDidMount() {
+    if (!this.props.disabled) {
+      this.init()
+    }
+  }
+
   public componentDidUpdate(prevProps) {
     if (!this.props.disabled && prevProps.disabled) {
       this.init()
     } else if (this.props.disabled && !prevProps.disabled) {
       this.teardown()
     }
+  }
+
+  public componentWillUnmount() {
+    this.teardown()
   }
 
   public render() {

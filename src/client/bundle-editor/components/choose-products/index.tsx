@@ -113,30 +113,28 @@ export default class ChooseProducts extends React.Component<Props, State> {
           title="FILL YOUR BOX"
         />
 
-        <Sticky disabled={!isActiveStep}>
-          <div
-            style={{
-              backgroundColor: BACKGROUND_BLACK,
-              padding: "10px 0",
-            }}
-          >
-            {productTypes.map((productType) => (
-              <span
-                key={productType}
-                style={{
-                  paddingRight: "10px",
-                }}
+        <div
+          style={{
+            backgroundColor: BACKGROUND_BLACK,
+            padding: "10px 0",
+          }}
+        >
+          {productTypes.map((productType) => (
+            <span
+              key={productType}
+              style={{
+                paddingRight: "10px",
+              }}
+            >
+              <a
+                onClick={this.handleProductTypeClick(productType)}
+                style={{padding: "5px"}}
               >
-                <a
-                  onClick={this.handleProductTypeClick(productType)}
-                  style={{padding: "5px"}}
-                >
-                  {productType.toUpperCase()}
-                </a>
-              </span>
-            ))}
-          </div>
-        </Sticky>
+                {productType.toUpperCase()}
+              </a>
+            </span>
+          ))}
+        </div>
 
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--three-fifths">
@@ -166,7 +164,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   <div className="grid grid--uniform">
                     {renderableProducts.map((product) => (
                       <div
-                        className="grid__item medium-up--one-third text-center"
+                        className="grid__item one-half medium-up--one-third text-center"
                         key={product.id}
                         style={{
                           paddingBottom: "25px",
@@ -197,24 +195,28 @@ export default class ChooseProducts extends React.Component<Props, State> {
               disabled={!isActiveStep}
               offset={42} /* product types header height */
             >
-              <Progress
-                bundleName={bundleName}
-                bundleProducts={bundleProducts}
-                removeVariantId={removeVariantId}
-                selectedProductIds={selectedProductIds}
-                selectedVariantIds={selectedVariantIds}
-                selectedSize={selectedSize}
-                updateBundleName={updateBundleName}
-              />
+              <div className="hide medium-up--show">
+                <Progress
+                  bundleName={bundleName}
+                  bundleProducts={bundleProducts}
+                  removeVariantId={removeVariantId}
+                  selectedProductIds={selectedProductIds}
+                  selectedVariantIds={selectedVariantIds}
+                  selectedSize={selectedSize}
+                  updateBundleName={updateBundleName}
+                />
+              </div>
 
-              <Button
-                color="purple"
-                disabled={selectedVariantIds.length < selectedSize}
-                onClick={stepNext}
-                type="button"
-              >
-                Next
-              </Button>
+              <div className="text-center">
+                <Button
+                  color="purple"
+                  disabled={selectedVariantIds.length < selectedSize}
+                  onClick={stepNext}
+                  type="button"
+                >
+                  Next
+                </Button>
+              </div>
             </Sticky>
           </div>
         </div>
