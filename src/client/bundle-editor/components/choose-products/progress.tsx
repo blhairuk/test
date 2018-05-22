@@ -6,6 +6,7 @@ import {
   findProductByVariantId,
 } from "../../../../shared/helpers"
 
+import FlexWrapper, {Col} from "../styled/flex-wrapper"
 import ProgressGradientBar from "../styled/progress-gradient-bar"
 
 interface Props {
@@ -61,22 +62,25 @@ export default class Progress extends React.Component<Props> {
           } = product
 
           return (
-            <div
-              className="grid grid--uniform grid--no-gutters"
-              key={productId}
-            >
-              <div className="grid__item one-quarter">
+            <FlexWrapper key={productId}>
+              <LeftCol>
+                {quantity > 1 && <QuantityWrapper>{quantity}</QuantityWrapper>}
                 <img src={src} />
-              </div>
+              </LeftCol>
 
-              <div className="grid__item one-half">
-                <small>{quantity}x {title}</small>
-              </div>
+              <Col>
+                <small>{title}</small>
+              </Col>
 
-              <div className="grid__item one-quarter text-right">
-                <a onClick={removeVariantId(productId, variantId, quantity)}>REM</a>
-              </div>
-            </div>
+              <RightCol className="text-center">
+                <XButton
+                  href="javascript:void(0)"
+                  onClick={removeVariantId(productId, variantId, quantity)}
+                >
+                  X
+                </XButton>
+              </RightCol>
+            </FlexWrapper>
           )
         })}
       </Wrapper>
@@ -84,7 +88,37 @@ export default class Progress extends React.Component<Props> {
   }
 }
 
+const LeftCol = styled.div`
+  padding: 8px 12px;
+  position: relative;
+  width: 25%;
+`
+
+const RightCol = styled.div`
+  width: 11%;
+`
+
+const QuantityWrapper = styled.div`
+  background: yellow;
+  border-radius: 10px;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px;
+  position: absolute;
+  right: 10px;
+  text-align: center;
+  top: 7px;
+  width: 20px;
+`
+
 const Wrapper = styled.div`
   background-color: #000;
   border-radius: 10px;
+  margin-bottom: 20px;
+`
+
+const XButton = styled.a`
+  display: block;
+  padding: 6px;
 `
