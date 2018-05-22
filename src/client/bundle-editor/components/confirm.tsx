@@ -1,8 +1,10 @@
 import * as React from "react"
+import styled from "styled-components"
 
 import {createIdQuantities} from "../../../shared/helpers"
 import StepHeader from "./step-header"
 import Button from "./styled/button"
+import Circle from "./styled/circle"
 
 interface Props {
   allProducts: ShopifyProduct[],
@@ -53,12 +55,14 @@ export default class Confirm extends React.Component<Props> {
 
                 return (
                   <div
-                    className="grid__item one-half medium-up--one-third"
+                    className="grid__item one-half medium-up--one-third text-center"
                     key={productId}
                   >
-                    <img src={src} />
+                    <ImageWrapper>
+                      {quantity > 1 && <QuantityWrapper size={30}>{quantity}</QuantityWrapper>}
+                      <img src={src} />
+                    </ImageWrapper>
                     <div>{title}</div>
-                    <div>{quantity}</div>
                   </div>
                 )
               })}
@@ -87,3 +91,12 @@ export default class Confirm extends React.Component<Props> {
     )
   }
 }
+
+const ImageWrapper = styled.div`
+  position: relative;
+`
+
+const QuantityWrapper = Circle.extend`
+  right: 10px;
+  top: 2px;
+`

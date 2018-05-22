@@ -6,6 +6,7 @@ import {
   findProductByVariantId,
 } from "../../../../shared/helpers"
 
+import Circle from "../styled/circle"
 import FlexWrapper, {Col} from "../styled/flex-wrapper"
 
 import {
@@ -74,7 +75,7 @@ export default class Progress extends React.Component<Props> {
               return (
                 <FlexWrapper key={productId}>
                   <LeftCol>
-                    {quantity > 1 && <QuantityWrapper>{quantity}</QuantityWrapper>}
+                    {quantity > 1 && <QuantityWrapper size={20}>{quantity}</QuantityWrapper>}
                     <img src={src} />
                   </LeftCol>
 
@@ -107,12 +108,12 @@ interface GradientBarProps {
 }
 
 const GradientBar = styled.div`
-background: linear-gradient(to right, ${BLUE_GREEN}, ${LIGHT_PURPLE});
-height: 12px;
-margin: 15px 0 10px;
-transform: scale3d(${({width}: GradientBarProps) => width}, 1, 1);
-transform-origin: left;
-transition: transform 300ms ease-out;
+  background: linear-gradient(to right, ${BLUE_GREEN}, ${LIGHT_PURPLE});
+  height: 12px;
+  margin: 15px 0 10px;
+  transform: scale3d(${({width}: GradientBarProps) => width}, 1, 1);
+  transform-origin: left;
+  transition: transform 300ms ease-out;
 `
 
 const LeftCol = styled.div`
@@ -131,18 +132,9 @@ const RightCol = styled.div`
   width: 11%;
 `
 
-const QuantityWrapper = styled.div`
-  background: yellow;
-  border-radius: 10px;
-  color: black;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 3px;
-  position: absolute;
+const QuantityWrapper = Circle.extend`
   right: 10px;
-  text-align: center;
   top: 7px;
-  width: 20px;
 `
 
 const TopWrapper = styled.div`
