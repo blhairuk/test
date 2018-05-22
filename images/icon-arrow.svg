@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="17px" viewBox="0 0 20 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Mobile-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="05-build" transform="translate(-15.000000, -93.000000)" stroke="#FFFFFF" stroke-width="2">
+            <g id="box-header" transform="translate(0.000000, 60.000000)">
+                <g id="icon-arrow" transform="translate(25.000000, 41.500000) rotate(180.000000) translate(-25.000000, -41.500000) translate(16.000000, 34.000000)">
+                    <polyline id="Stroke-1" points="10.3125 0 17.8125 7.50012152 10.3125 15"></polyline>
+                    <path d="M17.8125,7.5 L0,7.5" id="Stroke-3"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

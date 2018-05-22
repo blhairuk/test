@@ -1,7 +1,8 @@
 import * as React from "react"
 
-import Button from "./styled/button"
 import FlexWrapper from "./styled/flex-wrapper"
+
+import {getPathToImages} from "../../../shared/helpers"
 
 interface Props {
   rightSection?: React.ReactNode,
@@ -22,13 +23,13 @@ export default class StepHeader extends React.Component<Props> {
         margin="12px 0"
       >
         <div style={{width: "10%"}}>
-          <Button
-            color="black"
+          <a
+            href="javascript:void(0)"
             onClick={stepPrev}
-            type="button"
+            style={{display: "block"}}
           >
-            Prev
-          </Button>
+            <img src={getPathToImages("icon-arrow.svg")} />
+          </a>
         </div>
 
         <div className="text-center">

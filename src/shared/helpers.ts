@@ -1,3 +1,5 @@
+import assetCacheKey from "../server/helpers/asset-cache-key"
+
 const getBundleIdProperty = (properties) => (
   properties.find(({name}) => name.includes("bundle_id"))
 )
@@ -52,3 +54,5 @@ export const frequencySingularTitle = (unitType, frequency) => {
   if (frequency === 1 && unitType === "Weeks") { return "Week" }
   if (frequency === 4 && unitType === "Weeks") { return "Month" }
 }
+
+export const getPathToImages = (filename) => `${process.env.APP_PROXY_PATH}/images/${filename}?v=${assetCacheKey}`

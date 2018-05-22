@@ -43,7 +43,7 @@ export default class Progress extends React.Component<Props> {
         <TopWrapper>
           <FlexWrapper>
             <Col>
-              <input
+              <BoxNameInput
                 onChange={updateBundleName}
                 type="text"
                 value={bundleName}
@@ -55,10 +55,10 @@ export default class Progress extends React.Component<Props> {
           </FlexWrapper>
         </TopWrapper>
 
+        <GradientBar width={(numSelected / selectedSize) || 0} />
+
         {selectedVariantIds.length > 0 ? (
           <>
-            <GradientBar width={(numSelected / selectedSize) || 0} />
-
             {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
               const variantId = parseInt(variantIdS, 10)
               const product = findProductByVariantId(bundleProducts, variantId)
@@ -103,6 +103,11 @@ export default class Progress extends React.Component<Props> {
   }
 }
 
+const BoxNameInput = styled.input`
+  border: 0;
+  padding: 0;
+`
+
 interface GradientBarProps {
   width: number,
 }
@@ -138,7 +143,7 @@ const QuantityWrapper = Circle.extend`
 `
 
 const TopWrapper = styled.div`
-  padding: 10px 6px 0;
+  padding: 10px 15px 0;
 `
 
 const Wrapper = styled.div`

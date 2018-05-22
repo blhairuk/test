@@ -39,15 +39,16 @@ router
   .get("/install/confirm", confirmInstall())
   .use("/customer/:customerHash", accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
 
-const serveStatic = () => (ctx) => (
-  send(ctx, ctx.path, {root: join(__dirname, "../../dist/public")})
+const serveStatic = (path) => (ctx) => (
+  send(ctx, ctx.path, {root: join(__dirname, path)})
 )
 
 const app = new Koa()
 app
   .use(logger())
   .use(setCacheHeaders(60))
-  .use(mount("/static", serveStatic()))
+  .use(mount("/static", serveStatic("../../dist/public")))
+  .use(mount("/images", serveStatic("../../images")))
   .use(router.routes())
   .use(router.allowedMethods())
 
