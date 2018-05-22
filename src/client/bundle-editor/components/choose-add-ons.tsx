@@ -56,7 +56,7 @@ export default class ChooseAddOns extends React.Component<Props> {
         <div className="grid grid--uniform">
           {bundleAddOns.map((product) => (
             <div
-              className="grid__item medium-up--one-third text-center"
+              className="grid__item one-half medium-up--one-third text-center"
               key={product.id}
             >
               <Product

@@ -53,7 +53,7 @@ export default class Confirm extends React.Component<Props> {
 
                 return (
                   <div
-                    className="grid__item medium-up--one-third"
+                    className="grid__item one-half medium-up--one-third"
                     key={productId}
                   >
                     <img src={src} />
