@@ -32,6 +32,9 @@ export default (app: App) => ({
         touchMove: false,
       })
     })
+    .on("beforeChange", () => {
+      window.scroll({top: 0, behavior: "smooth"})
+    })
   },
 
   stepNext(e) {
