@@ -1,4 +1,5 @@
 import * as React from "react"
+import styled from "styled-components"
 
 import {
   createIdQuantities,
@@ -32,12 +33,7 @@ export default class Progress extends React.Component<Props> {
     const idQuantities = createIdQuantities(selectedVariantIds)
 
     return (
-      <div
-        style={{
-          backgroundColor: "#000",
-          borderRadius: "10px",
-        }}
-      >
+      <Wrapper>
         <div>
           <input
             onChange={updateBundleName}
@@ -83,7 +79,12 @@ export default class Progress extends React.Component<Props> {
             </div>
           )
         })}
-      </div>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = styled.div`
+  background-color: #000;
+  border-radius: 10px;
+`

@@ -139,7 +139,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
         </Sticky>
 
         <div className="grid grid--uniform">
-          <div className="grid__item medium-up--two-thirds">
+          <div className="grid__item medium-up--three-fifths">
             {productTypes.map((productType) => {
               const renderableProducts = bundleProducts
                 .filter(({product_type, tags}) => (
@@ -192,7 +192,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             })}
           </div>
 
-          <div className="grid__item medium-up--one-third">
+          <div className="grid__item medium-up--two-fifths">
             <Sticky
               disabled={!isActiveStep}
               offset={42} /* product types header height */
