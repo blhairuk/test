@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as StickyNode from "react-stickynode"
 
 import {
   getMetafieldValue,
@@ -6,7 +7,6 @@ import {
 } from "../../../../shared/helpers"
 
 import Modal from "../../../helpers/modal"
-import Sticky from "../../../helpers/sticky"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import StepHeader from "../step-header"
 import Button from "../styled/button"
@@ -75,7 +75,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
       bundleName,
       bundleProducts,
       bundleProductMetafields,
-      isActiveStep,
       openProductDetailsModal,
       openVideoModal,
       removeAddOnId,
@@ -105,44 +104,48 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     return (
       <div>
-        <StepHeader
-          rightSection={
-            <a
-              href="javascript:void(0)"
-              onClick={this.handleFiltersModalOpen}
-              style={{display: "block"}}
-            >
-              <FlexWrapper>
-                <img src={getPathToImages("icon-filter.svg")} />
-                <small>FILTER</small>
-              </FlexWrapper>
-            </a>
-          }
-          stepPrev={stepPrev}
-          title="FILL YOUR BOX"
-        />
+        <div id="hh-sticky-header">
+          <StickyNode>
+            <StepHeader
+              rightSection={
+                <a
+                  href="javascript:void(0)"
+                  onClick={this.handleFiltersModalOpen}
+                  style={{display: "block"}}
+                >
+                  <FlexWrapper>
+                    <img src={getPathToImages("icon-filter.svg")} />
+                    <small>FILTER</small>
+                  </FlexWrapper>
+                </a>
+              }
+              stepPrev={stepPrev}
+              title="FILL YOUR BOX"
+            />
 
-        <div
-          style={{
-            backgroundColor: BACKGROUND_BLACK,
-            padding: "10px 0",
-          }}
-        >
-          {productTypes.map((productType) => (
-            <span
-              key={productType}
+            <div
               style={{
-                paddingRight: "10px",
+                backgroundColor: BACKGROUND_BLACK,
+                padding: "10px 0",
               }}
             >
-              <a
-                onClick={this.handleProductTypeClick(productType)}
-                style={{padding: "5px"}}
-              >
-                {productType.toUpperCase()}
-              </a>
-            </span>
-          ))}
+              {productTypes.map((productType) => (
+                <span
+                  key={productType}
+                  style={{
+                    paddingRight: "10px",
+                  }}
+                >
+                  <a
+                    onClick={this.handleProductTypeClick(productType)}
+                    style={{padding: "5px"}}
+                  >
+                    {productType.toUpperCase()}
+                  </a>
+                </span>
+              ))}
+            </div>
+          </StickyNode>
         </div>
 
         <div className="grid grid--uniform">
@@ -200,10 +203,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
 
           <div className="grid__item medium-up--two-fifths">
-            <Sticky
-              disabled={!isActiveStep}
-              offset={42} /* product types header height */
-            >
+            <StickyNode top="#hh-sticky-header">
               <div className="hide medium-up--show">
                 <Progress
                   bundleName={bundleName}
@@ -226,7 +226,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   Next
                 </Button>
               </div>
-            </Sticky>
+            </StickyNode>
           </div>
         </div>
 
