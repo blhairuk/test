@@ -115,7 +115,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 >
                   <FlexWrapper>
                     <img src={getPathToImages("icon-filter.svg")} />
-                    <small>FILTER</small>
+                    <small className="hide medium-up--show">FILTER</small>
                   </FlexWrapper>
                 </a>
               }

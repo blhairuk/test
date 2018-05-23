@@ -356,6 +356,7 @@ const Step = styled.div`
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 87px); /* 87px = header height */
+  padding: 0 20px;
 
   > div { max-width: 800px; }
 `

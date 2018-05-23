@@ -49,7 +49,7 @@ export default class ChooseAddOns extends React.Component<Props> {
 
         <VideoHero
           openVideoModal={openVideoModal}
-          title="Boosters"
+          title="BOOSTERS"
           youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", "youtube_id_boosters")}
         />
 
