@@ -43,7 +43,7 @@ export default class Filters extends React.Component<Props> {
 
                 return (
                   <Filter
-                    color={activeFilters.includes(filterTag) ? "black" : undefined}
+                    color={activeFilters.includes(filterTag) ? "yellow" : "black"}
                     key={filter}
                     onClick={toggleFilter(filterTag)}
                     type="button"

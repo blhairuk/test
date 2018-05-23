@@ -16,7 +16,9 @@ import Product from "./product"
 import Progress from "./progress"
 import VideoHero from "./video-hero"
 
-import {BACKGROUND_BLACK} from "../../../colors"
+import {
+  BACKGROUND_BLACK,
+} from "../../../colors"
 
 interface Props {
   addAddOnId: (productId: number, variantId: number) => () => any,
@@ -117,7 +119,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     return (
       <div style={{minWidth: "0"}}>
-        <div id="hh-sticky-header">
+        <div
+          id="hh-sticky-header"
+          style={{marginBottom: "10px"}}
+        >
           <StickyNode innerZ={2}>
             <StepHeader
               rightSection={
@@ -168,6 +173,20 @@ export default class ChooseProducts extends React.Component<Props, State> {
             </div>
           </StickyNode>
         </div>
+
+        {activeFilters.length > 0 && (
+          <div style={{padding: "10px 0"}}>
+            {activeFilters.map((filter) => (
+              <Filter
+                color="yellow"
+                key="filter"
+                onClick={this.toggleFilter(filter)}
+              >
+                {filter} X
+              </Filter>
+            ))}
+          </div>
+        )}
 
         <div className="grid grid--uniform">
           <div className="grid__item medium-up--three-fifths">
@@ -319,3 +338,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
     this.setState(updateStateKeys({activeProductType}))
   }
 }
+
+const Filter = Button.extend`
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 10px;
+`
