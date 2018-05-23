@@ -116,7 +116,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     )
 
     return (
-      <div>
+      <div style={{minWidth: "0"}}>
         <div id="hh-sticky-header">
           <StickyNode innerZ={2}>
             <StepHeader
@@ -139,7 +139,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
             <div
               style={{
                 backgroundColor: BACKGROUND_BLACK,
+                overflowX: "scroll",
                 padding: "10px 0",
+                whiteSpace: "nowrap",
               }}
             >
               {productTypes.map((productType) => (
@@ -150,9 +152,12 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   }}
                 >
                   <a
+                    href="javascript:void(0)"
                     onClick={this.handleProductTypeClick(productType)}
                     style={{
-                      borderBottom: activeProductType === productType ? "1px solid red" : "none",
+                      borderBottomStyle: "solid",
+                      borderBottomWidth: "3px",
+                      borderColor: activeProductType === productType ? "orange" : "transparent",
                       padding: "5px",
                     }}
                   >
