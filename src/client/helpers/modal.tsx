@@ -31,7 +31,7 @@ injectGlobal`
     top: 0;
     transform: translate3d(100%, 0, 0);
     transition: transform ${transitionDuration} ease-out;
-    @media (min-width: 768px) { width: 400px }
+    @media (min-width: 768px) { width: 360px }
 
     &.ReactModal__Content--after-open {
       transform: translate3d(0, 0, 0);
