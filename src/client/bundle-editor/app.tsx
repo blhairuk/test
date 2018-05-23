@@ -116,6 +116,12 @@ export default class App extends React.Component<Props, State> {
     }
   }
 
+  public componentDidUpdate(_, prevState) {
+    if (prevState.currentStepIndex !== this.state.currentStepIndex) {
+      window.scrollTo({top: 0, behavior: "smooth"})
+    }
+  }
+
   public render() {
     const {
       bundleAddOns,
