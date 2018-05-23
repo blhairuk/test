@@ -96,7 +96,12 @@ export default class Progress extends React.Component<Props> {
             })}
           </>
         ) : (
-          <div>Choose some products to get started!</div>
+          <div
+            className="text-center"
+            style={{padding: "10px 20px"}}
+          >
+            <em>Your box is empty.</em>
+          </div>
         )}
       </Wrapper>
     )

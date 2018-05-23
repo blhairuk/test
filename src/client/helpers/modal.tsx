@@ -11,7 +11,7 @@ interface Props {
   style?: "panel"
 }
 
-const transitionDuration = "250ms"
+const transitionDuration = "150ms"
 
 // tslint:disable-next-line
 injectGlobal`
@@ -44,7 +44,7 @@ injectGlobal`
 
   .bu-modal-overlay--panel,
   .bu-modal-overlay--default {
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.9);
     bottom: 0;
     left: 0;
     position: fixed;
