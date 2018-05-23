@@ -237,6 +237,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
         >
           <Filters
             activeFilters={activeFilters}
+            closeModal={this.handleFiltersModalClose}
             filters={filters}
             resetFilters={this.resetFilters}
             toggleFilter={this.toggleFilter}
