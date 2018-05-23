@@ -1,7 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
 
-import {getPathToImages} from "../../../shared/helpers"
 import StepButtons from "./step-buttons"
 import TextInput from "./styled/text-input"
 
@@ -35,7 +33,6 @@ export default class EnterName extends React.Component<Props> {
 
     return (
       <div>
-        <CupsImg src={getPathToImages("cups.png")} />
         <div className="text-center larger-text">
           <form onSubmit={stepNext}>
             <h1>BUILD YOUR BOX</h1>
@@ -60,10 +57,3 @@ export default class EnterName extends React.Component<Props> {
     )
   }
 }
-
-const CupsImg = styled.img`
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 400px;
-`
