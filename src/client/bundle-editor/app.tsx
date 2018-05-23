@@ -114,8 +114,6 @@ export default class App extends React.Component<Props, State> {
       const cartState = await this.cartHelper.extractState(bundleId)
       this.setState(updateStateKeys(cartState))
     }
-
-    this.stepsHelper.init()
   }
 
   public render() {
@@ -154,54 +152,57 @@ export default class App extends React.Component<Props, State> {
     return (
       <>
         <Wrapper>
-          <div className="bu-slick">
-            {!isEditingSubscription && (
-              <>
-                <div>
-                  <Step>
-                    <EnterName
-                      enterName={this.stateHelper.enterName}
-                      enteredName={enteredName}
-                      isActiveStep={currentStepIndex === 0}
-                      stepNext={this.stepsHelper.stepNext}
-                    />
-                  </Step>
-                </div>
-                <div>
-                  <Step>
-                    <EnterEmail
-                      enterEmail={this.stateHelper.enterEmail}
-                      enteredEmail={enteredEmail}
-                      enteredName={enteredName}
-                      isActiveStep={currentStepIndex === 1}
-                      stepNext={this.stepsHelper.stepNext}
-                      stepPrev={this.stepsHelper.stepPrev}
-                    />
-                  </Step>
-                </div>
-              </>
-            )}
-            <div>
-              <Step>
-                <ChooseFrequencySize
-                  availableFrequencies={availableFrequencies}
-                  availableSizes={availableSizes}
-                  bundleProductMetafields={bundleProductMetafields}
-                  isActiveStep={currentStepIndex === 2}
-                  isEditingSubscription={isEditingSubscription}
-                  selectedBundlePrice={selectedBundlePrice}
-                  selectedFrequency={selectedFrequency}
-                  setSelectedFrequency={this.stateHelper.setSelectedFrequency}
-                  selectedSize={selectedSize}
-                  setSelectedSize={this.stateHelper.setSelectedSize}
-                  stepNext={this.stepsHelper.stepNext}
-                  stepPrev={this.stepsHelper.stepPrev}
-                />
-              </Step>
-            </div>
-            <div>
-              <Step align="top">
-                <div className="one-whole">
+          {(() => {
+            switch (currentStepIndex + (isEditingSubscription ? 2 : 0)) {
+              case 0:
+              return (
+                <Step>
+                  <EnterName
+                    enterName={this.stateHelper.enterName}
+                    enteredName={enteredName}
+                    isActiveStep={currentStepIndex === 0}
+                    stepNext={this.stepsHelper.stepNext}
+                  />
+                </Step>
+              )
+
+              case 1:
+              return (
+                <Step>
+                  <EnterEmail
+                    enterEmail={this.stateHelper.enterEmail}
+                    enteredEmail={enteredEmail}
+                    enteredName={enteredName}
+                    isActiveStep={currentStepIndex === 1}
+                    stepNext={this.stepsHelper.stepNext}
+                    stepPrev={this.stepsHelper.stepPrev}
+                  />
+                </Step>
+              )
+
+              case 2:
+              return (
+                <Step>
+                  <ChooseFrequencySize
+                    availableFrequencies={availableFrequencies}
+                    availableSizes={availableSizes}
+                    bundleProductMetafields={bundleProductMetafields}
+                    isActiveStep={currentStepIndex === 2}
+                    isEditingSubscription={isEditingSubscription}
+                    selectedBundlePrice={selectedBundlePrice}
+                    selectedFrequency={selectedFrequency}
+                    setSelectedFrequency={this.stateHelper.setSelectedFrequency}
+                    selectedSize={selectedSize}
+                    setSelectedSize={this.stateHelper.setSelectedSize}
+                    stepNext={this.stepsHelper.stepNext}
+                    stepPrev={this.stepsHelper.stepPrev}
+                  />
+                </Step>
+              )
+
+              case 3:
+              return (
+                <Step align="top">
                   <ChooseProducts
                     addAddOnId={this.stateHelper.addAddOnId}
                     addVariantId={this.stateHelper.addVariantId}
@@ -222,12 +223,12 @@ export default class App extends React.Component<Props, State> {
                     stepPrev={this.stepsHelper.stepPrev}
                     updateBundleName={this.stateHelper.updateBundleName}
                   />
-                </div>
-              </Step>
-            </div>
-            <div>
-              <Step align="top">
-                <div className="one-whole">
+                </Step>
+              )
+
+              case 4:
+              return (
+                <Step align="top">
                   <ChooseAddOns
                     addAddOnId={this.stateHelper.addAddOnId}
                     addVariantId={this.stateHelper.addVariantId}
@@ -244,12 +245,12 @@ export default class App extends React.Component<Props, State> {
                     stepNext={this.stepsHelper.stepNext}
                     stepPrev={this.stepsHelper.stepPrev}
                   />
-                </div>
-              </Step>
-            </div>
-            <div>
-              <Step align="top">
-                <div className="one-whole">
+                </Step>
+              )
+
+              case 5:
+              return (
+                <Step align="top">
                   <Confirm
                     allProducts={allProducts}
                     isActiveStep={currentStepIndex === 5}
@@ -261,10 +262,10 @@ export default class App extends React.Component<Props, State> {
                     stepPrev={this.stepsHelper.stepPrev}
                     submit={this.submit}
                   />
-                </div>
-              </Step>
-            </div>
-          </div>
+                </Step>
+              )
+            }
+          })()}
 
           <Modal
             handleClose={this.handleBundleFullModalClose}
