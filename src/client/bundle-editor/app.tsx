@@ -5,8 +5,8 @@ import {BACKGROUND_BLACK} from "../colors"
 
 import bindCartHelper, {Helper as CartHelper} from "./app/cart-helper"
 import bindExistingCustomerHelper, {Helper as ExistingCustomerHelper} from "./app/existing-customer-helper"
-import bindSlickHelper, {Helper as SlickHelper} from "./app/slick-helper"
 import bindStateHelper, {Helper as StateHelper} from "./app/state-helper"
+import bindStepsHelper, {Helper as StepsHelper} from "./app/steps-helper"
 
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
@@ -80,8 +80,8 @@ export default class App extends React.Component<Props, State> {
 
   private cartHelper: CartHelper
   private existingCustomerHelper: ExistingCustomerHelper
-  private slickHelper: SlickHelper
   private stateHelper: StateHelper
+  private stepsHelper: StepsHelper
 
   constructor(props) {
     super(props)
@@ -91,7 +91,7 @@ export default class App extends React.Component<Props, State> {
 
     this.cartHelper = bindCartHelper(this)
     this.existingCustomerHelper = bindExistingCustomerHelper(this)
-    this.slickHelper = bindSlickHelper(this)
+    this.stepsHelper = bindStepsHelper(this)
     this.stateHelper = bindStateHelper(this)
 
     if (props.subscriptions) {
@@ -115,7 +115,7 @@ export default class App extends React.Component<Props, State> {
       this.setState(updateStateKeys(cartState))
     }
 
-    this.slickHelper.init()
+    this.stepsHelper.init()
   }
 
   public render() {
@@ -163,7 +163,7 @@ export default class App extends React.Component<Props, State> {
                       enterName={this.stateHelper.enterName}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 0}
-                      stepNext={this.slickHelper.stepNext}
+                      stepNext={this.stepsHelper.stepNext}
                     />
                   </Step>
                 </div>
@@ -174,8 +174,8 @@ export default class App extends React.Component<Props, State> {
                       enteredEmail={enteredEmail}
                       enteredName={enteredName}
                       isActiveStep={currentStepIndex === 1}
-                      stepNext={this.slickHelper.stepNext}
-                      stepPrev={this.slickHelper.stepPrev}
+                      stepNext={this.stepsHelper.stepNext}
+                      stepPrev={this.stepsHelper.stepPrev}
                     />
                   </Step>
                 </div>
@@ -194,8 +194,8 @@ export default class App extends React.Component<Props, State> {
                   setSelectedFrequency={this.stateHelper.setSelectedFrequency}
                   selectedSize={selectedSize}
                   setSelectedSize={this.stateHelper.setSelectedSize}
-                  stepNext={this.slickHelper.stepNext}
-                  stepPrev={this.slickHelper.stepPrev}
+                  stepNext={this.stepsHelper.stepNext}
+                  stepPrev={this.stepsHelper.stepPrev}
                 />
               </Step>
             </div>
@@ -218,8 +218,8 @@ export default class App extends React.Component<Props, State> {
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
                     selectedVariantIds={selectedVariantIds}
-                    stepNext={this.slickHelper.stepNext}
-                    stepPrev={this.slickHelper.stepPrev}
+                    stepNext={this.stepsHelper.stepNext}
+                    stepPrev={this.stepsHelper.stepPrev}
                     updateBundleName={this.stateHelper.updateBundleName}
                   />
                 </div>
@@ -241,8 +241,8 @@ export default class App extends React.Component<Props, State> {
                     removeVariantId={this.stateHelper.removeVariantId}
                     selectedAddOnIds={selectedAddOnIds}
                     selectedVariantIds={selectedVariantIds}
-                    stepNext={this.slickHelper.stepNext}
-                    stepPrev={this.slickHelper.stepPrev}
+                    stepNext={this.stepsHelper.stepNext}
+                    stepPrev={this.stepsHelper.stepPrev}
                   />
                 </div>
               </Step>
@@ -258,7 +258,7 @@ export default class App extends React.Component<Props, State> {
                     selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
-                    stepPrev={this.slickHelper.stepPrev}
+                    stepPrev={this.stepsHelper.stepPrev}
                     submit={this.submit}
                   />
                 </div>
