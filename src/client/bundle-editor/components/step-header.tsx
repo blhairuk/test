@@ -3,6 +3,7 @@ import * as React from "react"
 import FlexWrapper from "./styled/flex-wrapper"
 
 import {getPathToImages} from "../../../shared/helpers"
+import {BACKGROUND_BLACK} from "../../colors"
 
 interface Props {
   rightSection?: React.ReactNode,
@@ -19,9 +20,7 @@ export default class StepHeader extends React.Component<Props> {
     } = this.props
 
     return (
-      <FlexWrapper
-        margin="12px 0"
-      >
+      <Wrapper>
         <div style={{width: "10%"}}>
           <a
             href="javascript:void(0)"
@@ -49,7 +48,12 @@ export default class StepHeader extends React.Component<Props> {
         >
           {rightSection || <span>&nbsp;</span>}
         </div>
-      </FlexWrapper>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = FlexWrapper.extend`
+  background-color: ${BACKGROUND_BLACK};
+  padding: 15px 0;
+`

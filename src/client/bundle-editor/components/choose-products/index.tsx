@@ -105,7 +105,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     return (
       <div>
         <div id="hh-sticky-header">
-          <StickyNode>
+          <StickyNode innerZ={2}>
             <StepHeader
               rightSection={
                 <a
