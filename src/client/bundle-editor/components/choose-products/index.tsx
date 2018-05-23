@@ -41,6 +41,7 @@ interface Props {
 
 interface State {
   activeFilters: string[],
+  activeProductType: string,
   isActiveStep: boolean,
   isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
@@ -50,6 +51,7 @@ interface State {
 export default class ChooseProducts extends React.Component<Props, State> {
   public state = {
     activeFilters: [],
+    activeProductType: null,
     isActiveStep: false,
     isFiltersModalOpen: false,
     productDetailsModalProductId: null,
@@ -66,6 +68,16 @@ export default class ChooseProducts extends React.Component<Props, State> {
     this.state.productTypes.forEach((productType) => {
       this.productTypeRefs[productType] = React.createRef()
     })
+
+    this.state.activeProductType = this.state.productTypes[0]
+  }
+
+  public componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll)
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll)
   }
 
   public render() {
@@ -90,6 +102,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     const {
       activeFilters,
+      activeProductType,
       isFiltersModalOpen,
       productTypes,
     } = this.state
@@ -138,7 +151,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 >
                   <a
                     onClick={this.handleProductTypeClick(productType)}
-                    style={{padding: "5px"}}
+                    style={{
+                      borderBottom: activeProductType === productType ? "1px solid red" : "none",
+                      padding: "5px",
+                    }}
                   >
                     {productType.toUpperCase()}
                   </a>
@@ -277,5 +293,24 @@ export default class ChooseProducts extends React.Component<Props, State> {
       behavior: "smooth",
       top: ref.offsetTop + 90, // header height
     })
+  }
+
+  private handleScroll = () => {
+    const {
+      productTypes,
+    } = this.state
+
+    const pageYOffset = window.pageYOffset
+
+    let activeProductType = productTypes[0]
+
+    for (const productType of productTypes) {
+      const ref = this.productTypeRefs[productType].current
+      if (pageYOffset >= ref.offsetTop) {
+        activeProductType = productType
+      }
+    }
+
+    this.setState(updateStateKeys({activeProductType}))
   }
 }
