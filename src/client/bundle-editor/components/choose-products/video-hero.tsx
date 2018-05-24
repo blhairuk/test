@@ -20,7 +20,7 @@ export default class VideoHero extends React.Component<Props> {
 
     return (
       <Wrapper imageUrl={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}>
-        <div className="text-center">
+        <MobileAdjust>
           <h1
             style={{
               letterSpacing: "1px",
@@ -40,7 +40,7 @@ export default class VideoHero extends React.Component<Props> {
               <ArrowContainer>▸</ArrowContainer>
             </FlexWrapper>
           </Button>
-        </div>
+        </MobileAdjust>
       </Wrapper>
     )
   }
@@ -49,6 +49,19 @@ export default class VideoHero extends React.Component<Props> {
 const ArrowContainer = styled.span`
   margin-left: 6px;
   transform: scale(2);
+`
+
+const MobileAdjust = styled.div`
+  padding-top: 10px;
+  position: relative;
+  text-align: center;
+  top: 15px;
+
+  @media (min-width: 768px) {
+    padding-top: 0;
+    position: static;
+    top: auto;
+  }
 `
 
 const borderRadius = "8px"
@@ -65,10 +78,11 @@ const Wrapper = styled.div`
   background-size: cover;
   border-radius: ${borderRadius};
   display: flex;
-  height: 200px;
   position: relative;
   justify-content: center;
   z-index: 1;
+
+  @media (min-width: 768px) { height: 200px; }
 
   &::after {
     background: rgba(0, 0, 0, 0.45);
