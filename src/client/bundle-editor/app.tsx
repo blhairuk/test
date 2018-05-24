@@ -8,6 +8,7 @@ import bindExistingCustomerHelper, {Helper as ExistingCustomerHelper} from "./ap
 import bindStateHelper, {Helper as StateHelper} from "./app/state-helper"
 import bindStepsHelper, {Helper as StepsHelper} from "./app/steps-helper"
 
+import BundleFullModal from "./components/bundle-full-modal"
 import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
 import ChooseProducts from "./components/choose-products"
@@ -125,6 +126,7 @@ export default class App extends React.Component<Props, State> {
   public render() {
     const {
       bundleAddOns,
+      bundleProduct,
       bundleProductMetafields,
       bundleProducts,
     } = this.props
@@ -277,7 +279,15 @@ export default class App extends React.Component<Props, State> {
             handleClose={this.handleBundleFullModalClose}
             isOpen={isBundleFullModalOpen}
           >
-            Your bundle is full!
+            <BundleFullModal
+              availableSizes={availableSizes}
+              bundleProduct={bundleProduct}
+              closeModal={this.handleBundleFullModalClose}
+              selectedBundlePrice={selectedBundlePrice}
+              selectedSize={selectedSize}
+              setSelectedSize={this.stateHelper.setSelectedSize}
+              stepNext={this.stepsHelper.stepNext}
+            />
           </Modal>
         </Wrapper>
 

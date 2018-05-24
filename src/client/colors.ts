@@ -1,5 +1,6 @@
 export const BACKGROUND_BLACK = "#1e2221"
 export const BLUE_GREEN = "#3CBFAE"
-export const LIGHT_PURPLE = "#D09AFF"
-export const YELLOW = "#FFF790"
 export const CORAL = "#FF8772"
+export const LIGHT_PURPLE = "#D09AFF"
+export const TAN = "#F0E7D9"
+export const YELLOW = "#FFF790"
