@@ -1,10 +1,12 @@
 import * as React from "react"
 import {hydrate} from "react-dom"
 import * as ReactModal from "react-modal"
+import * as smoothscroll from "smoothscroll-polyfill"
 
 import App from "./app"
 
 ReactModal.setAppElement("#app")
+smoothscroll.polyfill()
 
 const renderApp = (Component) => {
   let AppTree
