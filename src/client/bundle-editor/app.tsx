@@ -24,6 +24,8 @@ import {
   getBundlePrice,
 } from "../helpers/bundle"
 
+import {getMetafieldValue} from "../../shared/helpers"
+
 import Modal from "../helpers/modal"
 
 import updateStateKeys from "../helpers/update-state-keys"
@@ -46,6 +48,7 @@ interface State {
   editingBundleId: number,
   enteredEmail: string,
   enteredName: string,
+  frequencyUnitType: string,
   isBundleFullModalOpen: boolean,
   isSubmitting: boolean,
   productDetailsModalProductId: number,
@@ -67,6 +70,7 @@ export default class App extends React.Component<Props, State> {
     editingBundleId: null,
     enteredEmail: "",
     enteredName: "",
+    frequencyUnitType: null,
     isBundleFullModalOpen: false,
     isSubmitting: false,
     productDetailsModalProductId: null,
@@ -103,6 +107,12 @@ export default class App extends React.Component<Props, State> {
       this.state.selectedSize = this.state.availableSizes[0]
       this.state.selectedBundlePrice = getBundlePrice(props.bundleProduct, this.state.selectedSize)
     }
+
+    this.state.frequencyUnitType = getMetafieldValue(
+      this.props.bundleProductMetafields,
+      "subscriptions",
+      "shipping_interval_unit_type",
+    )
   }
 
   public async componentDidMount() {
@@ -133,6 +143,7 @@ export default class App extends React.Component<Props, State> {
 
     const {
       currentStepIndex,
+      frequencyUnitType,
       isBundleFullModalOpen,
       productDetailsModalProductId,
       videoModalYouTubeId,
@@ -194,7 +205,7 @@ export default class App extends React.Component<Props, State> {
                   <ChooseFrequencySize
                     availableFrequencies={availableFrequencies}
                     availableSizes={availableSizes}
-                    bundleProductMetafields={bundleProductMetafields}
+                    frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 2}
                     isEditingSubscription={isEditingSubscription}
                     selectedBundlePrice={selectedBundlePrice}
@@ -262,6 +273,7 @@ export default class App extends React.Component<Props, State> {
                   <Confirm
                     allProducts={allProducts}
                     bundleName={bundleName}
+                    frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 5}
                     isEditingBundle={!!editingBundleId}
                     isSubmitting={isSubmitting}

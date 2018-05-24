@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 import {
   createIdQuantities,
+  frequencyTitle,
   getPathToImages,
 } from "../../../shared/helpers"
 
@@ -14,6 +15,7 @@ import FlexWrapper from "./styled/flex-wrapper"
 interface Props {
   allProducts: ShopifyProduct[],
   bundleName: string,
+  frequencyUnitType: string,
   isActiveStep: boolean,
   isEditingBundle: boolean,
   isSubmitting: boolean,
@@ -31,6 +33,7 @@ export default class Confirm extends React.Component<Props> {
     const {
       allProducts,
       bundleName,
+      frequencyUnitType,
       isEditingBundle,
       isSubmitting,
       selectedBundlePrice,
@@ -94,7 +97,7 @@ export default class Confirm extends React.Component<Props> {
 
               <DetailWrapper>
                 <div>FREQUENCY</div>
-                <div>{selectedFrequency}</div>
+                <div>{frequencyTitle(frequencyUnitType, selectedFrequency)}</div>
               </DetailWrapper>
               <DetailWrapper>
                 <div>AMOUNT</div>

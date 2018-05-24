@@ -3,7 +3,6 @@ import * as React from "react"
 import {
   frequencySingularTitle,
   frequencyTitle,
-  getMetafieldValue,
 } from "../../../shared/helpers"
 
 import SizeToggler from "./size-toggler"
@@ -13,7 +12,7 @@ import FrequencySizeContainer from "./styled/frequency-size-container"
 interface Props {
   availableFrequencies: number[],
   availableSizes: number[],
-  bundleProductMetafields: ShopifyProductMetafield[],
+  frequencyUnitType: string,
   isActiveStep: boolean,
   isEditingSubscription: boolean,
   selectedBundlePrice: number,
@@ -37,7 +36,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
     const {
       availableFrequencies,
       availableSizes,
-      bundleProductMetafields,
+      frequencyUnitType,
       isEditingSubscription,
       selectedBundlePrice,
       selectedFrequency,
@@ -47,12 +46,6 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       stepNext,
       stepPrev,
     } = this.props
-
-    const shippingUnitType = getMetafieldValue(
-      bundleProductMetafields,
-      "subscriptions",
-      "shipping_interval_unit_type",
-    )
 
     return (
       <div
@@ -93,7 +86,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
               >
                 <FrequencySizeContainer isSelected={selectedFrequency === frequency}>
                   <div className="fsc-title">
-                    {frequencyTitle(shippingUnitType, frequency)}
+                    {frequencyTitle(frequencyUnitType, frequency)}
                   </div>
 
                   <div className="fsc-subtitle">
@@ -114,7 +107,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                         <>
                           <div>${selectedBundlePrice / selectedSize}/CUP</div>
                           <div>
-                            ${selectedBundlePrice}/{frequencySingularTitle(shippingUnitType, frequency).toUpperCase()}
+                            ${selectedBundlePrice}/{frequencySingularTitle(frequencyUnitType, frequency).toUpperCase()}
                           </div>
                         </>
                       )}
