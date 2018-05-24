@@ -40,6 +40,7 @@ injectGlobal`
   }
 
   .bu-modal-content--default {
+    margin: 20px;
     @media (min-width: 768px) { width: 600px }
   }
 
