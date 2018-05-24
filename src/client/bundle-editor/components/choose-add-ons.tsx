@@ -58,6 +58,10 @@ export default class ChooseAddOns extends React.Component<Props> {
             <div
               className="grid__item one-half medium-up--one-third text-center"
               key={product.id}
+              style={{
+                paddingBottom: "25px",
+                paddingTop: "25px",
+              }}
             >
               <Product
                 addAddOnId={addAddOnId}
@@ -74,15 +78,23 @@ export default class ChooseAddOns extends React.Component<Props> {
           ))}
         </div>
 
-        <Button
-          className="one-whole"
-          color="purple"
-          onClick={stepNext}
-          type="button"
-        >
-          Next
-        </Button>
+        <div className="text-center">
+          <NextButton
+            color="purple"
+            onClick={stepNext}
+            type="button"
+          >
+            REVIEW MY BOX
+          </NextButton>
+        </div>
       </div>
     )
   }
 }
+
+const NextButton = Button.extend`
+  font-size: 130%;
+  font-weight: bold;
+  padding: 10px 50px;
+  margin-bottom: 30px;
+`
