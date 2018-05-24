@@ -1,6 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 
+import {productTitleWithoutType} from "../../../../shared/helpers"
 import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 
@@ -33,6 +34,7 @@ export default class Product extends React.Component<Props> {
     const {
       id: productId,
       image: {src},
+      product_type,
       title,
       variants,
     } = product
@@ -56,7 +58,7 @@ export default class Product extends React.Component<Props> {
             href="javascript:void(0)"
             onClick={openProductDetailsModal(productId)}
           >
-            {title}
+            {productTitleWithoutType(title, product_type)}
           </a>
         </div>
 

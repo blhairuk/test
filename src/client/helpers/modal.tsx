@@ -19,6 +19,7 @@ injectGlobal`
   .bu-modal-content--default {
     background-color: ${BACKGROUND_BLACK};
     color: #fff;
+    overflow-y: scroll;
     width: 100%;
   }
 

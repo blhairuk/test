@@ -69,10 +69,11 @@ const CategoryTitle = styled.div`
 `
 
 const Filter = Button.extend`
-  margin: 5px 5px;
+  margin: 3px 6px;
 `
 
 const FiltersWrapper = styled.div`
+  overflow-y: scroll;
   padding: 0 20px;
   text-align: center;
 `

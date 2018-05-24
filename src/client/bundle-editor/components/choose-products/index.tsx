@@ -4,6 +4,7 @@ import * as StickyNode from "react-stickynode"
 import {
   getMetafieldValue,
   getPathToImages,
+  pluralizeProductType,
 } from "../../../../shared/helpers"
 
 import Modal from "../../../helpers/modal"
@@ -50,6 +51,8 @@ interface State {
   productTypes: string[],
 }
 
+const FIXED_HEADER_HEIGHT = 102
+
 export default class ChooseProducts extends React.Component<Props, State> {
   public state = {
     activeFilters: [],
@@ -65,7 +68,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    this.state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))]
+    this.state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))].reverse()
 
     this.state.productTypes.forEach((productType) => {
       this.productTypeRefs[productType] = React.createRef()
@@ -166,7 +169,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                       padding: "5px",
                     }}
                   >
-                    {productType.toUpperCase()}
+                    {pluralizeProductType(productType).toUpperCase()}
                   </a>
                 </span>
               ))}
@@ -210,7 +213,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 >
                   <VideoHero
                     openVideoModal={openVideoModal}
-                    title={productType.toUpperCase()}
+                    title={pluralizeProductType(productType).toUpperCase()}
                     youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
                   />
                   <div className="grid grid--uniform">
@@ -315,7 +318,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     window.scrollTo({
       behavior: "smooth",
-      top: ref.offsetTop + 90, // header height
+      top: ref.offsetTop - FIXED_HEADER_HEIGHT,
     })
   }
 
@@ -330,7 +333,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     for (const productType of productTypes) {
       const ref = this.productTypeRefs[productType].current
-      if (pageYOffset >= ref.offsetTop) {
+      if (pageYOffset + FIXED_HEADER_HEIGHT >= ref.offsetTop) {
         activeProductType = productType
       }
     }

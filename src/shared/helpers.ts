@@ -56,3 +56,16 @@ export const frequencySingularTitle = (unitType, frequency) => {
 }
 
 export const getPathToImages = (filename) => `${process.env.APP_PROXY_PATH}/images/${filename}?v=${assetCacheKey}`
+
+export const pluralizeProductType = (type: string) => type.endsWith("s") ? type : `${type}s`
+
+export const productTitleWithoutType = (title, type) => {
+  switch (type) {
+    case "Overnight Oats":
+    case "Smoothie":
+      return title.replace(new RegExp(` ${type}$`), "")
+    case "Acai Bowl":
+    default:
+      return title
+  }
+}
