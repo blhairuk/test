@@ -12,8 +12,8 @@ const env = require(`./${NODE_ENV}.config.js`)
 
 module.exports = {
   entry: {
-    'account-manager': ['babel-polyfill', './src/client/account-manager/index.tsx'],
-    'bundle-editor': ['babel-polyfill', './src/client/bundle-editor/index.tsx'],
+    'account-manager': './src/client/account-manager/index.tsx',
+    'bundle-editor': './src/client/bundle-editor/index.tsx',
     'theme.bundle': ['babel-polyfill', './src/client/theme.bundle/index.ts'],
   },
   module: {
