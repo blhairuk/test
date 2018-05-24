@@ -1,19 +1,27 @@
 import * as React from "react"
 import styled from "styled-components"
 
-import {createIdQuantities} from "../../../shared/helpers"
+import {
+  createIdQuantities,
+  getPathToImages,
+} from "../../../shared/helpers"
+
 import StepHeader from "./step-header"
 import Button from "./styled/button"
 import Circle from "./styled/circle"
+import FlexWrapper from "./styled/flex-wrapper"
 
 interface Props {
   allProducts: ShopifyProduct[],
+  bundleName: string,
   isActiveStep: boolean,
   isEditingBundle: boolean,
   isSubmitting: boolean,
+  selectedBundlePrice: number,
   selectedFrequency: number,
   selectedProductIds: number[],
   selectedSize: number,
+  stepGoTo: (step: number) => () => any,
   stepPrev: () => any,
   submit: () => any,
 }
@@ -22,11 +30,14 @@ export default class Confirm extends React.Component<Props> {
   public render() {
     const {
       allProducts,
+      bundleName,
       isEditingBundle,
       isSubmitting,
+      selectedBundlePrice,
       selectedFrequency,
       selectedProductIds,
       selectedSize,
+      stepGoTo,
       stepPrev,
       submit,
     } = this.props
@@ -41,8 +52,16 @@ export default class Confirm extends React.Component<Props> {
         />
 
         <div className="grid grid--uniform">
-          <div className="grid__item medium-up--two-thirds">
-            <h3>Items</h3>
+          <div className="grid__item medium-up--three-fifths">
+            <MyItemsWrapper>
+              <Title>MY ITEMS</Title>
+              <a
+                href="javascript:void(0)"
+                onClick={stepGoTo(3)}
+              >
+                <img src={getPathToImages("icon-edit.svg")} />
+              </a>
+            </MyItemsWrapper>
 
             <div className="grid grid--uniform">
               {Object.entries(idQuantities).map(([productIdS, quantity]) => {
@@ -69,22 +88,37 @@ export default class Confirm extends React.Component<Props> {
             </div>
           </div>
 
-          <div className="grid__item medium-up--one-third">
-            <div>
-              <div>Selected frequency: {selectedFrequency}</div>
-              <div>Selected size: {selectedSize}</div>
-            </div>
+          <div className="grid__item medium-up--two-fifths">
+            <DetailsWrapper>
+              <DetailsTitle>{bundleName} details</DetailsTitle>
 
-            <Button
-              disabled={isSubmitting}
-              onClick={submit}
-              type="button"
-            >
-              {(() => {
-                if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
-                return isSubmitting ? "Adding..." : "Add to cart"
-              })()}
-            </Button>
+              <DetailWrapper>
+                <div>FREQUENCY</div>
+                <div>{selectedFrequency}</div>
+              </DetailWrapper>
+              <DetailWrapper>
+                <div>AMOUNT</div>
+                <div>{selectedSize}</div>
+              </DetailWrapper>
+              <DetailWrapper style={{borderBottom: "none", marginBottom: "0", paddingBottom: "0"}}>
+                <div>SUBTOTAL</div>
+                <div>${selectedBundlePrice}</div>
+              </DetailWrapper>
+            </DetailsWrapper>
+
+            <div className="text-center">
+              <AddToCartButton
+                color="purple"
+                disabled={isSubmitting}
+                onClick={submit}
+                type="button"
+              >
+                {(() => {
+                  if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
+                  return isSubmitting ? "Adding..." : "Add box to cart"
+                })()}
+              </AddToCartButton>
+            </div>
           </div>
         </div>
       </div>
@@ -92,11 +126,50 @@ export default class Confirm extends React.Component<Props> {
   }
 }
 
+const AddToCartButton = Button.extend`
+  font-size: 105%;
+  font-weight: bold;
+  padding: 10px 30px;
+`
+
+const DetailWrapper = FlexWrapper.extend`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+
+  > div:first-child { font-size: 80%; }
+`
+
+const DetailsTitle = styled.h3`
+  font-size: 110%;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+`
+
+const DetailsWrapper = styled.div`
+  background: #000;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 15px;
+`
+
 const ImageWrapper = styled.div`
   position: relative;
+`
+
+const MyItemsWrapper = FlexWrapper.extend`
+  margin-bottom: 20px;
+  justify-content: flex-start;
 `
 
 const QuantityWrapper = Circle.extend`
   right: 10px;
   top: 2px;
+`
+
+const Title = styled.h3`
+  font-size: 140%;
+  font-weight: normal;
+  letter-spacing: 2px;
+  margin: 0 20px 0 0;
 `

@@ -261,12 +261,15 @@ export default class App extends React.Component<Props, State> {
                 <Step align="top">
                   <Confirm
                     allProducts={allProducts}
+                    bundleName={bundleName}
                     isActiveStep={currentStepIndex === 5}
                     isEditingBundle={!!editingBundleId}
                     isSubmitting={isSubmitting}
+                    selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
+                    stepGoTo={this.stepsHelper.stepGoTo}
                     stepPrev={this.stepsHelper.stepPrev}
                     submit={this.submit}
                   />
