@@ -12,9 +12,9 @@ const env = require(`./${NODE_ENV}.config.js`)
 
 module.exports = {
   entry: {
-    'account-manager': './src/client/account-manager/index.tsx',
-    'bundle-editor': './src/client/bundle-editor/index.tsx',
-    'theme.bundle': './src/client/theme.bundle/index.ts',
+    'account-manager': ['babel-polyfill', './src/client/account-manager/index.tsx'],
+    'bundle-editor': ['babel-polyfill', './src/client/bundle-editor/index.tsx'],
+    'theme.bundle': ['babel-polyfill', './src/client/theme.bundle/index.ts'],
   },
   module: {
     rules: [{
@@ -29,7 +29,7 @@ module.exports = {
           presets: [[
             'env', {
               targets: {
-                browsers: ['last 2 versions']
+                browsers: ['last 4 versions', 'ie >= 11']
               }
             }
           ]]
