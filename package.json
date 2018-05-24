@@ -11,7 +11,8 @@
     "webpack": "webpack --config webpack/index.js",
     "webpack-dev-server": "webpack-dev-server --config webpack/index.js",
     "nodemon": "nodemon -r dotenv/config dist/server/index.js",
-    "dev": "run-p \"tsc -- --watch\" webpack-dev-server nodemon",
+    "ngrok": "node -r dotenv/config ngrok.js",
+    "dev": "run-p \"tsc -- --watch\" webpack-dev-server nodemon ngrok",
     "prestart": "run-s migrate tsc webpack",
     "start": "node dist/server/index.js"
   },
@@ -58,6 +59,7 @@
     "@types/jest": "^22.2.3",
     "dotenv": "^5.0.1",
     "jest": "^22.4.3",
+    "ngrok": "^3.0.1",
     "nodemon": "^1.17.3",
     "react-hot-loader": "^4.1.3",
     "tslint": "^5.10.0",
