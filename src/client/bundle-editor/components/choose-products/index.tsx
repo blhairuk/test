@@ -2,6 +2,7 @@ import * as React from "react"
 import * as StickyNode from "react-stickynode"
 
 import {
+  frequencyTitle,
   getMetafieldValue,
   getPathToImages,
   pluralizeProductType,
@@ -28,12 +29,15 @@ interface Props {
   bundleName: string,
   bundleProducts: ShopifyProduct[],
   bundleProductMetafields: ShopifyProductMetafield[],
+  frequencyUnitType: string,
   isActiveStep: boolean,
   openProductDetailsModal: (productId: number) => any,
   openVideoModal: (youtubeId: string) => () => any,
   removeAddOnId: (productId: number, variantId: number) => () => any,
   removeVariantId: (productId: number, variantId: number) => () => any,
   selectedAddOnIds: number[],
+  selectedBundlePrice: number,
+  selectedFrequency: number,
   selectedProductIds: number[],
   selectedSize: number,
   selectedVariantIds: number[],
@@ -92,11 +96,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
       bundleName,
       bundleProducts,
       bundleProductMetafields,
+      frequencyUnitType,
       openProductDetailsModal,
       openVideoModal,
       removeAddOnId,
       removeVariantId,
       selectedAddOnIds,
+      selectedBundlePrice,
+      selectedFrequency,
       selectedProductIds,
       selectedSize,
       selectedVariantIds,
@@ -128,6 +135,23 @@ export default class ChooseProducts extends React.Component<Props, State> {
         >
           <StickyNode innerZ={2}>
             <StepHeader
+              centerSection={
+                <div>
+                  <div className="medium-up--hide">
+                    <div>{bundleName.toUpperCase()}</div>
+                    <div>
+                      {frequencyTitle(frequencyUnitType, selectedFrequency)}
+                      <span>&nbsp;&bull;&nbsp;</span>
+                      ${selectedBundlePrice}
+                      <span>&nbsp;&bull;&nbsp;</span>
+                      {selectedVariantIds.length} of {selectedSize}
+                    </div>
+                  </div>
+                  <div className="hide medium-up--show">
+                    <h1 style={{fontSize: "160%", marginBottom: "0"}}>FILL YOUR BOX</h1>
+                  </div>
+                </div>
+              }
               rightSection={
                 <a
                   href="javascript:void(0)"
@@ -141,7 +165,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 </a>
               }
               stepPrev={stepPrev}
-              title="FILL YOUR BOX"
             />
 
             <div

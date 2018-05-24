@@ -229,12 +229,15 @@ export default class App extends React.Component<Props, State> {
                     bundleName={bundleName}
                     bundleProducts={bundleProducts}
                     bundleProductMetafields={bundleProductMetafields}
+                    frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 3}
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
                     removeAddOnId={this.stateHelper.removeAddOnId}
                     removeVariantId={this.stateHelper.removeVariantId}
                     selectedAddOnIds={selectedAddOnIds}
+                    selectedBundlePrice={selectedBundlePrice}
+                    selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
                     selectedVariantIds={selectedVariantIds}

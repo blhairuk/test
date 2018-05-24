@@ -6,14 +6,16 @@ import {getPathToImages} from "../../../shared/helpers"
 import {BACKGROUND_BLACK} from "../../colors"
 
 interface Props {
+  centerSection?: React.ReactNode,
   rightSection?: React.ReactNode,
   stepPrev: () => any,
-  title: string,
+  title?: string,
 }
 
 export default class StepHeader extends React.Component<Props> {
   public render() {
     const {
+      centerSection,
       rightSection,
       stepPrev,
       title,
@@ -32,14 +34,16 @@ export default class StepHeader extends React.Component<Props> {
         </div>
 
         <div className="text-center">
-          <h1
-            style={{
-              fontSize: "170%",
-              marginBottom: "0",
-            }}
-          >
-            {title}
-          </h1>
+          {centerSection || (
+            <h1
+              style={{
+                fontSize: "170%",
+                marginBottom: "0",
+              }}
+            >
+              {title}
+            </h1>
+          )}
         </div>
 
         <div
