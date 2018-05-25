@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 
 import {
@@ -74,16 +75,19 @@ export default class ChooseFrequencySize extends React.Component<Props> {
             </small>
           </p>
 
-          <div
-            className="grid grid--uniform"
-            style={{marginBottom: "20px"}}
+          <Flex
+            flexWrap="wrap"
+            mb={2}
+            mx={-2}
           >
             {availableFrequencies.map((frequency) => (
-              <div
-                className="grid__item medium-up--one-half text-center"
+              <Box
+                className="text-center"
                 key={frequency}
                 onClick={setSelectedFrequency(frequency)}
-                style={{marginBottom: "20px"}}
+                mb={3}
+                px={2}
+                width={[1, 1 / 2]}
               >
                 <FrequencySizeContainer isSelected={selectedFrequency === frequency}>
                   <div className="fsc-title">
@@ -115,9 +119,9 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                     </>
                   )}
                 </FrequencySizeContainer>
-              </div>
+              </Box>
             ))}
-          </div>
+          </Flex>
 
           <StepButtons
             hidePrev={isEditingSubscription}

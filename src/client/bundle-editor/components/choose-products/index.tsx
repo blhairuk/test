@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import * as StickyNode from "react-stickynode"
 
@@ -12,7 +13,6 @@ import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import StepHeader from "../step-header"
 import Button from "../styled/button"
-import FlexWrapper from "../styled/flex-wrapper"
 import Filters from "./filters"
 import Product from "./product"
 import Progress from "./progress"
@@ -161,10 +161,12 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   onClick={this.handleFiltersModalOpen}
                   style={{display: "block"}}
                 >
-                  <FlexWrapper>
+                  <Flex alignItems="center">
                     <img src={getPathToImages("icon-filter.svg")} />
-                    <small className="hide medium-up--show">FILTER</small>
-                  </FlexWrapper>
+                    <Box className="hide medium-up--show">
+                      <small>FILTER</small>
+                    </Box>
+                  </Flex>
                 </a>
               }
               stepPrev={stepPrev}
@@ -217,8 +219,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
           </div>
         )}
 
-        <div className="grid grid--uniform">
-          <div className="grid__item medium-up--three-fifths">
+        <Flex
+          flexWrap="wrap"
+          mx={-2}
+        >
+          <Box
+            px={2}
+            width={[1, 3 / 5]}
+          >
             {productTypes.map((productType) => {
               const renderableProducts = bundleProducts
                 .filter(({product_type, tags}) => (
@@ -242,15 +250,17 @@ export default class ChooseProducts extends React.Component<Props, State> {
                     title={pluralizeProductType(productType).toUpperCase()}
                     youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
                   />
-                  <div className="grid grid--uniform">
+                  <Flex
+                    flexWrap="wrap"
+                    mx={-2}
+                  >
                     {renderableProducts.map((product) => (
-                      <div
-                        className="grid__item one-half medium-up--one-third text-center"
+                      <Box
+                        className="text-center"
                         key={product.id}
-                        style={{
-                          paddingBottom: "25px",
-                          paddingTop: "25px",
-                        }}
+                        px={2}
+                        py={2}
+                        width={[1 / 2, 1 / 3]}
                       >
                         <Product
                           addAddOnId={addAddOnId}
@@ -263,15 +273,18 @@ export default class ChooseProducts extends React.Component<Props, State> {
                           selectedAddOnIds={selectedAddOnIds}
                           selectedVariantIds={selectedVariantIds}
                         />
-                      </div>
+                      </Box>
                     ))}
-                  </div>
+                  </Flex>
                 </div>
               )
             })}
-          </div>
+          </Box>
 
-          <div className="grid__item medium-up--two-fifths">
+          <Box
+            px={2}
+            width={[1, 2 / 5]}
+          >
             <StickyNode top="#hh-sticky-header">
               <div className="hide medium-up--show">
                 <Progress
@@ -299,8 +312,8 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 </Button>
               </div>
             </StickyNode>
-          </div>
-        </div>
+          </Box>
+        </Flex>
 
         <Modal
           handleClose={this.handleFiltersModalClose}

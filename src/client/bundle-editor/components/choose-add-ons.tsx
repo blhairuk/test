@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 
 import {getMetafieldValue} from "../../../shared/helpers"
@@ -53,15 +54,17 @@ export default class ChooseAddOns extends React.Component<Props> {
           youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", "youtube_id_boosters")}
         />
 
-        <div className="grid grid--uniform">
+        <Flex
+          flexWrap="wrap"
+          mx={-2}
+        >
           {bundleAddOns.map((product) => (
-            <div
-              className="grid__item one-half medium-up--one-third text-center"
+            <Box
+              className="text-center"
               key={product.id}
-              style={{
-                paddingBottom: "25px",
-                paddingTop: "25px",
-              }}
+              px={2}
+              py={2}
+              width={[1 / 2, 1 / 3]}
             >
               <Product
                 addAddOnId={addAddOnId}
@@ -74,9 +77,9 @@ export default class ChooseAddOns extends React.Component<Props> {
                 selectedAddOnIds={selectedAddOnIds}
                 selectedVariantIds={selectedVariantIds}
               />
-            </div>
+            </Box>
           ))}
-        </div>
+        </Flex>
 
         <div className="text-center">
           <NextButton
