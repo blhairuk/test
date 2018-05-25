@@ -48,6 +48,20 @@ export default class Confirm extends React.Component<Props> {
 
     const idQuantities = createIdQuantities(selectedProductIds)
 
+    const updateButton = (
+      <AddToCartButton
+        color="purple"
+        disabled={isSubmitting}
+        onClick={submit}
+        type="button"
+      >
+        {(() => {
+          if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
+          return isSubmitting ? "Adding..." : "Add box to cart"
+        })()}
+      </AddToCartButton>
+    )
+
     return (
       <div>
         <StepHeader
@@ -55,9 +69,14 @@ export default class Confirm extends React.Component<Props> {
           title="REVIEW YOUR BOX"
         />
 
-        <Flex flexWrap="wrap">
+        <Flex
+          flexWrap="wrap"
+          mx={-2}
+        >
           <Box
             order={[2, 1]}
+            mb={3}
+            px={2}
             width={[1, 3 / 5]}
           >
             <MyItemsWrapper>
@@ -70,7 +89,10 @@ export default class Confirm extends React.Component<Props> {
               </a>
             </MyItemsWrapper>
 
-            <Flex flexWrap="wrap">
+            <Flex
+              mx={-2}
+              flexWrap="wrap"
+            >
               {Object.entries(idQuantities).map(([productIdS, quantity]) => {
                 const productId = parseInt(productIdS, 10)
                 const product = allProducts.find(({id}) => id === productId)
@@ -83,6 +105,7 @@ export default class Confirm extends React.Component<Props> {
                   <Box
                     className="text-center"
                     key={productId}
+                    px={2}
                     width={[1 / 2, 1 / 3]}
                   >
                     <ImageWrapper>
@@ -98,6 +121,7 @@ export default class Confirm extends React.Component<Props> {
 
           <Box
             order={[1, 2]}
+            px={2}
             width={[1, 2 / 5]}
           >
             <DetailsWrapper>
@@ -117,19 +141,18 @@ export default class Confirm extends React.Component<Props> {
               </DetailWrapper>
             </DetailsWrapper>
 
-            <div className="text-center">
-              <AddToCartButton
-                color="purple"
-                disabled={isSubmitting}
-                onClick={submit}
-                type="button"
-              >
-                {(() => {
-                  if (isEditingBundle) { return isSubmitting ? "Updating..." : "Update bundle" }
-                  return isSubmitting ? "Adding..." : "Add box to cart"
-                })()}
-              </AddToCartButton>
+            <div className="hide medium-up--show text-center">
+              {updateButton}
             </div>
+          </Box>
+
+          <Box
+            className="medium-up--hide text-center"
+            mb={3}
+            order={3}
+            width={1}
+          >
+            {updateButton}
           </Box>
         </Flex>
       </div>
