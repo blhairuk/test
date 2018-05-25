@@ -83,6 +83,7 @@ export default class ChooseFrequencySize extends React.Component<Props> {
                 className="grid__item medium-up--one-half text-center"
                 key={frequency}
                 onClick={setSelectedFrequency(frequency)}
+                style={{marginBottom: "20px"}}
               >
                 <FrequencySizeContainer isSelected={selectedFrequency === frequency}>
                   <div className="fsc-title">

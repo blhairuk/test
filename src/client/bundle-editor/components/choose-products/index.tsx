@@ -128,7 +128,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
     )
 
     return (
-      <div style={{minWidth: "0"}}>
+      <div
+        className="one-whole"
+        style={{minWidth: "0"}}
+      >
         <div
           id="hh-sticky-header"
           style={{marginBottom: "10px"}}
@@ -282,7 +285,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 />
               </div>
 
-              <div className="text-center">
+              <div
+                className="text-center"
+                style={{marginBottom: "20px"}}
+              >
                 <Button
                   color="purple"
                   disabled={selectedVariantIds.length < selectedSize}
