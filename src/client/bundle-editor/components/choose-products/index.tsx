@@ -170,7 +170,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             <div
               style={{
                 backgroundColor: BACKGROUND_BLACK,
-                overflowX: "scroll",
+                overflowX: "auto",
                 padding: "10px 0",
                 whiteSpace: "nowrap",
               }}

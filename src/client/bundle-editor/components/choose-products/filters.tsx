@@ -73,7 +73,7 @@ const Filter = Button.extend`
 `
 
 const FiltersWrapper = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 0 20px;
   text-align: center;
 `
