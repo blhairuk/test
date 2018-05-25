@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -54,8 +55,11 @@ export default class Confirm extends React.Component<Props> {
           title="REVIEW YOUR BOX"
         />
 
-        <div className="grid grid--uniform">
-          <div className="grid__item medium-up--three-fifths">
+        <Flex flexWrap="wrap">
+          <Box
+            order={[2, 1]}
+            width={[1, 3 / 5]}
+          >
             <MyItemsWrapper>
               <Title>MY ITEMS</Title>
               <a
@@ -66,7 +70,7 @@ export default class Confirm extends React.Component<Props> {
               </a>
             </MyItemsWrapper>
 
-            <div className="grid grid--uniform">
+            <Flex flexWrap="wrap">
               {Object.entries(idQuantities).map(([productIdS, quantity]) => {
                 const productId = parseInt(productIdS, 10)
                 const product = allProducts.find(({id}) => id === productId)
@@ -76,22 +80,26 @@ export default class Confirm extends React.Component<Props> {
                 } = product
 
                 return (
-                  <div
-                    className="grid__item one-half medium-up--one-third text-center"
+                  <Box
+                    className="text-center"
                     key={productId}
+                    width={[1 / 2, 1 / 3]}
                   >
                     <ImageWrapper>
                       {quantity > 1 && <QuantityWrapper size={30}>{quantity}</QuantityWrapper>}
                       <img src={src} />
                     </ImageWrapper>
                     <div>{title}</div>
-                  </div>
+                  </Box>
                 )
               })}
-            </div>
-          </div>
+            </Flex>
+          </Box>
 
-          <div className="grid__item medium-up--two-fifths">
+          <Box
+            order={[1, 2]}
+            width={[1, 2 / 5]}
+          >
             <DetailsWrapper>
               <DetailsTitle>{bundleName} details</DetailsTitle>
 
@@ -122,8 +130,8 @@ export default class Confirm extends React.Component<Props> {
                 })()}
               </AddToCartButton>
             </div>
-          </div>
-        </div>
+          </Box>
+        </Flex>
       </div>
     )
   }
