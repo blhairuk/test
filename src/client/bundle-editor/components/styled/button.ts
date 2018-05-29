@@ -46,4 +46,8 @@ export default styled.button`
   text-transform: uppercase;
 
   &:disabled { opacity: 0.5 }
+  &:focus {
+    box-shadow: none;
+    outline-style: none;
+  }
 `
