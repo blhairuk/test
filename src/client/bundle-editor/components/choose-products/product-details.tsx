@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 
 import FlexWrapper from "../styled/flex-wrapper"
+import ProductSubdetail from "./product-subdetail"
 
 interface Props {
   closeProductDetailsModal: () => any,
@@ -35,15 +36,40 @@ export default class ProductDetails extends React.Component<Props> {
         <DetailsWrapper>
           <img src={src} />
           <Title>{title.toUpperCase()}</Title>
-          <div dangerouslySetInnerHTML={{__html: body_html}} />
+          <p dangerouslySetInnerHTML={{__html: body_html}} />
+
+          <hr />
+          <ProductSubdetail
+            content={this.subdetailContent("Benefits")}
+            title="BENEFITS"
+          />
+          <hr />
+
+          <ProductSubdetail
+            content={this.subdetailContent("Ingredients")}
+            title="INGREDIENTS"
+          />
+          <hr />
+
         </DetailsWrapper>
       </div>
     )
   }
+
+  private subdetailContent = (title) => (
+    this.props.product.tags
+      .split(", ")
+      .filter((tag) => tag.startsWith(`${title} - `))
+      .map((tag) => (
+        <Subdetail key={tag}>
+          {tag.replace(new RegExp(`${title} \- `), "")}
+        </Subdetail>
+      ))
+  )
 }
 
 const DetailsWrapper = styled.div`
-  padding: 20px 30px;
+  padding: 20px 30px 100px;
   text-align: center;
 `
 
@@ -56,6 +82,16 @@ const ProductType = styled.h2`
   font-size: 120%;
   letter-spacing: 2px;
   margin: 0;
+`
+
+const Subdetail = styled.span`
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 80%;
+  margin: 3px 6px 3px 0;
+  padding: 4px 8px;
+  text-transform: uppercase;
 `
 
 const Title = styled.h2`
