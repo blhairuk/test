@@ -1,3 +1,4 @@
+import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 
@@ -104,18 +105,18 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
                       <SizeToggler
                         availableSizes={availableSizes}
+                        sectionBelow={
+                          <small>
+                            <div>{formatMoney(selectedBundlePrice / selectedSize)}/CUP</div>
+                            <div>
+                              {formatMoney(selectedBundlePrice)}/
+                              {frequencySingularTitle(frequencyUnitType, frequency).toUpperCase()}
+                            </div>
+                          </small>
+                        }
                         selectedSize={selectedSize}
                         setSelectedSize={setSelectedSize}
                       />
-
-                      {selectedSize && (
-                        <>
-                          <div>${selectedBundlePrice / selectedSize}/CUP</div>
-                          <div>
-                            ${selectedBundlePrice}/{frequencySingularTitle(frequencyUnitType, frequency).toUpperCase()}
-                          </div>
-                        </>
-                      )}
                     </>
                   )}
                 </FrequencySizeContainer>
