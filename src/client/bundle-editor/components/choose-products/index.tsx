@@ -130,6 +130,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
       ),
     )
 
+    const filteredProducts = activeFilters.length === 0
+      ? bundleProducts
+      : bundleProducts.filter(({tags}) => activeFilters.some((f) => tags.includes(f)))
+
     return (
       <div
         className="one-whole"
@@ -231,12 +235,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             width={[1, 3 / 5]}
           >
             {productTypes.map((productType) => {
-              const renderableProducts = bundleProducts
-                .filter(({product_type, tags}) => (
-                  product_type === productType && (
-                    !activeFilters.length ? true : activeFilters.some((f) => tags.includes(f))
-                  )
-                ))
+              const renderableProducts = filteredProducts.filter(({product_type}) => product_type === productType)
 
               // hide the entire section if there are no products in the filters
               if (renderableProducts.length === 0) { return null }
