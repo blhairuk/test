@@ -8,11 +8,7 @@ import {
 
 import Circle from "../styled/circle"
 import FlexWrapper, {Col} from "../styled/flex-wrapper"
-
-import {
-  BLUE_GREEN,
-  LIGHT_PURPLE,
-} from "../../../colors"
+import GradientBar from "../styled/gradient-bar"
 
 interface Props {
   bundleName: string,
@@ -111,19 +107,6 @@ export default class Progress extends React.Component<Props> {
 const BoxNameInput = styled.input`
   border: 0;
   padding: 0;
-`
-
-interface GradientBarProps {
-  width: number,
-}
-
-const GradientBar = styled.div`
-  background: linear-gradient(to right, ${BLUE_GREEN}, ${LIGHT_PURPLE});
-  height: 12px;
-  margin: 15px 0 10px;
-  transform: scale3d(${({width}: GradientBarProps) => width}, 1, 1);
-  transform-origin: left;
-  transition: transform 300ms ease-out;
 `
 
 const LeftCol = styled.div`
