@@ -5,6 +5,7 @@ import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 
 interface Props {
+  backgroundImage?: string,
   openVideoModal: (youtubeId: string) => () => any,
   title: string,
   youtubeId: string,
@@ -13,22 +14,18 @@ interface Props {
 export default class VideoHero extends React.Component<Props> {
   public render() {
     const {
+      backgroundImage,
       openVideoModal,
       title,
       youtubeId,
     } = this.props
 
     return (
-      <Wrapper imageUrl={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}>
+      <Wrapper imageUrl={backgroundImage}>
         <MobileAdjust>
-          <h1
-            style={{
-              letterSpacing: "1px",
-              marginBottom: "15px",
-            }}
-          >
+          <Title>
             {title}
-          </h1>
+          </Title>
 
           <Button
             color="white"
@@ -52,15 +49,24 @@ const ArrowContainer = styled.span`
 `
 
 const MobileAdjust = styled.div`
-  padding-top: 10px;
+  padding-top: 30px;
   position: relative;
   text-align: center;
-  top: 15px;
+  top: 18px;
 
   @media (min-width: 768px) {
     padding-top: 0;
     position: static;
     top: auto;
+  }
+`
+
+const Title = styled.h1`
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 10px;
   }
 `
 
@@ -78,11 +84,15 @@ const Wrapper = styled.div`
   background-size: cover;
   border-radius: ${borderRadius};
   display: flex;
+  margin-bottom: 20px;
   position: relative;
   justify-content: center;
   z-index: 1;
 
-  @media (min-width: 768px) { height: 200px; }
+  @media (min-width: 768px) {
+    height: 180px;
+    margin-bottom: 10px;
+  }
 
   &::after {
     background: rgba(0, 0, 0, 0.45);

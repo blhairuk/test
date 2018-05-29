@@ -246,12 +246,14 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   ref={this.productTypeRefs[productType]}
                 >
                   <VideoHero
+                    backgroundImage={getPathToImages(`hero-${productType.replace(/\s/g, "-").toLowerCase()}.jpg`)}
                     openVideoModal={openVideoModal}
                     title={pluralizeProductType(productType).toUpperCase()}
                     youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
                   />
                   <Flex
                     flexWrap="wrap"
+                    mb={3}
                     mx={-2}
                   >
                     {renderableProducts.map((product) => (
