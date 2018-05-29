@@ -51,16 +51,15 @@ export default class Product extends React.Component<Props> {
 
     return (
       <div>
-        <img src={src} />
-
-        <div style={{margin: "12px 0"}}>
-          <a
-            href="javascript:void(0)"
-            onClick={openProductDetailsModal(productId)}
-          >
+        <Link
+          href="javascript:void(0)"
+          onClick={openProductDetailsModal(productId)}
+        >
+          <img src={src} />
+          <div style={{margin: "12px 0"}}>
             {productTitleWithoutType(title, product_type)}
-          </a>
-        </div>
+          </div>
+        </Link>
 
         <FlexWrapper justifyContent="center">
           {(() => {
@@ -106,6 +105,13 @@ export default class Product extends React.Component<Props> {
     )
   }
 }
+
+const Link = styled.a`
+  &:focus {
+    box-shadow: none;
+    outline-style: none;
+  }
+`
 
 const Number = styled.div`
   font-size: 220%;
