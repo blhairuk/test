@@ -20,12 +20,6 @@ export default class EnterEmail extends React.Component<Props> {
     this.textInputRef = React.createRef()
   }
 
-  public componentDidUpdate(prevProps) {
-    if (!prevProps.isActiveStep && this.props.isActiveStep) {
-      this.textInputRef.current.focus()
-    }
-  }
-
   public render() {
     const {
       enterEmail,
@@ -43,6 +37,7 @@ export default class EnterEmail extends React.Component<Props> {
 
             <div style={{marginBottom: "20px"}}>
               <TextInput
+                autoFocus={true}
                 innerRef={this.textInputRef}
                 onChange={enterEmail}
                 placeholder="Email"
