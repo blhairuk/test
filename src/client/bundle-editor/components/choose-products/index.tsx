@@ -59,6 +59,20 @@ interface State {
 const FIXED_HEADER_HEIGHT = 102
 
 export default class ChooseProducts extends React.Component<Props, State> {
+  public static getDerivedStateFromProps(props, state) {
+    if (!state.productTypes) {
+      state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))].reverse()
+
+      state.productTypes.forEach((productType) => {
+        state.productTypeRefs[productType] = React.createRef()
+      })
+
+      state.activeProductType = state.productTypes[0]
+    }
+
+    return state
+  }
+
   public state = {
     activeFilters: [],
     activeProductType: null,
@@ -66,19 +80,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     isFiltersModalOpen: false,
     productDetailsModalProductId: null,
     productTypeRefs: {},
-    productTypes: [],
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))].reverse()
-
-    this.state.productTypes.forEach((productType) => {
-      this.state.productTypeRefs[productType] = React.createRef()
-    })
-
-    this.state.activeProductType = this.state.productTypes[0]
+    productTypes: null,
   }
 
   public componentDidMount() {
@@ -379,7 +381,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
     for (const productType of productTypes) {
       const ref = productTypeRefs[productType].current
-      if (pageYOffset + FIXED_HEADER_HEIGHT >= ref.offsetTop) {
+      if (ref && (pageYOffset + FIXED_HEADER_HEIGHT >= ref.offsetTop)) {
         activeProductType = productType
       }
     }
