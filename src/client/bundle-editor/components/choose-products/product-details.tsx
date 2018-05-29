@@ -1,6 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 
+import {productTitleWithoutType} from "../../../../shared/helpers"
 import FlexWrapper from "../styled/flex-wrapper"
 import ProductSubdetail from "./product-subdetail"
 
@@ -35,7 +36,7 @@ export default class ProductDetails extends React.Component<Props> {
 
         <DetailsWrapper>
           <img src={src} />
-          <Title>{title.toUpperCase()}</Title>
+          <Title>{productTitleWithoutType(title, product_type)}</Title>
           <p dangerouslySetInnerHTML={{__html: body_html}} />
 
           <hr />
