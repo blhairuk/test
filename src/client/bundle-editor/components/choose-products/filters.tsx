@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 
-import createProductFilterTag from "../../../helpers/create-product-filter-tag"
+import {createProductFilterTag} from "../../../helpers/filters"
 import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 

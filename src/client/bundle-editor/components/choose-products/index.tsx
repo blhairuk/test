@@ -9,6 +9,7 @@ import {
   pluralizeProductType,
 } from "../../../../shared/helpers"
 
+import {extractNameFromTag} from "../../../helpers/filters"
 import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import StepHeader from "../step-header"
@@ -220,7 +221,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 key="filter"
                 onClick={this.toggleFilter(filter)}
               >
-                {filter} X
+                {extractNameFromTag(filter)} X
               </Filter>
             ))}
           </div>
