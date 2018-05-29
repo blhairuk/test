@@ -4,6 +4,8 @@ import styled from "styled-components"
 import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 
+import {BACKGROUND_BLACK} from "../../../colors"
+
 interface Props {
   backgroundImage?: string,
   openVideoModal: (youtubeId: string) => () => any,
@@ -62,6 +64,7 @@ const MobileAdjust = styled.div`
 `
 
 const Title = styled.h1`
+  color: ${BACKGROUND_BLACK};
   letter-spacing: 1px;
   margin-bottom: 30px;
 
@@ -92,17 +95,5 @@ const Wrapper = styled.div`
   @media (min-width: 768px) {
     height: 180px;
     margin-bottom: 10px;
-  }
-
-  &::after {
-    background: rgba(0, 0, 0, 0.45);
-    border-radius: ${borderRadius};
-    bottom: 0;
-    content: "";
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1;
   }
 `
