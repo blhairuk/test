@@ -3,7 +3,6 @@ import * as React from "react"
 import FlexWrapper from "./styled/flex-wrapper"
 
 import {getPathToImages} from "../../../shared/helpers"
-import {BACKGROUND_BLACK} from "../../colors"
 
 interface Props {
   centerSection?: React.ReactNode,
@@ -58,6 +57,5 @@ export default class StepHeader extends React.Component<Props> {
 }
 
 const Wrapper = FlexWrapper.extend`
-  background-color: ${BACKGROUND_BLACK};
   padding: 15px 0;
 `

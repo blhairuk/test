@@ -14,6 +14,7 @@ import Modal from "../../../helpers/modal"
 import updateStateKeys from "../../../helpers/update-state-keys"
 import StepHeader from "../step-header"
 import Button from "../styled/button"
+import GradientBar from "../styled/gradient-bar";
 import Filters from "./filters"
 import Product from "./product"
 import Progress from "./progress"
@@ -145,70 +146,78 @@ export default class ChooseProducts extends React.Component<Props, State> {
           style={{marginBottom: "10px"}}
         >
           <StickyNode innerZ={2}>
-            <StepHeader
-              centerSection={
-                <div>
-                  <div className="medium-up--hide">
-                    <div>{bundleName.toUpperCase()}</div>
-                    <div>
-                      {frequencyTitle(frequencyUnitType, selectedFrequency)}
-                      <span>&nbsp;&bull;&nbsp;</span>
-                      ${selectedBundlePrice}
-                      <span>&nbsp;&bull;&nbsp;</span>
-                      {selectedVariantIds.length} of {selectedSize}
+            <div style={{backgroundColor: BACKGROUND_BLACK}}>
+              <StepHeader
+                centerSection={
+                  <div>
+                    <div className="medium-up--hide">
+                      <div>{bundleName.toUpperCase()}</div>
+                      <div>
+                        {frequencyTitle(frequencyUnitType, selectedFrequency)}
+                        <span>&nbsp;&bull;&nbsp;</span>
+                        ${selectedBundlePrice}
+                        <span>&nbsp;&bull;&nbsp;</span>
+                        {selectedVariantIds.length} of {selectedSize}
+                      </div>
+                    </div>
+                    <div className="hide medium-up--show">
+                      <h1 style={{fontSize: "160%", marginBottom: "0"}}>FILL YOUR BOX</h1>
                     </div>
                   </div>
-                  <div className="hide medium-up--show">
-                    <h1 style={{fontSize: "160%", marginBottom: "0"}}>FILL YOUR BOX</h1>
-                  </div>
-                </div>
-              }
-              rightSection={
-                <a
-                  href="javascript:void(0)"
-                  onClick={this.handleFiltersModalOpen}
-                  style={{display: "block"}}
-                >
-                  <Flex alignItems="center">
-                    <img src={getPathToImages("icon-filter.svg")} />
-                    <Box className="hide medium-up--show">
-                      <small>FILTER</small>
-                    </Box>
-                  </Flex>
-                </a>
-              }
-              stepPrev={stepPrev}
-            />
-
-            <div
-              style={{
-                backgroundColor: BACKGROUND_BLACK,
-                overflowX: "auto",
-                padding: "10px 0",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {productTypes.map((productType) => (
-                <span
-                  key={productType}
-                  style={{
-                    paddingRight: "10px",
-                  }}
-                >
+                }
+                rightSection={
                   <a
                     href="javascript:void(0)"
-                    onClick={this.handleProductTypeClick(productType)}
+                    onClick={this.handleFiltersModalOpen}
+                    style={{display: "block"}}
+                  >
+                    <Flex alignItems="center">
+                      <img src={getPathToImages("icon-filter.svg")} />
+                      <Box className="hide medium-up--show">
+                        <small>FILTER</small>
+                      </Box>
+                    </Flex>
+                  </a>
+                }
+                stepPrev={stepPrev}
+              />
+
+              <div className="medium-up--hide">
+                <GradientBar
+                  height={8}
+                  width={selectedVariantIds.length / selectedSize}
+                />
+              </div>
+
+              <div
+                style={{
+                  overflowX: "auto",
+                  padding: "10px 0",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {productTypes.map((productType) => (
+                  <span
+                    key={productType}
                     style={{
-                      borderBottomStyle: "solid",
-                      borderBottomWidth: "3px",
-                      borderColor: activeProductType === productType ? "orange" : "transparent",
-                      padding: "5px",
+                      paddingRight: "10px",
                     }}
                   >
-                    {pluralizeProductType(productType).toUpperCase()}
-                  </a>
-                </span>
-              ))}
+                    <a
+                      href="javascript:void(0)"
+                      onClick={this.handleProductTypeClick(productType)}
+                      style={{
+                        borderBottomStyle: "solid",
+                        borderBottomWidth: "3px",
+                        borderColor: activeProductType === productType ? "orange" : "transparent",
+                        padding: "5px",
+                      }}
+                    >
+                      {pluralizeProductType(productType).toUpperCase()}
+                    </a>
+                  </span>
+                ))}
+              </div>
             </div>
           </StickyNode>
         </div>

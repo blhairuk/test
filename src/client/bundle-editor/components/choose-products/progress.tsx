@@ -51,7 +51,9 @@ export default class Progress extends React.Component<Props> {
           </FlexWrapper>
         </TopWrapper>
 
-        <GradientBar width={(numSelected / selectedSize) || 0} />
+        <div style={{margin: "15px 0 10px"}}>
+          <GradientBar width={(numSelected / selectedSize) || 0} />
+        </div>
 
         {selectedVariantIds.length > 0 ? (
           <>
