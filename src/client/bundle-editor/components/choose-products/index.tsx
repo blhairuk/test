@@ -52,6 +52,7 @@ interface State {
   isActiveStep: boolean,
   isFiltersModalOpen: boolean,
   productDetailsModalProductId: number,
+  productTypeRefs: {string?: React.RefObject<HTMLElement>},
   productTypes: string[],
 }
 
@@ -64,10 +65,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
     isActiveStep: false,
     isFiltersModalOpen: false,
     productDetailsModalProductId: null,
+    productTypeRefs: {},
     productTypes: [],
   }
-
-  private productTypeRefs = {}
 
   constructor(props) {
     super(props)
@@ -75,7 +75,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     this.state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))].reverse()
 
     this.state.productTypes.forEach((productType) => {
-      this.productTypeRefs[productType] = React.createRef()
+      this.state.productTypeRefs[productType] = React.createRef()
     })
 
     this.state.activeProductType = this.state.productTypes[0]
@@ -116,6 +116,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       activeFilters,
       activeProductType,
       isFiltersModalOpen,
+      productTypeRefs,
       productTypes,
     } = this.state
 
@@ -243,7 +244,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
               return (
                 <div
                   key={productType}
-                  ref={this.productTypeRefs[productType]}
+                  ref={productTypeRefs[productType]}
                 >
                   <VideoHero
                     backgroundImage={getPathToImages(`hero-${productType.replace(/\s/g, "-").toLowerCase()}.jpg`)}
@@ -358,7 +359,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
   }
 
   private handleProductTypeClick = (productType) => () => {
-    const ref = this.productTypeRefs[productType].current
+    const ref = this.state.productTypeRefs[productType].current
 
     window.scrollTo({
       behavior: "smooth",
@@ -368,6 +369,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
   private handleScroll = () => {
     const {
+      productTypeRefs,
       productTypes,
     } = this.state
 
@@ -376,7 +378,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     let activeProductType = productTypes[0]
 
     for (const productType of productTypes) {
-      const ref = this.productTypeRefs[productType].current
+      const ref = productTypeRefs[productType].current
       if (pageYOffset + FIXED_HEADER_HEIGHT >= ref.offsetTop) {
         activeProductType = productType
       }
