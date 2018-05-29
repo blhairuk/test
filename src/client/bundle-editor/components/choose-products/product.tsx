@@ -79,24 +79,17 @@ export default class Product extends React.Component<Props> {
 
             return (
               <>
-                <QuantityButton
-                  color="black"
-                  onClick={removeFunc(productId, variantId)}
-                  type="button"
-                >
-                  -
-                </QuantityButton>
+                <QuantityWrapper onClick={removeFunc(productId, variantId)}>
+                  <QuantityButton>-</QuantityButton>
+                </QuantityWrapper>
 
                 <Number>
                   {numSelected}
                 </Number>
 
-                <QuantityButton
-                  href="javascript:void(0)"
-                  onClick={addFunc(productId, variantId)}
-                >
-                  +
-                </QuantityButton>
+                <QuantityWrapper onClick={addFunc(productId, variantId)}>
+                  <QuantityButton>+</QuantityButton>
+                </QuantityWrapper>
               </>
             )
           })()}
@@ -121,12 +114,22 @@ const Number = styled.div`
   padding: 0 10px;
 `
 
-const QuantityButton = styled.a`
+const QuantityButton = styled.span`
+  font-size: 30px;
+  line-height: 20px;
+`
+
+const QuantityWrapper = styled.a.attrs({
+  href: "javascript:void(0)",
+})`
   background-color: #000;
-  border-radius: 10px;
+  border-radius: 12px;
   color: #fff;
-  font-size: 24px;
-  line-height: 24px;
-  padding: 0;
-  width: 20px;
+  height: 24px;
+  width: 24px;
+
+  &:focus {
+    box-shadow: none;
+    outline-style: none;
+  }
 `
