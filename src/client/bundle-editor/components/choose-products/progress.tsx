@@ -128,9 +128,12 @@ export default class Progress extends React.Component<Props> {
         ) : (
           <div
             className="text-center"
-            style={{padding: "10px 20px"}}
+            style={{
+              opacity: 0.5,
+              padding: "10px 20px",
+            }}
           >
-            <em>Your box is empty.</em>
+            <small><em>No products selected.</em></small>
           </div>
         )}
       </Wrapper>
