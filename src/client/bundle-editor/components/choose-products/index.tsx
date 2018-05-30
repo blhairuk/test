@@ -250,7 +250,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             {activeFilters.map((filter) => (
               <Filter
                 color="yellow"
-                key="filter"
+                key={filter}
                 onClick={this.toggleFilter(filter)}
               >
                 {extractNameFromTag(filter)} X
@@ -267,7 +267,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             px={2}
             width={[1, 3 / 5]}
           >
-            {productTypes.map((productType) => {
+            {filteredProducts.length > 0 ? productTypes.map((productType) => {
               const renderableProducts = filteredProducts.filter(({product_type}) => product_type === productType)
 
               // hide the entire section if there are no products in the filters
@@ -314,7 +314,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   </Flex>
                 </div>
               )
-            })}
+            }) : (
+              <div>No products found!</div>
+            )}
           </Box>
 
           <Box
