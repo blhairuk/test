@@ -5,6 +5,7 @@ import styled from "styled-components"
 import {
   createIdQuantities,
   findProductByVariantId,
+  productTitleWithoutType,
 } from "../../../../shared/helpers"
 
 import Circle from "../styled/circle"
@@ -111,7 +112,7 @@ export default class Progress extends React.Component<Props> {
                       alignItems="center"
                       justifyContent="space-between"
                     >
-                      <small>{title}</small>
+                      <small>{productTitleWithoutType(title, product_type)}</small>
                       <XButton
                         href="javascript:void(0)"
                         onClick={removeFn(productId, variantId, quantity)}

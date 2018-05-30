@@ -61,6 +61,7 @@ export const pluralizeProductType = (type: string) => type.endsWith("s") ? type 
 
 export const productTitleWithoutType = (title, type) => {
   switch (type) {
+    case "Booster":
     case "Overnight Oats":
     case "Smoothie":
       return title.replace(new RegExp(` ${type}$`), "")
