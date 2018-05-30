@@ -13,8 +13,7 @@ interface Props {
   product: ShopifyProduct,
   removeAddOnId: (productId: number, variantId: number) => () => any,
   removeVariantId: (productId: number, variantId: number) => () => any,
-  selectedAddOnIds: number[],
-  selectedVariantIds: number[],
+  selectedIds: number[],
 }
 
 export default class Product extends React.Component<Props> {
@@ -27,8 +26,7 @@ export default class Product extends React.Component<Props> {
       product,
       removeAddOnId,
       removeVariantId,
-      selectedAddOnIds,
-      selectedVariantIds,
+      selectedIds,
     } = this.props
 
     const {
@@ -44,7 +42,6 @@ export default class Product extends React.Component<Props> {
       price,
     } = variants[0]
 
-    const selectedIds = isAddOn ? selectedAddOnIds : selectedVariantIds
     const numSelected = selectedIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
     const addFunc = isAddOn ? addAddOnId : addVariantId
     const removeFunc = isAddOn ? removeAddOnId : removeVariantId

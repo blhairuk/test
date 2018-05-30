@@ -12,11 +12,13 @@ import GradientBar from "../styled/gradient-bar"
 
 interface Props {
   bundleName: string,
-  bundleProducts: ShopifyProduct[],
+  products: ShopifyProduct[],
+  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
   removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  selectedIds: number[],
   selectedProductIds: number[],
   selectedSize: number,
-  selectedVariantIds: number[],
+  showProgress: boolean,
   updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
 }
 
@@ -24,15 +26,17 @@ export default class Progress extends React.Component<Props> {
   public render() {
     const {
       bundleName,
-      bundleProducts,
+      products,
+      removeAddOnId,
       removeVariantId,
-      selectedVariantIds,
+      selectedIds,
       selectedSize,
+      showProgress,
       updateBundleName,
     } = this.props
 
-    const numSelected = selectedVariantIds.length
-    const idQuantities = createIdQuantities(selectedVariantIds)
+    const numSelected = selectedIds.length
+    const idQuantities = createIdQuantities(selectedIds)
 
     return (
       <Wrapper>
@@ -52,22 +56,26 @@ export default class Progress extends React.Component<Props> {
               />
             </Box>
             <Box>
-              <small>
-                {numSelected} of {selectedSize}
-              </small>
+              {showProgress ? (
+                <small>{numSelected} of {selectedSize}</small>
+              ) : (
+                <small>{numSelected} items</small>
+              )}
             </Box>
           </Flex>
         </Box>
 
-        <div style={{margin: "15px 0 10px"}}>
-          <GradientBar width={(numSelected / selectedSize) || 0} />
-        </div>
+        {showProgress && (
+          <div style={{margin: "15px 0 10px"}}>
+            <GradientBar width={(numSelected / selectedSize) || 0} />
+          </div>
+        )}
 
-        {selectedVariantIds.length > 0 ? (
+        {selectedIds.length > 0 ? (
           <>
             {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
               const variantId = parseInt(variantIdS, 10)
-              const product = findProductByVariantId(bundleProducts, variantId)
+              const product = findProductByVariantId(products, variantId)
 
               // product will not found for add-on items
               if (!product) { return null }
@@ -75,8 +83,11 @@ export default class Progress extends React.Component<Props> {
               const {
                 id: productId,
                 image: {src},
+                product_type,
                 title,
               } = product
+
+              const removeFn = product_type === "Booster" ? removeAddOnId : removeVariantId
 
               return (
                 <Flex
@@ -103,7 +114,7 @@ export default class Progress extends React.Component<Props> {
                       <small>{title}</small>
                       <XButton
                         href="javascript:void(0)"
-                        onClick={removeVariantId(productId, variantId, quantity)}
+                        onClick={removeFn(productId, variantId, quantity)}
                       >
                         X
                       </XButton>

@@ -29,22 +29,24 @@ interface Props {
   addVariantId: (productId: number, variantId: number) => () => any,
   allProducts: ShopifyProduct[],
   bundleName: string,
-  bundleProducts: ShopifyProduct[],
   bundleProductMetafields: ShopifyProductMetafield[],
   frequencyUnitType: string,
   isActiveStep: boolean,
+  nextButtonTitle: string,
   openProductDetailsModal: (productId: number) => any,
   openVideoModal: (youtubeId: string) => () => any,
+  productChoices: ShopifyProduct[],
   removeAddOnId: (productId: number, variantId: number) => () => any,
   removeVariantId: (productId: number, variantId: number) => () => any,
-  selectedAddOnIds: number[],
   selectedBundlePrice: number,
   selectedFrequency: number,
+  selectedIds: number[],
   selectedProductIds: number[],
   selectedSize: number,
-  selectedVariantIds: number[],
+  showProgress: boolean,
   stepNext: () => any,
   stepPrev: () => any,
+  title: string,
   updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
 }
 
@@ -63,7 +65,7 @@ const FIXED_HEADER_HEIGHT = 102
 export default class ChooseProducts extends React.Component<Props, State> {
   public static getDerivedStateFromProps(props, state) {
     if (!state.productTypes) {
-      state.productTypes = [...new Set(props.bundleProducts.map((p) => p.product_type))].reverse()
+      state.productTypes = [...new Set(props.productChoices.map((p) => p.product_type))].reverse()
 
       state.productTypes.forEach((productType) => {
         state.productTypeRefs[productType] = React.createRef()
@@ -98,21 +100,23 @@ export default class ChooseProducts extends React.Component<Props, State> {
       addAddOnId,
       addVariantId,
       bundleName,
-      bundleProducts,
       bundleProductMetafields,
       frequencyUnitType,
+      nextButtonTitle,
       openProductDetailsModal,
       openVideoModal,
+      productChoices,
       removeAddOnId,
       removeVariantId,
-      selectedAddOnIds,
       selectedBundlePrice,
       selectedFrequency,
+      selectedIds,
       selectedProductIds,
       selectedSize,
-      selectedVariantIds,
+      showProgress,
       stepNext,
       stepPrev,
+      title,
       updateBundleName,
     } = this.props
 
@@ -133,8 +137,8 @@ export default class ChooseProducts extends React.Component<Props, State> {
     )
 
     const filteredProducts = activeFilters.length === 0
-      ? bundleProducts
-      : bundleProducts.filter(({tags}) => activeFilters.some((f) => tags.includes(f)))
+      ? productChoices
+      : productChoices.filter(({tags}) => activeFilters.some((f) => tags.includes(f)))
 
     return (
       <div
@@ -157,11 +161,15 @@ export default class ChooseProducts extends React.Component<Props, State> {
                         <span>&nbsp;&bull;&nbsp;</span>
                         ${selectedBundlePrice}
                         <span>&nbsp;&bull;&nbsp;</span>
-                        {selectedVariantIds.length} of {selectedSize}
+                        {showProgress ? (
+                          <span>{selectedIds.length} of {selectedSize}</span>
+                        ) : (
+                          <span>{selectedIds.length} items</span>
+                        )}
                       </div>
                     </div>
                     <div className="show-for-medium">
-                      <h1 style={{fontSize: "160%", marginBottom: "0"}}>FILL YOUR BOX</h1>
+                      <h1 style={{fontSize: "160%", margin: "0"}}>{title}</h1>
                     </div>
                   </div>
                 }
@@ -182,42 +190,46 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 stepPrev={stepPrev}
               />
 
-              <div className="hide-for-medium">
-                <GradientBar
-                  height={8}
-                  width={selectedVariantIds.length / selectedSize}
-                />
-              </div>
+              {showProgress && (
+                <div className="hide-for-medium">
+                  <GradientBar
+                    height={8}
+                    width={selectedIds.length / selectedSize}
+                  />
+                </div>
+              )}
 
-              <div
-                style={{
-                  overflowX: "auto",
-                  padding: "10px 0",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {productTypes.map((productType) => (
-                  <span
-                    key={productType}
-                    style={{
-                      paddingRight: "10px",
-                    }}
-                  >
-                    <a
-                      href="javascript:void(0)"
-                      onClick={this.handleProductTypeClick(productType)}
+              {showProgress && (
+                <div
+                  style={{
+                    overflowX: "auto",
+                    padding: "10px 0",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {productTypes.map((productType) => (
+                    <span
+                      key={productType}
                       style={{
-                        borderBottomStyle: "solid",
-                        borderBottomWidth: "3px",
-                        borderColor: activeProductType === productType ? "orange" : "transparent",
-                        padding: "5px",
+                        paddingRight: "10px",
                       }}
                     >
-                      {pluralizeProductType(productType).toUpperCase()}
-                    </a>
-                  </span>
-                ))}
-              </div>
+                      <a
+                        href="javascript:void(0)"
+                        onClick={this.handleProductTypeClick(productType)}
+                        style={{
+                          borderBottomStyle: "solid",
+                          borderBottomWidth: "3px",
+                          borderColor: activeProductType === productType ? "orange" : "transparent",
+                          padding: "5px",
+                        }}
+                      >
+                        {pluralizeProductType(productType).toUpperCase()}
+                      </a>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </StickyNode>
         </div>
@@ -279,13 +291,12 @@ export default class ChooseProducts extends React.Component<Props, State> {
                         <Product
                           addAddOnId={addAddOnId}
                           addVariantId={addVariantId}
-                          isAddOn={false}
+                          isAddOn={productType === "Booster"}
                           openProductDetailsModal={openProductDetailsModal}
                           product={product}
                           removeAddOnId={removeAddOnId}
                           removeVariantId={removeVariantId}
-                          selectedAddOnIds={selectedAddOnIds}
-                          selectedVariantIds={selectedVariantIds}
+                          selectedIds={selectedIds}
                         />
                       </Box>
                     ))}
@@ -303,11 +314,13 @@ export default class ChooseProducts extends React.Component<Props, State> {
               <div className="show-for-medium">
                 <Progress
                   bundleName={bundleName}
-                  bundleProducts={bundleProducts}
+                  products={productChoices}
+                  removeAddOnId={removeAddOnId}
                   removeVariantId={removeVariantId}
                   selectedProductIds={selectedProductIds}
-                  selectedVariantIds={selectedVariantIds}
+                  selectedIds={selectedIds}
                   selectedSize={selectedSize}
+                  showProgress={showProgress}
                   updateBundleName={updateBundleName}
                 />
               </div>
@@ -318,11 +331,11 @@ export default class ChooseProducts extends React.Component<Props, State> {
               >
                 <Button
                   color="purple"
-                  disabled={selectedVariantIds.length < selectedSize}
+                  disabled={showProgress && selectedIds.length < selectedSize}
                   onClick={stepNext}
                   type="button"
                 >
-                  Next
+                  {nextButtonTitle}
                 </Button>
               </div>
             </StickyNode>

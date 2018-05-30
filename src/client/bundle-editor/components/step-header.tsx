@@ -37,7 +37,7 @@ export default class StepHeader extends React.Component<Props> {
             <h1
               style={{
                 fontSize: "170%",
-                marginBottom: "0",
+                margin: "0",
               }}
             >
               {title}

@@ -9,7 +9,6 @@ import bindStateHelper, {Helper as StateHelper} from "./app/state-helper"
 import bindStepsHelper, {Helper as StepsHelper} from "./app/steps-helper"
 
 import BundleFullModal from "./components/bundle-full-modal"
-import ChooseAddOns from "./components/choose-add-ons"
 import ChooseFrequencySize from "./components/choose-frequency-size"
 import ChooseProducts from "./components/choose-products"
 import ProductDetails from "./components/choose-products/product-details"
@@ -227,22 +226,25 @@ export default class App extends React.Component<Props, State> {
                     addVariantId={this.stateHelper.addVariantId}
                     allProducts={allProducts}
                     bundleName={bundleName}
-                    bundleProducts={bundleProducts}
                     bundleProductMetafields={bundleProductMetafields}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 3}
+                    key="products"
+                    nextButtonTitle="NEXT"
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
+                    productChoices={bundleProducts}
                     removeAddOnId={this.stateHelper.removeAddOnId}
                     removeVariantId={this.stateHelper.removeVariantId}
-                    selectedAddOnIds={selectedAddOnIds}
                     selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
+                    selectedIds={selectedVariantIds}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
-                    selectedVariantIds={selectedVariantIds}
+                    showProgress={true}
                     stepNext={this.stepsHelper.stepNext}
                     stepPrev={this.stepsHelper.stepPrev}
+                    title="FILL YOUR BOX"
                     updateBundleName={this.stateHelper.updateBundleName}
                   />
                 </Step>
@@ -251,21 +253,31 @@ export default class App extends React.Component<Props, State> {
               case 4:
               return (
                 <Step align="top">
-                  <ChooseAddOns
+                  <ChooseProducts
                     addAddOnId={this.stateHelper.addAddOnId}
                     addVariantId={this.stateHelper.addVariantId}
-                    bundleAddOns={bundleAddOns}
+                    allProducts={allProducts}
+                    bundleName={bundleName}
                     bundleProductMetafields={bundleProductMetafields}
-                    bundleProducts={bundleProducts}
+                    frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 4}
+                    key="add-ons"
+                    nextButtonTitle="REVIEW MY BOX"
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
+                    productChoices={bundleAddOns}
                     removeAddOnId={this.stateHelper.removeAddOnId}
                     removeVariantId={this.stateHelper.removeVariantId}
-                    selectedAddOnIds={selectedAddOnIds}
-                    selectedVariantIds={selectedVariantIds}
+                    selectedBundlePrice={selectedBundlePrice}
+                    selectedFrequency={selectedFrequency}
+                    selectedIds={selectedAddOnIds}
+                    selectedProductIds={selectedProductIds}
+                    selectedSize={selectedSize}
+                    showProgress={false}
                     stepNext={this.stepsHelper.stepNext}
                     stepPrev={this.stepsHelper.stepPrev}
+                    title="BOOST YOUR BOX"
+                    updateBundleName={this.stateHelper.updateBundleName}
                   />
                 </Step>
               )
