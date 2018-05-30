@@ -85,7 +85,7 @@ export default class Product extends React.Component<Props> {
                 </Number>
 
                 <QuantityWrapper onClick={addFunc(productId, variantId)}>
-                  <QuantityButton>+</QuantityButton>
+                  <QuantityButton style={{top: "1px"}}>+</QuantityButton>
                 </QuantityWrapper>
               </>
             )
@@ -112,8 +112,9 @@ const Number = styled.div`
 `
 
 const QuantityButton = styled.span`
-  font-size: 30px;
+  font-size: 24px;
   line-height: 20px;
+  position: relative;
 `
 
 const QuantityWrapper = styled.a.attrs({
