@@ -15,7 +15,15 @@ interface Props {
   stepNext: () => any,
 }
 
-export default class BundleFullModal extends React.Component<Props> {
+interface State {
+  didUpgrade: boolean,
+}
+
+export default class BundleFullModal extends React.Component<Props, State> {
+  public state = {
+    didUpgrade: false,
+  }
+
   public render() {
     const {
       availableSizes,
@@ -24,6 +32,10 @@ export default class BundleFullModal extends React.Component<Props> {
       selectedBundlePrice,
       selectedSize,
     } = this.props
+
+    const {
+      didUpgrade,
+    } = this.state
 
     const selectedPricePerCup = selectedBundlePrice / selectedSize
 
@@ -41,46 +53,60 @@ export default class BundleFullModal extends React.Component<Props> {
         </XButton>
 
         <img src={getPathToImages("box-full.png")} />
-        <Title>YOUR BOX IS FULL!</Title>
-
-        {selectedSize !== availableSizes[availableSizes.length - 1] ? (
+        {!didUpgrade ? (
           <>
-            <p>You did it! But want even more deliciousness in your life? Try upgrading!</p>
-            {availableUpgradeVariants.map(({id, option1, price: priceS}) => {
-              const price = parseFloat(priceS)
-              const size = parseInt(option1, 10)
-              const pricePerCup = price / size
+            <Title>YOUR BOX IS FULL!</Title>
 
-              return (
-                <div key={id}>
+            {selectedSize !== availableSizes[availableSizes.length - 1] ? (
+              <>
+                <p>You did it! But want even more deliciousness in your life? Try upgrading!</p>
+                {availableUpgradeVariants.map(({id, option1, price: priceS}) => {
+                  const price = parseFloat(priceS)
+                  const size = parseInt(option1, 10)
+                  const pricePerCup = price / size
+
+                  return (
+                    <div key={id}>
+                      <Option
+                        onClick={this.setSelectedSize(size)}
+                      >
+                        <div>Upgrade to ${option1}</div>
+                        <div><em>Save ${selectedPricePerCup - pricePerCup} per cup</em></div>
+                      </Option>
+                    </div>
+                  )
+                })}
+                <div>
                   <Option
-                    onClick={this.setSelectedSize(size)}
+                    color="white"
+                    onClick={this.handleNextStepClick}
                   >
-                    <div>Upgrade to ${option1}</div>
-                    <div><em>Save ${selectedPricePerCup - pricePerCup} per cup</em></div>
+                    NO THANKS! GO TO NEXT STEP
                   </Option>
                 </div>
-              )
-            })}
-            <div>
+              </>
+            ) : (
+              <>
+                <Option
+                  color="white"
+                  onClick={this.handleNextStepClick}
+                >
+                  GO TO NEXT STEP
+                </Option>
+              </>
+            )}
+          </>) : (
+            <>
+              <Title>YOUR BOX JUST GOT BIGGER!</Title>
+              <p>Now add some more products to it.</p>
               <Option
                 color="white"
-                onClick={this.handleNextStepClick}
+                onClick={this.props.closeModal}
               >
-                NO THANKS! GO TO NEXT STEP
+                GOT IT
               </Option>
-            </div>
-          </>
-        ) : (
-          <>
-            <Option
-              color="white"
-              onClick={this.handleNextStepClick}
-            >
-              GO TO NEXT STEP
-            </Option>
-          </>
-        )}
+            </>
+          )}
       </Wrapper>
     )
   }
@@ -91,7 +117,7 @@ export default class BundleFullModal extends React.Component<Props> {
   }
 
   private setSelectedSize = (size) => () => {
-    this.props.closeModal()
+    this.setState({didUpgrade: true})
     this.props.setSelectedSize(size)()
   }
 }
