@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -7,7 +8,6 @@ import {
 } from "../../../../shared/helpers"
 
 import Circle from "../styled/circle"
-import FlexWrapper, {Col} from "../styled/flex-wrapper"
 import GradientBar from "../styled/gradient-bar"
 
 interface Props {
@@ -36,20 +36,28 @@ export default class Progress extends React.Component<Props> {
 
     return (
       <Wrapper>
-        <TopWrapper>
-          <FlexWrapper>
-            <Col>
+        <Box
+          pt={2}
+          px={2}
+        >
+          <Flex
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box width={3 / 4}>
               <BoxNameInput
                 onChange={updateBundleName}
                 type="text"
                 value={bundleName}
               />
-            </Col>
-            <NumSelectedCol>
-              {numSelected} of {selectedSize}
-            </NumSelectedCol>
-          </FlexWrapper>
-        </TopWrapper>
+            </Box>
+            <Box>
+              <small>
+                {numSelected} of {selectedSize}
+              </small>
+            </Box>
+          </Flex>
+        </Box>
 
         <div style={{margin: "15px 0 10px"}}>
           <GradientBar width={(numSelected / selectedSize) || 0} />
@@ -71,25 +79,37 @@ export default class Progress extends React.Component<Props> {
               } = product
 
               return (
-                <FlexWrapper key={productId}>
-                  <LeftCol>
+                <Flex
+                  alignItems="center"
+                  key={productId}
+                >
+                  <Box
+                    p={2}
+                    width={1 / 4}
+                    style={{position: "relative"}}
+                  >
                     {quantity > 1 && <QuantityWrapper size={20}>{quantity}</QuantityWrapper>}
                     <img src={src} />
-                  </LeftCol>
+                  </Box>
 
-                  <Col>
-                    <small>{title}</small>
-                  </Col>
-
-                  <RightCol className="text-center">
-                    <XButton
-                      href="javascript:void(0)"
-                      onClick={removeVariantId(productId, variantId, quantity)}
+                  <Box
+                    flex="1"
+                    p={1}
+                  >
+                    <Flex
+                      alignItems="center"
+                      justifyContent="space-between"
                     >
-                      X
-                    </XButton>
-                  </RightCol>
-                </FlexWrapper>
+                      <small>{title}</small>
+                      <XButton
+                        href="javascript:void(0)"
+                        onClick={removeVariantId(productId, variantId, quantity)}
+                      >
+                        X
+                      </XButton>
+                    </Flex>
+                  </Box>
+                </Flex>
               )
             })}
           </>
@@ -111,29 +131,9 @@ const BoxNameInput = styled.input`
   padding: 0;
 `
 
-const LeftCol = styled.div`
-  padding: 8px 12px;
-  position: relative;
-  width: 25%;
-`
-
-const NumSelectedCol = styled.div`
-  font-weight: bold;
-  text-align: center;
-  width: 30%;
-`
-
-const RightCol = styled.div`
-  width: 11%;
-`
-
 const QuantityWrapper = Circle.extend`
   right: 10px;
   top: 7px;
-`
-
-const TopWrapper = styled.div`
-  padding: 10px 15px 0;
 `
 
 const Wrapper = styled.div`
