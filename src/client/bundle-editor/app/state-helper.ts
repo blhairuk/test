@@ -5,12 +5,12 @@ import {createBundleName} from "../../../shared/helpers"
 import {getBundlePrice} from "../../helpers/bundle"
 
 export interface Helper {
-  addAddOnId: (productId: number, variantId: any) => () => any,
-  addVariantId: (productId: number, variantId: any) => () => any,
+  addAddOnId: (productId: number, variantId: number) => () => any,
+  addVariantId: (productId: number, variantId: number) => () => any,
   enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
   enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
-  removeAddOnId: (productId: number, variantId: any) => () => any,
-  removeVariantId: (productId: number, variantId: any) => () => any,
+  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
   setSelectedFrequency: (frequency: number) => () => any,
   setSelectedSize: (size: number) => () => any,
   updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
@@ -20,7 +20,7 @@ export default (app: App): Helper => ({
   addAddOnId: (productId, variantId) => () => {
     const {selectedSize} = app.state
 
-    let {
+    const {
       selectedAddOnIds,
       selectedProductIds,
     } = app.state
@@ -29,8 +29,8 @@ export default (app: App): Helper => ({
       return alert("You must select a size first.")
     }
 
-    selectedAddOnIds = selectedAddOnIds.concat([...Array(selectedSize)].map(() => variantId))
-    selectedProductIds = selectedProductIds.concat([...Array(selectedSize)].map(() => productId))
+    selectedProductIds.push(productId)
+    selectedAddOnIds.push(variantId)
 
     app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
   },
@@ -67,14 +67,13 @@ export default (app: App): Helper => ({
     }))
   },
 
-  removeAddOnId: (productId, variantId) => () => {
+  removeAddOnId: (productId, variantId, quantity = 1) => () => {
     const {
       selectedAddOnIds,
       selectedProductIds,
-      selectedSize,
     } = app.state
 
-    for (let i = 0; i < (selectedSize || 1); ++i) {
+    for (let i = 0; i < quantity; ++i) {
       selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
       selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
     }

@@ -11,8 +11,8 @@ interface Props {
   isAddOn: boolean,
   openProductDetailsModal: (productId: number) => any,
   product: ShopifyProduct,
-  removeAddOnId: (productId: number, variantId: number) => () => any,
-  removeVariantId: (productId: number, variantId: number) => () => any,
+  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
   selectedIds: number[],
 }
 
