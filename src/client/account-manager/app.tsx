@@ -1,3 +1,4 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import {
   Route,
@@ -43,17 +44,17 @@ export default class App extends React.Component<Props> {
 
     return (
       <Router {...routerProps}>
-        <div className="grid grid--uniform">
-          <div className="grid__item medium-up--one-quarter">
+        <Flex>
+          <Box width={[1, 1 / 4]}>
             <h3>{first_name} {last_name}</h3>
             <ul>
               <li><a href={this.href("/schedule")}>Delivery schedule</a></li>
               <li><a href={this.href("/subscriptions")}>Subscriptions</a></li>
               <li><a href={this.href("/billing")}>Billing information</a></li>
             </ul>
-          </div>
+          </Box>
 
-          <div className="grid__item medium-up--three-quarters">
+          <Box width={[1, 3 / 4]}>
             <Switch>
               <Route
                 path={path("/billing")}
@@ -68,8 +69,8 @@ export default class App extends React.Component<Props> {
                 render={() => <Subscriptions {...routeProps} />}
               />
             </Switch>
-          </div>
-        </div>
+          </Box>
+        </Flex>
       </Router>
     )
   }
