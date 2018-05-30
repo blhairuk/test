@@ -1,3 +1,4 @@
+import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
@@ -5,6 +6,7 @@ import styled from "styled-components"
 import {
   createIdQuantities,
   findProductByVariantId,
+  frequencyTitle,
   productTitleWithoutType,
 } from "../../../../shared/helpers"
 
@@ -13,9 +15,12 @@ import GradientBar from "../styled/gradient-bar"
 
 interface Props {
   bundleName: string,
+  frequencyUnitType: string,
   products: ShopifyProduct[],
   removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
   removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  selectedBundlePrice: number,
+  selectedFrequency: number,
   selectedIds: number[],
   selectedProductIds: number[],
   selectedSize: number,
@@ -27,9 +32,12 @@ export default class Progress extends React.Component<Props> {
   public render() {
     const {
       bundleName,
+      frequencyUnitType,
       products,
       removeAddOnId,
       removeVariantId,
+      selectedBundlePrice,
+      selectedFrequency,
       selectedIds,
       selectedSize,
       showProgress,
@@ -55,6 +63,11 @@ export default class Progress extends React.Component<Props> {
                 type="text"
                 value={bundleName}
               />
+              <small>
+                {frequencyTitle(frequencyUnitType, selectedFrequency)}
+                <span> &bull; </span>
+                {formatMoney(selectedBundlePrice)}
+              </small>
             </Box>
             <Box>
               {showProgress ? (

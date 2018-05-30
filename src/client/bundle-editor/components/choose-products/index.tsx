@@ -327,9 +327,12 @@ export default class ChooseProducts extends React.Component<Props, State> {
               <div className="show-for-medium">
                 <Progress
                   bundleName={bundleName}
+                  frequencyUnitType={frequencyUnitType}
                   products={productChoices}
                   removeAddOnId={removeAddOnId}
                   removeVariantId={removeVariantId}
+                  selectedBundlePrice={selectedBundlePrice}
+                  selectedFrequency={selectedFrequency}
                   selectedProductIds={selectedProductIds}
                   selectedIds={selectedIds}
                   selectedSize={selectedSize}
