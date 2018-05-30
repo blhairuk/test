@@ -25,6 +25,13 @@ export const findProductByVariantId = (products, variantId) => (
   products.find(({variants}) => variants.find(({id}) => id === variantId))
 )
 
+export const findVariantByVariantId = (products, variantId) => {
+  for (const product of products) {
+    const variant = product.variants.find(({id}) => id === variantId)
+    if (variant) { return variant }
+  }
+}
+
 export const isBundleIdInProperties = (bundleId, properties) => {
   const property = getBundleIdProperty(properties)
   return property && property.value === bundleId

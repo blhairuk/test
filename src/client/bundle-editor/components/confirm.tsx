@@ -1,9 +1,11 @@
+import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
 import {
   createIdQuantities,
+  findVariantByVariantId,
   frequencyTitle,
   getPathToImages,
 } from "../../../shared/helpers"
@@ -15,11 +17,13 @@ import FlexWrapper from "./styled/flex-wrapper"
 
 interface Props {
   allProducts: ShopifyProduct[],
+  bundleAddOns: ShopifyProduct[],
   bundleName: string,
   frequencyUnitType: string,
   isActiveStep: boolean,
   isEditingBundle: boolean,
   isSubmitting: boolean,
+  selectedAddOnIds: number[],
   selectedBundlePrice: number,
   selectedFrequency: number,
   selectedProductIds: number[],
@@ -33,10 +37,12 @@ export default class Confirm extends React.Component<Props> {
   public render() {
     const {
       allProducts,
+      bundleAddOns,
       bundleName,
       frequencyUnitType,
       isEditingBundle,
       isSubmitting,
+      selectedAddOnIds,
       selectedBundlePrice,
       selectedFrequency,
       selectedProductIds,
@@ -61,6 +67,14 @@ export default class Confirm extends React.Component<Props> {
         })()}
       </AddToCartButton>
     )
+
+    const addOnIdQuantities = createIdQuantities(selectedAddOnIds)
+    const addOnsPrice = Object.entries(addOnIdQuantities).reduce((sum, [idS, quantity]: [string, number]) => {
+      const variant = findVariantByVariantId(bundleAddOns, parseInt(idS, 10))
+      return sum + (parseFloat(variant.price) * quantity)
+    }, 0)
+
+    const subtotal = selectedBundlePrice + addOnsPrice
 
     return (
       <div>
@@ -135,9 +149,16 @@ export default class Confirm extends React.Component<Props> {
                 <div>AMOUNT</div>
                 <div>{selectedSize}</div>
               </DetailWrapper>
+              <DetailWrapper>
+                <div>BOOSTERS</div>
+                <div>
+                  <span>{selectedAddOnIds.length} </span>
+                  <span style={{opacity: 0.5}}>(+{formatMoney(addOnsPrice)})</span>
+                </div>
+              </DetailWrapper>
               <DetailWrapper style={{borderBottom: "none", marginBottom: "0", paddingBottom: "0"}}>
                 <div>SUBTOTAL</div>
-                <div>${selectedBundlePrice}</div>
+                <div>{formatMoney(subtotal)}</div>
               </DetailWrapper>
             </DetailsWrapper>
 

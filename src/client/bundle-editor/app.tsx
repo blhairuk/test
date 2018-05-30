@@ -287,11 +287,13 @@ export default class App extends React.Component<Props, State> {
                 <Step align="top">
                   <Confirm
                     allProducts={allProducts}
+                    bundleAddOns={bundleAddOns}
                     bundleName={bundleName}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 5}
                     isEditingBundle={!!editingBundleId}
                     isSubmitting={isSubmitting}
+                    selectedAddOnIds={selectedAddOnIds}
                     selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
