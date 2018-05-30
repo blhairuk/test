@@ -179,9 +179,20 @@ export default class ChooseProducts extends React.Component<Props, State> {
                     onClick={this.handleFiltersModalOpen}
                     style={{display: "block"}}
                   >
-                    <Flex alignItems="center">
-                      <img src={getPathToImages("icon-filter.svg")} />
-                      <Box className="show-for-medium">
+                    <Flex
+                      alignItems="center"
+                      mx={-1}
+                    >
+                      <Box px={1}>
+                        <img
+                          src={getPathToImages("icon-filter.svg")}
+                          style={{display: "block"}}
+                        />
+                      </Box>
+                      <Box
+                        className="show-for-medium"
+                        px={1}
+                      >
                         <small>FILTER</small>
                       </Box>
                     </Flex>
