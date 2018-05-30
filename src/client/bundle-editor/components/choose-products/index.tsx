@@ -150,7 +150,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
               <StepHeader
                 centerSection={
                   <div>
-                    <div className="medium-up--hide">
+                    <div className="hide-for-medium">
                       <div>{bundleName.toUpperCase()}</div>
                       <div>
                         {frequencyTitle(frequencyUnitType, selectedFrequency)}
@@ -160,7 +160,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                         {selectedVariantIds.length} of {selectedSize}
                       </div>
                     </div>
-                    <div className="hide medium-up--show">
+                    <div className="show-for-medium">
                       <h1 style={{fontSize: "160%", marginBottom: "0"}}>FILL YOUR BOX</h1>
                     </div>
                   </div>
@@ -173,7 +173,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   >
                     <Flex alignItems="center">
                       <img src={getPathToImages("icon-filter.svg")} />
-                      <Box className="hide medium-up--show">
+                      <Box className="show-for-medium">
                         <small>FILTER</small>
                       </Box>
                     </Flex>
@@ -182,7 +182,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 stepPrev={stepPrev}
               />
 
-              <div className="medium-up--hide">
+              <div className="hide-for-medium">
                 <GradientBar
                   height={8}
                   width={selectedVariantIds.length / selectedSize}
@@ -300,7 +300,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
             width={[1, 2 / 5]}
           >
             <StickyNode top="#hh-sticky-header">
-              <div className="hide medium-up--show">
+              <div className="show-for-medium">
                 <Progress
                   bundleName={bundleName}
                   bundleProducts={bundleProducts}

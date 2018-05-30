@@ -141,13 +141,13 @@ export default class Confirm extends React.Component<Props> {
               </DetailWrapper>
             </DetailsWrapper>
 
-            <div className="hide medium-up--show text-center">
+            <div className="show-for-medium text-center">
               {updateButton}
             </div>
           </Box>
 
           <Box
-            className="medium-up--hide text-center"
+            className="hide-for-medium text-center"
             mb={3}
             order={3}
             width={1}
