@@ -67,6 +67,7 @@ const Title = styled.h1`
   color: ${BACKGROUND_BLACK};
   letter-spacing: 1px;
   margin-bottom: 30px;
+  margin-top: 0;
 
   @media (min-width: 768px) {
     margin-bottom: 10px;
@@ -81,6 +82,7 @@ interface WrapperProps {
 
 const Wrapper = styled.div`
   align-items: center;
+  background-color: #ccc;
   background-image: url(${({imageUrl}: WrapperProps) => imageUrl});
   background-position: center center;
   background-repeat: no-repeat;
