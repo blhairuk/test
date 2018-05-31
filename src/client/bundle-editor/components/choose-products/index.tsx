@@ -1,3 +1,4 @@
+import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import * as StickyNode from "react-stickynode"
@@ -29,6 +30,7 @@ interface Props {
   allProducts: ShopifyProduct[],
   bundleName: string,
   bundleProductMetafields: ShopifyProductMetafield[],
+  calculateSubtotal: () => number,
   frequencyUnitType: string,
   isActiveStep: boolean,
   nextButtonTitle: string,
@@ -36,7 +38,6 @@ interface Props {
   openVideoModal: (youtubeId: string) => () => any,
   productChoices: ShopifyProduct[],
   removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
-  selectedBundlePrice: number,
   selectedFrequency: number,
   selectedIds: number[],
   selectedProductIds: number[],
@@ -98,13 +99,13 @@ export default class ChooseProducts extends React.Component<Props, State> {
       addVariant,
       bundleName,
       bundleProductMetafields,
+      calculateSubtotal,
       frequencyUnitType,
       nextButtonTitle,
       openProductDetailsModal,
       openVideoModal,
       productChoices,
       removeVariant,
-      selectedBundlePrice,
       selectedFrequency,
       selectedIds,
       selectedProductIds,
@@ -136,6 +137,8 @@ export default class ChooseProducts extends React.Component<Props, State> {
       ? productChoices
       : productChoices.filter(({tags}) => activeFilters.some((f) => tags.includes(f)))
 
+    const price = calculateSubtotal()
+
     return (
       <div
         className="one-whole"
@@ -155,7 +158,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                       <div>
                         {frequencyTitle(frequencyUnitType, selectedFrequency)}
                         <span>&nbsp;&bull;&nbsp;</span>
-                        ${selectedBundlePrice}
+                        {formatMoney(price)}
                         <span>&nbsp;&bull;&nbsp;</span>
                         {showProgress ? (
                           <span>{selectedIds.length} of {selectedSize}</span>
@@ -321,9 +324,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
                 <Progress
                   bundleName={bundleName}
                   frequencyUnitType={frequencyUnitType}
+                  price={price}
                   products={productChoices}
                   removeVariant={removeVariant}
-                  selectedBundlePrice={selectedBundlePrice}
                   selectedFrequency={selectedFrequency}
                   selectedProductIds={selectedProductIds}
                   selectedIds={selectedIds}

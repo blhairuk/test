@@ -16,9 +16,9 @@ import GradientBar from "../styled/gradient-bar"
 interface Props {
   bundleName: string,
   frequencyUnitType: string,
+  price: number,
   products: ShopifyProduct[],
   removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
-  selectedBundlePrice: number,
   selectedFrequency: number,
   selectedIds: number[],
   selectedProductIds: number[],
@@ -32,9 +32,9 @@ export default class Progress extends React.Component<Props> {
     const {
       bundleName,
       frequencyUnitType,
+      price,
       products,
       removeVariant,
-      selectedBundlePrice,
       selectedFrequency,
       selectedIds,
       selectedSize,
@@ -64,7 +64,7 @@ export default class Progress extends React.Component<Props> {
               <small>
                 {frequencyTitle(frequencyUnitType, selectedFrequency)}
                 <span> &bull; </span>
-                {formatMoney(selectedBundlePrice)}
+                {formatMoney(price)}
               </small>
             </Box>
             <Box>

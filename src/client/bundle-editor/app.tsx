@@ -230,6 +230,7 @@ export default class App extends React.Component<Props, State> {
                     allProducts={allProducts}
                     bundleName={bundleName}
                     bundleProductMetafields={bundleProductMetafields}
+                    calculateSubtotal={this.calculateSubtotal}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 3}
                     key="products"
@@ -238,7 +239,6 @@ export default class App extends React.Component<Props, State> {
                     openVideoModal={this.openVideoModal}
                     productChoices={bundleProducts}
                     removeVariant={this.stateHelper.removeVariant}
-                    selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedIds={selectedVariantIds}
                     selectedProductIds={selectedProductIds}
@@ -260,6 +260,7 @@ export default class App extends React.Component<Props, State> {
                     allProducts={allProducts}
                     bundleName={bundleName}
                     bundleProductMetafields={bundleProductMetafields}
+                    calculateSubtotal={this.calculateSubtotal}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 4}
                     key="add-ons"
@@ -268,7 +269,6 @@ export default class App extends React.Component<Props, State> {
                     openVideoModal={this.openVideoModal}
                     productChoices={bundleAddOns}
                     removeVariant={this.stateHelper.removeVariant}
-                    selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedIds={selectedAddOnIds}
                     selectedProductIds={selectedProductIds}
@@ -357,6 +357,12 @@ export default class App extends React.Component<Props, State> {
   public isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
 
   public calculateAddOnsPrice = () => this.calculatePrice(this.state.selectedAddOnIds, this.props.bundleAddOns)
+  public calculateVariantsPrice = () => this.calculatePrice(this.state.selectedVariantIds, this.props.bundleProducts)
+  public calculatePriceBeforeAddOns = () => this.calculatePrice(
+    this.state.selectedVariantIds,
+    this.props.bundleProducts,
+    this.state.selectedBundlePrice,
+  )
   public calculateSubtotal = () => this.calculatePrice(
     this.state.selectedVariantIds.concat(this.state.selectedAddOnIds),
     this.props.bundleProducts.concat(this.props.bundleAddOns),
