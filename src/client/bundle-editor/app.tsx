@@ -289,12 +289,12 @@ export default class App extends React.Component<Props, State> {
                     allProducts={allProducts}
                     bundleName={bundleName}
                     calculateAddOnsPrice={this.calculateAddOnsPrice}
+                    calculateSubtotal={this.calculateSubtotal}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 5}
                     isEditingBundle={!!editingBundleId}
                     isSubmitting={isSubmitting}
                     selectedAddOnIds={selectedAddOnIds}
-                    selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedProductIds={selectedProductIds}
                     selectedSize={selectedSize}
@@ -356,16 +356,20 @@ export default class App extends React.Component<Props, State> {
 
   public isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
 
-  public calculateAddOnsPrice = () => {
-    const {bundleAddOns} = this.props
-    const {selectedAddOnIds} = this.state
+  public calculateAddOnsPrice = () => this.calculatePrice(this.state.selectedAddOnIds, this.props.bundleAddOns)
+  public calculateSubtotal = () => this.calculatePrice(
+    this.state.selectedVariantIds.concat(this.state.selectedAddOnIds),
+    this.props.bundleProducts.concat(this.props.bundleAddOns),
+    this.state.selectedBundlePrice,
+  )
 
-    const addOnIdQuantities = createIdQuantities(selectedAddOnIds)
+  private calculatePrice = (ids, products, startPrice = 0) => {
+    const idQuantities = createIdQuantities(ids)
 
-    return Object.entries(addOnIdQuantities).reduce((sum, [idS, quantity]: [string, number]) => {
-      const variant = findVariantByVariantId(bundleAddOns, parseInt(idS, 10))
-      return sum + (parseFloat(variant.price) * quantity)
-    }, 0)
+    return Object.entries(idQuantities).reduce((sum, [idS, quantity]: [string, number]) => {
+      const {price} = findVariantByVariantId(products, parseInt(idS, 10))
+      return sum + (parseFloat(price) * quantity)
+    }, startPrice)
   }
 
   private submit = async () => {

@@ -18,12 +18,12 @@ interface Props {
   allProducts: ShopifyProduct[],
   bundleName: string,
   calculateAddOnsPrice: () => number,
+  calculateSubtotal: () => number,
   frequencyUnitType: string,
   isActiveStep: boolean,
   isEditingBundle: boolean,
   isSubmitting: boolean,
   selectedAddOnIds: number[],
-  selectedBundlePrice: number,
   selectedFrequency: number,
   selectedProductIds: number[],
   selectedSize: number,
@@ -38,11 +38,11 @@ export default class Confirm extends React.Component<Props> {
       allProducts,
       bundleName,
       calculateAddOnsPrice,
+      calculateSubtotal,
       frequencyUnitType,
       isEditingBundle,
       isSubmitting,
       selectedAddOnIds,
-      selectedBundlePrice,
       selectedFrequency,
       selectedProductIds,
       selectedSize,
@@ -68,7 +68,7 @@ export default class Confirm extends React.Component<Props> {
     )
 
     const addOnsPrice = calculateAddOnsPrice()
-    const subtotal = selectedBundlePrice + addOnsPrice
+    const subtotal = calculateSubtotal()
 
     return (
       <div>
