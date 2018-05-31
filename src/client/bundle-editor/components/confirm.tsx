@@ -119,7 +119,8 @@ export default class Confirm extends React.Component<Props> {
                   <Box
                     className="text-center"
                     key={productId}
-                    px={2}
+                    mb={3}
+                    px={3}
                     width={[1 / 2, 1 / 3]}
                   >
                     <ImageWrapper>
