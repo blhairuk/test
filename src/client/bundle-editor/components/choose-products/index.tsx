@@ -25,8 +25,7 @@ import {
 } from "../../../colors"
 
 interface Props {
-  addAddOnId: (productId: number, variantId: number) => () => any,
-  addVariantId: (productId: number, variantId: number) => () => any,
+  addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => any,
   allProducts: ShopifyProduct[],
   bundleName: string,
   bundleProductMetafields: ShopifyProductMetafield[],
@@ -97,8 +96,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
   public render() {
     const {
-      addAddOnId,
-      addVariantId,
+      addVariant,
       bundleName,
       bundleProductMetafields,
       frequencyUnitType,
@@ -300,8 +298,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                         width={[1 / 2, 1 / 3]}
                       >
                         <Product
-                          addAddOnId={addAddOnId}
-                          addVariantId={addVariantId}
+                          addVariant={addVariant}
                           isAddOn={productType === "Booster"}
                           openProductDetailsModal={openProductDetailsModal}
                           product={product}

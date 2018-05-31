@@ -30,5 +30,6 @@ declare interface ShopifyProductMetafield {
 declare interface ShopifyVariant {
   id: number,
   price: string,
+  product_id: number,
   option1: string,
 }

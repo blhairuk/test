@@ -5,8 +5,7 @@ import {createBundleName} from "../../../shared/helpers"
 import {getBundlePrice} from "../../helpers/bundle"
 
 export interface Helper {
-  addAddOnId: (productId: number, variantId: number) => () => any,
-  addVariantId: (productId: number, variantId: number) => () => any,
+  addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => any,
   enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
   enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
   removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
@@ -17,26 +16,9 @@ export interface Helper {
 }
 
 export default (app: App): Helper => ({
-  addAddOnId: (productId, variantId) => () => {
-    const {selectedSize} = app.state
-
+  addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => {
     const {
       selectedAddOnIds,
-      selectedProductIds,
-    } = app.state
-
-    if (!selectedSize) {
-      return alert("You must select a size first.")
-    }
-
-    selectedProductIds.push(productId)
-    selectedAddOnIds.push(variantId)
-
-    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
-  },
-
-  addVariantId: (productId, variantId) => () => {
-    const {
       selectedProductIds,
       selectedVariantIds,
       selectedSize,
@@ -46,14 +28,18 @@ export default (app: App): Helper => ({
       return alert("You must selected a size first.")
     }
 
-    if (selectedVariantIds.length >= selectedSize) {
-      return app.setState(updateStateKeys({isBundleFullModalOpen: true}))
+    if (product.product_type === "Booster") {
+      selectedAddOnIds.push(variant.id)
+    } else {
+      if (selectedVariantIds.length >= selectedSize) {
+        return app.setState(updateStateKeys({isBundleFullModalOpen: true}))
+      }
+      selectedVariantIds.push(variant.id)
     }
 
-    selectedProductIds.push(productId)
-    selectedVariantIds.push(variantId)
+    selectedProductIds.push(variant.product_id)
 
-    app.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds, selectedVariantIds}))
   },
 
   enterEmail: ({target: {value: enteredEmail}}) => {

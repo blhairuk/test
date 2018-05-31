@@ -222,8 +222,7 @@ export default class App extends React.Component<Props, State> {
               return (
                 <Step align="top">
                   <ChooseProducts
-                    addAddOnId={this.stateHelper.addAddOnId}
-                    addVariantId={this.stateHelper.addVariantId}
+                    addVariant={this.stateHelper.addVariant}
                     allProducts={allProducts}
                     bundleName={bundleName}
                     bundleProductMetafields={bundleProductMetafields}
@@ -254,8 +253,7 @@ export default class App extends React.Component<Props, State> {
               return (
                 <Step align="top">
                   <ChooseProducts
-                    addAddOnId={this.stateHelper.addAddOnId}
-                    addVariantId={this.stateHelper.addVariantId}
+                    addVariant={this.stateHelper.addVariant}
                     allProducts={allProducts}
                     bundleName={bundleName}
                     bundleProductMetafields={bundleProductMetafields}

@@ -6,8 +6,7 @@ import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 
 interface Props {
-  addAddOnId: (productId: number, variantId: number) => () => any,
-  addVariantId: (productId: number, variantId: number) => () => any,
+  addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => any,
   isAddOn: boolean,
   openProductDetailsModal: (productId: number) => any,
   product: ShopifyProduct,
@@ -19,8 +18,7 @@ interface Props {
 export default class Product extends React.Component<Props> {
   public render() {
     const {
-      addAddOnId,
-      addVariantId,
+      addVariant,
       isAddOn,
       openProductDetailsModal,
       product,
@@ -37,13 +35,14 @@ export default class Product extends React.Component<Props> {
       variants,
     } = product
 
+    const variant = variants[0]
+
     const {
       id: variantId,
       price,
-    } = variants[0]
+    } = variant
 
     const numSelected = selectedIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
-    const addFunc = isAddOn ? addAddOnId : addVariantId
     const removeFunc = isAddOn ? removeAddOnId : removeVariantId
 
     return (
@@ -63,7 +62,7 @@ export default class Product extends React.Component<Props> {
             if (numSelected === 0) {
               return (
                 <Button
-                  onClick={addFunc(productId, variantId)}
+                  onClick={addVariant(variant, product)}
                   type="button"
                 >
                   {(() => {
@@ -84,7 +83,7 @@ export default class Product extends React.Component<Props> {
                   {numSelected}
                 </Number>
 
-                <QuantityWrapper onClick={addFunc(productId, variantId)}>
+                <QuantityWrapper onClick={addVariant(variant, product)}>
                   <QuantityButton style={{top: "1px"}}>+</QuantityButton>
                 </QuantityWrapper>
               </>
