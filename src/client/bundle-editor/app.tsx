@@ -23,7 +23,11 @@ import {
   getBundlePrice,
 } from "../helpers/bundle"
 
-import {getMetafieldValue} from "../../shared/helpers"
+import {
+  createIdQuantities,
+  findVariantByVariantId,
+  getMetafieldValue,
+} from "../../shared/helpers"
 
 import Modal from "../helpers/modal"
 
@@ -283,8 +287,8 @@ export default class App extends React.Component<Props, State> {
                 <Step align="top">
                   <Confirm
                     allProducts={allProducts}
-                    bundleAddOns={bundleAddOns}
                     bundleName={bundleName}
+                    calculateAddOnsPrice={this.calculateAddOnsPrice}
                     frequencyUnitType={frequencyUnitType}
                     isActiveStep={currentStepIndex === 5}
                     isEditingBundle={!!editingBundleId}
@@ -351,6 +355,18 @@ export default class App extends React.Component<Props, State> {
   }
 
   public isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
+
+  public calculateAddOnsPrice = () => {
+    const {bundleAddOns} = this.props
+    const {selectedAddOnIds} = this.state
+
+    const addOnIdQuantities = createIdQuantities(selectedAddOnIds)
+
+    return Object.entries(addOnIdQuantities).reduce((sum, [idS, quantity]: [string, number]) => {
+      const variant = findVariantByVariantId(bundleAddOns, parseInt(idS, 10))
+      return sum + (parseFloat(variant.price) * quantity)
+    }, 0)
+  }
 
   private submit = async () => {
     this.setState(updateStateKeys({isSubmitting: true}))

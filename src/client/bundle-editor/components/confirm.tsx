@@ -5,7 +5,6 @@ import styled from "styled-components"
 
 import {
   createIdQuantities,
-  findVariantByVariantId,
   frequencyTitle,
   getPathToImages,
 } from "../../../shared/helpers"
@@ -17,8 +16,8 @@ import FlexWrapper from "./styled/flex-wrapper"
 
 interface Props {
   allProducts: ShopifyProduct[],
-  bundleAddOns: ShopifyProduct[],
   bundleName: string,
+  calculateAddOnsPrice: () => number,
   frequencyUnitType: string,
   isActiveStep: boolean,
   isEditingBundle: boolean,
@@ -37,8 +36,8 @@ export default class Confirm extends React.Component<Props> {
   public render() {
     const {
       allProducts,
-      bundleAddOns,
       bundleName,
+      calculateAddOnsPrice,
       frequencyUnitType,
       isEditingBundle,
       isSubmitting,
@@ -68,12 +67,7 @@ export default class Confirm extends React.Component<Props> {
       </AddToCartButton>
     )
 
-    const addOnIdQuantities = createIdQuantities(selectedAddOnIds)
-    const addOnsPrice = Object.entries(addOnIdQuantities).reduce((sum, [idS, quantity]: [string, number]) => {
-      const variant = findVariantByVariantId(bundleAddOns, parseInt(idS, 10))
-      return sum + (parseFloat(variant.price) * quantity)
-    }, 0)
-
+    const addOnsPrice = calculateAddOnsPrice()
     const subtotal = selectedBundlePrice + addOnsPrice
 
     return (
