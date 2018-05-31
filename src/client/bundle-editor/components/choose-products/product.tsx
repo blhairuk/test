@@ -7,11 +7,9 @@ import FlexWrapper from "../styled/flex-wrapper"
 
 interface Props {
   addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => any,
-  isAddOn: boolean,
   openProductDetailsModal: (productId: number) => any,
   product: ShopifyProduct,
-  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
-  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
   selectedIds: number[],
 }
 
@@ -19,11 +17,9 @@ export default class Product extends React.Component<Props> {
   public render() {
     const {
       addVariant,
-      isAddOn,
       openProductDetailsModal,
       product,
-      removeAddOnId,
-      removeVariantId,
+      removeVariant,
       selectedIds,
     } = this.props
 
@@ -43,7 +39,6 @@ export default class Product extends React.Component<Props> {
     } = variant
 
     const numSelected = selectedIds.reduce((sum, id) => sum + (id === variantId ? 1 : 0), 0)
-    const removeFunc = isAddOn ? removeAddOnId : removeVariantId
 
     return (
       <div>
@@ -75,7 +70,7 @@ export default class Product extends React.Component<Props> {
 
             return (
               <>
-                <QuantityWrapper onClick={removeFunc(productId, variantId)}>
+                <QuantityWrapper onClick={removeVariant(variant, product)}>
                   <QuantityButton>-</QuantityButton>
                 </QuantityWrapper>
 

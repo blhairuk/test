@@ -8,8 +8,7 @@ export interface Helper {
   addVariant: (variant: ShopifyVariant, product: ShopifyProduct) => () => any,
   enterEmail: (e: React.ChangeEvent<HTMLInputElement>) => any,
   enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
-  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
-  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
   setSelectedFrequency: (frequency: number) => () => any,
   setSelectedSize: (size: number) => () => any,
   updateBundleName: (e: React.ChangeEvent<HTMLInputElement>) => any,
@@ -28,14 +27,12 @@ export default (app: App): Helper => ({
       return alert("You must selected a size first.")
     }
 
-    if (product.product_type === "Booster") {
-      selectedAddOnIds.push(variant.id)
-    } else {
-      if (selectedVariantIds.length >= selectedSize) {
-        return app.setState(updateStateKeys({isBundleFullModalOpen: true}))
-      }
-      selectedVariantIds.push(variant.id)
+    if (product.product_type !== "Booster" && selectedVariantIds.length >= selectedSize) {
+      return app.setState(updateStateKeys({isBundleFullModalOpen: true}))
     }
+
+    const selectedArray = product.product_type === "Booster" ? selectedAddOnIds : selectedVariantIds
+    selectedArray.push(variant.id)
 
     selectedProductIds.push(variant.product_id)
 
@@ -53,32 +50,21 @@ export default (app: App): Helper => ({
     }))
   },
 
-  removeAddOnId: (productId, variantId, quantity = 1) => () => {
+  removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity = 1) => () => {
     const {
       selectedAddOnIds,
-      selectedProductIds,
-    } = app.state
-
-    for (let i = 0; i < quantity; ++i) {
-      selectedAddOnIds.splice(selectedAddOnIds.indexOf(variantId), 1)
-      selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
-    }
-
-    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds}))
-  },
-
-  removeVariantId: (productId, variantId, quantity = 1) => () => {
-    const {
       selectedProductIds,
       selectedVariantIds,
     } = app.state
 
+    const selectedArray = product.product_type === "Booster" ? selectedAddOnIds : selectedVariantIds
+
     for (let i = 0; i < quantity; ++i) {
-      selectedProductIds.splice(selectedProductIds.indexOf(productId), 1)
-      selectedVariantIds.splice(selectedVariantIds.indexOf(variantId), 1)
+      selectedProductIds.splice(selectedProductIds.indexOf(product.id), 1)
+      selectedArray.splice(selectedArray.indexOf(variant.id), 1)
     }
 
-    app.setState(updateStateKeys({selectedProductIds, selectedVariantIds}))
+    app.setState(updateStateKeys({selectedAddOnIds, selectedProductIds, selectedVariantIds}))
   },
 
   setSelectedFrequency: (selectedFrequency) => () => {

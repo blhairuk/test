@@ -233,8 +233,7 @@ export default class App extends React.Component<Props, State> {
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
                     productChoices={bundleProducts}
-                    removeAddOnId={this.stateHelper.removeAddOnId}
-                    removeVariantId={this.stateHelper.removeVariantId}
+                    removeVariant={this.stateHelper.removeVariant}
                     selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedIds={selectedVariantIds}
@@ -264,8 +263,7 @@ export default class App extends React.Component<Props, State> {
                     openProductDetailsModal={this.openProductDetailsModal}
                     openVideoModal={this.openVideoModal}
                     productChoices={bundleAddOns}
-                    removeAddOnId={this.stateHelper.removeAddOnId}
-                    removeVariantId={this.stateHelper.removeVariantId}
+                    removeVariant={this.stateHelper.removeVariant}
                     selectedBundlePrice={selectedBundlePrice}
                     selectedFrequency={selectedFrequency}
                     selectedIds={selectedAddOnIds}

@@ -35,8 +35,7 @@ interface Props {
   openProductDetailsModal: (productId: number) => any,
   openVideoModal: (youtubeId: string) => () => any,
   productChoices: ShopifyProduct[],
-  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
-  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
   selectedBundlePrice: number,
   selectedFrequency: number,
   selectedIds: number[],
@@ -104,8 +103,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
       openProductDetailsModal,
       openVideoModal,
       productChoices,
-      removeAddOnId,
-      removeVariantId,
+      removeVariant,
       selectedBundlePrice,
       selectedFrequency,
       selectedIds,
@@ -299,11 +297,9 @@ export default class ChooseProducts extends React.Component<Props, State> {
                       >
                         <Product
                           addVariant={addVariant}
-                          isAddOn={productType === "Booster"}
                           openProductDetailsModal={openProductDetailsModal}
                           product={product}
-                          removeAddOnId={removeAddOnId}
-                          removeVariantId={removeVariantId}
+                          removeVariant={removeVariant}
                           selectedIds={selectedIds}
                         />
                       </Box>
@@ -326,8 +322,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   bundleName={bundleName}
                   frequencyUnitType={frequencyUnitType}
                   products={productChoices}
-                  removeAddOnId={removeAddOnId}
-                  removeVariantId={removeVariantId}
+                  removeVariant={removeVariant}
                   selectedBundlePrice={selectedBundlePrice}
                   selectedFrequency={selectedFrequency}
                   selectedProductIds={selectedProductIds}

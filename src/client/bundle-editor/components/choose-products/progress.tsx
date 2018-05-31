@@ -17,8 +17,7 @@ interface Props {
   bundleName: string,
   frequencyUnitType: string,
   products: ShopifyProduct[],
-  removeAddOnId: (productId: number, variantId: number, quantity?: number) => () => any,
-  removeVariantId: (productId: number, variantId: number, quantity?: number) => () => any,
+  removeVariant: (variant: ShopifyVariant, product: ShopifyProduct, quantity?: number) => () => any,
   selectedBundlePrice: number,
   selectedFrequency: number,
   selectedIds: number[],
@@ -34,8 +33,7 @@ export default class Progress extends React.Component<Props> {
       bundleName,
       frequencyUnitType,
       products,
-      removeAddOnId,
-      removeVariantId,
+      removeVariant,
       selectedBundlePrice,
       selectedFrequency,
       selectedIds,
@@ -91,17 +89,15 @@ export default class Progress extends React.Component<Props> {
               const variantId = parseInt(variantIdS, 10)
               const product = findProductByVariantId(products, variantId)
 
-              // product will not found for add-on items
-              if (!product) { return null }
-
               const {
                 id: productId,
                 image: {src},
                 product_type,
                 title,
+                variants,
               } = product
 
-              const removeFn = product_type === "Booster" ? removeAddOnId : removeVariantId
+              const variant = variants.find(({id}) => id === variantId)
 
               return (
                 <Flex
@@ -128,7 +124,7 @@ export default class Progress extends React.Component<Props> {
                       <small>{productTitleWithoutType(title, product_type)}</small>
                       <XButton
                         href="javascript:void(0)"
-                        onClick={removeFn(productId, variantId, quantity)}
+                        onClick={removeVariant(variant, product, quantity)}
                       >
                         X
                       </XButton>
