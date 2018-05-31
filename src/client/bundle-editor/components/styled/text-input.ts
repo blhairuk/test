@@ -7,6 +7,7 @@ export default styled.input`
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
   border-radius: 0;
+  color: #fff;
   font-size: 140%;
   padding: 6px;
   text-align: center;
@@ -19,7 +20,6 @@ export default styled.input`
     border-top: 1px solid transparent;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
-    color: #fff;
     outline-style: none;
   }
 `

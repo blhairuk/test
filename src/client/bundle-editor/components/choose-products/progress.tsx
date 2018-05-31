@@ -12,6 +12,7 @@ import {
 
 import Circle from "../styled/circle"
 import GradientBar from "../styled/gradient-bar"
+import TextInput from "../styled/text-input"
 
 interface Props {
   bundleName: string,
@@ -53,6 +54,7 @@ export default class Progress extends React.Component<Props> {
         >
           <Flex
             alignItems="center"
+            px={1}
             justifyContent="space-between"
           >
             <Box width={3 / 4}>
@@ -150,9 +152,13 @@ export default class Progress extends React.Component<Props> {
   }
 }
 
-const BoxNameInput = styled.input`
-  border: 0;
+const BoxNameInput = TextInput.extend`
+  border: none;
+  font-size: 100%;
+  height: initial;
+  margin: 0;
   padding: 0;
+  text-align: left;
 `
 
 const QuantityWrapper = Circle.extend`

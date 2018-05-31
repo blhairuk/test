@@ -69,7 +69,7 @@ const CategoryTitle = styled.div`
 `
 
 const Filter = Button.extend`
-  margin: 3px 6px;
+  margin: 3px;
 `
 
 const FiltersWrapper = styled.div`
