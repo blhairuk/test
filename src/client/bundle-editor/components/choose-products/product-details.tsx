@@ -20,9 +20,12 @@ export default class ProductDetails extends React.Component<Props> {
     const {
       body_html,
       image: {src},
+      images,
       product_type,
       title,
     } = product
+
+    const nutritionFactsImage = images.find(({alt}) => /nutrition facts/i.test(alt))
 
     return (
       <div>
@@ -51,6 +54,8 @@ export default class ProductDetails extends React.Component<Props> {
             title="INGREDIENTS"
           />
           <hr />
+
+          {nutritionFactsImage && <img src={nutritionFactsImage.src} />}
 
         </DetailsWrapper>
       </div>

@@ -13,6 +13,7 @@ declare interface ShopifyProduct {
     src: string,
   },
   images: Array<{
+    alt: string,
     src: string,
   }>,
   product_type: string,
