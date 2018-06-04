@@ -4,12 +4,16 @@ import {
   Route,
   Switch,
 } from "react-router-dom"
+import styled from "styled-components"
 
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import Orders from "./components/orders"
 
-import {SAND} from "../colors"
+import {
+  DARK_SAND,
+  SAND,
+} from "../colors"
 
 interface Data extends MyBoxProps {
   customer: ShopifyCustomer,
@@ -40,36 +44,45 @@ export default class App extends React.Component<Props> {
 
     return (
       <Router {...routerProps}>
-        <Wrapper>
-          <Box width={[1, 1 / 3]}>
-            <h3>{first_name} {last_name}</h3>
-            <ul className="text-right">
-            <li><a href={this.createHref("/")}>My Account</a></li>
-              <li><a href={this.createHref("/my-box")}>My Box</a></li>
-              <li><a href={this.createHref("/orders")}>Orders</a></li>
-              <li><a href={this.createHref("/billing")}>Write a Review</a></li>
-              <li><a href={this.createHref("/billing")}>Share with friends</a></li>
-            </ul>
-          </Box>
+        <Container>
+          <Wrapper mx={-3}>
+            <Box
+              px={3}
+              width={[1, 1 / 3]}
+            >
+              <h3>{first_name} {last_name}</h3>
+              <ul className="text-right">
+              <li><a href={this.createHref("/")}>My Account</a></li>
+                <li><a href={this.createHref("/my-box")}>My Box</a></li>
+                <li><a href={this.createHref("/orders")}>Orders</a></li>
+                <li><a href={this.createHref("/billing")}>Write a Review</a></li>
+                <li><a href={this.createHref("/billing")}>Share with friends</a></li>
+              </ul>
+            </Box>
 
-          <Box width={[1, 2 / 3]}>
-            <Switch>
-              <Route
-                exact={true}
-                path={createFullPath("/")}
-                render={this.renderHome}
-              />
-              <Route
-                path={createFullPath("/my-box")}
-                render={this.renderMyBox}
-              />
-              <Route
-                path={createFullPath("/orders")}
-                render={this.renderOrders}
-              />
-            </Switch>
-          </Box>
-        </Wrapper>
+            <Box
+              px={3}
+              style={{backgroundColor: DARK_SAND}}
+              width={[1, 2 / 3]}
+            >
+              <Switch>
+                <Route
+                  exact={true}
+                  path={createFullPath("/")}
+                  render={this.renderHome}
+                />
+                <Route
+                  path={createFullPath("/my-box")}
+                  render={this.renderMyBox}
+                />
+                <Route
+                  path={createFullPath("/orders")}
+                  render={this.renderOrders}
+                />
+              </Switch>
+            </Box>
+          </Wrapper>
+        </Container>
       </Router>
     )
   }
@@ -87,7 +100,14 @@ export default class App extends React.Component<Props> {
   private renderOrders = () => <Orders {...this.props} />
 }
 
-const Wrapper = Flex.extend`
+const Container = styled.div`
   background: ${SAND};
+  display: flex;
   min-height: 700px;
+`
+
+const Wrapper = Flex.extend`
+  flex: 1;
+  margin: 0 auto;
+  max-width: 1000px;
 `

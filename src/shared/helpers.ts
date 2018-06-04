@@ -24,6 +24,11 @@ export const getBundleIdFromProperties = (properties) => {
   if (property) { return property.value }
 }
 
+export const getPrimaryBundleSubscription = (subscriptions: RechargeSubscription[]) => (
+  // the best way to identify the primary bundle line item is by choosing the subscription with the bundle_name
+  subscriptions.find(({properties}) => properties.some(({name}) => name === "bundle_name"))
+)
+
 export const getPropertyValueForKey = (properties, key) => {
   const property = properties.find(({name}) => name === key)
   if (property) {
@@ -63,8 +68,8 @@ export const getMetafieldValue = (metafields, namespace, key) => {
 }
 
 export const frequencyTitle = (unitType, frequency) => {
-  if (frequency === 1 && unitType === "Weeks") { return "Weekly" }
-  if (frequency === 4 && unitType === "Weeks") { return "Monthly" }
+  if (frequency === 1 && /week/i.test(unitType)) { return "Weekly" }
+  if (frequency === 4 && /week/i.test(unitType)) { return "Monthly" }
 }
 
 export const frequencySingularTitle = (unitType, frequency) => {

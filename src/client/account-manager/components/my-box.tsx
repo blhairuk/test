@@ -19,7 +19,7 @@ export default class MyBox extends React.Component<Props> {
         {Object.entries(bundles).map(([idS, subscriptions]) => (
           <EditBundle
             key={idS}
-            bundle={subscriptions}
+            subscriptions={subscriptions}
           />
         ))}
       </div>
