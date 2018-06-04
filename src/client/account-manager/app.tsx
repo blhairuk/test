@@ -6,19 +6,18 @@ import {
 } from "react-router-dom"
 
 import Home from "./components/home"
-import MyBox from "./components/my-box"
+import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import Orders from "./components/orders"
 
 import {SAND} from "../colors"
 
-interface Data {
+interface Data extends MyBoxProps {
   customer: ShopifyCustomer,
 }
 
 interface Props {
-  customerHash,
-  data: Data,
   Router: any,
+  data: Data,
   routerProps: any,
 }
 
@@ -27,8 +26,8 @@ const createFullPath = (partialPath) => `${process.env.APP_PROXY_PATH}/account/:
 export default class App extends React.Component<Props> {
   public render() {
     const {
-      data,
       Router,
+      data,
       routerProps,
     } = this.props
 
@@ -56,17 +55,17 @@ export default class App extends React.Component<Props> {
           <Box width={[1, 2 / 3]}>
             <Switch>
               <Route
-                component={Home}
                 exact={true}
                 path={createFullPath("/")}
+                render={this.renderHome}
               />
               <Route
                 path={createFullPath("/my-box")}
-                component={MyBox}
+                render={this.renderMyBox}
               />
               <Route
                 path={createFullPath("/orders")}
-                component={Orders}
+                render={this.renderOrders}
               />
             </Switch>
           </Box>
@@ -80,8 +79,15 @@ export default class App extends React.Component<Props> {
     const prefix = opts.prefix || "account"
     return `${process.env.APP_PROXY_PATH}/${prefix}/${shopifyCustomerId}${path}`
   }
+
+  private renderHome = () => <Home {...this.props} />
+  private renderMyBox = () => (
+    <MyBox bundles={this.props.data.bundles} />
+  )
+  private renderOrders = () => <Orders {...this.props} />
 }
 
 const Wrapper = Flex.extend`
   background: ${SAND};
+  min-height: 700px;
 `
