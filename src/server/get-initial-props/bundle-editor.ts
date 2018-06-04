@@ -1,5 +1,3 @@
-import * as Shopify from "shopify-api-node"
-
 import {
   BUNDLE_ADD_ON_TAG,
   BUNDLE_PRODUCT_TAG,
@@ -7,12 +5,13 @@ import {
 } from "../../shared/constants"
 
 import {isBundleIdInProperties} from "../../shared/helpers"
-import {getToken} from "../db"
 
 import {
   getCustomer,
   getSubscriptions,
 } from "../apis/recharge"
+
+import Shopify from "../apis/shopify"
 
 export default async ({
   params: {
@@ -23,16 +22,10 @@ export default async ({
     shop: shopName,
   },
 }) => {
-  const accessToken = await getToken(shopName)
   const bundleId = parseInt(bundleIdS, 10)
 
-  const shopify = new Shopify({
-    accessToken,
-    shopName,
-  })
-
+  const shopify = await Shopify(shopName)
   const products = await shopify.product.list({limit: 250})
-
   const bundleAddOns = products.filter((p) => p.tags.includes(BUNDLE_ADD_ON_TAG))
   const bundleProduct = products.find((p) => p.product_type === BUNDLE_TYPE)
   const bundleProducts = products.filter((p) => p.tags.includes(BUNDLE_PRODUCT_TAG))

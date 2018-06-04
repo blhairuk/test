@@ -1,5 +1,3 @@
-import * as Shopify from "shopify-api-node"
-
 import {
   getCustomer,
   getSubscriptions,
@@ -16,7 +14,7 @@ import {
   create as createBundle,
 } from "../../bundles"
 
-import {getToken} from "../../db"
+import Shopify from "../../apis/shopify"
 
 export default () => async (ctx) => {
   const {
@@ -41,12 +39,8 @@ export default () => async (ctx) => {
 
   const bundleId = parseInt(bundleIdS, 10)
   const size = `${sizeI}`
-  const accessToken = await getToken(shopName)
 
-  const shopify = new Shopify({
-    accessToken,
-    shopName,
-  })
+  const shopify = await Shopify(shopName)
 
   const idQuantities = createIdQuantities(variant_ids.concat(add_on_ids))
   const products = await shopify.product.list({limit: 250})
