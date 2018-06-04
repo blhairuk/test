@@ -5,25 +5,24 @@ import {
   Switch,
 } from "react-router-dom"
 
-import Billing, {Props as BillingProps} from "./components/billing"
-import Schedule, {Props as ScheduleProps} from "./components/schedule"
-import Subscriptions, {Props as SubscriptionProps} from "./components/subscriptions"
+import Home from "./components/home"
+import MyBox from "./components/my-box"
+import Orders from "./components/orders"
 
-interface Data extends BillingProps, ScheduleProps, SubscriptionProps {
-  customer: {
-    first_name: string,
-    last_name: string,
-  },
+import {SAND} from "../colors"
+
+interface Data {
+  customer: ShopifyCustomer,
 }
 
 interface Props {
   customerHash,
   data: Data,
   Router: any,
-  routerProps: Object,
+  routerProps: any,
 }
 
-const path = (path) => `${process.env.APP_PROXY_PATH}/customer/:customerHash${path}`
+const createFullPath = (partialPath) => `${process.env.APP_PROXY_PATH}/account/:shopifyCustomerId${partialPath}`
 
 export default class App extends React.Component<Props> {
   public render() {
@@ -40,44 +39,49 @@ export default class App extends React.Component<Props> {
       },
     } = data
 
-    const routeProps = {...data, href: this.href}
-
     return (
       <Router {...routerProps}>
-        <Flex>
-          <Box width={[1, 1 / 4]}>
+        <Wrapper>
+          <Box width={[1, 1 / 3]}>
             <h3>{first_name} {last_name}</h3>
-            <ul>
-              <li><a href={this.href("/schedule")}>Delivery schedule</a></li>
-              <li><a href={this.href("/subscriptions")}>Subscriptions</a></li>
-              <li><a href={this.href("/billing")}>Billing information</a></li>
+            <ul className="text-right">
+            <li><a href={this.createHref("/")}>My Account</a></li>
+              <li><a href={this.createHref("/my-box")}>My Box</a></li>
+              <li><a href={this.createHref("/orders")}>Orders</a></li>
+              <li><a href={this.createHref("/billing")}>Write a Review</a></li>
+              <li><a href={this.createHref("/billing")}>Share with friends</a></li>
             </ul>
           </Box>
 
-          <Box width={[1, 3 / 4]}>
+          <Box width={[1, 2 / 3]}>
             <Switch>
               <Route
-                path={path("/billing")}
-                render={() => <Billing {...routeProps} />}
+                component={Home}
+                exact={true}
+                path={createFullPath("/")}
               />
               <Route
-                path={path("/schedule")}
-                render={() => <Schedule {...routeProps} />}
+                path={createFullPath("/my-box")}
+                component={MyBox}
               />
               <Route
-                path={path("/subscriptions")}
-                render={() => <Subscriptions {...routeProps} />}
+                path={createFullPath("/orders")}
+                component={Orders}
               />
             </Switch>
           </Box>
-        </Flex>
+        </Wrapper>
       </Router>
     )
   }
 
-  private href = (path, opts = {prefix: null}) => {
-    const {customerHash} = this.props
-    const prefix = opts.prefix || "customer"
-    return `${process.env.APP_PROXY_PATH}/${prefix}/${customerHash}${path}`
+  private createHref = (path, opts = {prefix: null}) => {
+    const {data: {customer: {id: shopifyCustomerId}}} = this.props
+    const prefix = opts.prefix || "account"
+    return `${process.env.APP_PROXY_PATH}/${prefix}/${shopifyCustomerId}${path}`
   }
 }
+
+const Wrapper = Flex.extend`
+  background: ${SAND};
+`

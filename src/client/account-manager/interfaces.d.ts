@@ -37,6 +37,12 @@ declare interface RechargeSubscription {
   status: "ACTIVE" | "CANCELLED",
 }
 
+declare interface ShopifyCustomer {
+  first_name: string,
+  id: number,
+  last_name: string,
+}
+
 declare interface StripeCustomer {
   default_source: string,
   email: string,

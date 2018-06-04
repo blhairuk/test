@@ -6,7 +6,14 @@ export default () => async (ctx) => {
     return
   }
 
-  const scope = "read_products,write_script_tags"
+  const scope = [
+    "read_customers",
+    "read_orders",
+    "read_products",
+    "write_customers",
+    "write_orders",
+    "write_script_tags",
+  ].join(",")
 
   const {
     API_KEY,
@@ -14,5 +21,10 @@ export default () => async (ctx) => {
     NONCE,
   } = process.env
 
-  ctx.redirect(`https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${API_KEY}&scope=${scope}&redirect_uri=${APP_PROXY_HOST}/install/confirm&state=${NONCE}`)
+  ctx.redirect([
+    `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${API_KEY}`,
+    `scope=${scope}`,
+    `redirect_uri=${APP_PROXY_HOST}/install/confirm`,
+    `state=${NONCE}`,
+  ].join("&"))
 }

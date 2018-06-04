@@ -33,11 +33,11 @@ accountManagerRouter
 const router = new Router()
 router
   .get("/", home())
-  .use(validateRequestSignature())
-  .get("/bundle/:bundleId?", serveApp("bundle-editor"))
   .get("/install", install())
   .get("/install/confirm", confirmInstall())
-  .use("/customer/:customerHash", accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
+  .use(validateRequestSignature())
+  .get("/bundle/:bundleId?", serveApp("bundle-editor"))
+  .use("/account/:shopifyCustomerId", accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
 
 const serveStatic = (path) => (ctx) => (
   send(ctx, ctx.path, {root: join(__dirname, path)})
