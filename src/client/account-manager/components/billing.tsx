@@ -62,7 +62,17 @@ export default class Billing extends React.Component<Props> {
               value={exp_year}
             />
           </div>
+          <div>
+            <label htmlFor="cvv">CVV</label>
+            <input
+              id="cvv"
+              name="cvv"
+              type="number"
+            />
+          </div>
+
           <hr />
+
           <div>
             <label htmlFor="city">City</label>
             <input
