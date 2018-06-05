@@ -3,6 +3,7 @@ import {StaticRouter} from "react-router"
 import Shopify from "../apis/shopify"
 
 import {
+  getAddress,
   getCustomer,
   getSubscriptions,
 } from "../apis/recharge"
@@ -33,6 +34,17 @@ export default async (ctx) => {
         status: "ACTIVE",
       })
       data.bundles = groupSubscriptionsIntoBundles(subscriptions)
+
+      const productIds = Array.from(new Set(subscriptions.map(({shopify_product_id}) => shopify_product_id)))
+      const addressIds = Array.from(new Set(subscriptions.map(({address_id}) => address_id)))
+
+      const [products, addresses] = await Promise.all([
+        shopify.product.list({ids: productIds.join(",")}),
+        Promise.all(addressIds.map((addressId) => getAddress(addressId))),
+      ])
+      data.products = products
+      data.addresses = addresses
+
       break
     case "orders":
       data.orders = await shopify.order.list({customer_id: customer.id})

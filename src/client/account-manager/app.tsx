@@ -101,7 +101,13 @@ export default class App extends React.Component<Props> {
 
   private renderBilling = () => <Billing {...this.props} />
   private renderHome = () => <Home {...this.props} />
-  private renderMyBox = () => <MyBox bundles={this.props.data.bundles} />
+  private renderMyBox = () => (
+    <MyBox
+      addresses={this.props.data.addresses}
+      bundles={this.props.data.bundles}
+      products={this.props.data.products}
+    />
+  )
   private renderOrders = () => <Orders {...this.props} />
 }
 

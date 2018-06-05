@@ -2,7 +2,9 @@ declare interface RechargeAddress {
   address1: string,
   address2: string,
   city: string,
+  first_name: string,
   id: number,
+  last_name: string,
   zip: string,
 }
 

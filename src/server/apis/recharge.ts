@@ -15,6 +15,8 @@ const api = async (path, options = null) => {
   return json[rootKey]
 }
 
+export const getAddress = async (addressId) => api(`/addresses/${addressId}`)
+
 export const getCustomer = async (shopifyCustomerId) => (
   (await api(`/customers?shopify_customer_id=${shopifyCustomerId}`))[0]
 )

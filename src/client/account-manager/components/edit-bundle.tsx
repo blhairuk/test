@@ -10,17 +10,24 @@ import {
 import {DARK_SAND} from "../../colors"
 
 interface Props {
+  addresses: RechargeAddress[],
+  products: ShopifyProduct[],
   subscriptions: RechargeSubscription[],
 }
 
 export default class EditBundle extends React.Component<Props> {
   public render() {
-    const {subscriptions} = this.props
+    const {
+      addresses,
+      subscriptions,
+    } = this.props
 
     const bundle = getPrimaryBundleSubscription(subscriptions)
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
     const frequency = parseInt(bundle.order_interval_frequency, 10)
+
+    const address = addresses.find(({id}) => id === bundle.address_id)
 
     return (
       <div>
@@ -47,6 +54,7 @@ export default class EditBundle extends React.Component<Props> {
           </Flex>
           <Line />
           <div>Shipping</div>
+          <div>{address.first_name}</div>
           <Line />
           <div>Items</div>
         </Wrapper>
