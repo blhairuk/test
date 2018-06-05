@@ -5,16 +5,19 @@ import * as React from "react"
 import styled from "styled-components"
 
 interface Props {
+  createHref: (path: string) => any,
   order: ShopifyOrder,
 }
 
 export default class Order extends React.Component<Props> {
   public render() {
     const {
+      createHref,
       order: {
         created_at,
         financial_status,
         fulfillment_status,
+        id,
         name,
         total_price,
       },
@@ -22,8 +25,12 @@ export default class Order extends React.Component<Props> {
 
     return (
       <Wrapper>
-        <Title>Order {name}</Title>
+        <Title>
+          <a href={createHref(`/orders/${id}`)}>Order {name}</a>
+        </Title>
+
         <Line />
+
         <Flex>
           <Box width={1 / 4}>
             <DetailsTitle>Date</DetailsTitle>

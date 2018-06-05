@@ -9,6 +9,7 @@ import styled from "styled-components"
 import Billing, {Props as BillingProps} from "./components/billing"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
+import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
 import Orders, {Props as OrderProps} from "./components/orders"
 
 import {
@@ -16,7 +17,7 @@ import {
   SAND,
 } from "../colors"
 
-interface Data extends BillingProps, MyBoxProps, OrderProps {
+interface Data extends BillingProps, MyBoxProps, OrderProps, OrderDetailsProps {
   customer: ShopifyCustomer,
 }
 
@@ -83,8 +84,13 @@ export default class App extends React.Component<Props> {
                   render={this.renderMyBox}
                 />
                 <Route
+                  exact={true}
                   path={createFullPath("/orders")}
                   render={this.renderOrders}
+                />
+                <Route
+                  path={createFullPath("/orders/:orderId")}
+                  render={this.renderOrderDetails}
                 />
               </Switch>
             </Box>
@@ -116,7 +122,14 @@ export default class App extends React.Component<Props> {
 
   private renderOrders = () => (
     <Orders
+      createHref={this.createHref}
       orders={this.props.data.orders}
+    />
+  )
+
+  private renderOrderDetails = () => (
+    <OrderDetails
+      order={this.props.data.order}
     />
   )
 }

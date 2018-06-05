@@ -17,6 +17,7 @@ const {
 
 export default async (ctx) => {
   const {
+    id,
     shopifyCustomerId,
     page,
   } = ctx.params
@@ -55,7 +56,11 @@ export default async (ctx) => {
       break
 
     case "orders":
-      data.orders = await shopify.order.list({customer_id: customer.id})
+      if (id) {
+        data.order = await shopify.order.get(id)
+      } else {
+        data.orders = await shopify.order.list({customer_id: customer.id})
+      }
       break
   }
 
