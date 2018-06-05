@@ -39,8 +39,8 @@ export default async (ctx) => {
       const addressIds = Array.from(new Set(subscriptions.map(({address_id}) => address_id)))
 
       const [products, addresses] = await Promise.all([
-        shopify.product.list({ids: productIds.join(",")}),
-        Promise.all(addressIds.map((addressId) => getAddress(addressId))),
+        productIds.length ? shopify.product.list({ids: productIds.join(",")}) : [],
+        addressIds.length ? Promise.all(addressIds.map((addressId) => getAddress(addressId))) : [],
       ])
       data.products = products
       data.addresses = addresses

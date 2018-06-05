@@ -31,6 +31,7 @@ export default class EditBundle extends React.Component<Props> {
     } = this.props
 
     const bundle = getPrimaryBundleSubscription(subscriptions)
+    const bundleId = getBundleIdFromProperties(bundle.properties)
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
     const frequency = parseInt(bundle.order_interval_frequency, 10)
@@ -50,7 +51,13 @@ export default class EditBundle extends React.Component<Props> {
           <Flex justifyContent="space-between">
             <SectionTitle>Details</SectionTitle>
             <div>
-              <a href={createHref(`/bundles/${getBundleIdFromProperties(bundle.properties)}`)}>Settings</a>
+              <a href={createHref(`/bundles/${bundleId}`)}>Settings</a>
+              <a
+                href="javascript:void(0)"
+                onClick={this.submitCancel(bundleId)}
+              >
+                Cancel
+              </a>
             </div>
           </Flex>
 
@@ -128,6 +135,16 @@ export default class EditBundle extends React.Component<Props> {
         </Wrapper>
       </div>
     )
+  }
+
+  private submitCancel = (bundleId) => async () => {
+    await $.ajax({
+      contentType: "application/json",
+      dataType: "json",
+      method: "DELETE",
+      url: this.props.createHref(`/bundles/${bundleId}`),
+    })
+    window.location.reload()
   }
 }
 
