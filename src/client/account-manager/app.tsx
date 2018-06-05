@@ -48,6 +48,7 @@ export default class App extends React.Component<Props> {
         <Container>
           <Wrapper mx={-3}>
             <Box
+              className="show-for-medium"
               px={3}
               width={[1, 1 / 3]}
             >

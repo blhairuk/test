@@ -7,7 +7,10 @@ import {
   getPrimaryBundleSubscription,
 } from "../../../shared/helpers"
 
-import {DARK_SAND} from "../../colors"
+import {
+  DARK_SAND,
+  YELLOW,
+} from "../../colors"
 
 interface Props {
   addresses: RechargeAddress[],
@@ -38,36 +41,57 @@ export default class EditBundle extends React.Component<Props> {
     return (
       <div>
         <Title>{bundleName}</Title>
+
         <Wrapper>
-          <div>Details</div>
-          <Flex>
-            <Box width={1 / 4}>
+          <SectionTitle>Details</SectionTitle>
+          <Flex
+            className="text-center"
+            flexWrap="wrap"
+          >
+            <Box width={[1 / 2, 1 / 4]}>
               <DetailsTitle>Frequency</DetailsTitle>
               <DetailsValue>{frequencyTitle(frequencyUnitType, frequency)}</DetailsValue>
             </Box>
-            <Box width={1 / 4}>
+            <Box width={[1 / 2, 1 / 4]}>
               <DetailsTitle>Amount</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
-            <Box width={1 / 4}>
+            <Box width={[1 / 2, 1 / 4]}>
               <DetailsTitle>Boosters</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
-            <Box width={1 / 4}>
+            <Box width={[1 / 2, 1 / 4]}>
               <DetailsTitle>Subtotal</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
           </Flex>
           <Line />
-          <div>Shipping</div>
+
+          <SectionTitle>Shipping to</SectionTitle>
           <div>{address.first_name} {address.last_name}</div>
+          {address.company && <div>{address.company}</div>}
+          <div>{address.address1} {address.address2}</div>
+          <div>{address.city}, {address.province} {address.zip}</div>
           <Line />
-          <div>Items</div>
-          {bundleProductsQuantities.map(({product, quantity}) => (
-            <div key={product.id}>
-              {product.title} {quantity}
-            </div>
-          ))}
+
+          <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
+          <Flex
+            flexWrap="wrap"
+            mx={-2}
+          >
+            {bundleProductsQuantities.map(({product, quantity}) => (
+              <ProductWrapper
+                key={product.id}
+                mb={3}
+                px={2}
+                width={[1 / 2, 1 / 3, 1 / 4]}
+              >
+                <img src={product.image.src} />
+                <ProductTitle>{product.title}</ProductTitle>
+                {quantity > 1 && <QuantityWrapper>{quantity}</QuantityWrapper>}
+              </ProductWrapper>
+            ))}
+          </Flex>
         </Wrapper>
       </div>
     )
@@ -86,7 +110,39 @@ const DetailsValue = styled.div`
 
 const Line = styled.hr`
   border-top: 2px solid ${DARK_SAND};
-  margin: 10px 0;
+  margin: 15px 0;
+`
+
+const ProductTitle = styled.div`
+  font-size: 80%;
+  margin-top: 5px;
+  text-align: center;
+  text-transform: uppercase;
+`
+
+const ProductWrapper = Box.extend`
+  position: relative;
+`
+
+const QuantityWrapper = styled.div`
+  background: ${YELLOW};
+  border-radius: 15px;
+  box-shadow: 0 0px 15px 1px rgba(0, 0, 0, 0.25);
+  font-size: 90%;
+  font-weight: bold;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  text-align: center;
+  top: 5px;
+  right: 10px;
+  width: 30px;
+`
+
+const SectionTitle = styled.h4`
+  font-size: 90%;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 `
 
 const Title = styled.h3`
@@ -96,4 +152,6 @@ const Title = styled.h3`
 const Wrapper = styled.div`
   background: #fff;
   border-radius: 5px;
+  margin-bottom: 30px;
+  padding: 12px 16px;
 `
