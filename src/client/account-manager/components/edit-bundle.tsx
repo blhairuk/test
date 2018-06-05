@@ -19,6 +19,7 @@ export default class EditBundle extends React.Component<Props> {
   public render() {
     const {
       addresses,
+      products,
       subscriptions,
     } = this.props
 
@@ -26,8 +27,13 @@ export default class EditBundle extends React.Component<Props> {
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
     const frequency = parseInt(bundle.order_interval_frequency, 10)
-
     const address = addresses.find(({id}) => id === bundle.address_id)
+    const bundleProductsQuantities = subscriptions
+      .filter(({id}) => id !== bundle.id)
+      .map(({quantity, shopify_product_id}) => ({
+        product: products.find(({id}) => id === shopify_product_id),
+        quantity,
+      }))
 
     return (
       <div>
@@ -54,9 +60,14 @@ export default class EditBundle extends React.Component<Props> {
           </Flex>
           <Line />
           <div>Shipping</div>
-          <div>{address.first_name}</div>
+          <div>{address.first_name} {address.last_name}</div>
           <Line />
           <div>Items</div>
+          {bundleProductsQuantities.map(({product, quantity}) => (
+            <div key={product.id}>
+              {product.title} {quantity}
+            </div>
+          ))}
         </Wrapper>
       </div>
     )
