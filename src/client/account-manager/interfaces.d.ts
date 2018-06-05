@@ -47,6 +47,20 @@ declare interface ShopifyCustomer {
   last_name: string,
 }
 
+declare interface ShopifyOrder {
+  cancel_reason: string,
+  cancelled_at: string,
+  closed_at: string,
+  created_at: string,
+  financial_status: string,
+  fulfillment_status: string,
+  id: number,
+  name: string,
+  order_number: number,
+  subtotal_price: number,
+  total_price: number,
+}
+
 declare interface StripeCustomer {
   default_source: string,
   email: string,

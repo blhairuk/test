@@ -9,14 +9,14 @@ import styled from "styled-components"
 import Billing, {Props as BillingProps} from "./components/billing"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
-import Orders from "./components/orders"
+import Orders, {Props as OrderProps} from "./components/orders"
 
 import {
   DARK_SAND,
   SAND,
 } from "../colors"
 
-interface Data extends BillingProps, MyBoxProps {
+interface Data extends BillingProps, MyBoxProps, OrderProps {
   customer: ShopifyCustomer,
 }
 
@@ -114,7 +114,11 @@ export default class App extends React.Component<Props> {
     />
   )
 
-  private renderOrders = () => <Orders {...this.props} />
+  private renderOrders = () => (
+    <Orders
+      orders={this.props.data.orders}
+    />
+  )
 }
 
 const Container = styled.div`
