@@ -6,7 +6,7 @@ import {
 } from "react-router-dom"
 import styled from "styled-components"
 
-import Billing from "./components/billing"
+import Billing, {Props as BillingProps} from "./components/billing"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import Orders from "./components/orders"
@@ -16,7 +16,7 @@ import {
   SAND,
 } from "../colors"
 
-interface Data extends MyBoxProps {
+interface Data extends BillingProps, MyBoxProps {
   customer: ShopifyCustomer,
 }
 
@@ -99,8 +99,12 @@ export default class App extends React.Component<Props> {
     return `${process.env.APP_PROXY_PATH}/account/${shopifyCustomerId}${path}`
   }
 
-  private renderBilling = () => <Billing {...this.props} />
+  private renderBilling = () => (
+    <Billing stripeCustomer={this.props.data.stripeCustomer} />
+  )
+
   private renderHome = () => <Home {...this.props} />
+
   private renderMyBox = () => (
     <MyBox
       addresses={this.props.data.addresses}
@@ -109,6 +113,7 @@ export default class App extends React.Component<Props> {
       products={this.props.data.products}
     />
   )
+
   private renderOrders = () => <Orders {...this.props} />
 }
 

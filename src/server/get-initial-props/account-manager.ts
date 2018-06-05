@@ -1,6 +1,7 @@
 import {StaticRouter} from "react-router"
 
 import Shopify from "../apis/shopify"
+import stripeApi from "../apis/stripe"
 
 import {
   getAddress,
@@ -26,9 +27,16 @@ export default async (ctx) => {
   const customer: ShopifyCustomer = await shopify.customer.get(shopifyCustomerId)
   const data: any = {customer}
 
+  const rechargeCustomer = ["billing", "my-box"].includes(page)
+    ? await getCustomer(shopifyCustomerId)
+    : null
+
   switch (page) {
+    case "billing":
+      data.stripeCustomer = await stripeApi(`/customers/${rechargeCustomer.stripe_customer_token}`)
+      break
+
     case "my-box":
-      const rechargeCustomer = await getCustomer(shopifyCustomerId)
       const subscriptions = await getSubscriptions({
         customerId: rechargeCustomer.id,
         status: "ACTIVE",
@@ -44,8 +52,8 @@ export default async (ctx) => {
       ])
       data.products = products
       data.addresses = addresses
-
       break
+
     case "orders":
       data.orders = await shopify.order.list({customer_id: customer.id})
       break
