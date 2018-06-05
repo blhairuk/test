@@ -1,3 +1,4 @@
+import {format as formatDate} from "date-fns"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
@@ -48,30 +49,53 @@ export default class EditBundle extends React.Component<Props> {
             className="text-center"
             flexWrap="wrap"
           >
-            <Box width={[1 / 2, 1 / 4]}>
+            <Box
+              my={2}
+              width={[1 / 2, 1 / 4]}
+            >
               <DetailsTitle>Frequency</DetailsTitle>
               <DetailsValue>{frequencyTitle(frequencyUnitType, frequency)}</DetailsValue>
             </Box>
-            <Box width={[1 / 2, 1 / 4]}>
+            <Box
+              my={2}
+              width={[1 / 2, 1 / 4]}
+            >
               <DetailsTitle>Amount</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
-            <Box width={[1 / 2, 1 / 4]}>
+            <Box
+              my={2}
+              width={[1 / 2, 1 / 4]}
+            >
               <DetailsTitle>Boosters</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
-            <Box width={[1 / 2, 1 / 4]}>
+            <Box
+              my={2}
+              width={[1 / 2, 1 / 4]}
+            >
               <DetailsTitle>Subtotal</DetailsTitle>
               <DetailsValue>TBD</DetailsValue>
             </Box>
           </Flex>
           <Line />
 
-          <SectionTitle>Shipping to</SectionTitle>
-          <div>{address.first_name} {address.last_name}</div>
-          {address.company && <div>{address.company}</div>}
-          <div>{address.address1} {address.address2}</div>
-          <div>{address.city}, {address.province} {address.zip}</div>
+          <Flex flexWrap="wrap">
+            <Box
+              mb={[3, 0]}
+              width={[1, 1 / 2]}
+            >
+              <SectionTitle>Shipping to</SectionTitle>
+              <div>{address.first_name} {address.last_name}</div>
+              {address.company && <div>{address.company}</div>}
+              <div>{address.address1} {address.address2}</div>
+              <div>{address.city}, {address.province} {address.zip}</div>
+            </Box>
+            <Box width={[1, 1 / 2]}>
+              <SectionTitle>Next shipment</SectionTitle>
+              <div>{formatDate(bundle.next_charge_scheduled_at, "dddd, MMMM D, YYYY")}</div>
+            </Box>
+          </Flex>
           <Line />
 
           <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
@@ -84,7 +108,7 @@ export default class EditBundle extends React.Component<Props> {
                 key={product.id}
                 mb={3}
                 px={2}
-                width={[1 / 2, 1 / 3, 1 / 4]}
+                width={[1 / 3, 1 / 4]}
               >
                 <img src={product.image.src} />
                 <ProductTitle>{product.title}</ProductTitle>
