@@ -5,6 +5,7 @@ import styled from "styled-components"
 
 import {
   frequencyTitle,
+  getBundleIdFromProperties,
   getPrimaryBundleSubscription,
 } from "../../../shared/helpers"
 
@@ -15,6 +16,7 @@ import {
 
 interface Props {
   addresses: RechargeAddress[],
+  createHref: (path: string) => any,
   products: ShopifyProduct[],
   subscriptions: RechargeSubscription[],
 }
@@ -23,6 +25,7 @@ export default class EditBundle extends React.Component<Props> {
   public render() {
     const {
       addresses,
+      createHref,
       products,
       subscriptions,
     } = this.props
@@ -44,7 +47,13 @@ export default class EditBundle extends React.Component<Props> {
         <Title>{bundleName}</Title>
 
         <Wrapper>
-          <SectionTitle>Details</SectionTitle>
+          <Flex justifyContent="space-between">
+            <SectionTitle>Details</SectionTitle>
+            <div>
+              <a href={createHref(`/bundles/${getBundleIdFromProperties(bundle.properties)}`)}>Settings</a>
+            </div>
+          </Flex>
+
           <Flex
             className="text-center"
             flexWrap="wrap"
@@ -177,5 +186,5 @@ const Wrapper = styled.div`
   background: #fff;
   border-radius: 5px;
   margin-bottom: 30px;
-  padding: 12px 16px;
+  padding: 15px 20px;
 `

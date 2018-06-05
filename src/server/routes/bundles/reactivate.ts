@@ -10,13 +10,13 @@ export default () => async (ctx) => {
   const {
     params: {
       bundleId: bundleIdS,
-      customerHash,
+      shopifyCustomerId,
     },
   } = ctx
 
-  const bundleId = parseInt(bundleIdS)
+  const bundleId = parseInt(bundleIdS, 10)
 
-  const customer = await getCustomer(customerHash)
+  const customer = await getCustomer(shopifyCustomerId)
   const subscriptions = (await getSubscriptions({customerId: customer.id, status: "CANCELLED"}))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 

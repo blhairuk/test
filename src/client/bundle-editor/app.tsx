@@ -39,7 +39,7 @@ interface Props {
   bundleProductMetafields: ShopifyProductMetafield[],
   bundleProduct: ShopifyProduct,
   bundleProducts: ShopifyProduct[],
-  customerHash: string,
+  shopifyCustomerId: string,
   subscriptions: RechargeSubscription[],
 }
 
@@ -121,10 +121,10 @@ export default class App extends React.Component<Props, State> {
   public async componentDidMount() {
     const {
       bundleId,
-      customerHash,
+      shopifyCustomerId,
     } = this.props
 
-    if (bundleId && !customerHash) {
+    if (bundleId && !shopifyCustomerId) {
       const cartState = await this.cartHelper.extractState(bundleId)
       this.setState(updateStateKeys(cartState))
     }
@@ -354,7 +354,7 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  public isEditingSubscription = () => !!(this.props.customerHash && this.props.subscriptions)
+  public isEditingSubscription = () => !!(this.props.shopifyCustomerId && this.props.subscriptions)
 
   public calculateAddOnsPrice = () => this.calculatePrice(this.state.selectedAddOnIds, this.props.bundleAddOns)
   public calculateVariantsPrice = () => this.calculatePrice(this.state.selectedVariantIds, this.props.bundleProducts)

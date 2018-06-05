@@ -20,7 +20,7 @@ export default () => async (ctx) => {
   const {
     params: {
       bundleId: bundleIdS,
-      customerHash,
+      shopifyCustomerId,
     },
     query: {
       shop: shopName,
@@ -45,7 +45,7 @@ export default () => async (ctx) => {
   const idQuantities = createIdQuantities(variant_ids.concat(add_on_ids))
   const products = await shopify.product.list({limit: 250})
 
-  const customer = await getCustomer(customerHash)
+  const customer = await getCustomer(shopifyCustomerId)
   const subscriptions = (await getSubscriptions({customerId: customer.id, status: "ACTIVE"}))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 

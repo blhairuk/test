@@ -4,7 +4,8 @@ import EditBundle from "./edit-bundle"
 
 export interface Props {
   addresses: RechargeAddress[],
-  bundles: {string: RechargeSubscription[]},
+  bundles: {idS: RechargeSubscription[]},
+  createHref: (path: string) => any,
   products: ShopifyProduct[],
 }
 
@@ -13,6 +14,7 @@ export default class MyBox extends React.Component<Props> {
     const {
       addresses,
       bundles,
+      createHref,
       products,
     } = this.props
 
@@ -25,6 +27,7 @@ export default class MyBox extends React.Component<Props> {
         {Object.entries(bundles).map(([idS, subscriptions]) => (
           <EditBundle
             addresses={addresses}
+            createHref={createHref}
             key={idS}
             products={products}
             subscriptions={subscriptions}

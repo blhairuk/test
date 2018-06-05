@@ -94,10 +94,9 @@ export default class App extends React.Component<Props> {
     )
   }
 
-  private createHref = (path, opts = {prefix: null}) => {
+  private createHref = (path) => {
     const {data: {customer: {id: shopifyCustomerId}}} = this.props
-    const prefix = opts.prefix || "account"
-    return `${process.env.APP_PROXY_PATH}/${prefix}/${shopifyCustomerId}${path}`
+    return `${process.env.APP_PROXY_PATH}/account/${shopifyCustomerId}${path}`
   }
 
   private renderBilling = () => <Billing {...this.props} />
@@ -106,6 +105,7 @@ export default class App extends React.Component<Props> {
     <MyBox
       addresses={this.props.data.addresses}
       bundles={this.props.data.bundles}
+      createHref={this.createHref}
       products={this.props.data.products}
     />
   )

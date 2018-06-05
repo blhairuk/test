@@ -16,7 +16,7 @@ import Shopify from "../apis/shopify"
 export default async ({
   params: {
     bundleId: bundleIdS,
-    customerHash,
+    shopifyCustomerId,
   },
   query: {
     shop: shopName,
@@ -38,8 +38,8 @@ export default async ({
   })
 
   let subscriptions
-  if (customerHash && bundleId) {
-    const customerId = (await getCustomer(customerHash)).id
+  if (shopifyCustomerId && bundleId) {
+    const customerId = (await getCustomer(shopifyCustomerId)).id
     subscriptions = (await getSubscriptions({customerId, status: "ACTIVE"}))
       .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
   }
@@ -50,7 +50,7 @@ export default async ({
     bundleProduct,
     bundleProductMetafields,
     bundleProducts,
-    customerHash,
+    shopifyCustomerId,
     subscriptions,
   }
 }
