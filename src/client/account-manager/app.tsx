@@ -6,6 +6,7 @@ import {
 } from "react-router-dom"
 import styled from "styled-components"
 
+import Billing from "./components/billing"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import Orders from "./components/orders"
@@ -54,6 +55,7 @@ export default class App extends React.Component<Props> {
               <ul className="text-right">
               <li><a href={this.createHref("/")}>My Account</a></li>
                 <li><a href={this.createHref("/my-box")}>My Box</a></li>
+                <li><a href={this.createHref("/billing")}>Billing Info</a></li>
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
                 <li><a href={this.createHref("/billing")}>Write a Review</a></li>
                 <li><a href={this.createHref("/billing")}>Share with friends</a></li>
@@ -70,6 +72,10 @@ export default class App extends React.Component<Props> {
                   exact={true}
                   path={createFullPath("/")}
                   render={this.renderHome}
+                />
+                <Route
+                  path={createFullPath("/billing")}
+                  render={this.renderBilling}
                 />
                 <Route
                   path={createFullPath("/my-box")}
@@ -93,10 +99,9 @@ export default class App extends React.Component<Props> {
     return `${process.env.APP_PROXY_PATH}/${prefix}/${shopifyCustomerId}${path}`
   }
 
+  private renderBilling = () => <Billing {...this.props} />
   private renderHome = () => <Home {...this.props} />
-  private renderMyBox = () => (
-    <MyBox bundles={this.props.data.bundles} />
-  )
+  private renderMyBox = () => <MyBox bundles={this.props.data.bundles} />
   private renderOrders = () => <Orders {...this.props} />
 }
 
