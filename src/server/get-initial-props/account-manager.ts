@@ -6,6 +6,7 @@ import stripeApi from "../apis/stripe"
 import {
   getAddress,
   getCustomer,
+  getCustomerAddresses,
   getSubscriptions,
 } from "../apis/recharge"
 
@@ -28,7 +29,7 @@ export default async (ctx) => {
   const customer: ShopifyCustomer = await shopify.customer.get(shopifyCustomerId)
   const data: any = {customer}
 
-  const rechargeCustomer = ["billing", "my-box"].includes(page)
+  const rechargeCustomer = ["billing", "my-box", "edit-address"].includes(page)
     ? await getCustomer(shopifyCustomerId)
     : null
 
@@ -61,6 +62,11 @@ export default async (ctx) => {
       } else {
         data.orders = await shopify.order.list({customer_id: customer.id})
       }
+      break
+
+    case "edit-address":
+      data.addresses = await getCustomerAddresses(rechargeCustomer.id)
+      data.bundleId = ctx.query.bundle_id
       break
   }
 

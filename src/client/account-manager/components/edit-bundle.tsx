@@ -106,6 +106,9 @@ export default class EditBundle extends React.Component<Props> {
               {address.company && <div>{address.company}</div>}
               <div>{address.address1} {address.address2}</div>
               <div>{address.city}, {address.province} {address.zip}</div>
+              <div>
+                <a href={createHref(`/edit-address?bundle_id=${bundleId}`)}>Edit</a>
+              </div>
             </Box>
             <Box width={[1, 1 / 2]}>
               <SectionTitle>Next shipment</SectionTitle>

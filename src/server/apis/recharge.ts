@@ -17,6 +17,8 @@ const api = async (path, options = null) => {
 
 export const getAddress = async (addressId) => api(`/addresses/${addressId}`)
 
+export const getCustomerAddresses = async (customerId) => api(`/customers/${customerId}/addresses`)
+
 export const getCustomer = async (shopifyCustomerId) => (
   (await api(`/customers?shopify_customer_id=${shopifyCustomerId}`))[0]
 )

@@ -7,6 +7,7 @@ import {
 import styled from "styled-components"
 
 import Billing, {Props as BillingProps} from "./components/billing"
+import EditAddress, {Props as EditAddressProps} from "./components/edit-address"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
@@ -17,7 +18,7 @@ import {
   SAND,
 } from "../colors"
 
-interface Data extends BillingProps, MyBoxProps, OrderProps, OrderDetailsProps {
+interface Data extends BillingProps, EditAddressProps, MyBoxProps, OrderProps, OrderDetailsProps {
   customer: ShopifyCustomer,
 }
 
@@ -61,6 +62,7 @@ export default class App extends React.Component<Props> {
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
                 <li><a href={this.createHref("/billing")}>Write a Review</a></li>
                 <li><a href={this.createHref("/billing")}>Share with friends</a></li>
+                <li><a href="/account/logout">Logout</a></li>
               </ul>
             </Box>
 
@@ -92,6 +94,10 @@ export default class App extends React.Component<Props> {
                   path={createFullPath("/orders/:orderId")}
                   render={this.renderOrderDetails}
                 />
+                <Route
+                  path={createFullPath("/edit-address")}
+                  render={this.renderEditAddress}
+                />
               </Switch>
             </Box>
           </Wrapper>
@@ -107,6 +113,10 @@ export default class App extends React.Component<Props> {
 
   private renderBilling = () => (
     <Billing stripeCustomer={this.props.data.stripeCustomer} />
+  )
+
+  private renderEditAddress = () => (
+    <EditAddress addresses={this.props.data.addresses} />
   )
 
   private renderHome = () => <Home {...this.props} />

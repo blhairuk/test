@@ -27,8 +27,8 @@ bundlesRouter
 
 const accountManagerRouter = new Router()
 accountManagerRouter
-  .get("/:page?/:id?", serveApp("account-manager"))
   .use("/bundles", bundlesRouter.routes(), bundlesRouter.allowedMethods())
+  .get("/:page?/:id?", serveApp("account-manager"))
 
 const router = new Router()
 router
