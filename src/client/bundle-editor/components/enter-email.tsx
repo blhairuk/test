@@ -20,6 +20,10 @@ export default class EnterEmail extends React.Component<Props> {
     this.textInputRef = React.createRef()
   }
 
+  public componentWillUnmount() {
+    this.textInputRef.current.blur()
+  }
+
   public render() {
     const {
       enterEmail,
