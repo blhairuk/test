@@ -21,6 +21,7 @@ injectGlobal`
     color: #fff;
     overflow-y: auto;
     width: 100%;
+    -webkit-overflow-scrolling: touch;
   }
 
   .bu-modal-content--panel {

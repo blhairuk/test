@@ -2,6 +2,7 @@ import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import * as StickyNode from "react-stickynode"
+import styled from "styled-components"
 
 import {
   frequencyTitle,
@@ -210,13 +211,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
               )}
 
               {showProgress && (
-                <div
-                  style={{
-                    overflowX: "auto",
-                    padding: "10px 0",
-                    whiteSpace: "nowrap",
-                  }}
-                >
+                <ProductTypesWrapper>
                   {productTypes.map((productType) => (
                     <span
                       key={productType}
@@ -238,7 +233,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                       </a>
                     </span>
                   ))}
-                </div>
+                </ProductTypesWrapper>
               )}
             </div>
           </StickyNode>
@@ -427,4 +422,11 @@ const Filter = Button.extend`
   font-weight: bold;
   margin-bottom: 5px;
   margin-right: 10px;
+`
+
+const ProductTypesWrapper = styled.div`
+  overflow-x: auto;
+  padding: 10px 0;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 `

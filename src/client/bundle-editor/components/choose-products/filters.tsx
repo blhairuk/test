@@ -76,6 +76,7 @@ const FiltersWrapper = styled.div`
   overflow-y: auto;
   padding: 0 20px;
   text-align: center;
+  -webkit-overflow-scrolling: touch;
 `
 
 const Header = styled.div`
