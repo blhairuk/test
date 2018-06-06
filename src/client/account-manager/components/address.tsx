@@ -5,10 +5,25 @@ interface Props {
   address: RechargeAddress,
 }
 
+export const addressDiv = (address: RechargeAddress) => {
+  return (
+    <div>
+      <div>{address.first_name} {address.last_name}</div>
+      {address.company && <div>address.company</div>}
+      <div>{address.address1} {address.address2}</div>
+      <div>{address.city}, {address.province} {address.zip}</div>
+    </div>
+  )
+}
+
 export default class Address extends React.Component<Props> {
   public render() {
+    const {address} = this.props
+
     return (
-      <Wrapper>Address</Wrapper>
+      <Wrapper>
+        <div>{addressDiv(address)}</div>
+      </Wrapper>
     )
   }
 }

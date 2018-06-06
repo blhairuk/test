@@ -4,6 +4,8 @@ import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
+import {DARK_SAND} from "../../colors"
+
 interface Props {
   createHref: (path: string) => any,
   order: ShopifyOrder,
@@ -31,7 +33,7 @@ export default class Order extends React.Component<Props> {
 
         <Line />
 
-        <Flex>
+        <Flex className="text-center">
           <Box width={1 / 4}>
             <DetailsTitle>Date</DetailsTitle>
             <DetailsValue>{formatDate(created_at, "MMM D, YYYY")}</DetailsValue>
@@ -64,7 +66,10 @@ const DetailsValue = styled.div`
   font-weight: bold;
 `
 
-const Line = styled.hr``
+const Line = styled.hr`
+  border-color: ${DARK_SAND};
+  border-top-width: 2px;
+`
 
 const Title = styled.h3`
   font-size: 110%;
@@ -74,4 +79,6 @@ const Title = styled.h3`
 const Wrapper = styled.div`
   background: #fff;
   border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
 `
