@@ -5,6 +5,7 @@ import styled from "styled-components"
 
 import {
   createIdQuantities,
+  createImgSrc,
   findProductByVariantId,
   frequencyTitle,
   productTitleWithoutType,
@@ -112,7 +113,7 @@ export default class Progress extends React.Component<Props> {
                     style={{position: "relative"}}
                   >
                     {quantity > 1 && <QuantityWrapper size={20}>{quantity}</QuantityWrapper>}
-                    <img src={src} />
+                    <img src={createImgSrc(src, "medium")} />
                   </Box>
 
                   <Box

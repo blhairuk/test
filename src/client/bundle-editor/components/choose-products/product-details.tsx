@@ -1,7 +1,11 @@
 import * as React from "react"
 import styled from "styled-components"
 
-import {productTitleWithoutType} from "../../../../shared/helpers"
+import {
+  createImgSrc,
+  productTitleWithoutType,
+} from "../../../../shared/helpers"
+
 import FlexWrapper from "../styled/flex-wrapper"
 import ProductSubdetail from "./product-subdetail"
 
@@ -38,7 +42,7 @@ export default class ProductDetails extends React.Component<Props> {
         </Header>
 
         <DetailsWrapper>
-          <img src={src} />
+          <img src={createImgSrc(src, "large")} />
           <Title>{productTitleWithoutType(title, product_type)}</Title>
           <p dangerouslySetInnerHTML={{__html: body_html}} />
 

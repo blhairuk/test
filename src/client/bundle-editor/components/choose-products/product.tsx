@@ -1,7 +1,11 @@
 import * as React from "react"
 import styled from "styled-components"
 
-import {productTitleWithoutType} from "../../../../shared/helpers"
+import {
+  createImgSrc,
+  productTitleWithoutType,
+} from "../../../../shared/helpers"
+
 import Button from "../styled/button"
 import FlexWrapper from "../styled/flex-wrapper"
 
@@ -46,7 +50,7 @@ export default class Product extends React.Component<Props> {
           href="javascript:void(0)"
           onClick={openProductDetailsModal(productId)}
         >
-          <img src={src} />
+          <img src={createImgSrc(src, "medium")} />
           <div style={{margin: "12px 0"}}>
             {productTitleWithoutType(title, product_type)}
           </div>

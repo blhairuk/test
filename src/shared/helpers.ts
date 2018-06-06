@@ -92,3 +92,14 @@ export const productTitleWithoutType = (title, type) => {
       return title
   }
 }
+
+export const createImgSrc = (src: string, size: "small" | "medium" | "large") => {
+  const suffix = (() => {
+    switch (size) {
+      case "small": return "_180x"
+      case "medium": return "_360x"
+      case "large": return "_540x"
+    }
+  })()
+  return src.replace(/\.(\w{3})(?:\?|$)/, `${suffix}.$1?`)
+}

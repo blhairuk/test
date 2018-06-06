@@ -5,6 +5,7 @@ import styled from "styled-components"
 
 import {
   createIdQuantities,
+  createImgSrc,
   frequencyTitle,
   getPathToImages,
 } from "../../../shared/helpers"
@@ -119,7 +120,7 @@ export default class Confirm extends React.Component<Props> {
                   >
                     <ImageWrapper>
                       {quantity > 1 && <QuantityWrapper size={30}>{quantity}</QuantityWrapper>}
-                      <img src={src} />
+                      <img src={createImgSrc(src, "medium")} />
                     </ImageWrapper>
                     <div>{title}</div>
                   </Box>
