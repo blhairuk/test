@@ -3,8 +3,6 @@ import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
-import {addressDiv} from "./address"
-
 import {
   frequencyTitle,
   getBundleIdFromProperties,
@@ -104,9 +102,13 @@ export default class EditBundle extends React.Component<Props> {
               width={[1, 1 / 2]}
             >
               <SectionTitle>Shipping to</SectionTitle>
-              <div>{addressDiv(address)}</div>
+              <div>{address.first_name} {address.last_name}</div>
+              {address.company && <div>{address.company}</div>}
+              <div>{address.address1} {address.address2}</div>
+              <div>{address.city}, {address.province} {address.zip}</div>
+              <div>{address.phone}</div>
               <div>
-                <a href={createHref(`/edit-address?bundle_id=${bundleId}`)}>Edit</a>
+                <a href={createHref(`/edit-address?address_id=${address.id}`)}>Edit</a>
               </div>
             </Box>
             <Box width={[1, 1 / 2]}>

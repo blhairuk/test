@@ -23,12 +23,10 @@ const api = async (path, options = null) => {
   }
 }
 
-export const createAddress = async (customerId, address) => api(`/customers/${customerId}/addresses`, {
+export const updateAddress = async (address) => api(`/addresses/${address.id}`, {
   body: JSON.stringify(address),
-  method: "POST",
+  method: "PUT",
 })
-
-export const deleteAddress = async (addressId) => api(`/addresses/${addressId}`, {method: "DELETE"})
 
 export const getAddress = async (addressId) => api(`/addresses/${addressId}`)
 

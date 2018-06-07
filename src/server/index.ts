@@ -18,8 +18,7 @@ import cancelBundle from "./routes/bundles/cancel"
 import reactivateBundle from "./routes/bundles/reactivate"
 import updateBundle from "./routes/bundles/update"
 
-import createAddress from "./routes/addresses/create"
-import deleteAddress from "./routes/addresses/delete"
+import updateAddress from "./routes/addresses/update"
 import updateBundleAddress from "./routes/bundles/update-address"
 
 const bundlesRouter = new Router()
@@ -31,8 +30,7 @@ bundlesRouter
   .post("/:bundleId", bodyParser(), reactivateBundle())
 
 const addressesRouter = new Router()
-  .post("/", bodyParser(), createAddress())
-  .delete("/:addressId", bodyParser(), deleteAddress())
+  .put("/:addressId", bodyParser(), updateAddress())
 
 const accountManagerRouter = new Router()
 accountManagerRouter

@@ -6,7 +6,6 @@ import stripeApi from "../apis/stripe"
 import {
   getAddress,
   getCustomer,
-  getCustomerAddresses,
   getSubscriptions,
 } from "../apis/recharge"
 
@@ -65,8 +64,7 @@ export default async (ctx) => {
       break
 
     case "edit-address":
-      data.addresses = await getCustomerAddresses(rechargeCustomer.id)
-      data.bundleId = parseInt(ctx.query.bundle_id, 10)
+      data.address = await getAddress(ctx.query.address_id)
       break
   }
 

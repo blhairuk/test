@@ -3,6 +3,7 @@ declare interface RechargeAddress {
   address2: string,
   city: string,
   company: string,
+  country: string,
   first_name: string,
   id: number,
   last_name: string,
