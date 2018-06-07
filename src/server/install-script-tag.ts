@@ -6,8 +6,8 @@ const {APP_PROXY_HOST} = process.env
 export default async ({shop, token}) => {
   const options = {
     headers: {
-      "X-Shopify-Access-Token": token,
       "Content-Type": "application/json",
+      "X-Shopify-Access-Token": token,
     },
   }
 

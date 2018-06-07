@@ -116,7 +116,11 @@ export default class App extends React.Component<Props> {
   )
 
   private renderEditAddress = () => (
-    <EditAddress addresses={this.props.data.addresses} />
+    <EditAddress
+      addresses={this.props.data.addresses}
+      bundleId={this.props.data.bundleId}
+      createHref={this.createHref}
+    />
   )
 
   private renderHome = () => <Home {...this.props} />

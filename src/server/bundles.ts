@@ -39,3 +39,12 @@ export const create = (subscriptionsData) => {
     })
   )))
 }
+
+export const update = async (subscriptionIds, data) => (
+  Promise.all(subscriptionIds.map((id) => (
+    rechargeApi(`/subscriptions/${id}`, {
+      body: JSON.stringify(data),
+      method: "PUT",
+    })
+  )))
+)

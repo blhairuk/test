@@ -5,11 +5,17 @@ import Address from "./address"
 
 export interface Props {
   addresses: RechargeAddress[],
+  bundleId: number,
+  createHref: (path: string) => any,
 }
 
 export default class EditAddress extends React.Component<Props> {
   public render() {
-    const {addresses} = this.props
+    const {
+      addresses,
+      bundleId,
+      createHref,
+    } = this.props
 
     return (
       <div>
@@ -24,7 +30,11 @@ export default class EditAddress extends React.Component<Props> {
               px={3}
               width={[1, 1 / 2]}
             >
-              <Address address={address} />
+              <Address
+                address={address}
+                bundleId={bundleId}
+                createHref={createHref}
+              />
             </Box>
           ))}
         </Flex>

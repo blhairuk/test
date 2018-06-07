@@ -66,7 +66,7 @@ export default async (ctx) => {
 
     case "edit-address":
       data.addresses = await getCustomerAddresses(rechargeCustomer.id)
-      data.bundleId = ctx.query.bundle_id
+      data.bundleId = parseInt(ctx.query.bundle_id, 10)
       break
   }
 

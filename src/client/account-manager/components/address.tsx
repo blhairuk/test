@@ -3,6 +3,8 @@ import styled from "styled-components"
 
 interface Props {
   address: RechargeAddress,
+  bundleId: number,
+  createHref: (path: string) => any,
 }
 
 export const addressDiv = (address: RechargeAddress) => {
@@ -18,13 +20,35 @@ export const addressDiv = (address: RechargeAddress) => {
 
 export default class Address extends React.Component<Props> {
   public render() {
-    const {address} = this.props
+    const {
+      address,
+  } = this.props
 
     return (
       <Wrapper>
         <div>{addressDiv(address)}</div>
+        <div>
+          <a onClick={this.handleUseAddressClick(address.id)}>Use</a>
+        </div>
       </Wrapper>
     )
+  }
+
+  private handleUseAddressClick = (addressId) => async () => {
+    const {
+      createHref,
+      bundleId,
+    } = this.props
+
+    await $.ajax({
+      contentType: "application/json",
+      data: JSON.stringify({addressId}),
+      dataType: "json",
+      method: "PUT",
+      url: createHref(`/bundles/${bundleId}/update-address`),
+    })
+
+    window.location.href = createHref("/my-box")
   }
 }
 

@@ -18,16 +18,26 @@ import cancelBundle from "./routes/bundles/cancel"
 import reactivateBundle from "./routes/bundles/reactivate"
 import updateBundle from "./routes/bundles/update"
 
+import createAddress from "./routes/addresses/create"
+import deleteAddress from "./routes/addresses/delete"
+import updateBundleAddress from "./routes/bundles/update-address"
+
 const bundlesRouter = new Router()
 bundlesRouter
   .get("/:bundleId", serveApp("bundle-editor"))
   .put("/:bundleId", bodyParser(), updateBundle())
+  .put("/:bundleId/update-address", bodyParser(), updateBundleAddress())
   .delete("/:bundleId", bodyParser(), cancelBundle())
   .post("/:bundleId", bodyParser(), reactivateBundle())
+
+const addressesRouter = new Router()
+  .post("/", bodyParser(), createAddress())
+  .delete("/:addressId", bodyParser(), deleteAddress())
 
 const accountManagerRouter = new Router()
 accountManagerRouter
   .use("/bundles", bundlesRouter.routes(), bundlesRouter.allowedMethods())
+  .use("/addresses", addressesRouter.routes(), addressesRouter.allowedMethods())
   .get("/:page?/:id?", serveApp("account-manager"))
 
 const router = new Router()
