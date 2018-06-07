@@ -39,7 +39,7 @@ export default class EditAddress extends React.Component<Props> {
           ))}
         </Flex>
 
-        <a>Add new address</a>
+        <a href={createHref("/new-address")}>Add new address</a>
       </div>
     )
   }

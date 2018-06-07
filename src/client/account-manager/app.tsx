@@ -10,6 +10,7 @@ import Billing, {Props as BillingProps} from "./components/billing"
 import EditAddress, {Props as EditAddressProps} from "./components/edit-address"
 import Home from "./components/home"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
+import NewAddress from "./components/new-address"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
 import Orders, {Props as OrderProps} from "./components/orders"
 
@@ -98,6 +99,10 @@ export default class App extends React.Component<Props> {
                   path={createFullPath("/edit-address")}
                   render={this.renderEditAddress}
                 />
+                <Route
+                  path={createFullPath("/new-address")}
+                  render={this.renderNewAddress}
+                />
               </Switch>
             </Box>
           </Wrapper>
@@ -121,6 +126,10 @@ export default class App extends React.Component<Props> {
       bundleId={this.props.data.bundleId}
       createHref={this.createHref}
     />
+  )
+
+  private renderNewAddress = () => (
+    <NewAddress createHref={this.createHref} />
   )
 
   private renderHome = () => <Home {...this.props} />

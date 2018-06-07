@@ -11,9 +11,10 @@ export const addressDiv = (address: RechargeAddress) => {
   return (
     <div>
       <div>{address.first_name} {address.last_name}</div>
-      {address.company && <div>address.company</div>}
+      {address.company && <div>{address.company}</div>}
       <div>{address.address1} {address.address2}</div>
       <div>{address.city}, {address.province} {address.zip}</div>
+      <div>{address.phone}</div>
     </div>
   )
 }
@@ -29,9 +30,30 @@ export default class Address extends React.Component<Props> {
         <div>{addressDiv(address)}</div>
         <div>
           <a onClick={this.handleUseAddressClick(address.id)}>Use</a>
+          <span>&nbsp;</span>
+          <a onClick={this.handleDeleteAddressClick(address.id)}>Delete</a>
         </div>
       </Wrapper>
     )
+  }
+
+  private handleDeleteAddressClick = (addressId) => async () => {
+    const {
+      createHref,
+    } = this.props
+
+    try {
+      await $.ajax({
+        contentType: "application/json",
+        dataType: "json",
+        method: "DELETE",
+        url: createHref(`/addresses/${addressId}`),
+      })
+
+      window.location.reload()
+    } catch (e) {
+      alert("Unable to delete address")
+    }
   }
 
   private handleUseAddressClick = (addressId) => async () => {
