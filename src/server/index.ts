@@ -16,6 +16,7 @@ import confirmInstall from "./routes/install/confirm"
 
 import cancelBundle from "./routes/bundles/cancel"
 import reactivateBundle from "./routes/bundles/reactivate"
+import toggleSkipCharge from "./routes/bundles/toggle-skip-charge"
 import updateBundle from "./routes/bundles/update"
 
 import updateAddress from "./routes/addresses/update"
@@ -28,6 +29,7 @@ bundlesRouter
   .put("/:bundleId/update-address", bodyParser(), updateBundleAddress())
   .delete("/:bundleId", bodyParser(), cancelBundle())
   .post("/:bundleId", bodyParser(), reactivateBundle())
+  .post("/:bundleId/toggle-skip-charge", bodyParser(), toggleSkipCharge())
 
 const addressesRouter = new Router()
   .put("/:addressId", bodyParser(), updateAddress())

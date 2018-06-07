@@ -128,6 +128,7 @@ export default class App extends React.Component<Props> {
     <MyBox
       addresses={this.props.data.addresses}
       bundles={this.props.data.bundles}
+      charges={this.props.data.charges}
       createHref={this.createHref}
       products={this.props.data.products}
     />

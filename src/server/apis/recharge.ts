@@ -1,3 +1,4 @@
+import {format as formatDate} from "date-fns"
 import * as fetch from "node-fetch"
 
 const {RECHARGE_API_TOKEN} = process.env
@@ -29,6 +30,22 @@ export const updateAddress = async (address) => api(`/addresses/${address.id}`, 
 })
 
 export const getAddress = async (addressId) => api(`/addresses/${addressId}`)
+
+export const getCharge = async (chargeId) => api(`/charges/${chargeId}`)
+
+export const getUpcomingCharges = async (subscriptionId) => (
+  api(`/charges?subscription_id=${subscriptionId}&date_min=${formatDate(new Date(), "YYYY-MM-DD")}`)
+)
+
+const toggleSkipCharge = (verb) => async (chargeId, subscription_id) => (
+  api(`/charges/${chargeId}/${verb}`, {
+    body: JSON.stringify({subscription_id}),
+    method: "POST",
+  })
+)
+
+export const skipCharge = toggleSkipCharge("skip")
+export const unskipCharge = toggleSkipCharge("unskip")
 
 export const getCustomerAddresses = async (customerId) => api(`/customers/${customerId}/addresses`)
 

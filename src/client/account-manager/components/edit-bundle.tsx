@@ -16,6 +16,7 @@ import {
 
 interface Props {
   addresses: RechargeAddress[],
+  charges: RechargeCharge[],
   createHref: (path: string) => any,
   products: ShopifyProduct[],
   subscriptions: RechargeSubscription[],
@@ -25,6 +26,7 @@ export default class EditBundle extends React.Component<Props> {
   public render() {
     const {
       addresses,
+      charges,
       createHref,
       products,
       subscriptions,
@@ -112,8 +114,22 @@ export default class EditBundle extends React.Component<Props> {
               </div>
             </Box>
             <Box width={[1, 1 / 2]}>
-              <SectionTitle>Next shipment</SectionTitle>
-              <div>{formatDate(bundle.next_charge_scheduled_at, "dddd, MMMM D, YYYY")}</div>
+              <SectionTitle>Upcoming charges</SectionTitle>
+              {charges.map(({
+                id,
+                scheduled_at,
+                status,
+              }) => (
+                <div key={id}>
+                  <div>
+                    {formatDate(scheduled_at, "dddd, MMMM D, YYYY")}
+                    <span>&nbsp;</span>
+                    <a onClick={this.handleToggleSkipChargeClick(bundleId, id)}>
+                      {status === "SKIPPED" ? "Unskip" : "Skip"}
+                    </a>
+                  </div>
+                </div>
+              ))}
             </Box>
           </Flex>
           <Line />
@@ -139,6 +155,16 @@ export default class EditBundle extends React.Component<Props> {
         </Wrapper>
       </div>
     )
+  }
+
+  private handleToggleSkipChargeClick = (bundleId, chargeId) => async () => {
+    await $.ajax({
+      contentType: "application/json",
+      dataType: "json",
+      method: "POST",
+      url: this.props.createHref(`/bundles/${bundleId}/toggle-skip-charge?charge_id=${chargeId}`),
+    })
+    // window.location.reload()
   }
 
   private submitCancel = (bundleId) => async () => {

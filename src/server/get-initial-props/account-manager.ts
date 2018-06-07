@@ -7,6 +7,7 @@ import {
   getAddress,
   getCustomer,
   getSubscriptions,
+  getUpcomingCharges,
 } from "../apis/recharge"
 
 import {groupSubscriptionsIntoBundles} from "../../shared/helpers"
@@ -47,12 +48,14 @@ export default async (ctx) => {
       const productIds = Array.from(new Set(subscriptions.map(({shopify_product_id}) => shopify_product_id)))
       const addressIds = Array.from(new Set(subscriptions.map(({address_id}) => address_id)))
 
-      const [products, addresses] = await Promise.all([
+      const [products, addresses, charges] = await Promise.all([
         productIds.length ? shopify.product.list({ids: productIds.join(",")}) : [],
         addressIds.length ? Promise.all(addressIds.map((addressId) => getAddress(addressId))) : [],
+        getUpcomingCharges(subscriptions[0].id),
       ])
       data.products = products
       data.addresses = addresses
+      data.charges = charges
       break
 
     case "orders":
