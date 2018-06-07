@@ -33,8 +33,8 @@ export const getAddress = async (addressId) => api(`/addresses/${addressId}`)
 
 export const getCharge = async (chargeId) => api(`/charges/${chargeId}`)
 
-export const getUpcomingCharges = async (subscriptionId) => (
-  api(`/charges?subscription_id=${subscriptionId}&date_min=${formatDate(new Date(), "YYYY-MM-DD")}`)
+export const getUpcomingCharges = async (customerId) => (
+  api(`/charges?customer_id=${customerId}&date_min=${formatDate(new Date(), "YYYY-MM-DD")}`)
 )
 
 const toggleSkipCharge = (verb) => async (chargeId, subscription_id) => (

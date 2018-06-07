@@ -7,6 +7,7 @@ import {
   frequencyTitle,
   getBundleIdFromProperties,
   getPrimaryBundleSubscription,
+  isBundleIdInProperties,
 } from "../../../shared/helpers"
 
 import {
@@ -26,7 +27,7 @@ export default class EditBundle extends React.Component<Props> {
   public render() {
     const {
       addresses,
-      charges,
+      charges: allCharges,
       createHref,
       products,
       subscriptions,
@@ -44,6 +45,8 @@ export default class EditBundle extends React.Component<Props> {
         product: products.find(({id}) => id === shopify_product_id),
         quantity,
       }))
+
+    const charges = allCharges.filter((c) => c.line_items.some((li) => isBundleIdInProperties(bundleId, li.properties)))
 
     return (
       <div>

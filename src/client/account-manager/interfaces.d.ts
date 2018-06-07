@@ -15,6 +15,10 @@ declare interface RechargeAddress {
 declare interface RechargeCharge {
   id: number,
   line_items: Array<{
+    properties: Array<{
+      name: string,
+      value: string,
+    }>,
     title: string,
   }>,
   scheduled_at: string,
