@@ -41,7 +41,6 @@ export default class EnterEmail extends React.Component<Props> {
 
             <div style={{marginBottom: "20px"}}>
               <TextInput
-                autoFocus={true}
                 innerRef={this.textInputRef}
                 onChange={enterEmail}
                 placeholder="Email"
