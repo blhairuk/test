@@ -28,13 +28,16 @@ export default () => async (ctx) => {
   const charge = await getCharge(charge_id)
 
   const fn = charge.status === "SKIPPED" ? unskipCharge : skipCharge
-  await Promise.all(subscriptions.map(async ({id: subscriptionId}) => {
+
+  // important to do this sequentially, even though it takes forever. otherwise recharge's
+  // backend will get messed up, and each line item will get a separate charge.
+  for (const subscription of subscriptions) {
     try {
-      await fn(charge_id, subscriptionId)
+      await fn(charge_id, subscription.id)
     } catch (e) {
       // do nothing
     }
-  }))
+  }
 
   ctx.status = 204
 }
