@@ -3,10 +3,6 @@ import * as fetch from "node-fetch"
 
 const {RECHARGE_API_TOKEN} = process.env
 
-function RechargeApiError(res) {
-  this.res = res
-}
-
 const api = async (path, options = null) => {
   const res = await fetch(`https://api.rechargeapps.com${path}`, {
     headers: {
@@ -15,13 +11,9 @@ const api = async (path, options = null) => {
     },
     ...options,
   })
-  if (res.status >= 200 && res.status < 400) {
-    const json = await res.json()
-    const rootKey = Object.keys(json)[0]
-    return json[rootKey]
-  } else {
-    throw new RechargeApiError(res)
-  }
+  const json = await res.json()
+  const rootKey = Object.keys(json)[0]
+  return json[rootKey]
 }
 
 export const updateAddress = async (address) => api(`/addresses/${address.id}`, {
