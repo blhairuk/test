@@ -46,7 +46,13 @@ export default class EditBundle extends React.Component<Props> {
         quantity,
       }))
 
-    const charges = allCharges.filter((c) => c.line_items.some((li) => isBundleIdInProperties(bundleId, li.properties)))
+    const validChargeStatuses = ["QUEUED", "SKIPPED"]
+    const charges = allCharges.filter(({line_items, status}) => (
+      validChargeStatuses.includes(status) &&
+      line_items.some(({properties}) => (
+        isBundleIdInProperties(bundleId, properties)
+      ))
+    ))
 
     return (
       <div>
