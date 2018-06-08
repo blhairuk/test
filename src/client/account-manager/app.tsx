@@ -112,7 +112,10 @@ export default class App extends React.Component<Props> {
   }
 
   private renderBilling = () => (
-    <Billing stripeCustomer={this.props.data.stripeCustomer} />
+    <Billing
+      createHref={this.createHref}
+      stripeCustomer={this.props.data.stripeCustomer}
+    />
   )
 
   private renderEditAddress = () => (

@@ -53,6 +53,11 @@ export const getCustomer = async (shopifyCustomerId) => (
   (await api(`/customers?shopify_customer_id=${shopifyCustomerId}`))[0]
 )
 
+export const updateCustomer = async (customerId, updates) => api(`/customers/${customerId}`, {
+  body: JSON.stringify(updates),
+  method: "PUT",
+})
+
 export const getSubscriptions = async ({
   customerId,
   status = "",

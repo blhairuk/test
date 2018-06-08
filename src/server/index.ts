@@ -22,6 +22,12 @@ import updateBundle from "./routes/bundles/update"
 import updateAddress from "./routes/addresses/update"
 import updateBundleAddress from "./routes/bundles/update-address"
 
+import updateCreditCard from "./routes/credit-cards/update"
+
+const creditCardsRouter = new Router()
+creditCardsRouter
+  .put("/", bodyParser(), updateCreditCard())
+
 const bundlesRouter = new Router()
 bundlesRouter
   .get("/:bundleId", serveApp("bundle-editor"))
@@ -38,6 +44,7 @@ const accountManagerRouter = new Router()
 accountManagerRouter
   .use("/bundles", bundlesRouter.routes(), bundlesRouter.allowedMethods())
   .use("/addresses", addressesRouter.routes(), addressesRouter.allowedMethods())
+  .use("/cards", creditCardsRouter.routes(), creditCardsRouter.allowedMethods())
   .get("/:page?/:id?", serveApp("account-manager"))
 
 const router = new Router()

@@ -15,6 +15,7 @@ module.exports = {
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',
       'NODE_ENV',
+      'STRIPE_PUBLISHABLE_TOKEN',
     ]),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()

@@ -1,138 +1,79 @@
 import * as React from "react"
 
 export interface Props {
+  createHref: (path: string) => any,
   stripeCustomer: StripeCustomer,
 }
 
 export default class Billing extends React.Component<Props> {
+  private card: any
+  private stripe: any
+
+  public componentDidMount() {
+    if (window.Stripe) {
+      this.initStripe()
+    } else {
+      document.querySelector("#stripe-js").addEventListener("load", this.initStripe)
+    }
+  }
+
   public render() {
-    const {stripeCustomer} = this.props
-
-    const card = stripeCustomer.sources.data.find((s) => s.id === stripeCustomer.default_source)
-
-    const {
-      address_city,
-      address_line1,
-      address_line2,
-      address_state,
-      address_zip,
-      exp_month,
-      exp_year,
-      last4,
-      name,
-    } = card
+    const card = this.props.stripeCustomer.sources.data[0]
 
     return (
       <div>
         <h3>Billing Info</h3>
+
+        <p>
+          Current card is {card.brand} ending in {card.last4}.
+        </p>
+
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <label htmlFor="name">Name on Card</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={name}
-            />
-          </div>
-          <div>
-            <label htmlFor="number">Card Number</label>
-            <input
-              id="number"
-              name="number"
-              type="number"
-              value={last4}
-            />
-          </div>
-          <div>
-            <label htmlFor="exp_month">Exp. Month</label>
-            <input
-              id="exp_month"
-              name="exp_month"
-              type="number"
-              value={exp_month}
-            />
-          </div>
-          <div>
-            <label htmlFor="exp_year">Exp. Year</label>
-            <input
-              id="exp_year"
-              name="exp_year"
-              type="number"
-              value={exp_year}
-            />
-          </div>
-          <div>
-            <label htmlFor="cvv">CVV</label>
-            <input
-              id="cvv"
-              name="cvv"
-              type="number"
-            />
-          </div>
-
-          <hr />
-
-          <div>
-            <label htmlFor="city">City</label>
-            <input
-              id="city"
-              name="city"
-              type="text"
-              value={address_city}
-            />
-          </div>
-          <div>
-            <label htmlFor="line1">Line 1</label>
-            <input
-              id="line1"
-              name="line1"
-              type="text"
-              value={address_line1}
-            />
-          </div>
-          <div>
-            <label htmlFor="line2">Line 2</label>
-            <input
-              id="line2"
-              name="line2"
-              type="text"
-              value={address_line2}
-            />
-          </div>
-          <div>
-            <label htmlFor="state">State</label>
-            <input
-              id="state"
-              name="state"
-              type="text"
-              value={address_state}
-            />
-          </div>
-          <div>
-            <label htmlFor="zip">Zip</label>
-            <input
-              id="zip"
-              name="zip"
-              type="text"
-              value={address_zip}
-            />
-          </div>
-          <div>
-            <button
-              className="button"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
+          <div id="card" />
+          <button>Submit</button>
         </form>
+
+        <script
+          id="stripe-js"
+          src="https://js.stripe.com/v3/"
+        />
       </div>
     )
   }
 
-  private handleSubmit = (e) => {
+  private handleSubmit = async (e) => {
     e.preventDefault()
-    alert("This does not work yet")
+
+    const stripeResult = await this.stripe.createToken(this.card)
+
+    if (stripeResult.error) {
+      alert(stripeResult.error.message)
+    } else if (stripeResult.token) {
+      const {createHref} = this.props
+
+      try {
+        await $.ajax({
+          contentType: "application/json",
+          data: JSON.stringify({
+            card: stripeResult.token.card.id,
+            token: stripeResult.token.id,
+          }),
+          dataType: "json",
+          method: "PUT",
+          url: createHref("/cards"),
+        })
+
+        window.location.reload()
+      } catch (e) {
+        alert("Error updating credit card.")
+      }
+    }
+  }
+
+  private initStripe() {
+    this.stripe = window.Stripe(process.env.STRIPE_PUBLISHABLE_TOKEN)
+    const elements = this.stripe.elements()
+    this.card = elements.create("card")
+    this.card.mount("#card")
   }
 }

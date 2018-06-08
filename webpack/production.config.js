@@ -9,6 +9,7 @@ module.exports = {
     new webpack.EnvironmentPlugin([
       'APP_PROXY_PATH',
       'NODE_ENV',
+      'STRIPE_PUBLISHABLE_TOKEN',
     ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'disabled' // remove to see the output

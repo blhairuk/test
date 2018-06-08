@@ -1,1 +1,4 @@
-declare interface Window { AppProps: any }
+declare interface Window { 
+  AppProps: any,
+  Stripe: any,
+}
