@@ -22,7 +22,7 @@ export default class Billing extends React.Component<Props> {
 
     return (
       <div>
-        <h3>Billing Info</h3>
+        <h3 className="show-for-medium">Billing Info</h3>
 
         <p>
           Current card is {card.brand} ending in {card.last4}.

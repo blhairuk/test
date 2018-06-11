@@ -111,19 +111,42 @@ export default class App extends React.Component<Props> {
     return `${process.env.APP_PROXY_PATH}/account/${shopifyCustomerId}${path}`
   }
 
-  private renderBilling = () => (
-    <Billing
-      createHref={this.createHref}
-      stripeCustomer={this.props.data.stripeCustomer}
-    />
+  private renderWithMobileBackHeader = ({Component, title}: {Component: any, title?: string}) => (
+    <div>
+      <Flex
+        className="hide-for-medium"
+        justifyContent="space-between"
+      >
+        <Box width={1 / 4}>
+          <a href={this.createHref("/")}>Back</a>
+        </Box>
+        <h2>{title}</h2>
+        <Box width={1 / 4}>
+          <div>&nbsp;</div>
+        </Box>
+      </Flex>
+      {Component}
+    </div>
   )
 
-  private renderEditAddress = () => (
-    <EditAddress
-      address={this.props.data.address}
-      createHref={this.createHref}
-    />
-  )
+  private renderBilling = () => this.renderWithMobileBackHeader({
+    Component: (
+      <Billing
+        createHref={this.createHref}
+        stripeCustomer={this.props.data.stripeCustomer}
+      />
+    ),
+    title: "Billing Info",
+  })
+
+  private renderEditAddress = () => this.renderWithMobileBackHeader({
+    Component: (
+      <EditAddress
+        address={this.props.data.address}
+        createHref={this.createHref}
+      />
+    ),
+  })
 
   private renderHome = () => (
     <Home
@@ -132,28 +155,35 @@ export default class App extends React.Component<Props> {
     />
   )
 
-  private renderMyBox = () => (
-    <MyBox
-      addresses={this.props.data.addresses}
-      bundles={this.props.data.bundles}
-      charges={this.props.data.charges}
-      createHref={this.createHref}
-      products={this.props.data.products}
-    />
-  )
+  private renderMyBox = () => this.renderWithMobileBackHeader({
+    Component: (
+      <MyBox
+        addresses={this.props.data.addresses}
+        bundles={this.props.data.bundles}
+        charges={this.props.data.charges}
+        createHref={this.createHref}
+        products={this.props.data.products}
+      />
+    ),
+  })
 
-  private renderOrders = () => (
-    <Orders
-      createHref={this.createHref}
-      orders={this.props.data.orders}
-    />
-  )
+  private renderOrders = () => this.renderWithMobileBackHeader({
+    Component: (
+      <Orders
+        createHref={this.createHref}
+        orders={this.props.data.orders}
+      />
+    ),
+    title: "Orders",
+  })
 
-  private renderOrderDetails = () => (
-    <OrderDetails
-      order={this.props.data.order}
-    />
-  )
+  private renderOrderDetails = () => this.renderWithMobileBackHeader({
+    Component: (
+      <OrderDetails
+        order={this.props.data.order}
+      />
+    ),
+  })
 }
 
 const Container = styled.div`

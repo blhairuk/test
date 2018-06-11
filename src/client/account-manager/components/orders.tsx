@@ -16,7 +16,8 @@ export default class Orders extends React.Component<Props> {
 
     return (
       <div>
-        <h3>Orders</h3>
+        <h3 className="show-for-medium">Orders</h3>
+
         {orders.map((order) => (
           <Order
             createHref={createHref}
