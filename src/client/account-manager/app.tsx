@@ -54,16 +54,25 @@ export default class App extends React.Component<Props> {
               px={3}
               width={[1, 1 / 3]}
             >
-              <h3>{first_name} {last_name}</h3>
-              <ul className="text-right">
+              <Name>{first_name} {last_name}</Name>
+
+              <Menu className="text-right">
                 <li><a href={this.createHref("/")}>My Account</a></li>
                 <li><a href={this.createHref("/my-box")}>My Box</a></li>
                 <li><a href={this.createHref("/billing")}>Billing Info</a></li>
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
                 <li><a href={this.createHref("/billing")}>Write a Review</a></li>
                 <li><a href={this.createHref("/billing")}>Share with friends</a></li>
+                <li>
+                  <MyCoins>My Coins</MyCoins>
+                  <MyCoinsSubtitle>
+                    <span>You have </span>
+                    <span className="sweettooth-points-balance">(loading)</span>
+                    <span> Happy Coins</span>
+                  </MyCoinsSubtitle>
+                </li>
                 <li><a href="/account/logout">Logout</a></li>
-              </ul>
+              </Menu>
             </Box>
 
             <Box
@@ -192,6 +201,30 @@ const Container = styled.div`
   background: ${SAND};
   display: flex;
   min-height: 700px;
+`
+
+const Menu = styled.ul`
+  list-style-type: none;
+  li {
+    a {
+      font-size: 80%;
+      text-transform: uppercase;
+    }
+  }
+`
+
+const MyCoins = styled.h6`
+  margin: 20px 0 10px;
+`
+
+const MyCoinsSubtitle = styled.div`
+  font-size: 75%;
+  margin-bottom: 10px;
+`
+
+const Name = styled.h4`
+  margin: 0 0 10px;
+  text-align: right;
 `
 
 const Wrapper = Flex.extend`

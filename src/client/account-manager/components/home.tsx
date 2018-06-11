@@ -63,7 +63,10 @@ export default class Home extends React.Component<Props> {
             <Tile width={1 / 2}>
               <White>
                 <Link href={createHref("/my-box")}>
-                  <div>Share with Friends</div>
+                  <div>
+                    <div className="sweettooth-points-balance">(loading)</div>
+                    <div>Happy Coins</div>
+                  </div>
                 </Link>
               </White>
             </Tile>
