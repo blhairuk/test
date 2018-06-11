@@ -59,18 +59,37 @@ declare interface ShopifyCustomer {
   last_name: string,
 }
 
+declare interface ShopifyLineItem {
+  id: number,
+  price: string,
+  quantity: number,
+  sku: string,
+  title: string,
+}
+
 declare interface ShopifyOrder {
   cancel_reason: string,
   cancelled_at: string,
   closed_at: string,
   created_at: string,
+  discount_codes: Array<{
+    amount: string,
+    code: string,
+    type: "percentage",
+  }>,
   financial_status: string,
   fulfillment_status: string,
   id: number,
+  line_items: ShopifyLineItem[],
   name: string,
   order_number: number,
-  subtotal_price: number,
-  total_price: number,
+  shipping_lines: Array<{
+    id: number,
+    price: string,
+    title: string,
+  }>,
+  subtotal_price: string,
+  total_price: string,
 }
 
 declare interface StripeCustomer {
