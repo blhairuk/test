@@ -34,6 +34,9 @@ export default class EditBundle extends React.Component<Props> {
     } = this.props
 
     const bundle = getPrimaryBundleSubscription(subscriptions)
+    // legacy issue: can be ignored
+    if (!bundle) { return null }
+
     const bundleId = getBundleIdFromProperties(bundle.properties)
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
