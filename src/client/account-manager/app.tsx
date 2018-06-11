@@ -56,7 +56,7 @@ export default class App extends React.Component<Props> {
             >
               <h3>{first_name} {last_name}</h3>
               <ul className="text-right">
-              <li><a href={this.createHref("/")}>My Account</a></li>
+                <li><a href={this.createHref("/")}>My Account</a></li>
                 <li><a href={this.createHref("/my-box")}>My Box</a></li>
                 <li><a href={this.createHref("/billing")}>Billing Info</a></li>
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
@@ -125,7 +125,12 @@ export default class App extends React.Component<Props> {
     />
   )
 
-  private renderHome = () => <Home {...this.props} />
+  private renderHome = () => (
+    <Home
+      createHref={this.createHref}
+      customer={this.props.data.customer}
+    />
+  )
 
   private renderMyBox = () => (
     <MyBox
