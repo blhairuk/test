@@ -41,7 +41,6 @@ export default async (ctx) => {
     case "my-box":
       const subscriptions = await getSubscriptions({
         customerId: rechargeCustomer.id,
-        status: "ACTIVE",
       })
       data.bundles = groupSubscriptionsIntoBundles(subscriptions)
 

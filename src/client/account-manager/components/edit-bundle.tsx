@@ -38,6 +38,7 @@ export default class EditBundle extends React.Component<Props> {
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
     const frequency = parseInt(bundle.order_interval_frequency, 10)
+    const isCancelled = bundle.status === "CANCELLED"
     const address = addresses.find(({id}) => id === bundle.address_id)
     const bundleProductsQuantities = subscriptions
       .filter(({id}) => id !== bundle.id)
@@ -58,7 +59,20 @@ export default class EditBundle extends React.Component<Props> {
       <div>
         <Title>{bundleName}</Title>
 
+        {isCancelled && (
+          <div>
+            <a
+              href="javascript:void(0)"
+              onClick={this.handleReactivateClick(bundleId)}
+            >
+              Reactivate
+            </a>
+          </div>
+        )}
+
         <Wrapper>
+          {isCancelled && <CancelledWrapper>&nbsp;</CancelledWrapper>}
+
           <Flex justifyContent="space-between">
             <SectionTitle>Details</SectionTitle>
             <div>
@@ -166,6 +180,14 @@ export default class EditBundle extends React.Component<Props> {
     )
   }
 
+  private handleReactivateClick = (bundleId) => async () => {
+    await $.ajax({
+      method: "POST",
+      url: this.props.createHref(`/bundles/${bundleId}`),
+    })
+    window.location.reload()
+  }
+
   private handleToggleSkipChargeClick = (bundleId, chargeId) => async () => {
     await $.ajax({
       contentType: "application/json",
@@ -173,7 +195,7 @@ export default class EditBundle extends React.Component<Props> {
       method: "POST",
       url: this.props.createHref(`/bundles/${bundleId}/toggle-skip-charge?charge_id=${chargeId}`),
     })
-    // window.location.reload()
+    window.location.reload()
   }
 
   private submitCancel = (bundleId) => async () => {
@@ -186,6 +208,16 @@ export default class EditBundle extends React.Component<Props> {
     window.location.reload()
   }
 }
+
+const CancelledWrapper = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+`
 
 const DetailsTitle = styled.div`
   font-size: 80%;
@@ -243,4 +275,5 @@ const Wrapper = styled.div`
   border-radius: 5px;
   margin-bottom: 30px;
   padding: 15px 20px;
+  position: relative;
 `
