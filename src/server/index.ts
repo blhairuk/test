@@ -69,4 +69,5 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
-app.listen(process.env.PORT || 3000)
+const server = app.listen(process.env.PORT || 3000)
+server.setTimeout(300 * 100)
