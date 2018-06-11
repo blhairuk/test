@@ -1,11 +1,33 @@
 import * as React from "react"
 
+import updateStateKeys from "../../helpers/update-state-keys"
+
 export interface Props {
   createHref: (path: string) => any,
   stripeCustomer: StripeCustomer,
 }
 
-export default class Billing extends React.Component<Props> {
+interface State {
+  address_city: string,
+  address_country: string,
+  address_line1: string,
+  address_line2: string,
+  address_state: string,
+  address_zip: string,
+  name: string,
+}
+
+export default class Billing extends React.Component<Props, State> {
+  public state = {
+    address_city: "",
+    address_country: "",
+    address_line1: "",
+    address_line2: "",
+    address_state: "",
+    address_zip: "",
+    name: "",
+  }
+
   private card: any
   private stripe: any
 
@@ -29,7 +51,79 @@ export default class Billing extends React.Component<Props> {
         </p>
 
         <form onSubmit={this.handleSubmit}>
+          <div>
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              name="name"
+              onChange={this.handleInputChange("name")}
+              type="text"
+              value={this.state.name}
+            />
+          </div>
+
           <div id="card" />
+
+          <div>
+            <label htmlFor="address_line1">Address Line 1</label>
+            <input
+              id="address_line1"
+              name="address_line1"
+              onChange={this.handleInputChange("address_line1")}
+              type="text"
+              value={this.state.address_line1}
+            />
+          </div>
+          <div>
+            <label htmlFor="address_line2">Address Line 2</label>
+            <input
+              id="address_line2"
+              name="address_line2"
+              onChange={this.handleInputChange("address_line2")}
+              type="text"
+              value={this.state.address_line2}
+            />
+          </div>
+          <div>
+            <label htmlFor="address_city">City</label>
+            <input
+              id="address_city"
+              name="address_city"
+              onChange={this.handleInputChange("address_city")}
+              type="text"
+              value={this.state.address_city}
+            />
+          </div>
+          <div>
+            <label htmlFor="address_state">State</label>
+            <input
+              id="address_state"
+              name="address_state"
+              onChange={this.handleInputChange("address_state")}
+              type="text"
+              value={this.state.address_state}
+            />
+          </div>
+          <div>
+            <label htmlFor="address_country">Country</label>
+            <input
+              id="address_country"
+              name="address_country"
+              onChange={this.handleInputChange("address_country")}
+              type="text"
+              value={this.state.address_country}
+            />
+          </div>
+          <div>
+            <label htmlFor="address_zip">Zip</label>
+            <input
+              id="address_zip"
+              name="address_zip"
+              onChange={this.handleInputChange("address_zip")}
+              type="text"
+              value={this.state.address_zip}
+            />
+          </div>
           <button>Submit</button>
         </form>
 
@@ -41,10 +135,14 @@ export default class Billing extends React.Component<Props> {
     )
   }
 
+  private handleInputChange = (key) => (e) => {
+    this.setState(updateStateKeys({[key]: e.target.value}))
+  }
+
   private handleSubmit = async (e) => {
     e.preventDefault()
 
-    const stripeResult = await this.stripe.createToken(this.card)
+    const stripeResult = await this.stripe.createToken(this.card, this.state)
 
     if (stripeResult.error) {
       alert(stripeResult.error.message)
