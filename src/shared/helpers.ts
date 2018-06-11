@@ -7,15 +7,21 @@ const getBundleIdProperty = (properties) => (
 export const createBundleId = () => (new Date()).getTime()
 export const createBundleName = (customerName) => `${customerName}'s box`
 
-export const groupSubscriptionsIntoBundles = (subscriptions) => (
-  subscriptions.reduce((obj, s) => {
+export const groupSubscriptionsIntoBundles = (subscriptions: RechargeSubscription[]): HHBundle[] => {
+  const lookup = subscriptions.reduce((obj, s) => {
     const value = getBundleIdFromProperties(s.properties)
     if (value) {
       obj[value] = (obj[value] || []).concat(s)
     }
     return obj
   }, {})
-)
+
+  return Object.keys(lookup).map((idS) => ({
+    id: parseInt(idS, 10),
+    status: lookup[idS][0].status,
+    subscriptions: lookup[idS],
+  }))
+}
 
 export const getBundleIdFromProperties = (properties) => {
   // the earliest version of the app uses "parent_bundle_id", so we'd

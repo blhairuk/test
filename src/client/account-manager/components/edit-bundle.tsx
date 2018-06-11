@@ -20,6 +20,7 @@ interface Props {
   charges: RechargeCharge[],
   createHref: (path: string) => any,
   products: ShopifyProduct[],
+  status: string,
   subscriptions: RechargeSubscription[],
 }
 
@@ -30,6 +31,7 @@ export default class EditBundle extends React.Component<Props> {
       charges: allCharges,
       createHref,
       products,
+      status,
       subscriptions,
     } = this.props
 
@@ -41,7 +43,7 @@ export default class EditBundle extends React.Component<Props> {
     const bundleName = bundle.properties.find(({name}) => name === "bundle_name").value
     const frequencyUnitType = bundle.order_interval_unit
     const frequency = parseInt(bundle.order_interval_frequency, 10)
-    const isCancelled = bundle.status === "CANCELLED"
+    const isCancelled = status === "CANCELLED"
     const address = addresses.find(({id}) => id === bundle.address_id)
     const bundleProductsQuantities = subscriptions
       .filter(({id}) => id !== bundle.id)
@@ -51,8 +53,8 @@ export default class EditBundle extends React.Component<Props> {
       }))
 
     const validChargeStatuses = ["QUEUED", "SKIPPED"]
-    const charges = allCharges.filter(({line_items, status}) => (
-      validChargeStatuses.includes(status) &&
+    const charges = allCharges.filter(({line_items, status: chargeStatus}) => (
+      validChargeStatuses.includes(chargeStatus) &&
       line_items.some(({properties}) => (
         isBundleIdInProperties(bundleId, properties)
       ))
@@ -144,14 +146,14 @@ export default class EditBundle extends React.Component<Props> {
               {charges.map(({
                 id,
                 scheduled_at,
-                status,
+                status: chargeStatus,
               }) => (
                 <div key={id}>
                   <div>
                     {formatDate(scheduled_at, "dddd, MMMM D, YYYY")}
                     <span>&nbsp;</span>
                     <a onClick={this.handleToggleSkipChargeClick(bundleId, id)}>
-                      {status === "SKIPPED" ? "Unskip" : "Skip"}
+                      {chargeStatus === "SKIPPED" ? "Unskip" : "Skip"}
                     </a>
                   </div>
                 </div>

@@ -1,3 +1,9 @@
+declare interface HHBundle {
+  id: number,
+  status: "ACTIVE" | "CANCELLED",
+  subscriptions: RechargeSubscription[],
+}
+
 declare interface RechargeAddress {
   address1: string,
   address2: string,

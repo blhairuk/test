@@ -4,7 +4,7 @@ import EditBundle from "./edit-bundle"
 
 export interface Props {
   addresses: RechargeAddress[],
-  bundles: {idS: RechargeSubscription[]},
+  bundles: HHBundle[],
   charges: RechargeCharge[],
   createHref: (path: string) => any,
   products: ShopifyProduct[],
@@ -20,19 +20,27 @@ export default class MyBox extends React.Component<Props> {
       products,
     } = this.props
 
-    const numBundles = Object.keys(bundles).length
+    if (bundles.length === 0) {
+      return (
+        <div>no bundles</div>
+      )
+    }
 
-    return numBundles === 0 ? (
-      <div>no bundles</div>
-    ) : (
+    const numActiveBundles = bundles.reduce((sum, {status}) => sum + (status === "ACTIVE" ? 1 : 0), 0)
+    const bundlesToRender = numActiveBundles > 0
+      ? bundles.filter(({status}) => status === "ACTIVE")
+      : [bundles.find(({status}) => status === "CANCELLED")]
+
+    return (
       <div>
-        {Object.entries(bundles).map(([idS, subscriptions]) => (
+        {bundlesToRender.map(({id, status, subscriptions}) => (
           <EditBundle
             addresses={addresses}
             charges={charges}
             createHref={createHref}
-            key={idS}
+            key={id}
             products={products}
+            status={status}
             subscriptions={subscriptions}
           />
         ))}
