@@ -114,13 +114,15 @@ export default class App extends React.Component<Props> {
   private renderWithMobileBackHeader = ({Component, title}: {Component: any, title?: string}) => (
     <div>
       <Flex
+        alignItems="center"
         className="hide-for-medium"
+        mb={3}
         justifyContent="space-between"
       >
         <Box width={1 / 4}>
           <a href={this.createHref("/")}>Back</a>
         </Box>
-        <h2>{title}</h2>
+        <h2 style={{margin: "0"}}>{title}</h2>
         <Box width={1 / 4}>
           <div>&nbsp;</div>
         </Box>
