@@ -1,4 +1,5 @@
 import * as React from "react"
+import {injectGlobal} from "styled-components"
 
 import updateStateKeys from "../../helpers/update-state-keys"
 
@@ -16,6 +17,21 @@ interface State {
   address_zip: string,
   name: string,
 }
+
+// tslint:disable-next-line
+injectGlobal`
+  .card {
+    background-color: #fff;
+    border: 1px solid #cacaca;
+    border-radius: 50px;
+    background-color: #fefefe;
+    box-shadow: inset 0 1px 2px rgba(10,10,10,0.1);
+    line-height: 1.5;
+    height: 2.4375rem;
+    margin: 0 0 1rem;
+    padding: 0.5rem;
+  }
+`
 
 export default class Billing extends React.Component<Props, State> {
   public state = {
@@ -62,7 +78,10 @@ export default class Billing extends React.Component<Props, State> {
             />
           </div>
 
-          <div id="card" />
+          <div
+            className="card"
+            id="card"
+          />
 
           <div>
             <label htmlFor="address_line1">Address Line 1</label>
