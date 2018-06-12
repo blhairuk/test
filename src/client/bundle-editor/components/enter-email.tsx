@@ -8,7 +8,7 @@ interface Props {
   enteredEmail: string,
   enteredName: string,
   isActiveStep: boolean,
-  stepNext: (e: React.FormEvent<HTMLFormElement>) => any,
+  stepNext: (e?: React.FormEvent<HTMLFormElement>) => any,
   stepPrev: () => any,
 }
 
@@ -29,14 +29,13 @@ export default class EnterEmail extends React.Component<Props> {
       enterEmail,
       enteredEmail,
       enteredName,
-      stepNext,
       stepPrev,
     } = this.props
 
     return (
       <div>
         <div className="text-center larger-text">
-          <form onSubmit={stepNext}>
+          <form onSubmit={this.handleSubmit}>
             <p><strong>You rock, {enteredName}!<br />What's your email?</strong></p>
 
             <div style={{marginBottom: "20px"}}>
@@ -58,5 +57,24 @@ export default class EnterEmail extends React.Component<Props> {
         </div>
       </div>
     )
+  }
+
+  private handleSubmit = () => {
+    const {
+      enteredEmail,
+      enteredName,
+      stepNext,
+    } = this.props
+
+    try {
+      window._learnq.push(["identify", {
+        $email: enteredEmail,
+        $first_name: enteredName,
+      }])
+    } catch (e) {
+      console.error(e)
+    }
+
+    stepNext()
   }
 }

@@ -8,6 +8,7 @@
   "rules": {
     "interface-name": false,
     "jsx-no-multiline-js": false,
+    "no-console": false,
     "no-implicit-dependencies": [true, "dev"],
     "semicolon": false,
     "variable-name": [true, "allow-snake-case", "allow-pascal-case"]

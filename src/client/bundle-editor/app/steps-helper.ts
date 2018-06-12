@@ -9,17 +9,17 @@ export interface Helper {
 }
 
 export default (app: App) => ({
-  stepGoTo: (step) => (e) => {
+  stepGoTo: (step) => (e?) => {
     if (e) { e.preventDefault() }
     app.setState(updateStateKeys({currentStepIndex: step + (app.isEditingSubscription() ? 2 : 0)}))
   },
 
-  stepNext(e) {
+  stepNext(e?) {
     if (e) { e.preventDefault() }
     app.setState(updateStateKeys({currentStepIndex: app.state.currentStepIndex + 1}))
   },
 
-  stepPrev(e) {
+  stepPrev(e?) {
     if (e) { e.preventDefault() }
     app.setState(updateStateKeys({currentStepIndex: app.state.currentStepIndex - 1}))
   },

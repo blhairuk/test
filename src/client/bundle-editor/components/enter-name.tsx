@@ -7,7 +7,7 @@ interface Props {
   enterName: (e: React.ChangeEvent<HTMLInputElement>) => any,
   enteredName: string,
   isActiveStep: boolean,
-  stepNext: (e: React.FormEvent<HTMLFormElement>) => any,
+  stepNext: (e?: React.FormEvent<HTMLFormElement>) => any,
 }
 
 export default class EnterName extends React.Component<Props> {
