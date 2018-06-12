@@ -20,6 +20,7 @@ interface Props {
   charges: RechargeCharge[],
   createHref: (path: string) => any,
   products: ShopifyProduct[],
+  openLoadingModal: () => any,
   status: string,
   subscriptions: RechargeSubscription[],
 }
@@ -186,6 +187,7 @@ export default class EditBundle extends React.Component<Props> {
   }
 
   private handleReactivateClick = (bundleId) => async () => {
+    this.props.openLoadingModal()
     await $.ajax({
       method: "POST",
       url: this.props.createHref(`/bundles/${bundleId}`),
@@ -194,6 +196,7 @@ export default class EditBundle extends React.Component<Props> {
   }
 
   private handleToggleSkipChargeClick = (bundleId, chargeId) => async () => {
+    this.props.openLoadingModal()
     await $.ajax({
       contentType: "application/json",
       dataType: "json",
@@ -204,6 +207,7 @@ export default class EditBundle extends React.Component<Props> {
   }
 
   private submitCancel = (bundleId) => async () => {
+    this.props.openLoadingModal()
     await $.ajax({
       contentType: "application/json",
       dataType: "json",

@@ -9,9 +9,13 @@ import styled from "styled-components"
 import Billing, {Props as BillingProps} from "./components/billing"
 import EditAddress, {Props as EditAddressProps} from "./components/edit-address"
 import Home from "./components/home"
+import LoadingModal from "./components/loading-modal"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
 import Orders, {Props as OrderProps} from "./components/orders"
+
+import Modal from "../helpers/modal"
+import updateStateKeys from "../helpers/update-state-keys"
 
 import {
   DARK_SAND,
@@ -28,15 +32,25 @@ interface Props {
   routerProps: any,
 }
 
+interface State {
+  isLoadingModalOpen: boolean,
+}
+
 const createFullPath = (partialPath) => `${process.env.APP_PROXY_PATH}/account/:shopifyCustomerId${partialPath}`
 
-export default class App extends React.Component<Props> {
+export default class App extends React.Component<Props, State> {
+  public state = {
+    isLoadingModalOpen: false,
+  }
+
   public render() {
     const {
       Router,
       data,
       routerProps,
     } = this.props
+
+    const {isLoadingModalOpen} = this.state
 
     const {
       customer: {
@@ -110,6 +124,13 @@ export default class App extends React.Component<Props> {
               </Switch>
             </Box>
           </Wrapper>
+
+          <Modal
+            handleClose={this.handleLoadingModalClose}
+            isOpen={isLoadingModalOpen}
+          >
+            <LoadingModal />
+          </Modal>
         </Container>
       </Router>
     )
@@ -118,6 +139,14 @@ export default class App extends React.Component<Props> {
   private createHref = (path) => {
     const {data: {customer: {id: shopifyCustomerId}}} = this.props
     return `${process.env.APP_PROXY_PATH}/account/${shopifyCustomerId}${path}`
+  }
+
+  private handleLoadingModalClose = () => {
+    this.setState(updateStateKeys({isLoadingModalOpen: false}))
+  }
+
+  private openLoadingModal = () => {
+    this.setState(updateStateKeys({isLoadingModalOpen: true}))
   }
 
   private renderWithMobileBackHeader = ({Component, title}: {Component: any, title?: string}) => (
@@ -173,6 +202,7 @@ export default class App extends React.Component<Props> {
         bundles={this.props.data.bundles}
         charges={this.props.data.charges}
         createHref={this.createHref}
+        openLoadingModal={this.openLoadingModal}
         products={this.props.data.products}
       />
     ),

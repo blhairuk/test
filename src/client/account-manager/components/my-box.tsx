@@ -8,6 +8,7 @@ export interface Props {
   charges: RechargeCharge[],
   createHref: (path: string) => any,
   products: ShopifyProduct[],
+  openLoadingModal: () => any,
 }
 
 export default class MyBox extends React.Component<Props> {
@@ -18,6 +19,7 @@ export default class MyBox extends React.Component<Props> {
       charges,
       createHref,
       products,
+      openLoadingModal,
     } = this.props
 
     if (bundles.length === 0) {
@@ -40,6 +42,7 @@ export default class MyBox extends React.Component<Props> {
             createHref={createHref}
             key={id}
             products={products}
+            openLoadingModal={openLoadingModal}
             status={status}
             subscriptions={subscriptions}
           />

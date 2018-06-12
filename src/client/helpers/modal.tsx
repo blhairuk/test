@@ -6,7 +6,7 @@ import {BACKGROUND_BLACK} from "../colors"
 
 interface Props {
   children: any,
-  handleClose: () => any,
+  handleClose?: () => any,
   isOpen: boolean,
   style?: "panel"
 }
