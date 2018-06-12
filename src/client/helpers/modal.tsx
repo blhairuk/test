@@ -5,6 +5,7 @@ import {injectGlobal} from "styled-components"
 import {BACKGROUND_BLACK} from "../colors"
 
 interface Props {
+  allowClosing?: boolean,
   children: any,
   handleClose?: () => any,
   isOpen: boolean,
@@ -72,6 +73,7 @@ injectGlobal`
 export default class Modal extends React.Component<Props> {
   public render() {
     const {
+      allowClosing,
       children,
       handleClose,
       isOpen,
@@ -83,6 +85,8 @@ export default class Modal extends React.Component<Props> {
         isOpen={isOpen}
         onRequestClose={handleClose}
         overlayClassName={this.modalOverlayClassName()}
+        shouldCloseOnEsc={allowClosing !== false}
+        shouldCloseOnOverlayClick={allowClosing !== false}
       >
         {children}
       </ReactModal>

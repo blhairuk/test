@@ -126,6 +126,7 @@ export default class App extends React.Component<Props, State> {
           </Wrapper>
 
           <Modal
+            allowClosing={false}
             handleClose={this.handleLoadingModalClose}
             isOpen={isLoadingModalOpen}
           >
