@@ -34,7 +34,7 @@ export default class EnterName extends React.Component<Props> {
         <div className="text-center larger-text">
           <form onSubmit={stepNext}>
             <h1>BUILD YOUR BOX</h1>
-            <p><strong>We'd like to get to know you!<br />What's your name?</strong></p>
+            <p><strong>We'd like to get to know you!<br />What's your first name?</strong></p>
             <div style={{marginBottom: "20px"}}>
               <TextInput
                 innerRef={this.textInputRef}

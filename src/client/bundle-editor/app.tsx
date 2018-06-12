@@ -24,6 +24,7 @@ import {
 } from "../helpers/bundle"
 
 import {
+  createBundleName,
   createIdQuantities,
   findVariantByVariantId,
   getMetafieldValue,
@@ -128,6 +129,8 @@ export default class App extends React.Component<Props, State> {
       const cartState = await this.cartHelper.extractState(bundleId)
       this.setState(updateStateKeys(cartState))
     }
+
+    this.prepareForLoggedInCustomer()
   }
 
   public componentDidUpdate(_, prevState) {
@@ -408,6 +411,23 @@ export default class App extends React.Component<Props, State> {
 
   private closeVideoModal = () => {
     this.setState(updateStateKeys({videoModalYouTubeId: null}))
+  }
+
+  private prepareForLoggedInCustomer = () => {
+    const {
+      Customer: {
+        email,
+        firstName,
+      },
+    } = window
+
+    if (email && firstName) {
+      this.setState(updateStateKeys({
+        bundleName: createBundleName(firstName),
+        enteredEmail: email,
+        enteredName: firstName,
+      }))
+    }
   }
 }
 

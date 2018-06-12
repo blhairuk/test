@@ -33,7 +33,7 @@ export default class EnterEmail extends React.Component<Props> {
     } = this.props
 
     return (
-      <div>
+      <div style={{maxWidth: "350px", width: "100%"}}>
         <div className="text-center larger-text">
           <form onSubmit={this.handleSubmit}>
             <p><strong>You rock, {enteredName}!<br />What's your email?</strong></p>
