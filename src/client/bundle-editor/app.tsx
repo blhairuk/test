@@ -386,6 +386,7 @@ export default class App extends React.Component<Props, State> {
 
     if (this.isEditingSubscription()) {
       await this.existingCustomerHelper.submitBundleUpdates()
+      window.location.href = `${process.env.APP_PROXY_PATH}/account/${this.props.shopifyCustomerId}/my-box`
     } else {
       await this.cartHelper.submitBundleUpdates()
     }
