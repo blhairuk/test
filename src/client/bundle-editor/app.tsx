@@ -128,9 +128,9 @@ export default class App extends React.Component<Props, State> {
     if (bundleId && !shopifyCustomerId) {
       const cartState = await this.cartHelper.extractState(bundleId)
       this.setState(updateStateKeys(cartState))
+    } else {
+      this.prepareForLoggedInCustomer()
     }
-
-    this.prepareForLoggedInCustomer()
   }
 
   public componentDidUpdate(_, prevState) {
