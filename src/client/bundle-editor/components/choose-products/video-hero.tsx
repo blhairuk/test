@@ -22,23 +22,27 @@ export default class VideoHero extends React.Component<Props> {
       youtubeId,
     } = this.props
 
+    const showButton = !!youtubeId
+
     return (
       <Wrapper imageUrl={backgroundImage}>
-        <MobileAdjust>
+        <MobileAdjust showButton={showButton}>
           <Title>
             {title}
           </Title>
 
-          <Button
-            color="white"
-            onClick={openVideoModal(youtubeId)}
-            type="button"
-          >
-            <FlexWrapper>
-              <strong>WATCH</strong>
-              <ArrowContainer>▸</ArrowContainer>
-            </FlexWrapper>
-          </Button>
+          {showButton && (
+            <Button
+              color="white"
+              onClick={openVideoModal(youtubeId)}
+              type="button"
+            >
+              <FlexWrapper>
+                <strong>WATCH</strong>
+                <ArrowContainer>▸</ArrowContainer>
+              </FlexWrapper>
+            </Button>
+          )}
         </MobileAdjust>
       </Wrapper>
     )
@@ -50,11 +54,15 @@ const ArrowContainer = styled.span`
   transform: scale(2);
 `
 
+interface MobileAdjustProps {
+  showButton: boolean,
+}
+
 const MobileAdjust = styled.div`
   padding-top: 30px;
   position: relative;
   text-align: center;
-  top: 18px;
+  top: ${({showButton}: MobileAdjustProps) => showButton ? "18px" : "0px"};
 
   @media (min-width: 768px) {
     padding-top: 0;
