@@ -71,6 +71,7 @@ export default class EnterEmail extends React.Component<Props> {
         $email: enteredEmail,
         $first_name: enteredName,
       }])
+      window._learnq.push(["track", "Started Bundle Builder"])
     } catch (e) {
       console.error(e)
     }
