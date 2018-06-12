@@ -11,6 +11,7 @@ interface Props {
 export default styled.div`
   background-color: ${({isSelected}: Props) => isSelected ? BLUE_GREEN : "#000"};
   border-radius: 8px;
+  cursor: pointer;
   padding: 10px;
 
   > .fsc-title {
