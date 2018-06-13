@@ -7,7 +7,8 @@ import {
 } from "../../../colors"
 
 interface Props {
-  color?: "white" | "black" | "yellow" | "purple"
+  color?: "white" | "black" | "yellow" | "purple",
+  size?: "small",
 }
 
 const getBackgroundColor = ({color}: Props) => {
@@ -36,13 +37,31 @@ const getColor = ({color}: Props) => {
   }
 }
 
+const getFontSize = ({size}: Props) => {
+  switch (size) {
+    case "small":
+      return "65%"
+    default:
+      return "85%"
+  }
+}
+
+const getPadding = ({size}: Props) => {
+  switch (size) {
+    case "small":
+      return "5px 12px"
+    default:
+      return "7px 16px"
+  }
+}
+
 export default styled.button`
   background-color: ${getBackgroundColor};
   border-radius: 15px;
   color: ${getColor};
   display: inline-block;
-  font-size: 85%;
-  padding: 7px 16px;
+  font-size: ${getFontSize};
+  padding: ${getPadding};
   text-transform: uppercase;
 
   &:disabled { opacity: 0.5 }

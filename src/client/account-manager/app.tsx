@@ -13,6 +13,7 @@ import LoadingModal from "./components/loading-modal"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
 import Orders, {Props as OrderProps} from "./components/orders"
+import Button from "../bundle-editor/components/styled/button"
 
 import Modal from "../helpers/modal"
 import updateStateKeys from "../helpers/update-state-keys"
@@ -84,8 +85,11 @@ export default class App extends React.Component<Props, State> {
                     <span className="sweettooth-points-balance">(loading)</span>
                     <span> Happy Coins</span>
                   </MyCoinsSubtitle>
+                  <Button size="small">Redeem points</Button>
                 </li>
-                <li><a href="/account/logout">Logout</a></li>
+                <li style={{marginTop: "20px"}}>
+                  <a href="/account/logout">Logout</a>
+                </li>
               </Menu>
             </Box>
 
@@ -238,19 +242,19 @@ const Menu = styled.ul`
   list-style-type: none;
   li {
     a {
-      font-size: 80%;
+      font-size: 85%;
       text-transform: uppercase;
     }
   }
 `
 
 const MyCoins = styled.h6`
-  margin: 20px 0 10px;
+  margin: 20px 0 5px;
 `
 
 const MyCoinsSubtitle = styled.div`
   font-size: 75%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `
 
 const Name = styled.h4`
