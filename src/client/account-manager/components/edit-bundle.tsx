@@ -28,6 +28,10 @@ interface Props {
 }
 
 export default class EditBundle extends React.Component<Props> {
+  public componentDidMount() {
+    this.initCarousel()
+  }
+
   public render() {
     const {
       addresses,
@@ -168,13 +172,13 @@ export default class EditBundle extends React.Component<Props> {
 
           <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
           <Flex
+            className="bundle-products-carousel"
             flexWrap="wrap"
             mx={-2}
           >
             {bundleProductsQuantities.map(({product, quantity}) => (
               <ProductWrapper
                 key={product.id}
-                mb={3}
                 px={2}
                 width={[1 / 3, 1 / 4]}
               >
@@ -219,6 +223,15 @@ export default class EditBundle extends React.Component<Props> {
     })
     window.location.reload()
   }
+
+  private initCarousel = () => {
+    $(document).ready(() => {
+      $(".bundle-products-carousel").slick({
+        infinite: false,
+        slidesToShow: 4,
+      })
+    })
+  }
 }
 
 const CancelledWrapper = styled.div`
@@ -232,7 +245,7 @@ const CancelledWrapper = styled.div`
 `
 
 const DetailsTitle = styled.div`
-  font-size: 80%;
+  font-size: 90%;
   text-transform: uppercase;
 `
 
@@ -279,6 +292,7 @@ const SectionTitle = styled.h4`
 `
 
 const Title = styled.h3`
+  margin: 20px 0 10px;
   text-align: center;
 `
 
