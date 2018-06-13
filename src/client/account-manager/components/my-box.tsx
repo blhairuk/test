@@ -35,7 +35,7 @@ export default class MyBox extends React.Component<Props> {
 
     return (
       <div>
-        {bundlesToRender.map(({id, status, subscriptions}) => (
+        {bundlesToRender.map(({id, status, subscriptions, subtotal}) => (
           <EditBundle
             addresses={addresses}
             charges={charges}
@@ -45,6 +45,7 @@ export default class MyBox extends React.Component<Props> {
             openLoadingModal={openLoadingModal}
             status={status}
             subscriptions={subscriptions}
+            subtotal={subtotal}
           />
         ))}
       </div>

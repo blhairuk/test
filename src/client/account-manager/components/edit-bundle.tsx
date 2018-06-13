@@ -1,3 +1,4 @@
+import {formatMoney} from "accounting"
 import {format as formatDate} from "date-fns"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
@@ -23,6 +24,7 @@ interface Props {
   openLoadingModal: () => any,
   status: string,
   subscriptions: RechargeSubscription[],
+  subtotal: number,
 }
 
 export default class EditBundle extends React.Component<Props> {
@@ -34,6 +36,7 @@ export default class EditBundle extends React.Component<Props> {
       products,
       status,
       subscriptions,
+      subtotal,
     } = this.props
 
     const bundle = getPrimaryBundleSubscription(subscriptions)
@@ -122,7 +125,7 @@ export default class EditBundle extends React.Component<Props> {
               width={[1 / 2, 1 / 4]}
             >
               <DetailsTitle>Subtotal</DetailsTitle>
-              <DetailsValue>TBD</DetailsValue>
+              <DetailsValue>{formatMoney(subtotal)}</DetailsValue>
             </Box>
           </Flex>
           <Line />

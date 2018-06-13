@@ -16,11 +16,16 @@ export const groupSubscriptionsIntoBundles = (subscriptions: RechargeSubscriptio
     return obj
   }, {})
 
-  return Object.keys(lookup).map((idS) => ({
-    id: parseInt(idS, 10),
-    status: lookup[idS][0].status,
-    subscriptions: lookup[idS],
-  }))
+  return Object.keys(lookup).map((idS) => {
+    const ss = lookup[idS]
+
+    return {
+      id: parseInt(idS, 10),
+      status: ss[0].status,
+      subscriptions: ss,
+      subtotal: ss.reduce((sum, s) => sum + (s.price * s.quantity), 0),
+    }
+  })
 }
 
 export const getBundleIdFromProperties = (properties) => {
