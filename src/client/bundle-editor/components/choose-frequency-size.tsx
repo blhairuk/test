@@ -101,7 +101,10 @@ export default class ChooseFrequencySize extends React.Component<Props> {
 
                   {selectedFrequency === frequency && (
                     <>
-                      <div className="fsc-cpw">Cups per week</div>
+                      <div className="fsc-cpw">
+                        <span>Cups per </span>
+                        {frequencySingularTitle(frequencyUnitType, frequency).toLowerCase()}
+                      </div>
 
                       <SizeToggler
                         availableSizes={availableSizes}
