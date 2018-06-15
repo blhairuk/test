@@ -7,6 +7,7 @@ import styled from "styled-components"
 import {
   frequencyTitle,
   getBundleIdFromProperties,
+  getPathToImages,
   getPrimaryBundleSubscription,
   isBundleIdInProperties,
 } from "../../../shared/helpers"
@@ -15,6 +16,8 @@ import {
   DARK_SAND,
   YELLOW,
 } from "../../colors"
+
+import Button from "../../bundle-editor/components/styled/button"
 
 interface Props {
   addresses: RechargeAddress[],
@@ -29,7 +32,7 @@ interface Props {
 
 export default class EditBundle extends React.Component<Props> {
   public componentDidMount() {
-    this.initCarousel()
+    // this.initCarousel()
   }
 
   public render() {
@@ -68,9 +71,21 @@ export default class EditBundle extends React.Component<Props> {
       ))
     ))
 
+    const editImg = (
+      <img
+        src={getPathToImages("account-icon-edit.svg")}
+        style={{height: "16px", width: "16px"}}
+      />
+    )
+
     return (
       <div>
-        <Title>{bundleName}</Title>
+        <h4
+          className="text-center"
+          style={{margin: "0 0 10px"}}
+        >
+          {bundleName}
+        </h4>
 
         {isCancelled && (
           <div>
@@ -87,16 +102,7 @@ export default class EditBundle extends React.Component<Props> {
           {isCancelled && <CancelledWrapper>&nbsp;</CancelledWrapper>}
 
           <Flex justifyContent="space-between">
-            <SectionTitle>Details</SectionTitle>
-            <div>
-              <a href={createHref(`/bundles/${bundleId}`)}>Settings</a>
-              <a
-                href="javascript:void(0)"
-                onClick={this.submitCancel(bundleId)}
-              >
-                Cancel
-              </a>
-            </div>
+            <SectionTitle style={{marginBottom: "10px"}}>Details</SectionTitle>
           </Flex>
 
           <Flex
@@ -115,7 +121,7 @@ export default class EditBundle extends React.Component<Props> {
               width={[1 / 2, 1 / 4]}
             >
               <DetailsTitle>Amount</DetailsTitle>
-              <DetailsValue>TBD</DetailsValue>
+              <DetailsValue>{bundleProductsQuantities.length}</DetailsValue>
             </Box>
             <Box
               my={2}
@@ -134,43 +140,72 @@ export default class EditBundle extends React.Component<Props> {
           </Flex>
           <Line />
 
-          <Flex flexWrap="wrap">
+          <Flex
+            flexWrap="wrap"
+            mx={-2}
+          >
             <Box
               mb={[3, 0]}
+              px={2}
               width={[1, 1 / 2]}
             >
-              <SectionTitle>Shipping to</SectionTitle>
+              <Flex
+                alignItems="center"
+                mb={2}
+                justifyContent="space-between"
+              >
+                <SectionTitle>Shipping to</SectionTitle>
+                <a href={createHref(`/edit-address?address_id=${address.id}`)}>
+                  {editImg}
+                </a>
+              </Flex>
               <div>{address.first_name} {address.last_name}</div>
               {address.company && <div>{address.company}</div>}
               <div>{address.address1} {address.address2}</div>
               <div>{address.city}, {address.province} {address.zip}</div>
               <div>{address.phone}</div>
-              <div>
-                <a href={createHref(`/edit-address?address_id=${address.id}`)}>Edit</a>
-              </div>
             </Box>
-            <Box width={[1, 1 / 2]}>
-              <SectionTitle>Upcoming charges</SectionTitle>
+            <Box
+              px={2}
+              width={[1, 1 / 2]}
+            >
+              <SectionTitle style={{marginBottom: "10px"}}>Next shipment</SectionTitle>
               {charges.map(({
                 id,
                 scheduled_at,
                 status: chargeStatus,
               }) => (
-                <div key={id}>
-                  <div>
-                    {formatDate(scheduled_at, "dddd, MMMM D, YYYY")}
-                    <span>&nbsp;</span>
-                    <a onClick={this.handleToggleSkipChargeClick(bundleId, id)}>
-                      {chargeStatus === "SKIPPED" ? "Unskip" : "Skip"}
-                    </a>
-                  </div>
+                <div
+                  key={id}
+                  style={{marginBottom: "3px"}}
+                >
+                  <Button
+                    color="gray"
+                    onClick={this.handleToggleSkipChargeClick(bundleId, id)}
+                    size="small"
+                  >
+                    {chargeStatus === "SKIPPED" ? "Unskip" : "Skip"}
+                  </Button>
+                  <span>&nbsp;</span>
+                  <span style={{textDecoration: chargeStatus === "SKIPPED" ? "line-through" : null}}>
+                    {formatDate(scheduled_at, "ddd, MMM D, YYYY")}
+                  </span>
                 </div>
               ))}
             </Box>
           </Flex>
           <Line />
 
-          <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
+          <Flex
+            alignItems="center"
+            mb={3}
+            justifyContent="space-between"
+          >
+            <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
+            <a href={createHref(`/bundles/${bundleId}`)}>
+              {editImg}
+            </a>
+          </Flex>
           <Flex
             className="bundle-products-carousel"
             flexWrap="wrap"
@@ -189,6 +224,17 @@ export default class EditBundle extends React.Component<Props> {
             ))}
           </Flex>
         </Wrapper>
+        <div
+          className="text-right"
+          style={{marginBottom: "30px"}}
+        >
+          <a
+            href="javascript:void(0)"
+            onClick={this.submitCancel(bundleId)}
+          >
+            Cancel
+          </a>
+        </div>
       </div>
     )
   }
@@ -222,15 +268,6 @@ export default class EditBundle extends React.Component<Props> {
       url: this.props.createHref(`/bundles/${bundleId}`),
     })
     window.location.reload()
-  }
-
-  private initCarousel = () => {
-    $(document).ready(() => {
-      $(".bundle-products-carousel").slick({
-        infinite: false,
-        slidesToShow: 4,
-      })
-    })
   }
 }
 
@@ -287,19 +324,14 @@ const QuantityWrapper = styled.div`
 
 const SectionTitle = styled.h4`
   font-size: 90%;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   text-transform: uppercase;
-`
-
-const Title = styled.h3`
-  margin: 20px 0 10px;
-  text-align: center;
 `
 
 const Wrapper = styled.div`
   background: #fff;
   border-radius: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   padding: 15px 20px;
   position: relative;
 `

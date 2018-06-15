@@ -7,7 +7,7 @@ import {
 } from "../../../colors"
 
 interface Props {
-  color?: "white" | "black" | "yellow" | "purple",
+  color?: "white" | "black" | "yellow" | "purple" | "gray",
   size?: "small",
 }
 
@@ -21,6 +21,8 @@ const getBackgroundColor = ({color}: Props) => {
       return YELLOW
     case "purple":
       return LIGHT_PURPLE
+    case "gray":
+      return "#F0E6D8"
     default:
       return BLUE_GREEN
   }
@@ -30,6 +32,7 @@ const getColor = ({color}: Props) => {
   switch (color) {
     case "white":
     case "yellow":
+    case "gray":
       return "#000"
     case "black":
     default:
