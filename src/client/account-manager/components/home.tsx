@@ -101,6 +101,7 @@ export default class Home extends React.Component<Props> {
             <Tile width={1 / 2}>
               <White>
                 <Link href={createHref("/orders")}>
+                <img src={getPathToImages("icon-share.png")} />
                   <div>Share with friends</div>
                 </Link>
               </White>
