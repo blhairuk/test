@@ -5,6 +5,7 @@ import updateStateKeys from "../../helpers/update-state-keys"
 export interface Props {
   address: RechargeAddress,
   createHref: (path: string) => any,
+  openLoadingModal: () => any,
 }
 
 export default class EditAddress extends React.Component<Props, RechargeAddress> {
@@ -13,6 +14,8 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
   public render() {
     return (
       <div>
+        <h3 className="show-for-medium text-center">Address</h3>
+
         <form onSubmit={this.handleFormSubmit}>
           <div>
             <label htmlFor="first_name">First Name</label>
@@ -32,6 +35,16 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
               onChange={this.handleInputChange("last_name")}
               type="text"
               value={this.state.last_name}
+            />
+          </div>
+          <div>
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              name="company"
+              onChange={this.handleInputChange("company")}
+              type="text"
+              value={this.state.company}
             />
           </div>
           <div>
@@ -55,23 +68,13 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
             />
           </div>
           <div>
-            <label htmlFor="company">Company</label>
+            <label htmlFor="city">City</label>
             <input
-              id="company"
-              name="company"
-              onChange={this.handleInputChange("company")}
+              id="city"
+              name="city"
+              onChange={this.handleInputChange("city")}
               type="text"
-              value={this.state.company}
-            />
-          </div>
-          <div>
-            <label htmlFor="country">Country</label>
-            <input
-              id="country"
-              name="country"
-              onChange={this.handleInputChange("country")}
-              type="text"
-              value={this.state.country}
+              value={this.state.city}
             />
           </div>
           <div>
@@ -85,16 +88,6 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
             />
           </div>
           <div>
-            <label htmlFor="city">City</label>
-            <input
-              id="city"
-              name="city"
-              onChange={this.handleInputChange("city")}
-              type="text"
-              value={this.state.city}
-            />
-          </div>
-          <div>
             <label htmlFor="zip">Zip</label>
             <input
               id="zip"
@@ -102,6 +95,16 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
               onChange={this.handleInputChange("zip")}
               type="text"
               value={this.state.zip}
+            />
+          </div>
+          <div>
+            <label htmlFor="country">Country</label>
+            <input
+              id="country"
+              name="country"
+              onChange={this.handleInputChange("country")}
+              type="text"
+              value={this.state.country}
             />
           </div>
           <div>
@@ -133,6 +136,8 @@ export default class EditAddress extends React.Component<Props, RechargeAddress>
 
   private handleFormSubmit = async (e) => {
     e.preventDefault()
+
+    this.props.openLoadingModal()
 
     const {
       address,

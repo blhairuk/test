@@ -190,8 +190,10 @@ export default class App extends React.Component<Props, State> {
       <EditAddress
         address={this.props.data.address}
         createHref={this.createHref}
+        openLoadingModal={this.openLoadingModal}
       />
     ),
+    title: "Address",
   })
 
   private renderHome = () => (

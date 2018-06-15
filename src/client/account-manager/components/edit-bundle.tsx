@@ -228,12 +228,14 @@ export default class EditBundle extends React.Component<Props> {
           className="text-right"
           style={{marginBottom: "30px"}}
         >
-          <a
-            href="javascript:void(0)"
-            onClick={this.submitCancel(bundleId)}
-          >
-            Cancel
-          </a>
+          {!isCancelled && (
+            <a
+              href="javascript:void(0)"
+              onClick={this.submitCancel(bundleId)}
+            >
+              Cancel
+            </a>
+          )}
         </div>
       </div>
     )
