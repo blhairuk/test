@@ -6,6 +6,7 @@ import {
 } from "react-router-dom"
 import styled from "styled-components"
 
+import Button from "../bundle-editor/components/styled/button"
 import Billing, {Props as BillingProps} from "./components/billing"
 import EditAddress, {Props as EditAddressProps} from "./components/edit-address"
 import Home from "./components/home"
@@ -13,7 +14,6 @@ import LoadingModal from "./components/loading-modal"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
 import Orders, {Props as OrderProps} from "./components/orders"
-import Button from "../bundle-editor/components/styled/button"
 
 import Modal from "../helpers/modal"
 import updateStateKeys from "../helpers/update-state-keys"
@@ -66,17 +66,17 @@ export default class App extends React.Component<Props, State> {
           <Wrapper mx={-3}>
             <Box
               className="show-for-medium"
+              mt={3}
               px={3}
               width={[1, 1 / 3]}
             >
               <Name>{first_name} {last_name}</Name>
 
               <Menu className="text-right">
-                <li><a href={this.createHref("/")}>My Account</a></li>
+                <li><a href={this.createHref("/")}>Dashboard</a></li>
                 <li><a href={this.createHref("/my-box")}>My Box</a></li>
-                <li><a href={this.createHref("/billing")}>Billing Info</a></li>
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
-                <li><a href={this.createHref("/billing")}>Write a Review</a></li>
+                <li><a href={this.createHref("/billing")}>Payment Info</a></li>
                 <li><a href={this.createHref("/billing")}>Share with friends</a></li>
                 <li>
                   <MyCoins>My Coins</MyCoins>
@@ -94,7 +94,8 @@ export default class App extends React.Component<Props, State> {
             </Box>
 
             <Box
-              px={3}
+              pt={3}
+              px={[3, 4]}
               style={{backgroundColor: DARK_SAND}}
               width={[1, 2 / 3]}
             >
