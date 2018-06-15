@@ -11,6 +11,8 @@ interface Props {
   order: ShopifyOrder,
 }
 
+const prettifyStatus = (status) => status.replace(/_/g, " ")
+
 export default class Order extends React.Component<Props> {
   public render() {
     const {
@@ -40,11 +42,11 @@ export default class Order extends React.Component<Props> {
           </Box>
           <Box width={1 / 4}>
             <DetailsTitle>Payment</DetailsTitle>
-            <DetailsValue>{financial_status}</DetailsValue>
+            <DetailsValue>{prettifyStatus(financial_status || "-")}</DetailsValue>
           </Box>
           <Box width={1 / 4}>
             <DetailsTitle>Shipping</DetailsTitle>
-            <DetailsValue>{fulfillment_status}</DetailsValue>
+            <DetailsValue>{prettifyStatus(fulfillment_status || "-")}</DetailsValue>
           </Box>
           <Box width={1 / 4}>
             <DetailsTitle>Total</DetailsTitle>
@@ -64,6 +66,7 @@ const DetailsTitle = styled.div`
 const DetailsValue = styled.div`
   font-size: 110%;
   font-weight: bold;
+  text-transform: capitalize;
 `
 
 const Line = styled.hr`

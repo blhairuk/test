@@ -182,7 +182,7 @@ export default class App extends React.Component<Props, State> {
         stripeCustomer={this.props.data.stripeCustomer}
       />
     ),
-    title: "Billing Info",
+    title: "Payment Info",
   })
 
   private renderEditAddress = () => this.renderWithMobileBackHeader({

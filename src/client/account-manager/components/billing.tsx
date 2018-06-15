@@ -1,6 +1,7 @@
 import * as React from "react"
 import {injectGlobal} from "styled-components"
 
+import Button from "../../bundle-editor/components/styled/button"
 import updateStateKeys from "../../helpers/update-state-keys"
 
 export interface Props {
@@ -60,10 +61,10 @@ export default class Billing extends React.Component<Props, State> {
 
     return (
       <div>
-        <h3 className="show-for-medium">Billing Info</h3>
+        <h3 className="show-for-medium text-center">Payment Info</h3>
 
-        <p>
-          Current card is {card.brand} ending in {card.last4}.
+        <p className="text-center">
+          Current card is <strong>{card.brand}</strong> ending in <strong>{card.last4}</strong>.
         </p>
 
         <form onSubmit={this.handleSubmit}>
@@ -124,16 +125,6 @@ export default class Billing extends React.Component<Props, State> {
             />
           </div>
           <div>
-            <label htmlFor="address_country">Country</label>
-            <input
-              id="address_country"
-              name="address_country"
-              onChange={this.handleInputChange("address_country")}
-              type="text"
-              value={this.state.address_country}
-            />
-          </div>
-          <div>
             <label htmlFor="address_zip">Zip</label>
             <input
               id="address_zip"
@@ -143,7 +134,17 @@ export default class Billing extends React.Component<Props, State> {
               value={this.state.address_zip}
             />
           </div>
-          <button>Submit</button>
+          <div>
+            <label htmlFor="address_country">Country</label>
+            <input
+              id="address_country"
+              name="address_country"
+              onChange={this.handleInputChange("address_country")}
+              type="text"
+              value={this.state.address_country}
+            />
+          </div>
+          <Button>Submit</Button>
         </form>
 
         <script
