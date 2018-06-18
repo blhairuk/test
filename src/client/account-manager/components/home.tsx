@@ -10,9 +10,14 @@ import {
 
 import {getPathToImages} from "../../../shared/helpers"
 
-interface Props {
+export interface Props {
   createHref: (path: string) => any,
   customer: ShopifyCustomer,
+  stats: {
+    foodLbsSaved: number,
+    buyingMinsSaved: number,
+    preppingMinsSaved: number,
+  }
 }
 
 export default class Home extends React.Component<Props> {
@@ -22,6 +27,11 @@ export default class Home extends React.Component<Props> {
       customer: {
         first_name,
         last_name,
+      },
+      stats: {
+        buyingMinsSaved,
+        foodLbsSaved,
+        preppingMinsSaved,
       },
     } = this.props
 
@@ -47,15 +57,15 @@ export default class Home extends React.Component<Props> {
             justifyContent="space-between"
           >
             <HappyTrackerContainer color={LIGHT_PURPLE}>
-              <div className="num">{Math.floor(Math.random() * 1000)}</div>
+              <div className="num">{foodLbsSaved}</div>
               <div className="text">minutes saved prepping</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={ORANGE}>
-              <div className="num">{Math.floor(Math.random() * 1000)}</div>
+              <div className="num">{buyingMinsSaved}</div>
               <div className="text">minutes saved vs buying fresh</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={LIGHT_TEAL}>
-              <div className="num">{Math.floor(Math.random() * 1000)}</div>
+              <div className="num">{preppingMinsSaved}</div>
               <div className="text">lbs of food saved vs buying fresh</div>
             </HappyTrackerContainer>
           </Flex>

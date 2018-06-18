@@ -51,7 +51,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-stickynode": "^1.4.1",
-    "shopify-api-node": "^2.13.0",
+    "shopify-api-node": "^2.14.0",
     "smoothscroll-polyfill": "^0.4.3",
     "styled-components": "^3.2.6",
     "ts-loader": "^4.3.0",

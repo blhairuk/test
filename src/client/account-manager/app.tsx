@@ -9,7 +9,7 @@ import styled from "styled-components"
 import Button from "../bundle-editor/components/styled/button"
 import Billing, {Props as BillingProps} from "./components/billing"
 import EditAddress, {Props as EditAddressProps} from "./components/edit-address"
-import Home from "./components/home"
+import Home, {Props as HomeProps} from "./components/home"
 import LoadingModal from "./components/loading-modal"
 import MyBox, {Props as MyBoxProps} from "./components/my-box"
 import OrderDetails, {Props as OrderDetailsProps} from "./components/order-details"
@@ -23,7 +23,7 @@ import {
   SAND,
 } from "../colors"
 
-interface Data extends BillingProps, EditAddressProps, MyBoxProps, OrderProps, OrderDetailsProps {
+interface Data extends BillingProps, EditAddressProps, HomeProps, MyBoxProps, OrderProps, OrderDetailsProps {
   customer: ShopifyCustomer,
 }
 
@@ -200,6 +200,7 @@ export default class App extends React.Component<Props, State> {
     <Home
       createHref={this.createHref}
       customer={this.props.data.customer}
+      stats={this.props.data.stats}
     />
   )
 

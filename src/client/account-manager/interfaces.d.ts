@@ -63,6 +63,7 @@ declare interface ShopifyCustomer {
 declare interface ShopifyLineItem {
   id: number,
   price: string,
+  product_id: number,
   quantity: number,
   sku: string,
   title: string,

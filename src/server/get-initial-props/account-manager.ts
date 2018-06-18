@@ -11,6 +11,7 @@ import {
 } from "../apis/recharge"
 
 import {groupSubscriptionsIntoBundles} from "../../shared/helpers"
+import calculateCustomerStats from "../helpers/calculate-customer-stats"
 
 const {
   APP_PROXY_PATH,
@@ -34,6 +35,15 @@ export default async (ctx) => {
     : null
 
   switch (page) {
+    case undefined:
+      const customerOrders = await (shopify.customer as any).orders(customer.id)
+      const orderedProductIds = customerOrders.reduce((arr, {line_items}) => (
+        arr.concat(line_items.map(({product_id}) => product_id))
+      ), [])
+      const orderedProducts: any = await shopify.product.list({ids: orderedProductIds.join(",")})
+      data.stats = calculateCustomerStats({orders: customerOrders, products: orderedProducts})
+      break
+
     case "billing":
       data.stripeCustomer = await stripeApi(`/customers/${rechargeCustomer.stripe_customer_token}`)
       break
