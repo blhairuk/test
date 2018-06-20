@@ -14,9 +14,9 @@ export const removeBundleIdFromCart = async (bundleId) => {
   const {items} = await fetchCart()
 
   const updates = items.map(({
-    properties: {bundle_id: itemBundleId},
+    properties,
     quantity,
-  }) => itemBundleId === bundleId ? 0 : quantity)
+  }) => (properties && properties.bundle_id === bundleId) ? 0 : quantity)
 
   return updateCart(updates)
 }
