@@ -70,19 +70,24 @@ export default (app: App): Helper => ({
 
     for (const item of cart.items) {
       const {
-        properties: {
-          bundle_customer_name,
-          bundle_email,
-          bundle_id: itemBundleId,
-          bundle_name,
-          shipping_interval_frequency: frequency,
-        },
+        properties,
         product_id,
         product_type: productType,
         quantity,
         variant_id: variantId,
         variant_options: [size],
       } = item
+
+      // non-bundle line items won't have properties
+      if (!properties) { continue }
+
+      const {
+        bundle_customer_name,
+        bundle_email,
+        bundle_id: itemBundleId,
+        bundle_name,
+        shipping_interval_frequency: frequency,
+      } = properties
 
       if (itemBundleId === bundleId) {
         if (productType === BUNDLE_TYPE) {
