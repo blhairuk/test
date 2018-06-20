@@ -40,6 +40,7 @@ interface Props {
   bundleProductMetafields: ShopifyProductMetafield[],
   bundleProduct: ShopifyProduct,
   bundleProducts: ShopifyProduct[],
+  selectedVariantIds: number[],
   shopifyCustomerId: string,
   subscriptions: RechargeSubscription[],
 }
@@ -83,7 +84,7 @@ export default class App extends React.Component<Props, State> {
     selectedFrequency: null,
     selectedProductIds: [],
     selectedSize: null,
-    selectedVariantIds: [],
+    selectedVariantIds: this.props.selectedVariantIds,
     videoModalYouTubeId: null,
   }
 
