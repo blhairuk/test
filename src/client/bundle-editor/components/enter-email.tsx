@@ -66,14 +66,16 @@ export default class EnterEmail extends React.Component<Props> {
       stepNext,
     } = this.props
 
-    try {
-      window._learnq.push(["identify", {
-        $email: enteredEmail,
-        $first_name: enteredName,
-      }])
-      window._learnq.push(["track", "Started Bundle Builder"])
-    } catch (e) {
-      console.error(e)
+    if (process.env.NODE_ENV === "production") {
+      try {
+        window._learnq.push(["identify", {
+          $email: enteredEmail,
+          $first_name: enteredName,
+        }])
+        window._learnq.push(["track", "Started Bundle Builder"])
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     stepNext()
