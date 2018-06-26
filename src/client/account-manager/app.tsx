@@ -77,7 +77,7 @@ export default class App extends React.Component<Props, State> {
                 <li><a href={this.createHref("/my-box")}>My Box</a></li>
                 <li><a href={this.createHref("/orders")}>Orders</a></li>
                 <li><a href={this.createHref("/billing")}>Payment Info</a></li>
-                <li><a href={this.createHref("/billing")}>Share with friends</a></li>
+                <li><a href="javascript:void(0)" data-st-intent="st:referrals:offers">Share with friends</a></li>
                 <li>
                   <MyCoins>My Coins</MyCoins>
                   <MyCoinsSubtitle>
@@ -85,7 +85,7 @@ export default class App extends React.Component<Props, State> {
                     <span className="sweettooth-points-balance">(loading)</span>
                     <span> Happy Coins</span>
                   </MyCoinsSubtitle>
-                  <Button size="small">Redeem points</Button>
+                  <Button data-st-intent="st:points:rewards" size="small">Redeem points</Button>
                 </li>
                 <li style={{marginTop: "20px"}}>
                   <a href="/account/logout">Logout</a>

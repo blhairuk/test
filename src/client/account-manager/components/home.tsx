@@ -9,6 +9,7 @@ import {
 } from "../../../client/colors"
 
 import {getPathToImages} from "../../../shared/helpers"
+import Button from "../../bundle-editor/components/styled/button"
 
 export interface Props {
   createHref: (path: string) => any,
@@ -57,15 +58,15 @@ export default class Home extends React.Component<Props> {
             justifyContent="space-between"
           >
             <HappyTrackerContainer color={LIGHT_PURPLE}>
-              <div className="num">{foodLbsSaved}</div>
+              <div className="num">{foodLbsSaved.toFixed(2)}</div>
               <div className="text">minutes saved prepping</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={ORANGE}>
-              <div className="num">{buyingMinsSaved}</div>
+              <div className="num">{buyingMinsSaved.toFixed(2)}</div>
               <div className="text">minutes saved vs buying fresh</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={LIGHT_TEAL}>
-              <div className="num">{preppingMinsSaved}</div>
+              <div className="num">{preppingMinsSaved.toFixed(2)}</div>
               <div className="text">lbs of food saved vs buying fresh</div>
             </HappyTrackerContainer>
           </Flex>
@@ -110,7 +111,7 @@ export default class Home extends React.Component<Props> {
             </Tile>
             <Tile width={1 / 2}>
               <White>
-                <Link href={createHref("/orders")}>
+                <Link href="javascript:void(0)" data-st-intent="st:referrals:offers">
                 <img src={getPathToImages("icon-share.png")} />
                   <div>Share with friends</div>
                 </Link>
@@ -121,10 +122,11 @@ export default class Home extends React.Component<Props> {
               width={1 / 2}
             >
               <White>
-                <Link href={createHref("/my-box")}>
+                <Link href="javascript:void(0)" data-st-intent="st:points:rewards">
                   <div>
-                    <div className="sweettooth-points-balance">(loading)</div>
-                    <div>Happy Coins</div>
+                    <Coins className="sweettooth-points-balance">(loading)</Coins>
+                    <div style={{marginBottom: "10px"}}>Happy Coins</div>
+                    <Button>Redeem points</Button>
                   </div>
                 </Link>
               </White>
@@ -135,6 +137,12 @@ export default class Home extends React.Component<Props> {
     )
   }
 }
+
+const Coins = styled.div`
+  font-size: 400%;
+  font-weight: bold;
+  line-height: 1;
+`
 
 interface HappyTrackerContainerProps { color: string }
 const HappyTrackerContainer = Box.extend`
