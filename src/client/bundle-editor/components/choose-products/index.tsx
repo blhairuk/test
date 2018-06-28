@@ -339,6 +339,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                   color="purple"
                   disabled={showProgress && selectedIds.length < selectedSize}
                   onClick={stepNext}
+                  size="wide"
                   type="button"
                 >
                   {nextButtonTitle}

@@ -8,7 +8,7 @@ import {
 
 interface Props {
   color?: "white" | "black" | "yellow" | "purple" | "gray",
-  size?: "small",
+  size?: "small" | "wide",
 }
 
 const getBackgroundColor = ({color}: Props) => {
@@ -51,10 +51,9 @@ const getFontSize = ({size}: Props) => {
 
 const getPadding = ({size}: Props) => {
   switch (size) {
-    case "small":
-      return "5px 12px"
-    default:
-      return "7px 16px"
+    case "small": return "5px 12px"
+    case "wide": return "8px 36px"
+    default: return "8px 20px"
   }
 }
 
