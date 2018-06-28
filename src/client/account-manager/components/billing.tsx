@@ -79,6 +79,7 @@ export default class Billing extends React.Component<Props, State> {
             />
           </div>
 
+          <label htmlFor="card">Credit card</label>
           <div
             className="card"
             id="card"
@@ -144,7 +145,10 @@ export default class Billing extends React.Component<Props, State> {
               value={this.state.address_country}
             />
           </div>
-          <Button>Submit</Button>
+
+          <div style={{marginBottom: "20px"}}>
+            <Button size="wide">Submit</Button>
+          </div>
         </form>
 
         <script
