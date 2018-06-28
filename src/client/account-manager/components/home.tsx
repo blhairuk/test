@@ -44,7 +44,7 @@ export default class Home extends React.Component<Props> {
             justifyContent="space-between"
           >
             <h2>{first_name} {last_name}</h2>
-            <a href={createHref("/logout")}>Logout</a>
+            <a href="/account/logout">Logout</a>
           </Flex>
           <hr style={{margin: "0 0 15px 0"}} />
         </div>
