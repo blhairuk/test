@@ -2,6 +2,7 @@ import {formatMoney} from "accounting"
 import {format as formatDate} from "date-fns"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
+import {Text} from "rebass"
 import styled from "styled-components"
 
 import {
@@ -240,19 +241,22 @@ export default class EditBundle extends React.Component<Props, State> {
             ))}
           </Flex>
         </Wrapper>
-        <div
-          className="text-right"
-          style={{marginBottom: "30px"}}
-        >
-          {!isCancelled && (
-            <a
-              href="javascript:void(0)"
+
+        {!isCancelled && (
+          <Box
+            className="text-center"
+            my={2}
+          >
+            <Text fontSize={1} pr={2} style={{display: "inline"}}>Don't wanna receive any more deliveries?</Text>
+            <Button
+              color="gray"
               onClick={this.handleCancelModalOpen}
+              size="small"
             >
-              Cancel
-            </a>
-          )}
-        </div>
+              Pause
+            </Button>
+          </Box>
+        )}
 
         <Modal
           handleClose={this.handleCancelModalClose}
