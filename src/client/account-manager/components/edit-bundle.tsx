@@ -18,6 +18,9 @@ import {
 } from "../../colors"
 
 import Button from "../../bundle-editor/components/styled/button"
+import Modal from "../../helpers/modal"
+import updateStateKeys from "../../helpers/update-state-keys"
+import CancelModal from "./cancel-modal"
 
 interface Props {
   addresses: RechargeAddress[],
@@ -30,7 +33,15 @@ interface Props {
   subtotal: number,
 }
 
-export default class EditBundle extends React.Component<Props> {
+interface State {
+  isCancelModalOpen: boolean,
+}
+
+export default class EditBundle extends React.Component<Props, State> {
+  public state = {
+    isCancelModalOpen: false,
+  }
+
   public componentDidMount() {
     // this.initCarousel()
   }
@@ -45,6 +56,8 @@ export default class EditBundle extends React.Component<Props> {
       subscriptions,
       subtotal,
     } = this.props
+
+    const {isCancelModalOpen} = this.state
 
     const bundle = getPrimaryBundleSubscription(subscriptions)
     // legacy issue: can be ignored
@@ -77,6 +90,8 @@ export default class EditBundle extends React.Component<Props> {
         style={{height: "16px", width: "16px"}}
       />
     )
+
+    const editItemsHref = createHref(`/bundles/${bundleId}`)
 
     return (
       <div>
@@ -202,7 +217,7 @@ export default class EditBundle extends React.Component<Props> {
             justifyContent="space-between"
           >
             <SectionTitle>{bundleProductsQuantities.length} Items</SectionTitle>
-            <a href={createHref(`/bundles/${bundleId}`)}>
+            <a href={editItemsHref}>
               {editImg}
             </a>
           </Flex>
@@ -231,14 +246,32 @@ export default class EditBundle extends React.Component<Props> {
           {!isCancelled && (
             <a
               href="javascript:void(0)"
-              onClick={this.submitCancel(bundleId)}
+              onClick={this.handleCancelModalOpen}
             >
               Cancel
             </a>
           )}
         </div>
+
+        <Modal
+          handleClose={this.handleCancelModalClose}
+          isOpen={isCancelModalOpen}
+        >
+          <CancelModal
+            editItemsHref={editItemsHref}
+            submit={this.submitCancel(bundleId)}
+          />
+        </Modal>
       </div>
     )
+  }
+
+  private handleCancelModalClose = () => {
+    this.setState(updateStateKeys({isCancelModalOpen: false}))
+  }
+
+  private handleCancelModalOpen = () => {
+    this.setState(updateStateKeys({isCancelModalOpen: true}))
   }
 
   private handleReactivateClick = (bundleId) => async () => {
@@ -261,10 +294,11 @@ export default class EditBundle extends React.Component<Props> {
     window.location.reload()
   }
 
-  private submitCancel = (bundleId) => async () => {
+  private submitCancel = (bundleId) => async (cancellation_reason: string) => {
     this.props.openLoadingModal()
     await $.ajax({
       contentType: "application/json",
+      data: JSON.stringify({cancellation_reason}),
       dataType: "json",
       method: "DELETE",
       url: this.props.createHref(`/bundles/${bundleId}`),

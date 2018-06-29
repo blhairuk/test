@@ -12,12 +12,10 @@ export const activate = async (subscriptionIds) => {
   }
 }
 
-export const cancel = async (subscriptionIds) => {
+export const cancel = async (subscriptionIds, {cancellation_reason = "unspecified"}) => {
   for (const id of subscriptionIds) {
     await rechargeApi(`/subscriptions/${id}/cancel`, {
-      body: JSON.stringify({
-        cancellation_reason: "automated, editing bundle subscription",
-      }),
+      body: JSON.stringify({cancellation_reason}),
       method: "POST",
     })
   }

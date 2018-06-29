@@ -14,13 +14,15 @@ export default () => async (ctx) => {
     },
   } = ctx
 
+  const {cancellation_reason} = ctx.request.body
+
   const bundleId = parseInt(bundleIdS, 10)
 
   const customer = await getCustomer(shopifyCustomerId)
   const subscriptions = (await getSubscriptions({customerId: customer.id, status: "ACTIVE"}))
     .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
 
-  await cancel(subscriptions.map(({id}) => id))
+  await cancel(subscriptions.map(({id}) => id), {cancellation_reason})
 
   ctx.status = 204
 }

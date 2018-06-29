@@ -62,7 +62,7 @@ export default () => async (ctx) => {
     .find(({option1}) => option1 === size)
     .id
 
-  await cancelBundle(subscriptions.map(({id}) => id))
+  await cancelBundle(subscriptions.map(({id}) => id), {cancellation_reason: "automated, editing bundle subscription"})
 
   const newSubscriptionsData = Object.entries(idQuantities)
     .concat([[`${bundleVariantId}`, 1]])
