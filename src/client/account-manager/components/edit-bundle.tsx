@@ -102,19 +102,20 @@ export default class EditBundle extends React.Component<Props, State> {
           {bundleName}
         </h4>
 
-        {isCancelled && (
-          <div>
-            <a
-              href="javascript:void(0)"
-              onClick={this.handleReactivateClick(bundleId)}
-            >
-              Reactivate
-            </a>
-          </div>
-        )}
-
         <Wrapper>
-          {isCancelled && <CancelledWrapper>&nbsp;</CancelledWrapper>}
+          {isCancelled && (
+            <CancelledWrapper alignItems="center" justifyContent="center">
+              <Box className="text-center">
+                <h3>I'M PAUSED!</h3>
+                <Button
+                  onClick={this.handleReactivateClick(bundleId)}
+                  size="wide"
+                >
+                  Resume
+                </Button>
+              </Box>
+            </CancelledWrapper>
+          )}
 
           <Flex justifyContent="space-between">
             <SectionTitle style={{marginBottom: "10px"}}>Details</SectionTitle>
@@ -307,8 +308,8 @@ export default class EditBundle extends React.Component<Props, State> {
   }
 }
 
-const CancelledWrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+const CancelledWrapper = Flex.extend`
+  background-color: rgba(255, 248, 237, 0.9);
   position: absolute;
   bottom: 0;
   left: 0;
