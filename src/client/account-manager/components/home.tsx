@@ -60,15 +60,15 @@ export default class Home extends React.Component<Props> {
           >
             <HappyTrackerContainer color={LIGHT_PURPLE}>
               <div className="num">{formatMoney(dollarsSaved, {precision: 0})}</div>
-              <div className="text">dollars saved vs. buying local</div>
+              <div className="text">dollars saved vs. buying local*</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={ORANGE}>
               <div className="num">{buyingMinsSaved}</div>
-              <div className="text">minutes saved vs buying raw</div>
+              <div className="text">minutes saved vs buying raw*</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={LIGHT_TEAL}>
               <div className="num">{foodOzSaved.toFixed(0)}</div>
-              <div className="text">oz of food saved vs buying raw</div>
+              <div className="text">oz of food saved vs buying raw*</div>
             </HappyTrackerContainer>
           </Flex>
 
@@ -134,6 +134,12 @@ export default class Home extends React.Component<Props> {
             </Tile>
           </Flex>
         </div>
+
+        <Legaleze>
+          * The number displayed is a general approximation, not a scientific
+          calculation, and may vary greatly per customer, depending
+          upon how Happy Healthy products are utilized versus other dietary options.
+        </Legaleze>
       </div>
     )
   }
@@ -192,6 +198,12 @@ const Tile = Box.extend.attrs({
   px: [2, 3],
 })`
   text-align: center;
+`
+
+const Legaleze = styled.div`
+  color: #bbb;
+  font-size: 70%;
+  margin-bottom: 20px;
 `
 
 const White = styled.div`
