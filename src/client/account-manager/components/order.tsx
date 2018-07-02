@@ -4,7 +4,10 @@ import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
 
-import {DARK_SAND} from "../../colors"
+import {
+  BLUE_GREEN,
+  DARK_SAND,
+} from "../../colors"
 
 interface Props {
   createHref: (path: string) => any,
@@ -30,7 +33,7 @@ export default class Order extends React.Component<Props> {
     return (
       <Wrapper>
         <Title>
-          <a href={createHref(`/orders/${id}`)}>Order {name}</a>
+          <a href={createHref(`/orders/${id}`)} style={{color: BLUE_GREEN}}>Order {name}</a>
         </Title>
 
         <Line />
