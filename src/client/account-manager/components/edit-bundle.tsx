@@ -128,28 +128,14 @@ export default class EditBundle extends React.Component<Props, State> {
           >
             <Box
               my={2}
-              width={[1 / 2, 1 / 4]}
+              width={[1 / 2]}
             >
               <DetailsTitle>Frequency</DetailsTitle>
               <DetailsValue>{frequencyTitle(frequencyUnitType, frequency)}</DetailsValue>
             </Box>
             <Box
               my={2}
-              width={[1 / 2, 1 / 4]}
-            >
-              <DetailsTitle>Amount</DetailsTitle>
-              <DetailsValue>{bundleProductsQuantities.length}</DetailsValue>
-            </Box>
-            <Box
-              my={2}
-              width={[1 / 2, 1 / 4]}
-            >
-              <DetailsTitle>Boosters</DetailsTitle>
-              <DetailsValue>TBD</DetailsValue>
-            </Box>
-            <Box
-              my={2}
-              width={[1 / 2, 1 / 4]}
+              width={[1 / 2]}
             >
               <DetailsTitle>Subtotal</DetailsTitle>
               <DetailsValue>{formatMoney(subtotal)}</DetailsValue>
