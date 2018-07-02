@@ -95,7 +95,7 @@ export default class EditBundle extends React.Component<Props, State> {
     const editItemsHref = createHref(`/bundles/${bundleId}`)
 
     return (
-      <div>
+      <Box mb={4}>
         <h4
           className="text-center"
           style={{margin: "0 0 10px"}}
@@ -267,7 +267,7 @@ export default class EditBundle extends React.Component<Props, State> {
             submit={this.submitCancel(bundleId)}
           />
         </Modal>
-      </div>
+      </Box>
     )
   }
 
@@ -346,6 +346,7 @@ const ProductTitle = styled.div`
 
 const ProductWrapper = Box.extend`
   position: relative;
+  margin-bottom: 15px;
 `
 
 const QuantityWrapper = styled.div`
