@@ -84,6 +84,7 @@ export default class EditBundle extends React.Component<Props, State> {
         isBundleIdInProperties(bundleId, properties)
       ))
     ))
+    const nextChargeToSkip = charges.find((c) => c.status === "QUEUED")
 
     const editImg = (
       <img
@@ -250,6 +251,7 @@ export default class EditBundle extends React.Component<Props, State> {
         >
           <CancelModal
             editItemsHref={editItemsHref}
+            skipCharge={this.handleToggleSkipChargeClick(bundleId, nextChargeToSkip.id)}
             submit={this.submitCancel(bundleId)}
           />
         </Modal>
@@ -267,34 +269,43 @@ export default class EditBundle extends React.Component<Props, State> {
 
   private handleReactivateClick = (bundleId) => async () => {
     this.props.openLoadingModal()
-    await $.ajax({
-      method: "POST",
-      url: this.props.createHref(`/bundles/${bundleId}`),
-    })
-    window.location.reload()
+    try {
+      await $.ajax({
+        method: "POST",
+        url: this.props.createHref(`/bundles/${bundleId}`),
+      })
+    } finally {
+      window.location.reload()
+    }
   }
 
   private handleToggleSkipChargeClick = (bundleId, chargeId) => async () => {
     this.props.openLoadingModal()
-    await $.ajax({
-      contentType: "application/json",
-      dataType: "json",
-      method: "POST",
-      url: this.props.createHref(`/bundles/${bundleId}/toggle-skip-charge?charge_id=${chargeId}`),
-    })
-    window.location.reload()
+    try {
+      await $.ajax({
+        contentType: "application/json",
+        dataType: "json",
+        method: "POST",
+        url: this.props.createHref(`/bundles/${bundleId}/toggle-skip-charge?charge_id=${chargeId}`),
+      })
+    } finally {
+      window.location.reload()
+    }
   }
 
   private submitCancel = (bundleId) => async (cancellation_reason: string) => {
     this.props.openLoadingModal()
-    await $.ajax({
-      contentType: "application/json",
-      data: JSON.stringify({cancellation_reason}),
-      dataType: "json",
-      method: "DELETE",
-      url: this.props.createHref(`/bundles/${bundleId}`),
-    })
-    window.location.reload()
+    try {
+      await $.ajax({
+        contentType: "application/json",
+        data: JSON.stringify({cancellation_reason}),
+        dataType: "json",
+        method: "DELETE",
+        url: this.props.createHref(`/bundles/${bundleId}`),
+      })
+    } finally {
+      window.location.reload()
+    }
   }
 }
 

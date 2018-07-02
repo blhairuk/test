@@ -12,6 +12,7 @@ import updateStateKeys from "../../helpers/update-state-keys"
 
 interface Props {
   editItemsHref: string,
+  skipCharge: () => any,
   submit: (cancellation_reason: string) => any,
 }
 
@@ -53,7 +54,7 @@ class CancelModal extends React.Component<Props, State> {
           <p>By pausing your plan, you'll cancel all future deliveries. You can resume at anytime.
             Alternatively, you can skip your next shipment or select different items.</p>
           <Box my={3}>
-            <Button>Skip next shipment</Button>
+            <Button onClick={this.handleSkipClick}>Skip next shipment</Button>
           </Box>
           <Box my={3}>
             <Button>
@@ -139,6 +140,8 @@ class CancelModal extends React.Component<Props, State> {
 
     this.setState(updateStateKeys({reasons}))
   }
+
+  private handleSkipClick = () => this.props.skipCharge()
 
   private handleSubmit = async () => {
     await this.props.submit(this.cancellationReasonsString())
