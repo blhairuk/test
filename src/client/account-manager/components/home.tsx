@@ -1,3 +1,4 @@
+import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
 import styled from "styled-components"
@@ -15,9 +16,9 @@ export interface Props {
   createHref: (path: string) => any,
   customer: ShopifyCustomer,
   stats: {
-    foodLbsSaved: number,
     buyingMinsSaved: number,
-    preppingMinsSaved: number,
+    dollarsSaved: number,
+    foodOzSaved: number,
   }
 }
 
@@ -31,8 +32,8 @@ export default class Home extends React.Component<Props> {
       },
       stats: {
         buyingMinsSaved,
-        foodLbsSaved,
-        preppingMinsSaved,
+        dollarsSaved,
+        foodOzSaved,
       },
     } = this.props
 
@@ -58,16 +59,16 @@ export default class Home extends React.Component<Props> {
             justifyContent="space-between"
           >
             <HappyTrackerContainer color={LIGHT_PURPLE}>
-              <div className="num">{foodLbsSaved.toFixed(2)}</div>
-              <div className="text">minutes saved prepping</div>
+              <div className="num">{formatMoney(dollarsSaved, {precision: 0})}</div>
+              <div className="text">dollars saved vs. buying local</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={ORANGE}>
-              <div className="num">{buyingMinsSaved.toFixed(2)}</div>
-              <div className="text">minutes saved vs buying fresh</div>
+              <div className="num">{buyingMinsSaved}</div>
+              <div className="text">minutes saved vs buying raw</div>
             </HappyTrackerContainer>
             <HappyTrackerContainer color={LIGHT_TEAL}>
-              <div className="num">{preppingMinsSaved.toFixed(2)}</div>
-              <div className="text">lbs of food saved vs buying fresh</div>
+              <div className="num">{foodOzSaved.toFixed(0)}</div>
+              <div className="text">oz of food saved vs buying raw</div>
             </HappyTrackerContainer>
           </Flex>
 
@@ -157,8 +158,9 @@ const HappyTrackerContainer = Box.extend`
   width: 110px;
 
   .num {
-    font-size: 200%;
+    font-size: 250%;
     font-weight: bold;
+    line-height: 1;
   }
 
   .text {
