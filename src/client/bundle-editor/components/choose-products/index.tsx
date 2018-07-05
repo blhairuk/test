@@ -267,8 +267,6 @@ export default class ChooseProducts extends React.Component<Props, State> {
               // hide the entire section if there are no products in the filters
               if (renderableProducts.length === 0) { return null }
 
-              const metafieldKey = `youtube_id_${productType.toLowerCase().replace(/\s/g, "_")}`
-
               return (
                 <div
                   key={productType}
@@ -278,7 +276,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
                     backgroundImage={getPathToImages(`hero-${productType.replace(/\s/g, "-").toLowerCase()}.jpg`)}
                     openVideoModal={openVideoModal}
                     title={pluralizeProductType(productType).toUpperCase()}
-                    youtubeId={getMetafieldValue(bundleProductMetafields, "bundle_editor", metafieldKey)}
+                    youtubeIdKey={productType.toLowerCase().replace(/\s/g, "_")}
                   />
                   <Flex
                     flexWrap="wrap"

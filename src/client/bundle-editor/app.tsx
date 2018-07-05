@@ -407,8 +407,8 @@ export default class App extends React.Component<Props, State> {
     this.setState(updateStateKeys({productDetailsModalProductId}))
   }
 
-  private openVideoModal = (videoModalYouTubeId) => () => {
-    this.setState(updateStateKeys({videoModalYouTubeId}))
+  private openVideoModal = (youtubeIdKey) => () => {
+    this.setState(updateStateKeys({videoModalYouTubeId: window.HH.YouTubeIds[youtubeIdKey]}))
   }
 
   private closeVideoModal = () => {

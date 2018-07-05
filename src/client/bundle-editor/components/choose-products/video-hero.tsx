@@ -8,9 +8,9 @@ import {BACKGROUND_BLACK} from "../../../colors"
 
 interface Props {
   backgroundImage?: string,
-  openVideoModal: (youtubeId: string) => () => any,
+  openVideoModal: (youtubeIdKey: string) => () => any,
   title: string,
-  youtubeId: string,
+  youtubeIdKey: string,
 }
 
 export default class VideoHero extends React.Component<Props> {
@@ -19,10 +19,10 @@ export default class VideoHero extends React.Component<Props> {
       backgroundImage,
       openVideoModal,
       title,
-      youtubeId,
+      youtubeIdKey,
     } = this.props
 
-    const showButton = !!youtubeId
+    const showButton = !!youtubeIdKey
 
     return (
       <Wrapper imageUrl={backgroundImage}>
@@ -34,7 +34,7 @@ export default class VideoHero extends React.Component<Props> {
           {showButton && (
             <Button
               color="white"
-              onClick={openVideoModal(youtubeId)}
+              onClick={openVideoModal(youtubeIdKey)}
               type="button"
             >
               <FlexWrapper>

@@ -4,6 +4,9 @@ declare interface Window {
     email: string,
     firstName: string,
   },
+  HH: {
+    YouTubeIds: object,
+  },
   Stripe: any,
   _learnq: any, // klaviyo
 }
