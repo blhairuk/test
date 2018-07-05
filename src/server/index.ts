@@ -5,6 +5,7 @@ import * as mount from "koa-mount"
 import * as Router from "koa-router"
 import * as send from "koa-send"
 import {join} from "path"
+import * as Raven from "raven"
 
 import setCacheHeaders from "./middlewares/set-cache-headers"
 import validateRequestSignature from "./middlewares/validate-request-signature"
@@ -68,6 +69,14 @@ app
   .use(mount("/images", serveStatic("../../images")))
   .use(router.routes())
   .use(router.allowedMethods())
+
+if (process.env.SENTRY_PROJECT_URL) {
+  Raven.config(process.env.SENTRY_PROJECT_URL).install()
+
+  app.on("error", (err) => {
+    Raven.captureException(err)
+  })
+}
 
 const server = app.listen(process.env.PORT || 3000)
 server.setTimeout(300 * 100)
