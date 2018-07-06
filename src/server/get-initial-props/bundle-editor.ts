@@ -1,5 +1,3 @@
-import * as atob from "atob"
-
 import {
   BUNDLE_ADD_ON_TAG,
   BUNDLE_PRODUCT_TAG,
@@ -22,7 +20,7 @@ export default async ({
   },
   query: {
     shop: shopName,
-    vids,
+    product: productQueryS,
   },
 }) => {
   const bundleId = parseInt(bundleIdS, 10)
@@ -47,14 +45,15 @@ export default async ({
       .filter(({properties}) => isBundleIdInProperties(bundleId, properties))
   }
 
-  let selectedVariantIds = []
-  if (vids) {
-    // ?vids is a way pass variant ids through a query parameter using atob and btoa
-    // to generate vids, use btoa("123,123,456")
+  const selectedVariantIds = []
+  if (productQueryS) {
     try {
-      selectedVariantIds = atob(vids).split(",").map((id) => parseInt(id, 10))
-    } catch (e) {
-      console.error(`Error parsing ?vids, ${e.message}`)
+      const productQuery = parseInt(productQueryS, 10)
+      const product = bundleProducts.find((({id}) => id === productQuery))
+      const variant = product.variants.find(({option1}) => option1 === "Bundle")
+      selectedVariantIds.push(variant.id)
+    } catch (err) {
+      // don't care
     }
   }
 
