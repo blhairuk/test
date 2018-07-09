@@ -143,7 +143,8 @@ class CancelModal extends React.Component<Props, State> {
 
   private handleSkipClick = () => this.props.skipCharge()
 
-  private handleSubmit = async () => {
+  private handleSubmit = async (e) => {
+    e.preventDefault()
     await this.props.submit(this.cancellationReasonsString())
   }
 }

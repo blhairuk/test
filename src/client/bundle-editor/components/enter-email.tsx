@@ -59,7 +59,9 @@ export default class EnterEmail extends React.Component<Props> {
     )
   }
 
-  private handleSubmit = () => {
+  private handleSubmit = (e) => {
+    e.preventDefault()
+
     const {
       enteredEmail,
       enteredName,
