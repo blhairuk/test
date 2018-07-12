@@ -132,6 +132,8 @@ export default class App extends React.Component<Props, State> {
     } else {
       this.prepareForLoggedInCustomer()
     }
+
+    this.initConfirmOnClose()
   }
 
   public componentDidUpdate(_, prevState) {
@@ -429,6 +431,14 @@ export default class App extends React.Component<Props, State> {
         enteredEmail: email,
         enteredName: firstName,
       }))
+    }
+  }
+
+  private initConfirmOnClose = () => {
+    const text = "Are you sure?"
+    window.onbeforeunload = (e) => {
+      e.returnValue = text
+      return text
     }
   }
 }
