@@ -395,6 +395,8 @@ export default class App extends React.Component<Props, State> {
     }
 
     this.setState(updateStateKeys({isSubmitting: false}))
+
+    this.cancelConfirmOnClose()
   }
 
   private handleBundleFullModalClose = () => {
@@ -434,13 +436,14 @@ export default class App extends React.Component<Props, State> {
     }
   }
 
-  private initConfirmOnClose = () => {
+  private confirmOnClose = (e) => {
     const text = "Are you sure?"
-    window.onbeforeunload = (e) => {
-      e.returnValue = text
-      return text
-    }
+    e.returnValue = text
+    return text
   }
+
+  private initConfirmOnClose = () => window.addEventListener("beforeunload", this.confirmOnClose)
+  private cancelConfirmOnClose = () => window.removeEventListener("beforeunload", this.confirmOnClose)
 }
 
 const Wrapper = styled.div`
