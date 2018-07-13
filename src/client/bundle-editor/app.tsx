@@ -450,6 +450,7 @@ const Wrapper = styled.div`
   background: ${BACKGROUND_BLACK};
   color: #fff;
   a { color: #fff; }
+  position: relative;
 `
 
 interface StepProps {

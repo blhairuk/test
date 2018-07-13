@@ -77,7 +77,7 @@ export default class EnterName extends React.Component<Props> {
 
 const BuildYourBoxDiv = styled.div`
   position: absolute;
-  top: 89px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
