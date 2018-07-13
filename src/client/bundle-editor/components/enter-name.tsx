@@ -1,4 +1,5 @@
 import * as React from "react"
+import styled from "styled-components"
 
 import StepButtons from "./step-buttons"
 import TextInput from "./styled/text-input"
@@ -22,6 +23,10 @@ export default class EnterName extends React.Component<Props> {
     this.textInputRef.current.blur()
   }
 
+  public componentDidMount() {
+    this.initBodymovinAnimation()
+  }
+
   public render() {
     const {
       enterName,
@@ -31,6 +36,7 @@ export default class EnterName extends React.Component<Props> {
 
     return (
       <div>
+        <BuildYourBoxDiv id="build-your-box-intro" />
         <div className="text-center larger-text">
           <form onSubmit={stepNext}>
             <h1>BUILD YOUR BOX</h1>
@@ -54,4 +60,25 @@ export default class EnterName extends React.Component<Props> {
       </div>
     )
   }
+
+  private initBodymovinAnimation = () => {
+    if (window.bodymovin) {
+      window.bodymovin.loadAnimation({
+        autoplay: true,
+        container: document.getElementById("build-your-box-intro"),
+        loop: true,
+        name: "Build your box",
+        path: window.HH.AssetURLs.BuildYourBoxIntro,
+        renderer: "svg",
+      })
+    }
+  }
 }
+
+const BuildYourBoxDiv = styled.div`
+  position: absolute;
+  top: 89px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+`
