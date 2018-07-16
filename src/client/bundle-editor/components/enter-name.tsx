@@ -1,5 +1,5 @@
+import {Box, Flex} from "grid-styled"
 import * as React from "react"
-import styled from "styled-components"
 
 import StepButtons from "./step-buttons"
 import TextInput from "./styled/text-input"
@@ -35,29 +35,49 @@ export default class EnterName extends React.Component<Props> {
     } = this.props
 
     return (
-      <div>
-        <BuildYourBoxDiv id="build-your-box-intro" />
-        <div className="text-center larger-text">
-          <form onSubmit={stepNext}>
-            <h1>BUILD YOUR BOX</h1>
-            <p><strong>We'd like to get to know you!<br />What's your first name?</strong></p>
-            <div style={{marginBottom: "20px"}}>
-              <TextInput
-                innerRef={this.textInputRef}
-                onChange={enterName}
-                placeholder="Name"
-                required={true}
-                type="text"
-                value={enteredName}
+      <Flex
+        alignSelf={["start", "stretch"]}
+        flexWrap="wrap"
+        justifyContent="center"
+        width="100%"
+      >
+        <Flex
+          alignItems="start"
+          justifyContent="center"
+          width={[1, 1 / 2]}
+        >
+          <BuildYourBoxDiv
+            id="build-your-box-intro"
+            width={["220px", "100%"]}
+          />
+        </Flex>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          width={[1, 1 / 2]}
+        >
+          <EnterYourNameDiv className="text-center larger-text">
+            <form onSubmit={stepNext}>
+              <h1>BUILD YOUR BOX</h1>
+              <p><strong>We'd like to get to know you!<br />What's your first name?</strong></p>
+              <div style={{marginBottom: "20px"}}>
+                <TextInput
+                  innerRef={this.textInputRef}
+                  onChange={enterName}
+                  placeholder="Name"
+                  required={true}
+                  type="text"
+                  value={enteredName}
+                />
+              </div>
+              <StepButtons
+                hidePrev={true}
+                isNextDisabled={enteredName.length <= 0}
               />
-            </div>
-            <StepButtons
-              hidePrev={true}
-              isNextDisabled={enteredName.length <= 0}
-            />
-          </form>
-        </div>
-      </div>
+            </form>
+          </EnterYourNameDiv>
+        </Flex>
+      </Flex>
     )
   }
 
@@ -75,10 +95,15 @@ export default class EnterName extends React.Component<Props> {
   }
 }
 
-const BuildYourBoxDiv = styled.div`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
+const BuildYourBoxDiv = Box.extend`
+  @media (min-width: 640px) {
+    transform: scale(1.4);
+    transform-origin: top;
+  }
+`
+
+const EnterYourNameDiv = Box.extend`
+  @media (min-width: 640px) {
+    transform: translate(-70px, -20px);
+  }
 `
