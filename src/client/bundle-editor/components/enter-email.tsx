@@ -97,7 +97,7 @@ export default class EnterEmail extends React.Component<Props> {
         autoplay: true,
         container: document.getElementById("blob-intro"),
         loop: true,
-        name: "Build your box",
+        name: "Blob",
         path: window.HH.AssetURLs.Blob,
         renderer: "svg",
       })

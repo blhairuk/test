@@ -27,6 +27,10 @@ interface Props {
 }
 
 export default class ChooseFrequencySize extends React.Component<Props> {
+  public componentDidMount() {
+    this.initBodymovinAnimation()
+  }
+
   public componentDidUpdate(prevProps) {
     if (!prevProps.isActiveStep && this.props.isActiveStep) {
       const input = document.activeElement
@@ -54,7 +58,11 @@ export default class ChooseFrequencySize extends React.Component<Props> {
         className="text-center larger-text one-whole"
         style={{maxWidth: "600px"}}
       >
-        <form onSubmit={stepNext}>
+        <BlobDiv id="blob-intro" />
+        <form
+          className="position-relative"
+          onSubmit={stepNext}
+        >
           <div
             style={{
               fontSize: "200%",
@@ -137,4 +145,25 @@ export default class ChooseFrequencySize extends React.Component<Props> {
       </div>
     )
   }
+
+  private initBodymovinAnimation = () => {
+    if (window.bodymovin) {
+      window.bodymovin.loadAnimation({
+        autoplay: true,
+        container: document.getElementById("blob-intro"),
+        loop: true,
+        name: "Build your box",
+        path: window.HH.AssetURLs.Blob,
+        renderer: "svg",
+      })
+    }
+  }
 }
+
+const BlobDiv = Box.extend`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+`
