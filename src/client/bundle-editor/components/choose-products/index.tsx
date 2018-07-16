@@ -65,7 +65,7 @@ const FIXED_HEADER_HEIGHT = 102
 export default class ChooseProducts extends React.Component<Props, State> {
   public static getDerivedStateFromProps(props, state) {
     if (!state.productTypes) {
-      state.productTypes = [...new Set(props.productChoices.map((p) => p.product_type))].reverse()
+      state.productTypes = [...new Set(props.productChoices.map((p) => p.product_type))].sort().reverse()
 
       state.productTypes.forEach((productType) => {
         state.productTypeRefs[productType] = React.createRef()
