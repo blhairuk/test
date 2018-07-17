@@ -351,7 +351,7 @@ export default class App extends React.Component<Props, State> {
               allowFullScreen={true}
               frameBorder={0}
               height={360}
-              src={`https://www.youtube.com/embed/${videoModalYouTubeId}?autoplay=1`}
+              src={`https://www.youtube.com/embed/${videoModalYouTubeId}?autoplay=1&rel=0`}
               width={640}
             />
           </ResponsiveEmbed>
