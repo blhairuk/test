@@ -1,4 +1,6 @@
+import {format as formatMoney} from "accounting"
 import * as React from "react"
+import {Box, Text} from "rebass"
 import styled from "styled-components"
 
 import {getPathToImages} from "../../../shared/helpers"
@@ -52,14 +54,15 @@ export default class BundleFullModal extends React.Component<Props, State> {
           X
         </XButton>
 
-        <img src={getPathToImages("box-full.png")} />
+        <img alt="Full box" src={getPathToImages("box-full.png")} style={{minHeight: "236px"}} />
+
         {!didUpgrade ? (
           <>
             <Title>YOUR BOX IS FULL!</Title>
 
             {selectedSize !== availableSizes[availableSizes.length - 1] ? (
               <>
-                <p>You did it! But want even more deliciousness in your life? Try upgrading!</p>
+                <Box px={2} mb={3}>You did it! But want even more deliciousness in your life? Try upgrading!</Box>
                 {availableUpgradeVariants.map(({id, option1, price: priceS}) => {
                   const price = parseFloat(priceS)
                   const size = parseInt(option1, 10)
@@ -70,8 +73,10 @@ export default class BundleFullModal extends React.Component<Props, State> {
                       <Option
                         onClick={this.setSelectedSize(size)}
                       >
-                        <div>Upgrade to ${option1}</div>
-                        <div><em>Save ${selectedPricePerCup - pricePerCup} per cup</em></div>
+                        <Text fontSize={3}>Upgrade to {option1} cups</Text>
+                        <div>
+                          <em>Save ${formatMoney(selectedPricePerCup - pricePerCup, {precision: 2})} per cup</em>
+                        </div>
                       </Option>
                     </div>
                   )
