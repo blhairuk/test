@@ -245,16 +245,18 @@ export default class EditBundle extends React.Component<Props, State> {
           </Box>
         )}
 
-        <Modal
-          handleClose={this.handleCancelModalClose}
-          isOpen={isCancelModalOpen}
-        >
-          <CancelModal
-            editItemsHref={editItemsHref}
-            skipCharge={this.handleToggleSkipChargeClick(bundleId, nextChargeToSkip.id)}
-            submit={this.submitCancel(bundleId)}
-          />
-        </Modal>
+        {nextChargeToSkip && (
+          <Modal
+            handleClose={this.handleCancelModalClose}
+            isOpen={isCancelModalOpen}
+          >
+            <CancelModal
+              editItemsHref={editItemsHref}
+              skipCharge={this.handleToggleSkipChargeClick(bundleId, nextChargeToSkip.id)}
+              submit={this.submitCancel(bundleId)}
+            />
+          </Modal>
+        )}
       </Box>
     )
   }
