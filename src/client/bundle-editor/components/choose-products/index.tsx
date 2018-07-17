@@ -143,6 +143,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
     return (
       <div
         className="one-whole"
+        id="hh-sticky-progress-bottom"
         style={{minWidth: "0"}}
       >
         <div
@@ -312,7 +313,10 @@ export default class ChooseProducts extends React.Component<Props, State> {
             px={2}
             width={[1, 2 / 5]}
           >
-            <StickyNode top="#hh-sticky-header">
+            <StickyNode
+              bottomBoundary="#hh-sticky-progress-bottom"
+              top="#hh-sticky-header"
+            >
               <div className="show-for-medium">
                 <Progress
                   bundleName={bundleName}
