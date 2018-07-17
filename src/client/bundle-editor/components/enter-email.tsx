@@ -1,5 +1,6 @@
 import {Box} from "grid-styled"
 import * as React from "react"
+import {Text} from "rebass"
 
 import StepButtons from "./step-buttons"
 import TextInput from "./styled/text-input"
@@ -42,7 +43,7 @@ export default class EnterEmail extends React.Component<Props> {
         <BlobDiv id="blob-intro" />
         <div className="text-center larger-text position-relative">
           <form onSubmit={this.handleSubmit}>
-            <p><strong>You rock, {enteredName}!<br />What's your email?</strong></p>
+            <Text fontSize={4} fontWeight="bold" mb={3}>You rock, {enteredName}!<br />What's your email?</Text>
 
             <div style={{marginBottom: "20px"}}>
               <TextInput
@@ -98,8 +99,11 @@ export default class EnterEmail extends React.Component<Props> {
         container: document.getElementById("blob-intro"),
         loop: true,
         name: "Blob",
-        path: window.HH.AssetURLs.Blob,
+        path: window.HH.AssetURLs.Blob2,
         renderer: "svg",
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid slice",
+        },
       })
     }
   }

@@ -153,8 +153,11 @@ export default class ChooseFrequencySize extends React.Component<Props> {
         container: document.getElementById("blob-intro"),
         loop: true,
         name: "Build your box",
-        path: window.HH.AssetURLs.Blob,
+        path: window.HH.AssetURLs.Blob3,
         renderer: "svg",
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid slice",
+        },
       })
     }
   }
