@@ -87,7 +87,7 @@ export default class Progress extends React.Component<Props> {
         )}
 
         {selectedIds.length > 0 ? (
-          <>
+          <ProductsScrollWrapper>
             {Object.entries(idQuantities).map(([variantIdS, quantity]: [string, number]) => {
               const variantId = parseInt(variantIdS, 10)
               const product = findProductByVariantId(products, variantId)
@@ -109,7 +109,7 @@ export default class Progress extends React.Component<Props> {
                 >
                   <Box
                     p={2}
-                    width={1 / 4}
+                    width={1 / 5}
                     style={{position: "relative"}}
                   >
                     {quantity > 1 && <QuantityWrapper size={20}>{quantity}</QuantityWrapper>}
@@ -136,7 +136,7 @@ export default class Progress extends React.Component<Props> {
                 </Flex>
               )
             })}
-          </>
+          </ProductsScrollWrapper>
         ) : (
           <div
             className="text-center"
@@ -160,6 +160,11 @@ const BoxNameInput = TextInput.extend`
   margin: 0;
   padding: 0;
   text-align: left;
+`
+
+const ProductsScrollWrapper = styled.div`
+  max-height: 320px;
+  overflow-y: scroll;
 `
 
 const QuantityWrapper = Circle.extend`
