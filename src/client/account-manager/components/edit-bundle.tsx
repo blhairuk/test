@@ -249,6 +249,7 @@ export default class EditBundle extends React.Component<Props, State> {
           <Modal
             handleClose={this.handleCancelModalClose}
             isOpen={isCancelModalOpen}
+            maxWidth={400}
           >
             <CancelModal
               editItemsHref={editItemsHref}

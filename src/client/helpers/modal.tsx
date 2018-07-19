@@ -9,6 +9,7 @@ interface Props {
   children: any,
   handleClose?: () => any,
   isOpen: boolean,
+  maxWidth?: number,
   style?: "panel"
 }
 
@@ -77,6 +78,7 @@ export default class Modal extends React.Component<Props> {
       children,
       handleClose,
       isOpen,
+      maxWidth,
     } = this.props
 
     return (
@@ -87,6 +89,11 @@ export default class Modal extends React.Component<Props> {
         overlayClassName={this.modalOverlayClassName()}
         shouldCloseOnEsc={allowClosing !== false}
         shouldCloseOnOverlayClick={allowClosing !== false}
+        style={{
+          content: {
+            width: maxWidth,
+          },
+        }}
       >
         {children}
       </ReactModal>

@@ -316,6 +316,7 @@ export default class App extends React.Component<Props, State> {
           <Modal
             handleClose={this.handleBundleFullModalClose}
             isOpen={isBundleFullModalOpen}
+            maxWidth={400}
           >
             <BundleFullModal
               availableSizes={availableSizes}

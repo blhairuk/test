@@ -134,6 +134,7 @@ export default class App extends React.Component<Props, State> {
             allowClosing={false}
             handleClose={this.handleLoadingModalClose}
             isOpen={isLoadingModalOpen}
+            maxWidth={300}
           >
             <LoadingModal />
           </Modal>
