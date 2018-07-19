@@ -44,7 +44,7 @@ export default class EnterName extends React.Component<Props> {
         <Flex
           alignItems="start"
           justifyContent="center"
-          width={[1, 1 / 2]}
+          width={[1, 1 / 2, 1 / 2, 1 / 3]}
         >
           <BuildYourBoxDiv
             id="build-your-box-intro"
@@ -54,7 +54,7 @@ export default class EnterName extends React.Component<Props> {
         <Flex
           alignItems="center"
           justifyContent="center"
-          width={[1, 1 / 2]}
+          width={[1, 1 / 2, 1 / 2, 2 / 3]}
         >
           <EnterYourNameDiv className="text-center larger-text">
             <form onSubmit={stepNext}>
