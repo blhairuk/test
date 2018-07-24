@@ -260,7 +260,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
         >
           <Box
             px={2}
-            width={[1, 3 / 5]}
+            width={[1, 3 / 5, 2 / 3]}
           >
             {filteredProducts.length > 0 ? productTypes.map((productType) => {
               const renderableProducts = filteredProducts.filter(({product_type}) => product_type === productType)
@@ -311,7 +311,7 @@ export default class ChooseProducts extends React.Component<Props, State> {
 
           <Box
             px={2}
-            width={[1, 2 / 5]}
+            width={[1, 2 / 5, 1 / 3]}
           >
             <StickyNode
               bottomBoundary="#hh-sticky-progress-bottom"
