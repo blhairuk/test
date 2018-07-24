@@ -40,7 +40,7 @@ export default class LoadingModal extends React.Component<{}, State> {
             }
           })()}
         </Text>
-        <Box id="preloader" mx="auto" width="200px" />
+        <Box id="preloader" mx="auto" />
       </Wrapper>
     )
   }
@@ -56,7 +56,7 @@ export default class LoadingModal extends React.Component<{}, State> {
         container: document.getElementById("preloader"),
         loop: true,
         name: "Build your box",
-        path: window.HH.AssetURLs.Preloader,
+        path: window.HH.AssetURLs.WhistlingFruit,
         renderer: "svg",
         rendererSettings: {
           preserveAspectRatio: "xMidYMid slice",
