@@ -1,6 +1,7 @@
 import {formatMoney} from "accounting"
 import {Box, Flex} from "grid-styled"
 import * as React from "react"
+import {Image} from "rebass"
 import styled from "styled-components"
 
 import {
@@ -8,6 +9,7 @@ import {
   createImgSrc,
   findProductByVariantId,
   frequencyTitle,
+  getPathToImages,
   productTitleWithoutType,
 } from "../../../../shared/helpers"
 
@@ -145,6 +147,12 @@ export default class Progress extends React.Component<Props> {
               padding: "10px 20px",
             }}
           >
+            <Image
+              mb={3}
+              mx="auto"
+              src={getPathToImages("icon-box-empty.png")}
+              style={{marginTop: "-30px", maxWidth: "220px"}}
+            />
             <small><em>No products selected.</em></small>
           </div>
         )}
