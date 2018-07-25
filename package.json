@@ -14,7 +14,8 @@
     "ngrok": "node -r dotenv/config ngrok.js",
     "dev": "run-p \"tsc -- --watch\" webpack-dev-server nodemon ngrok",
     "prestart": "run-s migrate tsc webpack",
-    "start": "node dist/server/index.js"
+    "start": "pm2 start dist/server/index.js -i max",
+    "poststart": "pm2 logs"
   },
   "author": "Ethan Jon",
   "license": "UNLICENSED",
@@ -46,6 +47,7 @@
     "mysql2": "^1.5.3",
     "node-fetch": "^2.1.2",
     "npm-run-all": "^4.1.2",
+    "pm2": "^3.0.2",
     "raven": "^2.6.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
