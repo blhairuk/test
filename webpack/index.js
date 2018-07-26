@@ -14,7 +14,7 @@ module.exports = {
   entry: {
     'account-manager': './src/client/account-manager/index.tsx',
     'bundle-editor': './src/client/bundle-editor/index.tsx',
-    'theme.bundle': ['babel-polyfill', './src/client/theme.bundle/index.ts'],
+    'theme.bundle': './src/client/theme.bundle/index.ts',
   },
   module: {
     rules: [{
