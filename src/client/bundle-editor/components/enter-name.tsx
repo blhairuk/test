@@ -98,7 +98,7 @@ export default class EnterName extends React.Component<Props> {
 const BuildYourBoxDiv = Box.extend`
   min-height: 220px;
   @media (min-width: 640px) {
-    transform: scale(1.4);
+    transform: scale(1.7);
     transform-origin: top;
   }
 `
