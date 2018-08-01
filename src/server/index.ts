@@ -7,6 +7,7 @@ import * as send from "koa-send"
 import {join} from "path"
 import * as Raven from "raven"
 
+import redirectAll from "./middlewares/redirect-all"
 import setCacheHeaders from "./middlewares/set-cache-headers"
 import validateRequestSignature from "./middlewares/validate-request-signature"
 import serveApp from "./serve-app"
@@ -54,7 +55,7 @@ router
   .get("/install", install())
   .get("/install/confirm", confirmInstall())
   .use(validateRequestSignature())
-  .get("/bundle/:bundleId?", serveApp("bundle-editor"))
+  .get("/bundle/:bundleId?", redirectAll(process.env.REDIRECT_BUNDLE_EDITOR_URL), serveApp("bundle-editor"))
   .use("/account/:shopifyCustomerId", accountManagerRouter.routes(), accountManagerRouter.allowedMethods())
 
 const serveStatic = (path) => (ctx) => (
